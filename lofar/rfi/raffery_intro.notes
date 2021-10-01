@@ -1,0 +1,21 @@
+Hi all,
+
+I don't have too much to add to what André said, just that Huib Intema
+has also looked into using a similar technique to the Athreya one on
+LOFAR data but found, as André says, that there seems to be very
+little such RFI that could be subtracted (his technique also requires
+calibrated data, since, as I understand it, the uncalibrated
+amplitudes are not known a-priori for LOFAR data). Bas van der Tol has
+also developed a flagger that uses "factor analysis" (described in
+Leshem et al. 2000, ApJS, 131, 355) to find RFI that is seen by more
+than one station. This technique also requires calibrated data to
+work, so it's not clear how it would fit in the current pipeline.
+
+I guess the conclusion is that, particularly now that we're using
+André's flagger, the post-correlation flagging seems to be working
+pretty well. I know almost nothing about the station and correlator
+RFI exclusion that André mentions, but I would imagine they would be
+well worth pursuing.
+
+Cheers,
+-David 

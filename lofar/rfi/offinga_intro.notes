@@ -1,0 +1,41 @@
+Hi Kenneth,
+
+Nice to "meet" you :-). Just to give a brief summary: I am a
+phd-student doing my thesis on RFI mitigation techniques. I have
+tested most of the available methods of removing RFI after correlation
+for LOFAR and am somewhat involved in pre-correlation blanking
+algorithms. I also wrote the "AOFlagger", which is currently being
+implemented in the LOFAR pipeline.
+
+I was not aware we actually had an RFI group ;-) ; many people are
+dealing / finding out about RFI issues. I guess me and David are most
+into and involved in the flagger and RFI statistics.
+
+To answer your questions:
+1) and 2) I think the areas which would require most attention and
+maybe can use more menpower are station RFI cancellation and
+correlator implementation of an RFI algorithm. Also, testing and
+characterization of current RFI problems might be helpful, although I
+think that overlaps with what David is doing(?). I am currently
+working on RFI characterisation (at what time/frequency/level/baseline
+occurs what RFI), tweaking the flagger and some filtering techniques.
+
+3) I would recommend reading "A LOFAR RFI detection pipeline and its
+first results" ( http://arxiv.org/abs/1007.2089 ) on the current RFI
+pipeline and more or less scanning "Post-correlation radio frequency
+interference classification methods" ( http://arxiv.org/abs/1002.1957
+) to see how the flagger works.
+
+I have looked at fringe filtering for LOFAR data as described by
+Athreya. The fringe filtering techniques of Athreya are not really
+applicable on LOFAR data, because LOFAR is not seeing any visible
+broadband, static RFI. The GMRT is seeing severely strong RFI of that
+kind, which is a prerequisite for the method, and is why it works so
+well at the GMRT. As soon as RFI is much below the noise, filtering a
+Fourier component from individual baselines with the additional
+freedom of allowing it to change with time, the method is doing more
+harm than that it solves. I am actually in the way of writing an
+article on fringe fundamentals where I describe such issues.
+
+Regards,
+André 

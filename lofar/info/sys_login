@@ -1,0 +1,23 @@
+login: cavagnol
+psswd: 127G@mbit
+
+Username: cavagnolo
+Password: q87fxVLI1rUt
+SVN repos: https://svn.astron.nl/LOFAR
+
+checkout:
+> cd $HOME
+> mkdir LOFAR_trunk
+> cd LOFAR_trunk
+> svn checkout -N https://svn.astron.nl/LOFAR/trunk LOFAR
+> cd LOFAR
+> svn update CMake
+> cd $HOME/LOFAR_trunk
+> mkdir -p build/gnu_debug
+> cd build/gnu_debug
+> cmake -DBUILD_PACKAGES=BBSControl -DUSE_LOG4CPLUS=OFF -DUSE_BACKTRACE=OFF -DCASACORE_ROOT_DIR=$HOME/$HOSTTYPE/usr/local ../../LOFAR
+> make
+
+http://www.astron.nl/agprojects/
+Login    : cavagnolo
+Password : sibgar71

@@ -1,0 +1,110 @@
+#############################
+-- LOFAR Data School Notes --
+#############################
+
+------
+Day 1:
+------ 
+
+Plenty of LOFAR introduction material
+
+#######
+# RFI #
+#######
+
+- No phase consideration in RFI rejection
+- MADplotter being replaced by rficonsole
+- Andre Offinga seems to be authority here
+- It's not clear why fringe-stopping isn't being used
+  + computation?
+  + ineffective?
+  + bad algorithm?
+
+#############
+# Exercises #
+#############
+
+See PDFs for hands-on session
+
+------
+Day 2:
+------
+
+###############
+# Calibration #
+###############
+
+1 - astrometry
+  + refraction from ionosphere makes difficult
+  + del(pos) = PSF/2*SN (0.01" for LOFAR)
+2 - photometry
+  + image dr = peak img brightness/off-source rms (position dependent; 1e6/1 is great)
+  + spec dr = quality of spec baseline (5k/1 is great)
+  + instr dr = pagers at 169.75 & 169.85 MHz dominates in HBA
+3 - image quality/fidelity
+  + make diff of two freqs channel very near each other to see noise (how is this done?)
+  + data may be very good even if it looks bad
+
+traditional methods:
+a - get gains and phases on external source (good for 1-2)
+b - self-cal (for 3)
+
+3C348 (HercA) and 3C353 likely to be important calibrators
+
+Unique, LOFAR issues:
+
+direction dependent errors, thus need direction dep correcs
+  + phase, non-isopl of ion
+  + gain, ele/azi dep beamshape
+  + global sky model needed
+  + w-projection speed issue
+  + full-polar measurement eqn (v_pq = \sum J_pn B \sum J_qn^dag)
+
+calibrating dipole station at low-freq:
+  + the sky, eg the global sky model (known at some point via MSSS)
+  + the station beam pattern (if stable, model beams)
+  + ionospheric phase screen (errr....)
+    - are there enough constraints to solve for all parameters?
+    - can it be done in real-time?
+    - will the dr be suff to allow thermal noise limited perf?
+
+LOFAR...
+  + sensitivity changes with time
+  + is all-sky imaging
+
+** observing strategy for weak fields (< 5--10 Jy peak in HBA) will be in de Bruyn presentation **
+
+RM measures of ~0.002 rad/m^2 in 6h
+
+crucial topic for our science: variable Faraday rotation in time and across FOV
+
+Rainer Beck question:
+       single dish observing calibration is important because LOFAR is a distributed effort
+
+#########################
+# Calibration with CASA #
+#########################
+
+Important to note that...
+  - CASA and BBS give identical solutions
+  - CASA cannot do directional gains or LOFAR beam corrections as in
+    BBS (so fields less than 1 deg on a side)
+
+Post-NDPPP steps:
+  + flagging and compression
+  + clearcal to add extra columns to MS
+  + run BBS to simulate GSM and puts into model_data
+  + gaincal
+  + plotcal
+  + applycal
+  + split
+  + setjy
+  + self-cal
+    - image with CLEAN
+    - return to gaincal
+
+#############
+# Exercises #
+#############
+
+Hands-on exercises again contained in PDF handouts

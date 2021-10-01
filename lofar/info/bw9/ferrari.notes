@@ -1,0 +1,84 @@
+- We take raw data just flagged with RFI console. 
+
+scp -r lse013:/data1/L2011_22663/L22663_SB190_uv.MS .
+
+- Initialization
+
+tcsh
+use LofIm_release ImagingBW
+
+- We have then to flag autocorrelation with NDPPP (preflagging + start_ch=2; nch=60; avg_freqstep=4)
+
+casapy
+clearcal
+
+- I take a look to the data
+
+cp /home/bonafede/A2256/A2256_step1.parset .
+cp /home/bonafede/A2256/Ateam_LBA.skymodel .
+
+In lfe001: showsub --> lce058 is in sub7
+
+makevds /home/ferrari/sub7.clusterdesc SB190_DPPP.MS
+combinevds SB190_DPPP.MS.gds SB190_DPPP.MS.vds
+calibrate -f --key test --cluster-desc ~/imaging.clusterdesc --db ldb001 --db-user postgres  SB190_DPPP.MS.gds A2256_step1.parset Ateam_LBA.skymodel /data/scratch/ferrari/A2256
+
+******************************
+
+- In parallel I make another test by selecting a timerange and compressing less.
+
+cp /home/bonafede/A2256/Ateam_LBA_CC_CasCyg.skymodel .
+cp /opt/tools/cookbook/split_ms_by_time.py .
+
+Then I modify it by selecting the central 10 minutes of observations (total duration=6h).
+start_out=3.
+start_end=3.17
+
+(0.17*60 = 10 minutes)
+
+I then run NDPPP by averaging with a factor 2 in frequency. 
+
+casapy 
+clearcal
+makevds /home/ferrari/sub7.clusterdesc SB190_10min_DPPP.MS
+combinevds SB190_10min_DPPP.MS.gds SB190_10min_DPPP.MS.vds
+calibrate -f --key test --cluster-desc ~/imaging.clusterdesc --db ldb001 --db-user postgres  SB190_10min_DPPP.MS.gds A2256_step1.parset Ateam_LBA_CC_CasCyg.skymodel /data/scratch/ferrari/A2256
+
+To verify the amplitude and phase solutions:
+use Pythonlibs
+use LUS
+parmdbplot.py SB190_10min_DPPP.MS/instrument/
+cp /home/weeren/scripts/vlss_a2256.pybdsm.gaul.clipped3Jy.sky .
+cp /home/bonafede/scripts/A2256_step2.parset .
+screen
+tcsh
+use LofIm
+calibrate -f --key test --cluster-desc ~/imaging.clusterdesc --db ldb001 --db-user postgres  SB190_10min_DPPP.MS.gds A2256_step2.parset vlss_a2256.pybdsm.gaul.clipped3Jy.sky /data/scratch/ferrari/A2256
+
+***** Re-start
+
+tcsh 
+use LofIm
+
+split_ms_by_time.py 
+NDPPP 
+
+(I average 2 in frequency after having selected 10 min)
+
+casapy 
+clearcal
+
+screen
+tcsh
+use LofIm
+
+makevds /home/ferrari/sub7.clusterdesc SB190_10min_DPPP.MS
+
+combinevds SB190_10min_DPPP.MS.gds SB190_10min_DPPP.MS.vds
+
+calibrate -f --key test --cluster-desc ~/imaging.clusterdesc --db ldb001 --db-user postgres  SB190_10min_DPPP.MS.gds A2256_step1.parset Ateam_LBA_CC_CasCyg.skymodel /data/scratch/ferrari/A2256
+cp -r SB190_10min_DPPP.MS SB190_10min_DPPP.copy.MS
+calibrate -f --key test --cluster-desc ~/imaging.clusterdesc --db ldb001 --db-user postgres  SB190_10min_DPPP.MS.gds A2256_step2.parset vlss_a2256.pybdsm.gaul.clipped3Jy.sky /data/scratch/ferrari/A2256
+makevds /home/ferrari/sub7.clusterdesc SB190_10min_DPPP.copy.MS
+combinevds SB190_10min_DPPP.copy.MS.gds SB190_10min_DPPP.copy.MS.vds
+calibrate -f --key test --cluster-desc ~/imaging.clusterdesc --db ldb001 --db-user postgres  SB190_10min_DPPP.copy.MS.gds A2256_step2_onlyp.parset vlss_a2256.pybdsm.gaul.clipped3Jy.sky /data/scratch/ferrari/A2256

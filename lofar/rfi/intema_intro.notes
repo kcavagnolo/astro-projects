@@ -1,0 +1,38 @@
+Hi Ken,
+
+Here at NRAO Charlottesville, I have assisted in testing and debugging
+an implementation of the RFI subtraction scheme by Ramana Athreya
+(Athreya 2009). This scheme aims at modeling and subtracting
+quasi-continuous RFI, by searching per baseline for Earth-bound
+signals with a phase that varies with the appropriate fringe rate due
+to source tracking. The actual coding was done by Bill Cotton, the
+software package used was Obit
+(http://www.cv.nrao.edu/~bcotton/Obit.html). On the Obit webpage, you
+can find an Obit Development Memo (#16) on the matter. For more
+detailed info I suggest you contact Bill directly.
+
+I've tested this particular implementation on VLA, GMRT and a small
+portion of LOFAR data. Combined with simple visibility clipping, the
+improvements on the VLA and GMRT data are noticable, although it needs
+some careful testing to make sure one doesn't subtract source flux
+instead of RFI. The results on LOFAR data were questionable, because
+there was no strong enough signal detected in the data that could
+qualify as RFI. This could mean two things: either there was very
+little RFI (possibly all removed by initial flagging) or the signature
+of the RFI is somehow different from what was expected. I guess that
+more elaborate testing on LOFAR data could give a more clear answer.
+
+I also worked on a scheme to automatically remove persistent
+undulations (large-scale ripples) from the image background. These
+ripples often originate from a small section of the UV plane (can be
+RFI or just bad data, sometimes a weighting issue), so
+Fourier-transforming the cleaned residual image reveals the
+approximate UV location. This work is based on a recipe by Torsten
+Ensslin, which can be found in the VLA low-frequency reduction manual
+(section 8.3 in http://lwa.nrl.navy.mil/tutorial/tutorial.html; use
+the HTML version, as the postscript file is missing). I've implemented
+an automated (and undocumented) version of this scheme in AIPS/python
+using ParselTongue.
+
+Hope this helps,
+Huib 
