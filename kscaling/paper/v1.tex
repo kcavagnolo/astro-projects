@@ -1,0 +1,203 @@
+%%%%%%%%%%%%%%%%%%%
+% Custom commands %
+%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\clnum}{265}
+\newcommand{\mykeywords}{galaxies: active -- galaxies: clusters:
+  general -- galaxies: clusters: intracluster medium -- X-rays:
+  galaxies: clusters}
+\newcommand{\mystitle}{\accept\ Entropy Scaling Relations}
+\newcommand{\mytitle}{Entropy Scaling Relations of \accept\ Galaxy
+  Clusters}
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+%\documentclass[11pt, preprint]{aastex}
+%\usepackage{graphicx,common,longtable}
+\documentclass[iop]{emulateapj-rtx4}
+%\documentclass[iop]{emulateapj}
+\usepackage{apjfonts,common,graphicx,longtable}
+\usepackage[pagebackref,
+  pdftitle={\mytitle},
+  pdfauthor={K. W. Cavagnolo},
+  pdfkeywords={\mykeywords},
+  pdfsubject={Astrophysical Journal},
+  pdfproducer={ps2pdf},
+  pdfcreator={LaTeX with hyperref}
+  pdfdisplaydoctitle=true,
+  colorlinks=true,
+  citecolor=blue,
+  linkcolor=blue,
+  urlcolor=blue]{hyperref}
+\bibliographystyle{apj}
+\begin{document}
+\title{\mytitle}
+\shorttitle{\mystitle}
+\author{
+  K. W. Cavagnolo\altaffilmark{1}
+  G. M. Voit\altaffilmark{2},
+  S. Bruch\altaffilmark{2},
+  M. Donahue\altaffilmark{2},
+  and M. Sun\altaffilmark{3}
+}
+\altaffiltext{1}{UNS, CNRS UMR 6202 Cassiop\'{e}e, Observatoire de la
+  C\^{o}te d'Azur, Nice, France.}
+\altaffiltext{2}{Department of Physics and Astronomy, Michigan State
+University, East Lansing, MI, 48823, USA.}
+\altaffiltext{3}{University of Virginia, Department of Astronomy,
+  Charlottesville, VA, 22904}
+\shortauthors{K. W. Cavagnolo et al.}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+  Using archival data for a sample of \clnum\ galaxy clusters observed
+  with the \chandra\ X-ray Observatory, we investigate the entropy
+  scaling properties of the intracluster medium (ICM).
+\end{abstract}
+
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
+
+\keywords{\mykeywords}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%
+
+- sources other than gravity modify cluster properties.\\
+- understand mod to understand galaxy form/evo and use clusters in
+cosmo\\
+- explain entropy: dens temp alone, better together\\
+- where does ent come from?\\
+- ent conserves non-grav influence\\
+- theoretical predictions\\
+- observations\\
+- \citet{accept}\\
+- discuss possible sources of mod\\
+- entropy scales w/ other props (T,M)\\
+- $K \propto h(z)^{-4/3} T$ and $K \propto h(z)^{-2/3} M^{2/3}$\\
+- what's presented in this paper\\
+
+``The first measurements of entropy scaling were made at a fiducial
+radius of $0.1r_{200}$ \citep{1999Natur.397..135P,davies00} in order
+to sample the region between these two regimes. However,
+\citet{pratt06} find consistent results for the scaling with
+temperature of entropy when measured a range of radii at fractions of
+r200 of 0.1, 0.2, 0.3 and 0.5 in the range $\beta = 0.5-0.6$ for $S
+\propto T^{\beta}$.''
+
+QQ: We've determined that $K(r)$ is well described by the equation
+\begin{equation}
+  K(r) = \kna + \khun \left(\frac{r}{100 ~\kpc}\right)^{\alpha}
+\label{eqn:kr}
+\end{equation}
+with \kna\ representing the core entropy, \khun\ is the normalization
+of $K(r)$ at $r=100\kpc$, and $\alpha$ is the slope of the entropy
+profile power-law. 
+
+QQ: How do these quantities scale, or relate, with cluster
+temperature, $T_{cluster}$?
+
+The work of \citet{minggroups} suggests that for $T_{X} \la 2\keV$,
+the slope of the power-law component of $K(r)$ is shallower than is
+found for cluster scale objects. This may indicate that above some
+\tx\ the gravitationally established $K(r)$ scales with the dark
+matter halo mass.
+
+QQ: Is $\alpha$ independent of $T_{cluster}$?
+
+QQ: Asymptotically, $\khun \propto T_{cluster}$, but is there a
+coefficient in the log-space which minimizes scatter in \khun?
+
+For a self-similar universe,
+\begin{equation}
+K(r) = \kna + f(T) K_{200} \left(\frac{r}{r_{200}}\right)^{\alpha}
+\label{eqn:sskr}
+\end{equation}
+where $K_{200}$ is defined as the... from \citet{...}, $r_{200}$ is
+the..., $f(T)$ is a function describing the temperature dependant
+departure from self-similarity (\eg\ in a self-similar universe
+$f(T)=1$), and \kna\ is the core entropy, which has been
+observationally constrained, but is still poorly modeled in
+simulations. This formalism also assumes that $\alpha$ is temperature
+independent.
+
+QQ: What is trend in $f(T)$ with cluster temperature?
+
+Rewriting Eqn. \ref{eqn:sskr} as
+\begin{eqnarray}
+  K(r) &=& \kna + \left[f(T) K_{200}
+    \left(\frac{100 ~\kpc}{r_{200}}\right)^{\alpha}\right]
+    \left(\frac{r}{100 ~\kpc}\right)^{\alpha}\\
+  \khun &=& f(T) K_{200} \left(\frac{100
+    ~\kpc}{r_{200}}\right)^{\alpha}
+  \label{eqn:obskr}
+\end{eqnarray}
+we recover Eqn. \ref{eqn:kr} in terms of the observational
+parameters. Note that if the cluster mass-temperature relation ($M-T$)
+has self-similar scaling behavior, then in the above equations,
+$K_{200}$ and $r_{200}$ are functions of halo mass: $K_{200} \propto
+T$ and $r_{200} \propto T^{1/2}$. But, irrespective of the $M-T$
+behavior, $\khun \propto T^{\gamma}$ and hence \khun\ is mass model
+assumption free. Thus, the general behavior of entropy in the
+power-law dominated regime is written
+\begin{equation}
+\khun \propto f(T) T^{1-(\alpha/2)}
+\label{eqn:genkr}
+\end{equation}
+and in the self-similar limit, $\gamma = 0.4$.
+
+\LCDM. All errors are 68\% confidence level unless stated
+otherwise.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observations and Data Analysis}
+\label{sec:obs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TBD
+
+%%%%%%%%%%%%%%%%%
+\section{Results}
+\label{sec:r&d}
+%%%%%%%%%%%%%%%%%
+
+TBD
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Discussion}
+\label{sec:summary}
+%%%%%%%%%%%%%%%%%%%%
+
+TBD
+
+%%%%%%%%%%%%%%%%%
+\acknowledgements
+%%%%%%%%%%%%%%%%%
+
+TBD
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Figures  and Tables%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{figs.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+% End the document %
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
