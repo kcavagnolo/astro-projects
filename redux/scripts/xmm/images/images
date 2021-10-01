@@ -1,0 +1,1229 @@
+#!/bin/bash
+# 
+# NAME: 	images
+# AUTHOR:	Rosemary Willatt (ESAC), based on a script originally programmed by Wolfgang Pietsch and Michael Bauer (MPE)
+# VERSIONS: 	1.0 - 14th March 2007 - Original version
+# PURPOSE:	Script to perform standard XMM-Newton data reduction
+# PARAMETERS	$1 --> part of script to be executed
+
+echo ""
+echo "-----------------------------------------------------------------"
+echo ""
+echo "	*****EXECUTING IMAGES SCRIPT*****"
+
+if [ $# != 1 ]; then
+	echo "-----------------------------------------------------------------"
+ 	echo "Usage: images < images_input [begin/all/pn/mos/pnfinal/mosfinal/final]"
+	echo "[begin/all/pn/mos/pnfinal/mosfinal/final] = part of script to be executed"
+ 	echo "-----------------------------------------------------------------"
+ 	exit 1
+	elif [ $1 != begin -a $1 != all -a $1 != pn -a $1 != mos -a $1 != pnfinal -a $1 != mosfinal -a $1 != pnmosfinal -a $1 != final ]; then 
+	echo "First argument must part of script to be executed [begin/all/pn/mos/pnfinal/mosfinal/pnmosfinal/final]"
+	exit 1
+fi
+
+unset OM_run pngtirate mosgtirate filedir PN MOS1 MOS2 objectname clean_pn clean_mos1 clean_mos2 binsize width_pn width_mos M1_badCCDs M2_badCCDs PIMIN PIMAX pat_pn pat_mos n threshlo fact
+
+read null
+read OM_run
+read null
+read pngtirate
+read null
+read mosgtirate
+read null
+read filedir
+read null
+read PN            
+read null 
+read MOS1        
+read null 
+read MOS2		
+read null		
+read objectname	
+read null 
+read clean_pn	
+read null 
+read clean_mos1  	
+read null   
+read clean_mos2
+read null
+read binsize
+read null
+read width_pn
+read null
+read width_mos
+read null
+read -a M1_badCCDs
+read null
+read -a M2_badCCDs
+read null
+read -a PIMIN
+read null
+read -a PIMAX
+read null
+read -a pat_pn
+read null
+read -a pat_mos
+read null
+read n
+read null
+read threshlo
+read null
+read -a fact
+
+directory=$PWD
+section=$1
+#remove whitespace from object name
+objectname=${objectname// /}
+
+obs_no=${directory:(-10)}
+
+len_PIMIN=${#PIMIN[*]}
+len_PIMAX=${#PIMAX[*]}
+len_M1_badCCDs=${#M1_badCCDs[*]}
+len_M2_badCCDs=${#M2_badCCDs[*]}
+len_pat_pn=${#pat_pn[*]}
+len_pat_mos=${#pat_mos[*]}
+len_fact=${#fact[*]}
+
+echo " "
+echo "Working directory = $directory"
+echo " "
+echo "Images will be produced in the directory ${directory}/final_images"
+echo " "
+echo "Part of script to be executed = $section"
+echo ""
+echo "-----------------------------------------------------------------"
+echo ""
+echo "FROM PARAMETER FILE:"
+
+if [ $section = 'begin' -o $section = 'all' ]; then
+	if [ ! -z $OM_run ]; then
+		echo "	run omichain = $OM_run"
+	else
+		OM_run=no
+		echo "	run omichain = $OM_run (default)"
+	fi
+	if [ ! -z $pngtirate ]; then
+		echo "	count rate threshold for pn gti = ${pngtirate}"
+	else
+		pngtirate=0.4
+		echo "	count rate threshold for pn gti = ${pngtirate} (default)"
+	fi
+	if [ ! -z $mosgtirate ]; then
+		echo "	count rate threshold for MOS gti = ${mosgtirate}"
+	else 
+		mosgtirate=0.35
+		echo "	count rate threshold for MOS gti = ${mosgtirate} (default)"
+	fi
+fi
+
+if [ $section = 'begin' -o $section = 'all' -o $section = 'pn' -o $section = 'mos' -o $section = 'pnfinal' -o $section = 'mosfinal' -o $section = 'pnmosfinal' ]; then
+	if [ ! -z $filedir ]; then
+		echo "	name of directory containing cleaning files = $filedir"
+	else 
+		if [ $clean_pn = 'yes' -o $clean_mos1 = 'yes' -o $clean_mos2 = 'yes' ]; then 
+			echo "	cleaning file directory: must be specified if cleaning is required NO DEFAULT "
+			exit 1
+		else 
+			echo "	cleaning file directory: must be specified if cleaning is required NO DEFAULT"
+		fi
+	fi
+fi
+
+if [ $section = 'pn' -o $section = 'pnfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $PN ]; then
+		echo "	name of pn directory = $PN"
+	else
+		PN=PN
+		echo "	name of pn directory = $PN (default)"
+	fi
+fi
+
+if [ $section = 'mos' -o $section = 'mosfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $MOS1 ]; then
+		echo "	name of MOS1 directory = $MOS1"
+	else 
+		MOS1=MOS1
+		echo "	name of MOS1 directory = $MOS1 (default)"
+	fi
+	if [ ! -z $MOS2 ]; then
+		echo "	name of MOS2 directory = $MOS2"
+	else
+		MOS2=MOS2
+		echo "	name of MOS2 directory = $MOS2 (default)"
+	fi
+fi
+
+if [ ! -z $objectname ]; then
+	echo "	object name is $objectname"
+else
+	objectname=objectname
+	echo "	object name is $objectname (default)"
+fi
+
+if [ $section = 'pn' -o $section = 'pnfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $clean_pn ]; then
+		echo "	pn event lists to be cleaned = $clean_pn"
+	else
+		clean_pn=no
+		echo "	pn event lists to be cleaned = $clean_pn (default)"
+	fi
+fi
+
+if [ $section = 'mos' -o $section = 'mosfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $clean_mos1 ]; then 
+		echo "	MOS1 event lists to be cleaned = $clean_mos1"
+	else
+		clean_mos1=no
+		echo "	MOS1 event lists to be cleaned = $clean_mos1 (default)"
+	fi
+	if [ ! -z $clean_mos2 ]; then
+		echo "	MOS2 event lists to be cleaned = $clean_mos2"
+	else 
+		clean_mos2=no
+		echo "	MOS2 event lists to be cleaned = $clean_mos2 (default)"
+	fi
+fi
+
+if [ $section = 'all' -o $section = 'pn' -o $section = 'mos' -o $section = 'pnfinal' -o $section = 'mosfinal' -o $section = 'pnmosfinal' ]; then
+	if [ ! -z $binsize ]; then
+		echo "	bin size = $binsize"
+	else
+		$binsize=40
+		echo " bin size = $binsize (default)"
+	fi
+fi
+if [ $section = 'pn' -o $section = 'pnfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $width_pn ]; then
+		echo "	FWHM for asmooth for pn camera = $width_pn"
+	else  
+		width_pn=5
+		echo "	FWHM for asmooth for pn camera = $width_pn (default)"
+	fi
+fi
+
+if [ $section = 'mos' -o $section = 'mosfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $width_mos ]; then
+		echo "	FWHM for asmooth for MOS cameras = $width_mos"
+	else
+		width_mos=5
+		echo "	FWHM for asmooth for MOS cameras = $width_mos (default)"
+	fi
+	if [ ! -z $M1_badCCDs ]; then
+		echo "	MOS1 CCDs to be excluded = ${M1_badCCDs[*]}"
+	else 
+		M1_badCCDs=""
+		echo "	No MOS1 CCDs to be excluded"
+	fi
+	if [ ! -z $M2_badCCDs ]; then
+		echo "	MOS2 CCDs to be excluded = ${M2_badCCDs[*]}"
+	else 
+		M2_badCCDs=""
+		echo "	No MOS2 CCDs to be excluded"
+	fi
+fi
+
+if [ $section = 'mos' -o $section = 'pn' -o $section = 'mosfinal' -o $section = 'pnfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $PIMIN ]; then 
+		echo "	energy band lower limits in eV = ${PIMIN[*]}"
+	else
+		echo "	energy band lower limits must be specified NO DEFAULT"	
+		exit 1
+	fi
+	if [ ! -z $PIMAX ]; then
+		echo "	energy band upper limits in eV = ${PIMAX[*]}"
+	else
+		echo "energy band upper limits must be specified NO DEFAULT"
+		exit 1
+	fi
+fi
+
+if [ $section = 'pn' -o $section = 'pnfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $pat_pn ]; then
+		echo "	pn pattern upper limits = ${pat_pn[*]}"
+	else
+		echo "pn pattern upper limits must be specified NO DEFAULT"
+		exit 1
+	fi
+fi
+
+if [ $section = 'mos' -o $section = 'mosfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $pat_mos ]; then
+		echo "	MOS pattern upper limits = ${pat_mos[*]}"
+	else
+		echo "MOS pattern upper limits must be specified NO DEFAULT"
+		exit 1
+	fi
+fi
+
+if [ $section = 'final' -o $section = 'pnfinal' -o $section = 'mosfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -z $n ]; then
+		echo "	energy band of masks used in final image production = $n"
+	else 
+		echo "	energy band of masks used in final image production must be specified NO DEFAULT"
+		exit 1
+	fi
+	if [ ! -z $threshlo ]; then
+		echo "	low threshold counts for mask in final image production = $threshlo"
+	else 
+		threshlo=10000.
+		echo "	low threshold counts for mask in final image production = $threshlo (default)"
+	fi
+	if [ ! -z $fact ]; then
+		echo "	factors by which to multiply pn data when combining with MOS = ${fact[*]}"
+	else 
+		echo "	factors by which to multiply pn data when combining with MOS must be specified NO DEFAULT"
+		exit 1
+	fi
+fi
+echo ""
+echo "-----------------------------------------------------------------"
+
+if [ $section = 'begin' -o $section = 'all' ]; then
+
+	echo ""
+	echo "Initial preparation of data"
+		
+	if [ ! -e $filedir/image_tools ]; then
+	echo ""
+		echo "Warning: File not found: $filedir/image_tools"
+	fi
+	
+	if [ ! -e $filedir/clean_col ]; then
+		echo ""
+		echo "Warning: File not found: $filedir/clean_col"
+	fi
+	
+	if [ ! -e $filedir/clean_pn ]; then
+		echo ""
+		echo "Warning: File not found: $filedir/clean_pn"
+	fi
+	
+	if [ ! -e $filedir/clean_mos1 ]; then
+		echo ""
+		echo "Warning: File not found: $filedir/clean_mos1"
+	fi
+	
+	if [ ! -e $filedir/clean_mos2 ]; then
+		echo ""
+		echo "Warning: File not found: $filedir/clean_mos2"
+	fi
+
+	export SAS_ODF=$directory/odf
+
+	echo ""
+	echo "	cifbuild"
+ 	cd $directory
+ 	rm -f ccf.cif
+ 	:>${objectname}_cifbuild.log
+ 	cifbuild withccfpath=no analysisdate=now fullpath=yes > ${objectname}_cifbuild.log
+ 	export SAS_CCF=$directory/ccf.cif
+	
+ 	echo ""
+ 	echo "	odfingest"
+ 	rm -f $SAS_ODF/*SUM.SAS
+	:>${objectname}_odfingest.log
+ 	odfingest outdir=$SAS_ODF odfdir=$SAS_ODF > ${objectname}_odfingest.log 2>&1
+
+	cd $SAS_ODF
+	sumfile=`ls -1 *SUM.SAS`
+	export SAS_ODF=$SAS_ODF/$sumfile
+
+	cd $directory
+
+	echo ""
+	echo "	epchain & pn preparation"
+
+	rm -rf PN
+	mkdir PN
+	cd PN
+	ln -s ../ccf.cif
+	:>${objectname}_epchain_1.log
+	:>${objectname}_epchain_2.log
+	epchain runbackground=N keepintermediate=raw withoutoftime=Y > ${objectname}_epchain_1.log 2>&1 
+	epchain runatthkgen=N runepframes=N runbadpixfind=N runbadpix=N > ${objectname}_epchain_2.log 2>&1 
+
+	echo ""
+	echo "	preparing ATTITUDE file"
+
+	if [  ! -e *ATTTS*  ]; then
+		echo ""
+		echo "	>>>>> PN ATTITUDE FILE NOT FOUND <<<<<"
+	else
+		gzip -f *ATTTS*
+		cp -f *ATTTS*.gz $directory
+	fi
+
+	echo ""
+	echo "	preparing pn files"
+	if [  ! -e *PIEVLI*  ]; then 	
+		echo ""
+		echo "	>>>>> PN EVENT FILE NOT FOUND <<<<<"
+
+	else 
+		echo ""
+		echo "	preparing pn gti files with count rate threshold $pngtirate"
+		cp -f *PIEVLI* PN.fits
+		:>${objectname}_PNgti.log
+		
+		#produce pn gti file
+		PN_expr=expression="RATE<=$pngtirate"
+		evselect table=PN.fits withrateset=Y rateset=ratePN.fits \
+		 maketimecolumn=Y timebinsize=100 makeratecolumn=Y \
+		 expression='#XMMEA_EP && (PI>=10000) && (PI<=12000) && (PATTERN==0)' >> ${objectname}_PNgti.log
+		tabgtigen table=ratePN.fits $PN_expr gtiset=PNgti.fits >> ${objectname}_PNgti.log
+		cp -f PNgti.fits $directory
+		
+		#clean with PNgti.fits
+		evselect table=PN.fits withfilteredset=Y filteredset=PN_gticleaned.fits \
+		 destruct=Y keepfilteroutput=T \
+		 expression='#XMMEA_EP && gti(PNgti.fits,TIME) && (PI>150)' >> ${objectname}_PNgti.log
+		 
+		#cleaned rate 
+		evselect table=PN_gticleaned.fits withrateset=Y rateset=ratePN_gticleaned.fits \
+		 maketimecolumn=Y timebinsize=100 makeratecolumn=Y \
+		 expression='#XMMEA_EP && (PI>=10000) && (PI<=12000) && (PATTERN==0)' >> ${objectname}_PNgti.log
+		gzip -f *PIEVLI* PN_gticleaned.fits 
+		rm PN.fits
+		cp -f $filedir/clean_pn .
+		cp -f $filedir/clean_col .
+		chmod 744 clean*
+	fi
+
+ 	if [ ! -e *OOEVLI* ]; then 
+		echo ""
+		echo "	>>>>> PN OoT EVENT FILE NOT FOUND <<<<<"
+
+	else 
+		cp -f *OOEVLI* PNOoT.fits
+		evselect table=PNOoT.fits filteredset=PNOoT_gticleaned.fits \
+		 expression="gti(PNgti.fits,TIME)" >> ${objectname}_PNgti.log 
+		gzip -f *OOEVLI* PNOoT_gticleaned.fits
+		rm PNOoT.fits
+ 	fi
+
+ 	cd $directory
+ 	echo ""
+ 	echo "	emchain MOS 1"
+ 	rm -rf MOS1
+ 	mkdir MOS1
+ 	cd MOS1
+ 	ln -s ../ccf.cif .
+ 	:>${objectname}_emchain_MOS1.log
+ 	emchain instruments=M1 makeflaregti=Y > ${objectname}_emchain_MOS1.log 2>&1
+ 
+ 	echo ""
+ 	echo "	preparing MOS1 files"
+	
+	eventlists=`ls *M1*EVLI* 2>/dev/null` 
+	num_lists=`echo $eventlists | wc -w`
+ 	if [ $num_lists = 0 ]; then 	
+		echo ""
+		echo "	>>>>> MOS1 EVENT FILE NOT FOUND <<<<<"
+		cp -f $filedir/clean_mos1 .
+		chmod 744 clean_mos1
+	elif [ $num_lists != 1 ]; then
+		echo ""
+		echo "	>>>>> $num_lists MOS1 event files have been found:"
+		for i in `ls -1 *M1*EVLI*`; do
+			echo "		$i"
+		done
+		echo "	please process the relevant MOS1 and MOS2 event files manually as described in Section 4.2 of the README file <<<<<"
+		cp -f $filedir/clean_mos1 .
+		chmod 744 clean_mos1
+	else
+	
+		if [  ! -e *ATTTS*  ]; then
+			echo ""
+			echo "	>>>>> MOS1 ATTITUDE FILE NOT FOUND <<<<<"
+		else
+			gzip -f *ATTTS*
+			cp -f *ATTTS*.gz $directory
+		fi
+		echo ""
+		echo "	preparing MOS1 gti files with count rate threshold of $mosgtirate" 
+		:>${objectname}_MOS1gti.log
+		cp -f *M1*EVLI* MOS1.fits
+	
+		#generate MOS1 gti file
+		MOS1_expr=expression="RATE<=$mosgtirate"
+		evselect table=MOS1.fits withrateset=Y rateset=rateMOS1.fits \
+		 maketimecolumn=Y timebinsize=100 makeratecolumn=Y \
+		 expression='#XMMEA_EM && (PI>10000) && (PATTERN==0)' >> ${objectname}_MOS1gti.log 
+		tabgtigen table=rateMOS1.fits expression='RATE<=0.35' gtiset=MOS1gti.fits >> ${objectname}_MOS1gti.log 
+		gzip -f *M1*EVLI* 
+		cp -f $filedir/clean_mos1 .
+		chmod 744 clean_mos1
+ 	fi	
+
+ 	cd $directory
+	echo ""
+ 	echo "	emchain MOS 2"
+ 	rm -rf MOS2
+ 	mkdir MOS2
+ 	cd MOS2
+ 	ln -s ../ccf.cif .
+ 	:>${objectname}_emchain_MOS2.log
+ 	emchain instruments=M2 makeflaregti=Y > ${objectname}_emchain_MOS2.log 2>&1
+	echo ""
+	echo "	preparing MOS2 files"
+	eventlists=`ls *M2*EVLI* 2>/dev/null` 
+	num_lists=`echo $eventlists | wc -w`
+ 	if [ $num_lists = 0 ]; then 	
+		echo ""
+		echo "	>>>>> MOS2 EVENT FILE NOT FOUND <<<<<"
+		cp -f $filedir/clean_mos2 .
+		chmod 744 clean_mos2
+	elif [ $num_lists != 1 ]; then
+		echo ""
+		echo "	>>>>> $num_lists MOS2 event files have been found:"
+		for i in `ls -1 *M2*EVLI*`; do
+			echo "		$i"
+		done
+		echo "	please process the relevant MOS1 and MOS2 event files manually as described in Section 4.2 of the README file <<<<<"
+		cp -f $filedir/clean_mos2 .
+		chmod 744 clean_mos2
+	else
+		if [  ! -e *ATTTS*  ]; then
+			echo ""
+			echo "	>>>>> MOS2 ATTITUDE FILE NOT FOUND <<<<<"
+		else
+			gzip -f *ATTTS*
+			cp -f *ATTTS*.gz $directory
+		fi
+		
+		echo ""
+		echo "	preparing MOS2 gti files with count rate threshold of $mosgtirate"
+		:>${objectname}_MOS2gti.log
+		cp -f *M2*EVLI* MOS2.fits
+		
+		#generate MOS2 gti file
+		MOS2_expr=expression="RATE<=$mosgtirate"
+		evselect table=MOS2.fits withrateset=Y rateset=rateMOS2.fits \
+		 maketimecolumn=Y timebinsize=100 makeratecolumn=Y \
+		 expression='#XMMEA_EM && (PI>10000) && (PATTERN==0)' >> ${objectname}_MOS2gti.log 
+		tabgtigen table=rateMOS2.fits expression='RATE<=0.35' gtiset=MOS2gti.fits >> ${objectname}_MOS2gti.log 
+		gzip -f *M2*EVLI*
+		
+		#combine with MOS1 gti file
+		cp -f ${directory}/MOS1/MOS1gti.fits .
+		gtimerge tables='MOS1gti.fits MOS2gti.fits' gtitable='MOSgti.fits' mergemode=or >> ${objectname}_MOS2gti.log 
+		cp -f MOSgti.fits ..
+		
+		#clean MOS2 using MOSgti.fits
+		evselect table=MOS2.fits withfilteredset=Y filteredset=MOS2_gticleaned.fits \
+		 destruct=Y keepfilteroutput=T \
+		 expression='#XMMEA_EM && gti(MOSgti.fits,TIME) && (PI>150)' >> ${objectname}_MOS2gti.log 
+		 
+		 #clean MOS2 rate
+		evselect table=MOS2_gticleaned.fits withrateset=Y rateset=rateMOS2_gticleaned.fits \
+		 maketimecolumn=Y timebinsize=100 makeratecolumn=Y \
+		 expression='#XMMEA_EM && (PI>10000) && (PATTERN==0)' >> ${objectname}_MOS2gti.log 
+		cp -f MOSgti.fits ../MOS1
+		
+		gzip -f MOS2_gticleaned.fits
+		rm MOS2.fits
+		  
+		cp -f $filedir/clean_mos2 .
+		chmod 744 clean_mos2
+	 
+		cd ../MOS1
+		
+		#clean MOS1 using MOSgti.fits
+		evselect table=MOS1.fits withfilteredset=Y filteredset=MOS1_gticleaned.fits \
+	 	 destruct=Y keepfilteroutput=T \
+		 expression='#XMMEA_EM && gti(MOSgti.fits,TIME) && (PI>150)' >> ${objectname}_MOS1gti.log 
+		 
+		#clean MOS1 rate
+		evselect table=MOS1_gticleaned.fits withrateset=Y rateset=rateMOS1_gticleaned.fits \
+		 maketimecolumn=Y timebinsize=100 makeratecolumn=Y \
+		 expression='#XMMEA_EM && (PI>10000) && (PATTERN==0)' >> ${objectname}_MOS1gti.log
+		 
+		 gzip -f MOS1_gticleaned.fits
+		 rm MOS1.fits
+		 
+		cd $directory
+	fi
+
+ 	if [ $OM_run = 'yes' ]; then
+		cd $directory
+ 		echo ""
+ 		echo "	omichain"
+ 		rm -rf OM
+ 		mkdir OM
+ 		cd OM
+ 		ln -s ../ccf.cif .
+ 		:>${objectname}_omichain.log
+ 		omichain inpdirectory = '..' outdirectory = '.' >> ${objectname}_omichain.log 2>&1
+ 		rm -f I*
+		
+		# rename OM files according to filter
+		for i in `ls -1 *SIMAGE1000*`; do
+			fkeypar fitsfile="${i}[0]" keyword=FILTER
+			filter=`pget fkeypar.par value`
+			if [ ${#filter} = 3 ]; then
+				filter=${filter:1:1}
+			elif [ ${#filter} = 6 ]; then
+				filter=${filter:1:4}
+			fi
+			mv $i ${filter}_${i}
+		done >> ${objectname}_omichain.log 2>&1
+
+	fi
+		
+		cd $directory
+		echo ""
+		echo "Initial preparation complete"
+	echo " "
+	echo "-----------------------------------------------------------------"
+fi
+
+if [ $section != 'final' -a $section != 'begin' ]; then
+	
+	if [ ! -e $directory/final_images ]; then
+		mkdir final_images
+	fi 
+	
+	if [ ! -e $directory/ccf.cif ]; then
+		echo "File not found: $directory/ccf.cif"
+		exit
+	fi
+	
+	if [ ! -e $directory/*ATTTSR0000.FIT.gz ]; then
+		echo "File not found: $directory/*ATTTSR0000.FIT.gz"
+		exit
+	fi
+	
+	if [ $len_PIMIN != $len_PIMAX -o $len_PIMIN != $len_pat_pn -o $len_PIMIN != $len_fact -o $len_PIMIN != 	$len_pat_mos ]; then	
+		echo ""		
+		echo "The number of elements of the lists for PI minimum, PI maximum, pn pattern, mos pattern and factoring must be equal"
+		exit 1
+	fi
+	
+	if [ $len_PIMIN = 0 ]; then
+		echo ""		
+		echo "The number of energy bands must be greater than 0"
+		exit 1
+	fi
+	
+	k=0
+	while [ $k -lt $len_PIMIN ]; do
+		if [ ${PIMIN[${k}]} -ge ${PIMAX[${k}]} ]; then
+			echo ""
+			echo "in energy band ${k} minimum PI value = ${PIMIN[${k}]} eV and the maximum PI value ${PIMAX[${k}]}" 
+			echo "the minimum value may not exceed the maximum value"
+			exit 1
+		fi
+		let k+=1
+	done
+fi	
+	
+if [ $section = 'pn' -o $section = 'pnfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+
+	if [ ! -e $directory/$PN ]; then
+		echo "File not found: $directory/$PN"
+		exit
+	fi
+	if [ ! -e $directory/$PN/PN_gticleaned.fits.gz ]; then
+		echo "File not found: $directory/$PN/PN_gticleaned.fits.gz"
+		exit
+	fi
+	if [ ! -e $directory/$PN/PNOoT_gticleaned.fits.gz ]; then
+		echo "File not found: $directory/$PN/PNOoT_gticleaned.fits.gz"
+		exit
+	fi
+	if [ $clean_pn = "yes" ]; then
+		
+	        if [ ! -e $directory/$PN/clean_pn ]; then
+			echo " "
+		   	echo "File not found: $directory/$PN/clean_pn"
+		   	exit
+		fi
+		if [ ! -x $directory/$PN/clean_pn ]; then
+			echo " "
+			echo "File not executable: $directory/$PN/clean_pn"
+			exit
+	        fi
+	        if [ ! -e $directory/$PN/clean_col ]; then
+			echo " "
+			echo "File not found: $directory/$PN/clean_col"
+			exit
+	        fi
+	        if [ ! -x $directory/$PN/clean_col ]; then
+			echo " "
+			echo "File not executable: $directory/$PN/clean_col"
+			exit
+		fi
+		if [ ! -e $filedir/image_tools ]; then
+			echo "File not found: $filedir/image_tools"
+			exit
+		fi
+	fi
+fi
+	
+if [ $section = 'mos' -o $section = 'mosfinal' -o $section = 'pnmosfinal' -o $section = 'all' ]; then
+	if [ ! -e $directory/final_images ]; then
+		mkdir final_images
+	fi 
+	if [ ! -e $directory/$MOS1 ]; then
+		echo "File not found: $directory/$MOS1"
+		exit
+	fi
+	if [ ! -e $directory/$MOS1/MOS1_gticleaned.fits.gz ]; then
+		echo "File not found: $directory/$MOS1/MOS1_gticleaned.fits.gz"
+		exit
+	fi
+	if [ $clean_mos1 = "yes" ]; then
+	
+	        if [ ! -e $directory/$MOS1/clean_mos1 ]; then
+			echo " "
+			echo "File not found: $directory/$MOS1/clean_mos1"
+			exit
+		fi	
+		if [ ! -x $directory/$MOS1/clean_mos1 ]; then
+			echo " "
+			echo "File not executable: $directory/$MOS1/clean_mos1"
+			exit
+	       	fi
+		if [ ! -e $filedir/image_tools ]; then
+			echo "File not found: $filedir/image_tools"
+			exit
+		fi
+	fi
+	if [ ! -e $directory/$MOS2 ]; then
+		echo "File not found: $directory/$MOS2"
+		exit
+	fi	
+	
+	if [ ! -e $directory/$MOS2/MOS2_gticleaned.fits.gz ]; then
+		echo "File not found: $directory/$MOS2/MOS2_gticleaned.fits.gz "
+		exit
+	fi
+	
+	if [ $clean_mos2 = "yes" ]; then
+		if [ ! -e $directory/$MOS2/clean_mos2 ]; then
+			echo "File not found: $directory/$MOS2/clean_mos2"
+			exit
+		fi
+		if [ ! -x $directory/$MOS2/clean_mos2 ]; then
+			echo "File not executable: $directory/$MOS2/clean_mos2"
+	   		exit
+	       	fi
+		if [ ! -e $filedir/image_tools ]; then
+			echo "File not found: $filedir/image_tools"
+			exit
+		fi
+	fi
+fi
+
+ulimit -S -d 4194304
+
+#setting sas information
+if [ $section != 'final' ]; then
+	export SAS_CCF=$directory/ccf.cif
+	export OUTSASDIR="${directory}/final_images"
+	export SAS_ODF="${directory}/odf/"
+	if [ ! -d $OUTSASDIR ]; then
+  		mkdir -p $OUTSASDIR
+	fi
+fi
+
+export PFILES="$directory/pfiles:$PFILES" 
+
+if [ ! -d $directory/pfiles ]; then
+  	mkdir -p $directory/pfiles
+fi
+
+cd final_images
+
+if [ ${section} = 'pn' -o ${section} = 'pnfinal' -o $section = 'pnmosfinal' -o ${section} = 'all' ]; then	
+	
+	:>${objectname}_PN_images.log
+	echo ""
+	echo "PREPARING PN EVENT FILES"
+	echo ""
+	echo "Copy pn event file and Out-of-Time event file"
+	echo "" >> ${objectname}_PN_images.log
+	echo "PREPARING PN EVENT FILES" >> ${objectname}_PN_images.log
+	echo "" >> ${objectname}_PN_images.log
+	echo "Copy pn event file and Out-of-Time event file" >> ${objectname}_PN_images.log
+	echo "" >> ${objectname}_PN_images.log
+	cp -f ${directory}/$PN/PN_gticleaned.fits.gz evli_pn.fits.gz
+	gunzip -f evli_pn.fits.gz
+	cp -f ${directory}/$PN/PNOoT_gticleaned.fits.gz ooevli.fits.gz
+	gunzip -f  ooevli.fits.gz
+	
+	echo ""
+	echo "Check image submode"
+	fkeypar fitsfile=evli_pn.fits[0] keyword=SUBMODE
+	submode=`pget fkeypar.par value`
+	echo ""
+	echo "	submode  = ${submode}"
+	if [ $submode = "'PrimeFullWindow'" ]; then
+		factoot=0.063
+	elif [ $submode = "'PrimeFullWindowExtended'" ]; then
+		factoot=0.0232
+	elif [ $submode = "'PrimeLargeWindow'" ]; then
+		factoot=0.0016
+	#elif [ $submode = "'PrimeSmallWindow'" ]; then
+	#	factoot=0.011
+	else
+		echo ""
+	   	echo "***mode not supported***"
+		echo ""
+   		exit 1
+	fi
+
+	#clean pn
+	if [ ${clean_pn} = "yes" ]; then
+	   	echo ""
+	   	echo "Clean pn event and Out-of time event files"
+	   	$directory/$PN/clean_pn $directory/$PN $filedir/image_tools ${objectname}
+		cp -f evli_pn_new.fits ${objectname}_evli_pn_cleaned.fits
+		gzip -f ${objectname}_evli_pn_cleaned.fits
+		cp -f ooevli_new.fits ${objectname}_OoTevli_pn_cleaned.fits
+		gzip -f ${objectname}_OoTevli_pn_cleaned.fits
+		mv evli_pn_new.fits evli_pn.fits
+   		mv ooevli_new.fits ooevli.fits
+	fi
+	
+	# remove events around pn inhomogeneous background lines
+	fselect evli_pn.fits PNback.fits "PI <= 7200 .or. PI > 9200" clobber=yes
+	fselect ooevli.fits PNOoTback.fits "PI <= 7200 .or. PI > 9200" clobber=yes
+
+	cp -f PNback.fits evli_pn.fits
+	mv PNback.fits ${objectname}_PNback.fits
+	gzip -f ${objectname}_PNback.fits
+	cp -f PNOoTback.fits ooevli.fits
+	mv PNOoTback.fits ${objectname}_PNOoTback.fits
+	gzip -f ${objectname}_PNOoTback.fits
+
+	#display images for finding bad pixels and columns
+	echo ""
+	echo "Producing images in 200-500 eV band to determine bad pixels and columns"
+	echo "" >> ${objectname}_PN_images.log
+	echo "Producing images in 200-500 eV band to determine bad pixels and columns" >> ${objectname}_PN_images.log
+	
+	rm -f ${objectname}_pn_test*
+	for CCDNR in 01 02 03 04 05 06 07 08 09 10 11 12 ; do {
+		expression="(PI>=200)&&(PI<500)&&(CCDNR==$CCDNR)&&(PATTERN==0)&&#XMMEA_EP"
+		imageset=${objectname}_pn_test_$CCDNR.fits
+		evselect table=evli_pn.fits expression=$expression imageset=$imageset xcolumn=RAWX ycolumn=RAWY >> ${objectname}_PN_images.log 2>&1
+		};
+	done
+	expression="(PI>=200)&&(PI<500)&&(PATTERN==0)&&#XMMEA_EP"
+	evselect table=evli_pn.fits expression=$expression imageset=${objectname}_pn_test_full.fits xcolumn=DETX ycolumn=DETY >> ${objectname}_PN_images.log 2>&1
+	gzip -f ${objectname}_pn_test*
+	ds9 -scale sqrt -cmap Heat ${objectname}_pn_test_*.fits.gz & >> ${objectname}_PN_images.log
+
+	echo ""
+	echo "-----------------------------------------------------------------"
+	echo " "
+	echo "CREATING PN IMAGES AND EXPOSURE MAPS"
+	echo "" >> ${objectname}_PN_images.log
+	echo "-----------------------------------------------------------------" >> ${objectname}_PN_images.log
+	echo " " >> ${objectname}_PN_images.log
+	echo "CREATING PN IMAGES AND EXPOSURE MAPS" >> ${objectname}_PN_images.log
+	echo "" >> ${objectname}_PN_images.log
+
+	cp -f $directory/*ATTTSR0000.FIT.gz att.dat.gz
+	gunzip -f att.dat.gz
+ 
+
+	PREFIX=("${objectname}"_pn)
+	arcsec_per_pix=`echo -e "scale=8 \n ${binsize}*0.05"|bc`
+	sigma=`echo -e "scale=8 \n ${width_pn}/2.35482"|bc`
+	smwidth_pn=`echo -e "scale=6 \n ${sigma}/${arcsec_per_pix}"|bc`
+
+	fl="((FLAG & 0xfa0000) == 0)"
+	im="updateexposure=yes writedss=yes withimageset=true xcolumn=X ycolumn=Y imagebinning=binSize ximagebinsize=$binsize yimagebinsize=$binsize"
+	rest="smoothstyle=simple withoutmaskset=yes width=${smwidth_pn}"
+
+	k=0
+	
+	while [ $k -lt $len_PIMIN ]; do
+		ima=("$PREFIX"_ima_${k}.fits)
+		imad=("$PREFIX"_imad_${k}.fits)
+		imadm=("$PREFIX"_imadm_${k}.fits)
+		imadmc=("$PREFIX"_imadmc_${k}.fits)
+		exp=("$PREFIX"_exp_${k}.fits)
+		exps=("$PREFIX"_exps_${k}.fits)
+		expv=("$PREFIX"_expv_${k}.fits)
+		ooima=("$PREFIX"_ooima_${k}.fits)
+		ooimad=("$PREFIX"_ooimad_${k}.fits)
+		ooimadm=("$PREFIX"_ooimadm_${k}.fits)
+		msk=("$PREFIX"_msk_${k}.fits)
+		echo " "
+		echo "energy band $k  -  ${PIMIN[$k]} to ${PIMAX[$k]} eV" 
+		echo " " >> ${objectname}_PN_images.log
+		echo "energy band $k  -  ${PIMIN[$k]} to ${PIMAX[$k]} eV" >> ${objectname}_PN_images.log
+		echo " " >> ${objectname}_PN_images.log
+		ax="(PATTERN<=${pat_pn[${k}]} && PI>=${PIMIN[${k}]} && PI<${PIMAX[${k}]})"
+
+		#make images  
+		filesin="table=evli_pn.fits" 
+		filesout="imageset=$ima"
+		files="$filesin $filesout"
+		rm -f $ima ${ima}.gz 
+		evselect $files expression="$ax && $fl" $im >> ${objectname}_PN_images.log 
+
+		#make exposuremap (no vignetting)	
+		files="imageset=$ima eventset=evli_pn.fits attitudeset=att.dat"
+		filesout="expimageset=$exp"
+		rm -f $exp $exp.gz 
+		eexpmap $files $filesout pimin="${PIMIN[${k}]}" pimax="${PIMAX[${k}]}" badclean=0 useoffset=false \
+			 usefastpixelization=false attrebin=1. withvignetting=no >> ${objectname}_PN_images.log
+
+		#make exposuremap (with vignetting), make mask
+		filesout="expimageset=$expv"
+		rm -f $expv $expv.gz 
+
+		eexpmap $files $filesout pimin="${PIMIN[${k}]}" pimax="${PIMAX[${k}]}" badclean=0 useoffset=false usefastpixelization=false attrebin=1. >> ${objectname}_PN_images.log
+
+		filesin="$filesout"
+		rm -f $msk ${msk}.gz 
+		emask $filesin detmaskset=$msk threshold1=0.1 threshold2=10. >> ${objectname}_PN_images.log
+
+		#smooth images with masks	
+		filein="inset=$ima" 
+		filemsk="outmaskset=$msk"
+		fileout="outset=$imad"
+		files="$filein $fileout $filemsk"
+		rm -f $imad $imad.gz 
+		asmooth $files $rest >> ${objectname}_PN_images.log 2>&1
+
+		#make OOT images
+		files="table=ooevli.fits imageset=$ooima"
+		rm -f $ooima $ooima.gz 
+		evselect $files expression="$ax && $fl" $im >> ${objectname}_PN_images.log
+
+		#smooth OOT images
+		filein="inset=$ooima" 
+		filemsk="outmaskset=$msk"
+		fileout="outset=$ooimad"
+		files="$filein $fileout $filemsk"
+		rm -f $ooimad $ooimad.gz 
+		asmooth $files $rest >> ${objectname}_PN_images.log 2>&1
+
+		#smooth exposure masks
+		filein="inset=$exp" 
+		filemsk="outmaskset=$msk"
+		fileout="outset=$exps"
+		files="$filein $fileout $filemsk"
+		rm -f $exps $exps.gz 
+		asmooth $files $rest >> ${objectname}_PN_images.log
+
+		#substract OOT images	
+		rm -f $imadm $ooimadm $imadmc test.fits 
+		farith $imad $msk $imadm MUL
+		farith $ooimad $msk $ooimadm MUL
+		gzip -f $msk $exp $exps $expv $ima $ooima
+		rm -f $imad $ooimad 
+
+		fcarith $ooimadm $factoot test.fits MUL
+		farith $imadm test.fits $imadmc SUB
+		
+		rm -f $imadm $ooimadm
+		mv $imadmc $imadm
+
+		gzip -f $imadm
+
+		let k+=1
+	done
+	
+	rm -f ooevli.fits evli_pn.fits
+	echo " "
+	echo "-----------------------------------------------------------------"
+fi
+
+# MOS1 and MOS2 
+if [ ${section} = 'mos' -o ${section} = 'mosfinal' -o $section = 'pnmosfinal' -o ${section} = 'all' ]; then
+	for m in 1 2; do
+		echo ""
+		echo "PREPARING MOS${m} EVENT FILES"
+		echo ""
+		echo "copy MOS${m} event file"
+		:>${objectname}_MOS${m}_images.log
+		echo "" >> ${objectname}_MOS${m}_images.log
+		echo "PREPARING MOS${m} EVENT FILES" >> ${objectname}_MOS${m}_images.log
+		echo "" >> ${objectname}_MOS${m}_images.log
+		echo "copy MOS${m} event file" >> ${objectname}_MOS${m}_images.log
+		echo "" >> ${objectname}_MOS${m}_images.log
+		rm -f evli_m* 
+		
+		if [ $m = "1" ]; then
+			#obtain input event lists
+			input="$directory/${MOS1}"
+		        cp -f $input/MOS1_gticleaned.fits.gz evli_mos${m}.fits.gz
+	        	gunzip -f evli_mos${m}.fits.gz
+			#remove user-specified CCDs
+			b=""
+			if [ ! -z $M1_badCCDs ]; then
+				for i in `seq 0 $[$len_M1_badCCDs-1]`; do
+					if [ $i = 0 ]; then
+						a="(CCDNR!="
+					elif [ $i != 0 ]; then
+						a=")&&(CCDNR!="
+					fi
+					b=`echo "$b$a${M1_badCCDs[i]}"`
+				done
+				MOS_remove=`echo "&&$b)"`
+			else 
+				MOS_remove=""
+			fi
+		fi
+		if [ $m = "2" ]; then
+			#obtain input event lists
+			input="$directory/${MOS2}"
+		        cp -f $input/MOS2_gticleaned.fits.gz evli_mos${m}.fits.gz
+	        	gunzip -f evli_mos${m}.fits.gz
+			#remove user-specified CCDs
+			b=""
+			if [ ! -z $M2_badCCDs ]; then
+				for i in `seq 0 $[$len_M2_badCCDs-1]`; do
+					if [ $i = 0 ]; then
+						a="(CCDNR!="
+					elif [ $i != 0 ]; then
+						a=")&&(CCDNR!="
+					fi
+					b=`echo "$b$a${M2_badCCDs[i]}"`
+				done
+				MOS_remove=`echo "&&$b)"`
+			else 
+				MOS_remove=""
+			fi
+		fi
+		# cleaning MOS 1
+		
+	        if [ $m = "1" -a ${clean_mos1} = "yes" ]; then
+	        # clean MOS1 event file
+			echo ""
+			echo "clean MOS1 event file"
+	        	$directory/${MOS1}/clean_mos1 $directory/${MOS1} $filedir/image_tools ${objectname}
+			cp -f evli_mos1.fits ${objectname}_evli_m1_cleaned.fits
+			gzip -f ${objectname}_evli_m1_cleaned.fits
+	        fi
+		
+		# cleaning MOS 2	
+		
+	        if [ $m = "2" -a ${clean_mos2} = "yes" ]; then
+		
+	        # clean MOS2 event file
+			echo ""
+	        	echo "clean MOS2 event file"
+	        	$directory/${MOS2}/clean_mos2 $directory/${MOS2} $filedir/image_tools ${objectname}
+			cp -f evli_mos2.fits ${objectname}_evli_m2_cleaned.fits
+			gzip -f ${objectname}_evli_m2_cleaned.fits
+	        fi
+		
+		#display images for finding bad pixels and columns
+		echo ""
+		echo "Producing images in 200-500 eV band to determine bad pixels"
+		echo "" >> ${objectname}_MOS${m}_images.log
+		echo "Producing images in 200-500 eV band to determine bad pixels" >> ${objectname}_MOS${m}_images.log
+		
+		rm -f ${objectname}_m${m}_test*
+		for CCDNR in 01 02 03 04 05 06 07 ; do {
+			expression="(PI>=200)&&(PI<500)&&(CCDNR==$CCDNR)&&(PATTERN<=12)&&(FLAG==0)"
+			imageset=${objectname}_m${m}_test_$CCDNR.fits
+			evselect table=evli_mos${m}.fits expression=$expression imageset=$imageset xcolumn=RAWX ycolumn=RAWY >> ${objectname}_MOS${m}_images.log 2>&1
+			};
+		done
+		expression="(PI>=200)&&(PI<500)&&(PATTERN<=12)${MOS_remove}&&(FLAG==0)"
+		evselect table=evli_mos${m}.fits expression=$expression imageset=${objectname}_m${m}_test_full.fits xcolumn=DETX ycolumn=DETY >> ${objectname}_MOS${m}_images.log  2>&1
+		gzip -f ${objectname}_m${m}_test*
+		ds9 -scale sqrt -cmap Heat ${objectname}_m${m}_test_*.fits.gz & >> ${objectname}_MOS${m}_images.log
+		
+		# copy attitude file
+		cp -f $directory/*ATTTSR0000.FIT.gz att.dat.gz
+		gunzip -f att.dat.gz
+		echo ""
+		echo "-----------------------------------------------------------------"
+		echo "" >> ${objectname}_MOS${m}_images.log
+		echo "-----------------------------------------------------------------" >> ${objectname}_MOS${m}_images.log
+		
+		# create and smooth images 
+		echo "" 
+		echo "CREATING MOS${m} IMAGES AND EXPOSURE MAPS"
+		echo "" >> ${objectname}_MOS${m}_images.log
+		echo "CREATING MOS${m} IMAGES AND EXPOSURE MAPS" >> ${objectname}_MOS${m}_images.log
+		echo "" >> ${objectname}_MOS${m}_images.log
+		
+		PREFIX=(${objectname}_m${m})
+		
+		arcsec_per_pix=`echo -e "scale=8 \n ${binsize}*0.05"|bc`
+		sigma=`echo -e "scale=8 \n ${width_mos}/2.35482"|bc`
+		smwidth_mos=`echo -e "scale=6 \n ${sigma}/${arcsec_per_pix}"|bc`
+		
+		fl="(FLAG==0)" 
+		im="updateexposure=yes writedss=yes withimageset=true xcolumn=X ycolumn=Y imagebinning=binSize ximagebinsize=$binsize yimagebinsize=$binsize"
+		rest="smoothstyle=simple withoutmaskset=yes width=${smwidth_mos}"
+		
+		# loop over energy bands
+		k=0
+		while [ $k -lt $len_PIMIN ]; do	
+			ima=("$PREFIX"_ima_${k}.fits)
+			imad=("$PREFIX"_imad_${k}.fits)
+			imadm=("$PREFIX"_imadm_${k}.fits)
+			exp=("$PREFIX"_exp_${k}.fits)
+			exps=("$PREFIX"_exps_${k}.fits)
+		        expv=("$PREFIX"_expv_${k}.fits)
+			msk=("$PREFIX"_msk_${k}.fits)
+			echo ""
+			echo "energy band $k  -  ${PIMIN[$k]} to ${PIMAX[$k]} eV" 
+			echo "" >> ${objectname}_MOS${m}_images.log
+			echo "energy band $k  -  ${PIMIN[$k]} to ${PIMAX[$k]} eV" >> ${objectname}_MOS${m}_images.log
+			echo "" >> ${objectname}_MOS${m}_images.log
+			ax="(PATTERN<=${pat_mos[${k}]} && PI>=${PIMIN[${k}]} && PI<${PIMAX[${k}]}) "	
+
+			#make images  			
+			filesin="table=evli_mos${m}.fits" 
+			filesout="imageset=$ima"
+			files="$filesin $filesout"
+			rm -f $ima $ima.gz 
+			evselect $files expression="$ax && $fl$MOS_remove" $im >> ${objectname}_MOS${m}_images.log
+
+			#make exposuremap (no vignetting)	
+			files="imageset=$ima eventset=evli_mos${m}.fits attitudeset=att.dat"
+			filesout="expimageset=$exp"
+			rm -f $exp $exp.gz 
+			eexpmap $files $filesout pimin="${PIMIN[${k}]}" pimax="${PIMAX[${k}]}" badclean=0 useoffset=false \
+			   usefastpixelization=false attrebin=1. withvignetting=no >> ${objectname}_MOS${m}_images.log
+
+			#make exposuremap (with vignetting), make mask
+			filesout="expimageset=$expv"
+			rm -f $expv $expv.gz 
+			eexpmap $files $filesout pimin="${PIMIN[${k}]}" pimax="${PIMAX[${k}]}" badclean=0 useoffset=false usefastpixelization=false attrebin=1. >> ${objectname}_MOS${m}_images.log
+			filesin="$filesout"
+			rm -f $msk $msk.gz 
+			emask $filesin detmaskset=$msk threshold1=0.1 threshold2=10. >> ${objectname}_MOS${m}_images.log
+
+			#smooth images with masks	
+			filein="inset=$ima" 
+			filemsk="outmaskset=$msk"
+			fileout="outset=$imad"
+			files="$filein $fileout $filemsk"
+			rm -f $imad $imad.gz 
+			asmooth $files $rest >> ${objectname}_MOS${m}_images.log 2>&1
+
+			#smooth exposure masks
+			filein="inset=$exp" 
+			filemsk="outmaskset=$msk"
+			fileout="outset=$exps"
+			files="$filein $fileout $filemsk"
+			rm -f $exps $exps.gz 
+			asmooth $files $rest >> ${objectname}_MOS${m}_images.log 2>&1
+
+			gzip -f	$ima
+			rm -f $imadm $imadm test.fits 
+			farith $imad $msk $imadm MUL
+			gzip -f $msk $imadm $exp $exps $expv
+			rm -f $imad 
+			let k+=1
+		done
+		
+	     	rm -f evli_mos${m}.fits 
+	
+		if [ $m = 1 ]; then
+			echo " "
+			echo "-----------------------------------------------------------------"
+		fi
+		
+	done
+	
+	rm -f evli_m*.fits
+	
+	echo " "
+	echo "-----------------------------------------------------------------"
+fi
+rm -f att.dat
+
+if [ ${section} = 'pnfinal' -o ${section} = 'mosfinal' -o $section = 'pnmosfinal' -o ${section} = 'final' -o ${section} = 'all' ]; then
+	:>${objectname}_final_processing.log
+	echo " " 
+	echo "CREATING FINAL IMAGES"
+	echo " " >> ${objectname}_final_processing.log
+	echo "CREATING FINAL IMAGES" >> ${objectname}_final_processing.log
+	echo " " >> ${objectname}_final_processing.log
+	
+	rm -f test*
+	rm -f ${objectname}_*final*
+	rm -f ${objectname}_*imasn*
+	rm -f att.fits
+	
+	mskpn="$objectname"_pn_msk_${n}.fits.gz
+	mskm1="$objectname"_m1_msk_${n}.fits.gz
+	mskm2="$objectname"_m2_msk_${n}.fits.gz
+	exppn_n="$objectname"_pn_exps_${n}.fits.gz
+	expm1_n="$objectname"_m1_exps_${n}.fits.gz
+	expm2_n="$objectname"_m2_exps_${n}.fits.gz
+
+	rm -f test.fits testpn.fits restpnf.fits testm1.fits testm2.fits testm.fits teste.fits 
+	rm -f expmostest.fits expmos.fits testmask.fits exppn.fits expm1.fits expm2.fits ${objectname}_exp.fits 
+	
+	# make mask for images in band n with threshold set at $threshlo
+	farith $exppn_n ${mskpn} exppn.fits MUL clobber=yes
+	farith $expm1_n ${mskm1} expm1.fits MUL clobber=yes
+	farith $expm2_n ${mskm2} expm2.fits MUL clobber=yes
+	farith expm1.fits expm2.fits expmostest.fits ADD clobber=yes
+	fcarith expmostest.fits 0.4 expmos.fits MUL clobber=yes
+	farith expmos.fits exppn.fits ${objectname}_exp.fits ADD clobber=yes
+	fimgtrim infile=${objectname}_exp.fits outfile=testmask.fits threshlo=${threshlo}. threshup=I const_lo=0 clobber=yes >> ${objectname}_final_processing.log 
+	fimgtrim infile=testmask.fits outfile=${objectname}_mask.fits threshlo=I threshup=1. const_up=1. clobber=yes >> ${objectname}_final_processing.log 
+	rm -f expmostest.fits expmos.fits testmask.fits exppn.fits expm1.fits expm2.fits 
+
+	k=0
+	while [ $k -lt $len_PIMIN ]; do
+		echo " "
+		echo "energy band $k  -  ${PIMIN[$k]} to ${PIMAX[$k]} eV" 
+		echo " " >> ${objectname}_final_processing.log
+		echo "energy band $k  -  ${PIMIN[$k]} to ${PIMAX[$k]} eV" >> ${objectname}_final_processing.log
+		echo " " >> ${objectname}_final_processing.log
+		imapn="$objectname"_pn_imadm_${k}.fits.gz
+		exppn="$objectname"_pn_exps_${k}.fits.gz
+		imam1="$objectname"_m1_imadm_${k}.fits.gz
+		expm1="$objectname"_m1_exps_${k}.fits.gz
+		imam2="$objectname"_m2_imadm_${k}.fits.gz
+		expm2="$objectname"_m2_exps_${k}.fits.gz
+		imas=${objectname}_imasn_${k}.fits
+		final=${objectname}_final_${k}.fits
+		rm -f ${imas} ${imas}.gz 
+		farith ${imapn} ${mskpn} test.fits MUL
+		fcarith test.fits ${fact[${k}]} testpn.fits MUL
+		farith ${expm1} ${mskm1} expm1.fits MUL clobber=yes
+		farith ${imam1} ${mskm1} testm1.fits MUL
+		farith ${expm2} ${mskm2} expm2.fits MUL clobber=yes
+		farith ${imam2} ${mskm2} testm2.fits MUL
+		farith testm1.fits testm2.fits testm.fits ADD
+		rm -f test.fits 
+		farith testm.fits testpn.fits test.fits ADD
+		rm -f testm.fits testm1.fits testm2.fits 
+		farith ${exppn} ${mskpn} exppn.fits MUL clobber=yes 
+		farith exppn.fits expm1.fits testm.fits ADD
+		farith testm.fits expm2.fits teste.fits ADD
+		farith test.fits teste.fits ${imas} DIV
+		farith ${imas} ${objectname}_mask.fits ${final} MUL
+		rm -f test.fits testpn.fits testm1.fits testm2.fits testm.fits teste.fits exppn.fits expm1.fits expm2.fits 
+		let k+=1
+	done	
+
+	rm -f ${objectname}_imasn*.fits 
+	gzip -f ${objectname}_mask.fits ${objectname}_exp.fits ${objectname}_final*.fits
+	rm -r -f pfiles
+	
+	#set the lower threshold to zero (for easier ds9 display)
+	rm -f test.fits.gz
+	
+	for k in `ls -1 ${objectname}_final*.fits*`; do
+		mv ${k} test.fits.gz
+		fimgtrim infile=test.fits.gz outfile=${k} threshlo=0. const_lo=0 threshup=I >> ${objectname}_final_processing.log
+	done
+	
+	rm test.fits.gz
+
+	echo " " 
+	echo "*****FINAL IMAGES CREATED - FINISHED*****"
+	echo " "
+	echo "-----------------------------------------------------------------"
+fi

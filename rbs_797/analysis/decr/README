@@ -1,0 +1,14 @@
+# build the program
+make clean ; make cavdec
+
+# run the program
+frm test.dat test.tab ; ./cavdec testsb.dat test.dat test.tab < double.par
+frm realcavs.dat realcavs.tab ; ./cavdec realsb.dat realcavs.dat realcavs.tab < double.par
+frm wfakecavs.dat wfakecavs.tab ; ./cavdec wfakesb.dat wfakecavs.dat wfakecavs.tab < double.par
+frm efakecavs.dat efakecavs.tab ; ./cavdec efakesb.dat efakecavs.dat efakecavs.tab < double.par
+frm loscavs.dat loscavs.tab ; ./cavdec lossb.dat loscavs.dat loscavs.tab < double.par
+frm hydcavs.dat hydcavs.tab ; ./cavdec hydsb.dat hydcavs.dat hydcavs.tab < hyd.par
+
+# build the plots
+idl
+plotsb, 'test1.dat'

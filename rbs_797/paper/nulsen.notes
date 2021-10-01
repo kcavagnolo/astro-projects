@@ -1,0 +1,297 @@
+Return-Path: <pnulsen@head.cfa.harvard.edu>
+Received: from imap-n.oca.eu ([unix socket])
+	by imap-n.oca.eu (Cyrus v2.1.18-IPv6-Debian-2.1.18-5.1) with LMTP; Wed, 19 Jan 2011 19:34:43 +0100
+X-Sieve: CMU Sieve 2.2
+Received: from smtp-n.oca.eu (smtp-n.obs-nice.fr [192.54.174.171])
+	by imap-n.oca.eu (Postfix) with ESMTP id 4C2B654C370
+	for <cavagnolo@imap-n>; Wed, 19 Jan 2011 19:34:43 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by smtp-n.oca.eu (Postfix) with ESMTP id 37E2B50102
+	for <cavagnolo@imap-n>; Wed, 19 Jan 2011 19:34:43 +0100 (CET)
+Received: from smtp-n.oca.eu ([192.54.174.171])
+	by localhost (melmask.oca.eu [192.54.174.171]) (amavisd-new, port 10024)
+	with ESMTP id xESlGwMgHNt9 for <cavagnolo@imap-n>;
+	Wed, 19 Jan 2011 19:34:42 +0100 (CET)
+Received: from head.cfa.harvard.edu (unknown [10.230.2.34])
+	by smtp-n.oca.eu (Postfix) with ESMTP id E2334500E5
+	for <cavagnolo@oca.eu>; Wed, 19 Jan 2011 19:34:41 +0100 (CET)
+Received: from [131.142.42.228] (kiama [131.142.42.228])
+	by head.cfa.harvard.edu (w/d) with ESMTP id p0JIY9Vf001084;
+	Wed, 19 Jan 2011 13:34:10 -0500 (EST)
+Message-ID: <4D372EA1.5050200@head.cfa.harvard.edu>
+Date: Wed, 19 Jan 2011 13:34:09 -0500
+From: Paul Nulsen <pnulsen@head.cfa.harvard.edu>
+User-Agent: Mozilla/5.0 (X11; U; Linux i686 (x86_64); en-US; rv:1.9.2.13) Gecko/20101207 Thunderbird/3.1.7
+MIME-Version: 1.0
+To: cavagnolo@oca.eu
+CC: Brian McNamara <mcnamara@uwaterloo.ca>
+Subject: Re: RBS draft
+References: <4D0B3917.6020208@oca.eu>
+In-Reply-To: <4D0B3917.6020208@oca.eu>
+Content-Type: text/plain; charset=ISO-8859-1; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi Ken,
+
+Yet again, sorry for being so slow.  There are only a few significant 
+corrections here, but I think you could improve the presentation.  Brian 
+and I may still differ over a couple of issues, so I will CC to give him 
+a chance to respond.  I guess I do agree with Brian that the discussion 
+of spin gets a bit more space than it probably deserves.  By contrast, 
+if anything, the HST imaging is underplayed.
+
+Regards
+Paul
+
+Abstract: Rather than "Based on the presence of bright rims enclosing
+the cavities, we speculate weak shocking...," how about "Based on
+their similar appearance to MS0735.6+7421, we suggest that the
+prominent cavities in RBS 797 are driving shocks (M ~ 1.5) into the
+ICM" ("speculating" in an abstract is not a good idea in any case).
+
+Introduction, par 2: B04 made little effort at interpretation, so
+"...suggests the system may be more complex than B04 could constrain"
+would be more accurate as "...suggests the system may be more complex
+than B04 assumed."
+
+2.1: "Events file" is an error due to non-English speakers.  Please do
+not propagate it.  It is called an "event file" (eg in the CIAO web
+pages; or compare grocery store, car park, coat rack...).
+
+3.1: "Skewed" is generally used in the technical sense to mean bent in
+one direction (so that the mode and mean differ, for example).  Do you
+mean to say more than "Outside of $\simeq 50$ kpc, the global ICM
+morphology is regular and elongated along the northwest-southeast
+direction?"  If so, I am missing the point.
+
+Par 3: There is a long history of spurious structure found in optical
+images by subtracting models.  I'm not sure what bmodel does, but it
+sounds complex (PA and ellipticity varying), so it might be a good
+idea to show an image of the model.
+
+Par 4: opposing -> opposite (not the same)
+
+At the risk of opening another can of worms, to me, it looks as though
+there could be a very small set of cavities running roughly
+north-south at the centre of the BCG in the raw image.  In the zoomed
+image, this feature is just a few low pixels immediately to the north
+and south of the AGN and it looks pretty unimpressive.  However, (as
+far as I can tell from looking at your radio images) the structure I
+see would fit nicely around the 4.8 GHz radio emission, with the rims
+(asymmetric) being the S shaped structure you already mention.  This
+is worth a sentence or two at best, but I would mention it.  Eg,
+"There is a hint of barely resolved structure in the Chandra image
+associated with the 4.8 GHz radio image in Fig. 2, with X-ray deficits
+around the tips of the radio jets, bounded to one side by the 'S'
+shaped feature noted above.  This is suggestive of small cavities with
+asymmetric bright rims created by the 4.8 GHz radio jets."  At the
+least, you could point out that the S shaped structure borders the 4.8
+GHz jets (if this is correct!).
+
+3.3.1, par 1: "...same regions..." -> "...congruent regions..."
+
+Do you really mean "A systematic error of 10% is assigned to the
+cavity volumes?"  It looks as though the 10% error applies to the
+cavity dimensions.  The systematic error in the volume is huge, as
+dicussed in the paper.
+
+Par 2: The quantity $\gamma PV / (\gamma - 1)$ is the enthalpy of a
+cavity, not its energy.  "The energy required to create a cavity is
+estimated by its enthalpy, E_{cav} = ..., which was calculated
+assuming..."
+
+Par 3 (and 1): Referring to the "spherical" assumption is confusing.
+The way that Birzan et al came at this volume estimate was to argue
+that when we only know the two semi-axes on the sky, a and b, the two
+reasonable extreme estimates for the volume are obtained by assuming
+that the cavity is either a prolate (minimum volume $= 4\pi/3 a b^2$)
+or an oblate (maximum volume $= 4 \pi/3 a^2 b$) ellipsoid.  Taking the
+geometric mean of these two volumes as representative amounts to using
+r_los = \sqrt{a b}.  Spheres do not come into this (any volume can be
+related to an equivalent sphere, but who cares).  Rather than the
+"spherical" assumption, maybe you could call this the "representative"
+assumption.  If you change the term, it needs to fixed in a few
+places.
+
+Too many significant digits are given for the key parameters.
+
+3.3.2, par 1: Suggest "Note the potential for confusion..." -> "Note
+that $y$ is 1 if there is no decrement, while small values of $y$
+correspond to large decrements."
+
+The difference between the decrement model of Wise et al and 3.3.3 is
+the rims.  It would be a good idea to stress this with a comment near
+here.  At the end of par 1 (or maybe a new par 2): "Note that the
+decrement model of Wise et al. (2007) used here assumes that a cavity
+simply replaces some X-ray emitting gas with non-emitting material,
+without disurbing the surrounding gas.  To be valid, the model
+requires that there is little uplifted gas surrounding a cavity
+(cf. Nulsen et al. 2005b" - Hydra A or some other system with
+significant uplift in the rims - ") and that the cavity is not driving
+significant shocks into its surroundings (cf. section 3.3.3)."
+
+Par 2: Avoid double negatives: "Integration revealed..." -> "For this
+case, the most significant decrement obtained was $y = 0.67$,
+indicating that $r_{los}$ is required to exceed $r_{eff}$."
+
+Also "If the cavities are moving..." -> "If the cavities are moving
+away from the AGN in the plane of the sky, then it is surprising to
+find that each has its shortest axis in the plane of the sky, almost
+perpendicular to its direction of motion, while also having its
+longest axis along our line of sight, also perpendicular to its
+motion."  The last sentence could also be clarified (or deleted).
+
+3.3.3: The discussions of rims and their significance for energetics
+have been mixed together.  It would be clearer if they were untangled.
+I would begin with the rims, then deal with their implications.  "The
+Chandra X-ray image of RBS 797 bears a strong resemblance to that of
+MS0735.6+7421, with a bright elliptical region at its center enclosing
+two prominent cavities.  In MS0735.6+7421, the bright central region
+is bounded by Mach $\simeq 1.4$ shocks.  Although there is no evidence
+for density or temperature jumps in the Chandra data for RBS 797, the
+spatial resolution in RBS 797 is a lot poorer than for MS0735.6+7421
+(the angular scale of shocks in RBS 797 would be $\sim 10\times$
+smaller).  Based on their similar appearances, we suggest that the
+prominent central ellipse in the X-ray image of RBS 797 may also be
+surrounded by moderately strong shocks.  The lack of evidence for
+shocks may simply be a consequence of the poor spatial resolution."
+
+Note to Brian: Would the XMM image of MS0735 alone have convinced you
+it has shocks?  This gets the relative scales (though not the
+exposures) about right.
+
+Continuing: "A simple " - simplistic is usually perjorative - "model
+that captures..., but it demonstrates how bright rims created by
+shocks may enhance the cavity decrement in RBS 797...as the
+compression increases.  Thus the analogy with MS0735.6+7421 is also
+consistent with the relatively large cavity decrements found in RBS
+797."
+
+Then follow with any comments on the significance of shocks.  You
+should be aware that impact of shocks on power estimates is subtle
+(and generally modest).  In the cases where they have been compared,
+the shock energy is mostly comparable to the cavity energy (they are
+really two estimates of the same thing).  The most extreme instance I
+know of is the SW lobe of Cen A, which is overpressured relative to
+the gas at its remote tip by ~2 orders of magnitude.  However,
+estimates of its pressure based on the inner thermal shock give us a
+good estimate of the lobe pressure, and computing the enthalpy based
+on that pressure gives a decent estimate of the total energy dumped
+into the lobe.
+
+3.4: The range of efficiency factors you quote (0.06 - 0.4) are
+obtained by computing the total energy dissipated in a thin disk that
+terminates at the innermost stable circular orbit.  These values are
+reasonable estimates for the efficiency of radiative losses from a
+thin disk, but questionable if the disk is thick (RIAF) and even more
+suspect as efficiency estimates for jets.  If you feel that you need
+to give numbers, you should be careful to state what they are.  It is
+an error to imply that epsilon is known (compare the range of jet
+efficiency in Fig. 1 of Nemmen et al; see comments on 3.4.3 below).
+
+M_{acc} should be in units of Msun (not Msun yr^{-1}).
+
+3.4.1:  To avoid giving the impression that their masses are
+comparable, "Optical nebulae and substantial quantities of cold
+molecular gas..."
+
+The next sentence is a non sequitur.  Maybe you meant "This gas may be
+the end point of thermally unstable cooling in the hot atmosphere.
+Potentially, it is a significant source of fuel for AGN activity and
+star formation (refs)."
+
+"Under these assumptions..." is cumbersome.
+
+Par 2: This argument is weak.  The observations require that the bulge
+and BH are coupled stochastically, not tightly.  Unless M_BH increases
+by a substantial factor, there is no need for the stars to form in
+synch.  This issue was discussed in Rafferty et al., with the
+conclusion that BH and bulge growth do not occur in lock step (at
+least for the radio mode), even though the correlation is preserved.
+
+3.4.2, par 2: I do not understand the statement "The large value of
+\dot m_B is troubling..."  For Bondi accretion, the flow speed at the
+Bondi radius is comparable to the sound speed (about one tenth for
+gamma = 5/3 to be more accurate).  If the accretion rate is to exceed
+the Bondi rate by a substantial margin, gas must flow in through the
+Bondi radius hypersonically.  This is physically unreasonable, so I
+cannot make sense of your comment.
+
+It is a little confusing that you use different temperatures (0.5 and
+1 keV) when discussing the observability of the gas.
+
+3.4.3, par 3: From the discussion in 3.4.2, if the jet efficiency is
+0.1 we need $\dot m_E \simeq 0.02$.  This result is independent of the
+hybrid model, apart from the fact that a high spin is required to
+reach this jet efficiency.  It would be better to say something like
+"In the hybrid spin model of Nemmen et al (2007), the jet efficiency
+($\epsilon$ above) is strongly dependent on black hole spin.  For
+example, for a disk viscosity parameter of $\alpha = 0.25$, " - no
+need to cite Quataert & Narayan - "we require a black spin parameter
+$j > 0.96$ to obtain $\epsilon > 0.1$.  The required spin depends on
+the viscosity parameter, but not sensitively (e.g., $\alpha = 0.04$,
+would require $j > 0.92" - CHECK - ").  In general, a high jet
+efficiency demands a high spin parameter.  Alternatively, for a spin
+parameter of 0.6? " - CHECK - " the jet efficiency would be 0.01,
+boosting the mass required to fuel the outburst by an order of
+magnitude and exacerbating the issues of accounting for the fuel
+discussed above."  My numbers are guessed from Fig. 1 of Nemmen+, so
+they are not reliable.
+
+The next bit baffles me.  Increasing the black hole mass does not
+alter the accretion efficiency (for the Nemmen+ model), so it does
+nothing to alter the amount of mass that must be accreted.  If the
+efficiency is unchanged, greater M_BH does reduce the accretion rate
+in Eddington units, but not the absolute accretion rate.  I think you
+have forgotten to modify the Eddington accretion rate on one side of
+this equation.  This bit should probably be removed.
+
+The bit on Garofalo is fine, but the key is that he argues for greater
+jet efficiency with a counter rotating hole.
+
+Orbits are retrograde (not spin): "..extremely powerful jets are
+produced when the disk is retrograde relative to the spin of the
+SMBH."
+
+3.5: "There is a bright X-ray point source apparent in the CXO
+imaging " - Chandra image? - "that coincides with the nucleus of the
+BCG,..."
+
+Par 3: "...roughly $\lessim..." is redundant
+
+3.6, par 5: This stuff is very interesting, but the optical emission
+does not necessarily arise from interaction.  Can you rule out optical
+synchrotron or inverse Compton (possibly Doppler boosted) from the
+jet?
+
+People may read "BCG halo" to mean the stellar halo, whereas I presume
+you mean the gas.
+
+"bares" -> "bears"
+
+Conclusions, item 2: This relies on the assumptions of the Wise et al
+decrement model, which we have argued against in section 3.3.3.  It
+would be more accurate to say that either the depths of the cavities
+are considerably greater than their projected sizes, or the simple
+decrement model is incorrect.  In the latter case, the contrast of the
+cavities may be enhanced significantly by compressed, shocked gas.
+
+Item 4: As noted in my comments for 3.4.3, I think the number in the
+last sentence is incorrect.
+
+Item 5: This needs work.
+
+
+
+On 12/17/2010 05:19 AM, Kenneth Cavagnolo wrote:
+> Hi Paul,
+>
+> I've attached the most recent draft of the RBS paper for your perusal.
+> Brian wasn't quite satisfied with the text ~2 weeks ago, so I'm awaiting
+> his further revisions. But, in the meantime, you're obviously free to
+> comment.
+>
+> Cheers,
+> Ken
+>
+

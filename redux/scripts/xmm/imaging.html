@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<!-- base href="http://www.sr.bham.ac.uk/xmm2/imaging.html" --><title>Birmingham XMM Guide: Imaging Analysis</title></head><body bgcolor="#ffffff"><table border="1" width="100%"><tbody><tr><td><table color="#ffffff" bgcolor="#ffffff" border="1" cellpadding="10" cellspacing="0" width="100%"><tbody><tr><td><font color="black" face="" size="-1">This is <b><font color="#0039b6">G</font> <font color="#c41200">o</font> <font color="#f3c518">o</font> <font color="#0039b6">g</font> <font color="#30a72f">l</font> <font color="#c41200">e</font></b>'s <a href="http://www.google.com/intl/en/help/features.html#cached"><font color="blue">cache</font></a> of <a href="http://www.sr.bham.ac.uk/xmm2/imaging.html"><font color="blue">http://www.sr.bham.ac.uk/xmm2/imaging.html</font></a> as retrieved on Jan 22, 2008 23:59:48 GMT.<br>
+<b><font color="#0039b6">G</font> <font color="#c41200">o</font> <font color="#f3c518">o</font> <font color="#0039b6">g</font> <font color="#30a72f">l</font> <font color="#c41200">e</font></b>'s cache is the snapshot that we took of the page as we crawled the web.<br>
+The page may have changed since that time.  Click here for the <a href="http://www.sr.bham.ac.uk/xmm2/imaging.html"><font color="blue">current page</font></a> without highlighting.<br>
+This cached page may reference images which are no longer available. Click here for the <a href="http://64.233.167.104/search?q=cache:s3RXt_ug4xQJ:www.sr.bham.ac.uk/xmm2/imaging.html+http://www.sr.bham.ac.uk/xmm2/&amp;hl=en&amp;client=firefox-a&amp;gl=us&amp;strip=1"><font color="blue">cached text</font></a> only.<br>To link to or bookmark this page, use the following url: <code>http://www.google.com/search?q=cache:s3RXt_ug4xQJ:www.sr.bham.ac.uk/xmm2/imaging.html+http://www.sr.bham.ac.uk/xmm2/&amp;hl=en&amp;ct=clnk&amp;cd=4&amp;gl=us&amp;client=firefox-a</code></font><br><br><center><font size="-2"><i>Google is neither affiliated with the authors of this page nor responsible for its content.</i></font></center></td></tr>
+<tr><td>
+<font color="black" face="" size="-1">These terms only appear in links pointing to this page: <b>http www sr bham ac uk xmm2 </b></font>
+</td></tr></tbody></table></td></tr></tbody></table>
+<hr>
+<div style="position: relative;">
+
+
+
+
+<a name="top">
+
+</a><hr noshade="noshade">
+<center>
+<h1>
+<a name="top"><i><font color="#0000c0">Birmingham XMM Guide: Imaging Analysis</font></i></a></h1></center>
+
+<hr noshade="noshade">
+<p>
+
+</p><ul>
+<a href="#mosaic">Create a mosaiced, exposure corrected image</a><br>
+<a href="#2d">2-D imaging analysis with PSF convolution</a>
+</ul>
+<p>
+</p><hr>
+<br>
+
+<h2><a name="mosaic">Create a mosaiced, exposure corrected image</a></h2>
+<ul><li>
+A good start is probably to make a combined image of the data from the 3 
+cameras, and for this, we can use xmmmosaic.csh. First make a directory 
+called mosaic, move to it, and then link to your cleaned events files and 
+your housekeeping (Atthk) file.
+
+<p>
+So in mosaic/ I have:
+
+</p><pre>xun4&gt; ls
+Atthk.ds@             mos2_clean_evt.fits@
+mos1_clean_evt.fits@  pn_clean_evt.fits@
+</pre>
+
+</li><li>Now we use xmmmosaic.csh which will make a mosaic of exposure map divided 
+images from the three (or a combination of 2) cameras. We need to choose an 
+energy range to work in, and here I chose 300-8000eV though you may want to 
+choose a more specific energy range, in which you think your source will 
+have the best signal to noise. We also choose a binning factor for the images 
+- the pixels of the pn and mos cameras are 4.1" and 1.1" respectively, but 
+the detected events have their positions randomised within these pixels 
+into 'virtual pixels' of size 0.05". This means that a binning factor of 20, 
+for example, will give image pixels of 1" (but remember that the actual 
+detector pixels are larger than this). Note here that the psf images 
+produced by calview have pixels of 1.1", so if we want to use these later 
+in 2-D fitting then we should match that binning here, i.e. a binning factor 
+of 22. Now we run the script:
+
+<pre>xun4&gt; xmmmosaic.csh pn_clean_evt.fits m1_clean_evt.fits m2_clean_evt.fits atthk.dat 22 300 8000 pm1m2bin22_03_8keV_ | &amp; tee pm1m2bin22_03_8keV_log.txt
+
+--------------------XMMMOSAIC.CSH version 1.3---------------------
+
+Input was /exgal6/bjm/scripts/xmmmosaic.csh pn_clean_evt.fits m1_clean_evt.fits m2_clean_evt.fits atthk.dat 22 300 8000 pm1m2bin22_03_8keV_
+
+
+Making PN image, and generating exposure map...
+  used XMMEXPMAP.CSH version 1.1 - log written to pm1m2bin22_03_8keV_pn_expmaplog.txt
+
+Making MOS1 image, and generating exposure map...
+  used XMMEXPMAP.CSH version 1.1 - log written to pm1m2bin22_03_8keV_m1_expmaplog.txt
+
+Making MOS2 image, and generating exposure map...
+  used XMMEXPMAP.CSH version 1.1 - log written to pm1m2bin22_03_8keV_m2_expmaplog.txt
+
+3 data set(s) in use - renormalising exposure maps so their max value when added together is 1
+Mosaicing images...
+  mosaic written to pm1m2bin22_03_8keV_mosaic.fits and normalised mosaic (created with exposure maps normalised so their maximum is 1) written to pm1m2bin22_03_8keV_mosaic_norm.fits
+</pre>
+This script creates 2 mosaiced images pm1m2bin22_E03_8keV_mosaic.fits,
+with units of counts per second, and
+pm1m2bin22_E03_8keV_mosaic_norm.fits which was created with a
+normalised exposure map, so still has units of counts. This flattens
+the image, to account for vignetting, but preserves the Poisson
+statistics, which is useful when making radial profiles and performing
+2D fitting
+<p>
+</p></li></ul>
+<a href="#top">back to top</a><p>
+</p><hr>
+
+<h2><a name="2d">2-D imaging analysis with PSF convolution</a></h2>
+<p>
+</p><ul><li>We can also use sherpa to fit a 2-D surface brightness
+model to an image. This is useful because the source need not be
+circular, and we can use psf images to convolve with our model. Make a
+directory called 2drprof in mosaic/ and link from there to the mosaiced
+image. We will perform the 2-D fitting in Sherpa, and so that the
+errors on the fit can be estimated correctly, we need to mulltiply the
+mosaiced image by the average exposure time. This is because the counts
+per second per pixel are usually very small (~1e-4) which will cause
+statistical problems in the error estimation in sherpa. The exposure
+information can be found in the mosaic header, and then we can use
+fcarith to scale up the image. All further work is then done on this
+scaled up image.
+<p>
+ We need to take our mosaiced image, and crop it down into a smaller region. 
+I used a square region, trying to avoid chip gaps, and include most of the 
+emission detected above. I used the CIAO tool dmcopy to crop the image,
+
+</p><pre>xun4&gt; dmcopy "pm1m2bin22_E03_8keV_mosaic.fits[(x,y)=region(pm1m2bin22_box.reg)]" pm1m2bin22_E03_8keV_boxmosaic.fits
+</pre>
+
+I then use calview to generate psf images for the three telescopes. This 
+cannot be done from the command line - you need to use the GUI
+
+<pre>xun4&gt; calview &amp;
+</pre>
+
+Now enter the details for your observation into the calview window, and 
+click on view -&gt; PSF. This will display a psf image in ds9, then go to 
+file -&gt; save as fits image (in ds9) and save the psf image. Repeat for 
+the 3 cameras. Now I use xmmcomb_psf.csh to combine the psfs of the 3 
+telescopes by adding the fits images created by calview together, after 
+weighting the PN telescopes psf by a factor of 2 because of its extra 
+counts. The resulting image is then normailsed, so the sum is 1.
+
+<pre>xmmcomb_psf.csh pnpsf.fits mos1psf.fits mos2psf.fits 3psf_norm.fits
+
+--------------------XMMCOMB_PSF.CSH version 1---------------------
+
+Input was /exgal1/bjm/scripts/xmmcomb_psf.csh pnpsf.fits mos1psf.fits 
+    mos2psf.fits 3psf_norm.fits
+
+Output combined psf image 3psf_norm.fits created with a sum of 1.000000 counts.
+
+------------------------------------------------------------------------------------
+</pre>
+
+This psf image can then be used as an instrument model in sherpa to convolve 
+a source model through.
+
+<p>
+</p></li><li>The best way to do the 2d fitting is to write a sherpa
+script. There are lots of parameters that we can vary, so it's best to
+impose sensible upper and lower limits, and fit them in a sensible
+order so as to find a stable minimum. I estimate the background in
+counts/pixel from a background region of the image, and fit a flat
+background + 2D beta profile to my cluster emission. The sherpa script
+I then use is this (and is available from the <a href="http://www.sr.bham.ac.uk/xmm2/scripts.html">scripts page</a>):
+
+<pre>xun4&gt; more 2drprof_sherpascript.txt
+data "pm1m2bin22_E03_8keV_boxmosaic.fits" FITSIMAGE
+
+psffromfile[psfinst]
+psfinst.file="3psf_norm.fits"
+psfinst.xsize=50
+psfinst.ysize=50
+fre psfinst.ypos
+fre psfinst.xpos
+instrument=psfinst
+
+const2d[bck]
+bck.c0=1.3327e-5
+bck.c0.max=5e-5
+bck integrate off
+fre bck.c0
+
+source=bck+beta2d[blob1]
+
+blob1 . ampl . max = 0.01
+blob1.ampl.min=0.00001
+blob1.xpos.max=100
+blob1.xpos.min=70
+blob1.ypos.max=100
+blob1.ypos.min=70
+blob1.alpha.max=2.5
+blob1.alpha.min=1.0
+blob1.r0.max=50
+blob1.r0.min=5
+
+blob1 . r0 = 15
+blob1 . alpha = 1.5
+blob1 . xpos = 84
+blob1 . ypos = 84
+blob1 . ampl = 0.001
+
+blob1 integrate off
+
+statistic cash
+
+fre blob1 . r0
+fre blob1 . alpha
+fre blob1 . xpos
+fre blob1 . ypos
+fre blob1 . ellip
+fre blob1 . theta
+show all
+fit
+fre blob1.ampl
+thaw blob1.xpos
+thaw blob1.ypos
+show all
+fit
+fre blob1 . xpos
+fre blob1 . ypos
+thaw blob1.ampl
+show all
+fit
+thaw blob1.r0
+show all
+fit
+thaw blob1.alpha
+show all
+fit
+thaw blob1.ellip
+show all
+fit
+thaw blob1.theta
+show all
+fit
+thaw blob1.xpos
+thaw blob1.ypos
+show all
+fit
+
+save all mysavefile.shp
+write RESIDUALS myresiduals.fits
+write MODEL mymodel.fits
+
+projection blob1.alpha blob1.r0
+
+------------------------------------------------------------------------------
+</pre>
+
+You'll need to set the values to be sensible for your data, and note that 
+the running time depends strongly on the size of the image, and the psf. 
+Here my image is about 170x170 pixels, and the psf image size is 50x50 
+pixels. The PSF image is actually larger than this, but I used the 
+psfinst.xsize and psfinst.ysize parameters to crop it down.
+<p>
+To run this sherpa script, use 
+</p><pre>xun4&gt; nice +19 sherpa 2drprof_sherpascript.txt |&amp; tee 2drprof_sherpalog.txt
+</pre>
+<p>
+After you are happy with the fit, you can use the command image fit
+which displays the data, model, and residuals in ds9, which you can
+save as fits images. Alternatively, the write commands shown in the
+script above create these fits images from the sherpa prompt, without
+requiring ds9.
+</p><p>
+</p></li></ul>
+<a href="#top">back to top</a><p>
+
+</p><hr>
+
+<h2><a name="updates">Updates</a></h2>
+<p>
+</p><ul><li>29/4/02 - Ammended mosaicing section to reflect changes in
+xmmmosaic.csh, and the use of normalised exposure map corrected images.
+Added lines to 2D sherpascript to save the residuals and model.
+<p>
+</p></li></ul>
+
+    <hr>
+    <address><a href="mailto:bjm@star.sr.bham.ac.uk">Ben Maughan</a></address>
+<!-- Created: Wed Jan 30 11:55:44 GMT 2002 -->
+<!-- hhmts start -->
+Last modified: Mon Apr 29 11:29:02 BST 2002
+<!-- hhmts end -->
+  
+</div></body></html>

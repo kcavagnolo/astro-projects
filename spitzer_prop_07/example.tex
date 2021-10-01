@@ -1,0 +1,80 @@
+\documentclass[letterpaper,11pt,onecolumn]{article}
+\usepackage{graphics,graphicx}
+\setlength{\textwidth}{6.5in} 
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in} 
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in} 
+\setlength{\hoffset}{0in}
+\setlength{\voffset}{0in}
+\begin{document}
+
+Let's make some figures...
+
+\begin{figure}[ht]
+% start the minipage and set it to half the line width;
+% of course for three images one should use 0.33\linewidth and so on.
+    \begin{minipage}[b]{0.5\linewidth}
+        \centering
+% below, the star says, ``yes, do all this''.
+% scale reduces the size.
+% trim removes whitespace as follows: [trim=left, bottom, top, right, clip], clip must be included.
+        \includegraphics*[scale=0.75, trim=30mm 15mm 30mm 15mm, clip]{new_obs_k0z}
+        \caption{I'm a side-by-side figure, yay!I'm a side-by-side
+figure, yay!I'm a side-by-side figure, yay!I'm a side-by-side figure,
+yay!I'm a side-by-side figure, yay!I'm a side-by-side figure, yay!I'm
+a side-by-side figure, yay!I'm a side-by-side figure, yay!I'm a
+side-by-side figure, yay!I'm a side-by-side figure, yay!I'm a
+side-by-side figure, yay!I'm a side-by-side figure, yay!I'm a
+side-by-side figure, yay!I'm a side-by-side figure, yay!I'm a
+side-by-side figure, yay!I'm a side-by-side figure, yay!I'm a
+side-by-side figure, yay!I'm a side-by-side figure, yay!}
+        \label{fig:figure1}
+    \end{minipage}           % close the page
+    \hspace{0cm}             % set white space between figures
+    \begin{minipage}[b]{0.5\linewidth}
+        \centering
+        \includegraphics*[scale=0.75, trim=30mm 15mm 30mm 15mm, clip]{spitzer_hak0}
+        \caption{I'm a side-by-side figure, yay!}
+        \label{fig:figure2}
+    \end{minipage}
+\end{figure}
+
+and again...
+
+\begin{figure}[ht]
+    \begin{minipage}[b]{0.5\linewidth}
+        \centering
+        \includegraphics*[scale=0.75, trim=30mm 15mm 30mm 15mm, clip]{spitzer_k0}
+        \caption{I'm a side-by-side figure, yay!}
+        \label{fig:figure1}
+    \end{minipage}
+    \hspace{0cm}
+    \begin{minipage}[b]{0.5\linewidth}
+        \centering
+        \includegraphics*[scale=0.75, trim=30mm 15mm 30mm 15mm, clip]{spitzer_lha}
+        \caption{I'm a side-by-side figure, yay!}
+        \label{fig:figure2}
+    \end{minipage}
+\end{figure}
+
+and again...
+
+\begin{figure}[ht]
+    \begin{minipage}[b]{0.5\linewidth}
+        \centering
+        \includegraphics*[scale=0.75, trim=30mm 15mm 30mm 15mm, clip]{spitzer_lrad}
+        \caption{I'm a side-by-side figure, yay!}
+        \label{fig:figure1}
+    \end{minipage}
+    \hspace{0cm}
+    \begin{minipage}[b]{0.5\linewidth}
+        \centering
+        \includegraphics*[scale=0.75, trim=30mm 15mm 30mm 15mm, clip]{spitzer_lx}
+        \caption{I'm a side-by-side figure, yay!}
+        \label{fig:figure2}
+    \end{minipage}
+\end{figure}
+
+\end{document}

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+`rm -f kcsim.fits`
+`rm -f y.fits`
+
+# Simulate an image for the region [-100, 100] X [-100, 100] using
+# 128 pixels on a side.  Cavity definitions and the beta model
+# params are in kcmod.
+xmin=-100
+ymin=-100
+xmax=100
+npix=128
+cavities=kcmod
+outasc=kcsim.dat
+outfits=kcsim.fits
+
+# Run the simulation which writes an ascii file (kcsim.dat here)
+./ellcav $cavities $outasc << EOF_ELLCAV
+$xmin $ymin $xmax
+$npix
+EOF_ELLCAV
+
+# Requires ftools - turn ascii image into fits
+if [ $? ]; then
+    fimgcreate -32 $npix,$npix $outasc $outfits
+fi
+
+farith kcsim.fits beta.fits y.fits div
+
+ds9 kcsim.fits y.fits

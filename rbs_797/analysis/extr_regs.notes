@@ -1,0 +1,136 @@
+Create extraction region which encircles 90% of the PSF flux, masking
+region encircling 97% of flux, and a background region with 5x the
+area of the source extraction region.
+---------------------------------------------------------------------
+
+create surface brightness profile of the PSF
+
+~~~~~~~~~~~~~
+punlearn dmextract; dmextract infile="agn_psf_0.85keV_norm.fits[bin sky=@psf_sb.reg]" outfile=rprofile.fits bkg=none sys_err=0.0 clobber=yes verbose=2
+punlearn dmtcalc; dmtcalc infile=rprofile.fits outfile=agn_psf_sb.fits expression="rmid=(0.5*(R[0]+R[1]))" clobber=yes verbose=2
+punlearn dmtcalc; dmtcalc infile=agn_psf_sb.fits outfile=agn_psf_sb.fits expression="rin=(R[0])" clobber=yes verbose=2
+punlearn dmtcalc; dmtcalc infile=agn_psf_sb.fits outfile=agn_psf_sb.fits expression="rout=(R[1])" clobber=yes verbose=2
+~~~~~~~~~~~~~
+
+What is the total flux of the PSF?
+
+~~~~~~~~~~~~~
+punlearn dmstat ; dmstat "agn_psf_0.85keV_norm.fits" centroid=no sigma=no
+
+agn_psf_0.85keV_norm.fits
+    min:        0             @:        ( 4065 4086 )
+    max:        281.4187603           @:        ( 4193 4214 )
+   mean:        0.021675606297 
+    sum:        1420.5325343 
+   good:        65536 
+   null:        0 
+~~~~~~~~~~~~~
+
+90% should be 1278 counts *WRONG*... see below.
+
+So here is what the HelpDesk says about calculating the 90% EEF:
+
+*************
+*************
+
+Hi Ken,
+
+Currently, there isn't an easy or elegant way of calculating the 90%
+EEF using the Chandra PSF, but stay tuned for the upcoming CIAO 4.1
+release, which will include the 'dmellipse' tool to solve this
+problem.
+
+In the meantime, you can use the 'dmstat' tool to calculate PSF image
+statistics, which you can then use to calculate the PSF fraction which
+corresponds to a given region of interest, until that fraction is 0.9.
+
+For example, you can divide the appropriate output of the command:
+
+~~~~~~~~~~~~~
+dmstat psf.img"[sky=region(source.reg)]"
+
+IMAGE(x, y)
+    min:        6             @:        ( 4057.0003722 4113.9415281 )
+    max:        419           @:        ( 4033.0003722 4137.9415281 )
+cntrd[log] :    ( 7.4270998415 5.9140253566 )
+cntrd[phys]:    ( 4028.4171709 4137.2537309 )
+sigma_cntrd:    ( 93.929995854 101.23569152 )
+   good:        98
+   null:        45
+
+dmstat psf.img
+
+IMAGE(x, y)
+    min:        0             @:        ( 5409.0003722 2137.9415281 )
+    max:        419           @:        ( 4033.0003722 4137.9415281 )
+cntrd[log] :    ( 281.77286915 216.22612271 )
+cntrd[phys]:    ( 4615.1833254 3859.7505097 )
+sigma_cntrd:    ( 669.13673395 541.67720839 )
+   good:        107263
+   null:        132137
+~~~~~~~~~~~~~
+
+Minimum and maximum values, the total signal, and the number of good
+and null values are reported for 2D image files, and you can choose
+between two calculation modes: the centroid of the distribution (the
+default) or the mean level. Refer to the ahelp page for 'dmstat' for a
+full explanation of its use and output.
+
+http://cxc.harvard.edu/ciao/ahelp/dmstat.html
+
+I hope this helps!
+
+Good luck,
+Nina
+
+*************
+*************
+
+~~~~~~~~~~~~~
+dmstat agn_psf_0.85keV.fits
+
+AXAF_2DPSF(X, Y)
+    min:      0		      @:	( 4065 4086 )
+    max:      0.2405204922          @:	( 4192 4214 )
+cntrd[log] :  ( 128.59867901 128.61757711 )
+cntrd[phys]:  ( 4192.598679 4213.6175771 )
+sigma_cntrd:  ( 0.57502335969 0.57509929467 )
+   good:      65536 
+   null:      0 
+~~~~~~~~~~~~~
+
+So 90% is 58982 counts.
+
+Let's play:
+This is stupid. Moving on to spec extraction
+
+I extracted spec for the regions (7902 only!): 2"-80" for a variety of
+fits, see the back of the Schindler paper for my comparison with their
+results.
+
+The astrometry of 2202 is wrong. I need to fix it. Use
+reproject_aspect to calc a new asol file and then reprocess that
+Obsid. Then I will feel more comfortable combining the data and
+analyzing it simultaneously.
+
+~~~~~~~~~~~~~
+punlearn reproject_aspect ; reproject_aspect \
+	 infile=/mnt/SINISTER/2202/reprocessed/RBS_0797_2202_src.fits \
+	 refsrcfile=/mnt/SINISTER/7902/reprocessed/RBS_0797_7902_src.fits \
+	 updfile=/mnt/SINISTER/2202/primary/pcadf088388922N002_asol1.fits.gz \
+	 outfile=/mnt/SINISTER/2202/primary/new_pcadf088388922N002_asol1.fits \
+	 wcsfile=/mnt/SINISTER/2202/reprocessed/2202_img.fits
+~~~~~~~~~~~~~
+
+I moved the orig pcad file to old_pcad and moved the new_pcad file to
+pcad. Re-ran reprocess.pl to apply the corrected asol. Everything
+lines up properly now.
+
+I extracted spectra for many many different apertures and
+params. Check:
+../data/centell_deepbgd.dat
+../data/simul_spec_localbgd.dat
+../data/spec_deepbgd.dat
+
+*************
+*************

@@ -1,0 +1,40 @@
+mo wabs(mekal) & 0.01 & 2.0 & 0 & 0.3 & 0 & 0 & 1.0
+dummyrsp 0.05 20.0 10000 lin
+cpd /xw
+plot model
+iplot
+cs 2.0
+time off
+r y 0.0001 10.0
+la file
+la top N\dHI\u=1.0x10\u20\d cm\u-2\d, T\dX\u=8.0 keV, Z/Z\dSolar\u=0.3, redshift=0.0
+la x Energy [keV]
+la y Flux [photons/cm\u2\d s keV]
+la 1 p 1.1 0.1 "Fe L-shell"
+la 2 p 6.7 1.0 "Fe K-shell"
+la 3 p 0.085 1.0 "Galactic"
+la 4 p 0.085 0.7 "Absorption"
+lw 3
+plot
+h brem.ps/ps
+exit
+mo wabs(mekal) & 0.01 & 8.0 & 0 & 0.3 & 0 & 0 & 1.0
+dummyrsp 0.05 20.0 10000 lin
+plot model
+iplot
+cs 2.0
+time off
+r y 0.0001 10.0
+la file
+la top N\dHI\u=1.0x10\u20\d cm\u-2\d, T\dX\u=2.0 keV, Z/Z\dSolar\u=0.3, redshift=0.0
+la x Energy [keV]
+la y Flux [photons/cm\u2\d s keV]
+la 1 p 1.1 0.1 "Fe L-shell"
+la 2 p 6.7 1.0 "Fe K-shell"
+la 3 p 0.085 1.0 "Galactic"
+la 4 p 0.085 0.7 "Absorption"
+lw 3
+plot
+h brem2.ps/ps
+exit
+exit

@@ -1,0 +1,84 @@
+data "pm1m2bin22_E03_8keV_boxmosaic.fits" FITSIMAGE
+
+psffromfile[psfinst]
+psfinst.file="3psf_norm.fits"
+psfinst.xsize=50
+psfinst.ysize=50
+fre psfinst.ypos
+fre psfinst.xpos
+instrument=psfinst
+
+const2d[bck]
+bck.c0=1.3327e-5
+bck.c0.max=5e-5
+bck integrate off
+fre bck.c0
+
+source=bck+beta2d[blob1]
+
+blob1 . ampl . max = 0.01 
+blob1.ampl.min=0.00001
+blob1.xpos.max=100
+blob1.xpos.min=70
+blob1.ypos.max=100
+blob1.ypos.min=70
+blob1.alpha.max=2.5
+blob1.alpha.min=1.0
+blob1.r0.max=50
+blob1.r0.min=5
+
+blob1 . r0 = 15
+blob1 . alpha = 1.5
+blob1 . xpos = 84
+blob1 . ypos = 84
+blob1 . ampl = 0.001 
+
+blob1 integrate off
+
+statistic cash
+
+#image source
+
+fre blob1 . r0 
+fre blob1 . alpha 
+fre blob1 . xpos 
+fre blob1 . ypos 
+fre blob1 . ellip
+fre blob1 . theta
+show all
+fit
+fre blob1.ampl
+thaw blob1.xpos
+thaw blob1.ypos
+show all
+fit
+fre blob1 . xpos 
+fre blob1 . ypos 
+thaw blob1.ampl
+show all
+fit
+thaw blob1.r0
+show all
+fit
+thaw blob1.alpha
+show all
+fit
+thaw blob1.ellip
+show all
+fit
+thaw blob1.theta
+show all
+fit
+thaw blob1.xpos
+thaw blob1.ypos
+show all
+fit
+
+save all mysavefile.shp
+write RESIDUALS myresiduals.fits
+write MODEL mymodel.fits
+
+projection blob1.alpha blob1.r0
+
+exit
+

@@ -1,0 +1,226 @@
+********
+********
+Gameplan
+********
+********
+
+R797 has two datasets, 7902 and 2202. 7902 is the newer, longer obs
+and 2202 is shorter. They were taken with different chips, so the
+canned exp map creation doesn't work.
+
+Things to do:
+- get a merged exposure correction for use with ICM rad profs
+- read Ming's paper on stowed bgd usage
+** DONE - find median energy of events for calc of PSF (see making_psf_notes)
+** DONE - calc PSF for AGN (see making_psf_notes)
+- calc src extr reg which encircles 90% of flux in PSF
+- create bgd reg w/ 5x the area of src extr reg
+- determine masking region that encircles 97% of the flux
+- calc net cts in 0.3-8.0 keV w/ proper Gehrels errs
+- calc rest-frame 0.3-8.0 keV Lx
+       + requires info of plaw for src
+***So, I need to setup local bgd, fit bgd/subtr off bgd, fit plaw model,
+   and then use this to calc Lx.
+- is pile-up a concern because the src is bright enough?
+     ?? What is pile-up ??
+     + check for readout streaks
+     + compare shape of src with PSF
+     + typical grade-migration is alpha=0.5 (Davis 01 apj 562 575)
+     + correct Lx for pile-up
+
+********
+********
+
+More things to do:
+- is there point src contamination in temp map?
+     + exclude pt src, remake map
+- hardness ratio map
+     + run Diehl's wvt_xraycolor script with two counts images
+- pressure map
+- entropy map
+- create residual image
+- full projct(wabs(mekal+mkcflow)) radial fits (cflow only within cool
+  radius)
+- get radio data from Gitti
+- find Halpha obs
+- calc bubble age
+- calc age from jet size
+- what is avg. precession rate of smbh?
+- compare bubble and jet ages to (precessed distance)/(avg. precession
+  rate) => multi smbh?
+- see Merritt papers for discus of multi smbh
+- how does turb change bubble inflation/movement?
+
+********
+********
+
+Emails
+
+-------------
+
+Interesting.  The key point of the proposal was to look at the rate the
+SMBH is growing compared to the galaxy.  So you should use
+XMM OM, Galex, etc. to measure the SFR, which tells you
+how fast the bulge is growing and the cavities to measure
+how fast the SMBH is growing.  Looks like there is structure
+in the HST image, so it should have a healthy SFR.  You
+should also use the HST image to measure the core/cusp
+properties.  Be interesting to see if it has a "cusp within a core"
+structure.
+
+-Brian
+
+-------------
+
+Dear Ken,
+
+Sabine Schindler forwarded your mail to me, since I conducted the
+optical identification programme RBS at those times. The story is
+that the RBS (ROSAT Bright Survey) was begun with a pre-cursor, the
+RHS (ROSAT Hard Survey). RBS797 is identified with RHS30.
+The RHS-spectra were reduced and the results finally
+published by our undergraduate Fischer (Fischer et al 1999).
+The spectrum of RHS30 was obtaiend by Russian colleagues
+at SAO of the object marked on the finding chart in Fischer et al.
+
+The object was misclassified by us a 'LINER' and this identification
+can be found in the Fischer-paper. This was rectified following a
+comment by Alastair Edge, who identifies the optical line emission
+originating from a cooling flow and the ID was changed to 'CLUSTER'
+in the RBS-catalogue paper (Schwope et al 2000).
+
+I append the finding chart and the (reduced) spectrum as fits file.
+I'm afraid I cannot help with the raw data any more.
+
+Merry Christmas and a happy new year
+
+Axel
+
+-------------
+
+Hello Ken,
+
+I have some very rough information only read from the observation proposal
+
+7. Mode of observations
+focus Nasmyth-1
+optical equipment SP-124 + CCD
+spectral range  4000-7500 A
+spectral resolution 5-10 A
+required S/N or exposures  ~10-30
+
+The stepsize of the reduced spectrum is 5.2 A/pixel. Dependent on the
+sampling of the spectrograph (optics, seeing, slit width), the FWHM
+resolution of the spectrum is 10A minimum, likely in the range 10-15 A.
+
+Observing conditions were
+mostly ill-defined (clouds, high humidity), hence I would not try to read
+any photometric or colour information from the spectrum.
+
+Sorry for not being able to provide mire details.
+
+Merry Christmas
+
+Axel
+
+-------------
+
+Hi Ken,
+
+Yeah, I still remember the data as being really poor. I suspect most
+of the differences are due to poor stats and calibration changes. As
+to question #1, we did not try to determine whether the mkcflow model
+improved the fit, but as you noted, it was likely not required in RBS
+797. For #2, it's possible our temperatures are lower -- I'll see if I
+can find the profile. If I remember rightly, we may have only obtained
+an upper limit on L_X, so that might also explain the difference. I'll
+look into it.
+
+-David
+
+-------------
+
+Hi Ken,
+
+The "absorption" (dark) features have mirror symmetry with the bright features.
+So I don't think they're real.  The bright stuff is real.  So the question is:
+"what is it?"
+
+I will be in and out this week with no schedule.  I have NSERC proposals
+to read, and that I can do from home.  I've been gone so much this year
+I gotta stay home for awhile.
+
+Brian
+
+-------------
+
+Hi Ken,
+
+I've been working on this dynamical friction problem for an upcoming
+paper, and I'm not completely convinced in the general accuracy of the
+equation I sent you.  Binney and Tremaine seem to be making a few
+assumptions that don't apply for my work, and maybe don't work for you
+either.  They assume that the object is initially on a circular orbit,
+and that the effects of dynamical friction act as a slow decrease of
+the radius of that orbit (with accompanying decrease in velocity).
+However, this is actually quite sensitive to the shape of the galaxy
+total mass density profile, which they assume is \rho(r) = v_c^2 / (4
+\pi G r^2).
+
+The end result of this is that the formula I sent to you seems to do a
+very poor job of matching the results I'm finding by directly
+simulating realistic orbits with the M87 mass profile model.  The
+difference seems to be my simulations having dynamical friction
+timescales on the order factors of 10^{1-3} larger than what that
+equation gives.  This is due to a much more concentrated mass
+distribution than is assumed in B+T.  In addition, the effects of
+deviations from a circular orbit decrease the timescale a factor of
+~(1 / (1 - e)), such that elliptical orbits (with eccentricity e) have
+shorter timescales than circular ones.
+
+Just wanted to send a followup now that I've sat down to investigate
+things more fully.
+
+Chris
+
+On Thu, Oct 16, 2008 at 08:05:49PM -0400, Kenneth Cavagnolo wrote:
+> > Chris,
+> > 
+> > Do you have an equation for calculating the timescale of dynamical
+> > friction between two bodies, or something along those lines? Something
+> > makes me think you've solved that problem for a GC before.
+> > 
+> > Specifically the problem I'm solving involves a supermassive black hole
+> > that has been given a kick from merging but is still bound to the host
+> > galaxy. I want to how long it takes for the BH to lose enough energy,
+> > via dyn fric, to settle back into the central ~0.5 kpc of the galaxy.
+
+-------------
+
+On Mon, Oct 27, 2008 at 04:37:18PM -0400, Kenneth Cavagnolo wrote:
+> > The B+T treatise doesn't work for what we're trying to find out either.
+> > So I've been caste into the same boat as you: reworking the derivation
+> > using criteria specific to our problem. Thanks for the heads-up though.
+
+Yeah, reading up on this in journal articles, it seems like everyone
+hopes their problem falls into one of two categories: t_df = infinity
+or t_df = 0.  For anything that is closer to t_df \sim t_universe, the
+simple methods break down.
+
+> > On another note, I bought the Drobo. Someone took the time to write a
+> > linux dashboard utility, so the ease of use is more like Windows and Mac
+> > now. There are some losses in "coolness" under linux, but whatever,
+> > Drobo works the magic it's supposed to.
+
+Interesting.  I've been hearing disturbing noises from my external
+hard drive at home, which leads me to believe I should not trust it in
+the long term.
+
+> > Are you job hunting this year?
+
+Unfortunately yes.  The current batch of jobs seem to be generally
+lacking in globular clusters.
+
+Chris
+
+-------------

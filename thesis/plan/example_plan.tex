@@ -1,0 +1,389 @@
+\documentclass[12pt]{plan}
+\usepackage{psfig}
+\usepackage{macros_desai}
+
+\setlength{\topmargin}{-0.25in}
+\setlength{\oddsidemargin}{-0.1in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.7in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\topskip}{0.5in}
+\setlength{\textheight}{9.25in}
+%\renewcommand\baselinestretch{1.62}
+
+\pagestyle{myheadings}
+
+\markright{\hspace*{\fill} {\it Research Proposal, Vandana Desai} \hspace{10mm}}
+\setcounter{page}{6}
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  TITLE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\vspace*{-0.4in}
+\begin{center}
+\LARGE
+%\vspace{-1mm}
+{\bf The Environmental Dependence of Galaxy Star Formation Rates}
+\normalsize
+\end{center}
+%\vspace{-3mm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Within the widely-accepted cosmological framework, the mass density of
+the universe is dominated by cold dark matter.  Protogalaxies are
+formed when normal baryonic gas falls into dark matter potential
+wells, cooling and forming stars at the centers of dark matter halos.
+These halos, along with their gaseous and stellar content, merge to
+form larger galaxies, which in turn merge to form groups, clusters,
+and filaments.
+
+The buildup of stellar mass within this framework can be tested
+observationally through the evolution of the
+ultraviolet %\cite{Lilly96,Madau96,Madau98,Cowie99,Steidel99,Wilson02}
+and
+near-infrared
+%\cite{Cole01,Kochanek01,Cowie96,Cohen99,Cohen02,Pozzetti03}
+galaxy luminosity functions.  The ultraviolet emission of galaxies is
+dominated by young, massive stars, and therefore permits measurements
+of the ongoing star formation rate (SFR).  Near-infrared emission is
+dominated by old, low-mass stars, providing an indication of the
+amount of stars already formed.  Deep \emph{HST} imaging has formed
+the basis of much of the high redshift work in this
+area\cite{Cohen99,Cohen02,Madau96,Madau98,Steidel99}, providing
+important constraints on the processes driving star formation.  In
+particular, although standard, ``quiescent'' star formation models
+within a hierarchical framework can successfully reproduce local star
+formation rates, they underpredict the number of massive starforming
+galaxies at high redshift and the stellar mass already in place by a
+redshift of two\cite{Fontana99,Fontana03,Pozzetti03,Cimatti02}. Star
+formation models that include starbursts triggered by galaxy
+mergers
+%\cite{Barton00,Lambas03,Mihos94,Mihos96,Tissera00,Tissera02} 
+have been more successful in matching
+the ultraviolet luminosity function at $z=2-3$, but
+fail to produce enough stars at high redshift to match the infrared
+data at $z \sim 2$.\cite{Somerville01,Cimatti02} Recent models including starbursts
+from both galaxy mergers \emph{and} encounters that do not lead to
+bound mergers (fly-by events) successfully reproduce both the
+ultraviolet and infrared data without altering the agreement with
+observations at low redshifts.\cite{Menci03}
+
+In addition to the redshift dependence of star formation, there is
+growing observational evidence for an environmental dependence. In
+particular, star formation in the densest environments, namely galaxy
+clusters, appears to be suppressed in comparison to the field
+\cite{Couch87,Abraham96,Poggianti99,Balogh99,Balogh00b,Couch01,Postman01,Balogh02a,Pimbblet02}.
+The suppression is strongest in cluster cores, with star formation
+increasing systematically with increasing distance from the cluster
+center.  Recent studies involving large samples of galaxies at low
+redshift have provided important clues as to which mechanisms drive
+the SFR-density relation\cite{Lewis02,Gomez03}.  First,
+these studies reveal that the suppression of SFR persists at
+relatively low densities and large distances from clusters, where cluster-specific processes
+are not important.  Second, the star formation properties of galaxies
+appear to be more dependent upon the large-scale (5 Mpc) density than
+they are upon the mass of the group or cluster in which they are
+embedded\cite{Balogh03a}.  The former is closely linked to the
+formation time of a galaxy, while the latter is
+linked to current processes within the group or cluster.  The
+observations imply that the star formation properties of galaxies are
+more closely tied to \emph{when} a galaxy formed, rather than
+\emph{current} environmental effects.  Third, these observations
+reveal that suppressed regions contain a lower fraction of starforming
+galaxies, rather than galaxies with systematically lower SFRs compared
+to the field.  This fact is evidence against models in which the
+environment induces a slow decrease in a galaxy's SFR.
+
+%Adding support to this conjecture is the observation that the only subset of galaxies experiencing an enhancement of SFR over the field
+%are close pairs \cite{Balogh03a}.
+
+A proper treatment of starbursts associated with galaxy mergers and
+fly-by events can reproduce the observed evolution of star formation
+within galaxies.  Can it also reproduce the observed environmental
+dependence of star formation?  Galaxies presently found in high
+density environments may have undergone more interactions in the
+distant past.  Galaxies have access to only a limited supply of gas
+from which to form stars, and thus those that have undergone multiple
+interactions may quickly exhaust their gas reservoir, leading to a
+decline in SFR.  Although galaxy-galaxy interactions at high redshift
+could plausibly result in the observed relationship between SFR and
+density observed in the local universe, it is a scenario that has yet
+to be tested in detail.  The first goal of this proposal is to perform such a test using existing dark
+matter simulations in combination with simple models that treat
+starbursts due to both mergers and fly-by events.  My approach is
+described in greater detail in the next section.
+
+In the scenario described above, the present-day SFR-density relation
+is the result of interactions at an early epoch, before the galaxies are
+incorporated into larger structures.  In this case, the threshold
+local galaxy density at which SFRs begin to correlate with environment
+should systematically increase with decreasing redshift.  In contrast,
+if instead the SFR of a galaxy depends on its current local
+environment, but not its interaction history, the threshold density
+should remain constant with redshift.  Quality observations at high
+redshift offer the best opportunity for measuring the evolution of the
+SFR-density relation, thereby discriminating between these models.
+The second goal of my proposed program is to make such observations, described
+in detail in the final section.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  TITLE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\large
+%\vspace{-4mm}
+%\begin{center}{\bf \underline{Theoretical Program:  Treating Starbursts in Simulations}} \end{center}
+%\normalsize
+%\vspace{-4mm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{-3mm}
+\subsection*{Theoretical Program:  Modelling Starbursts in Simulations}
+\vspace{-2mm}
+In the simulation I propose to utilize, the dark matter halos of galaxies within a 70
+Mpc box are represented by 80 million particles\cite{Reed03}.  This simulation is
+able to resolve galaxies smaller than the Magellanic Clouds down to
+the center of galaxy clusters.  The final output contains tens of
+thousands of halos, so I will be able to achieve a statistical
+significance similar to the largest existing observational studies
+\cite{Balogh03a}.
+
+I will model quiescent star formation using procedures developed in
+standard semi-analytic models of galaxy
+formation\cite{Somerville99,Cole00,Menci02}.  In these models, star formation
+is driven by both the cooling of hot gas and by the refueling of cold
+gas during mergers.  In addition to this quiescent mode of star
+formation, I will model the starbursts associated with galaxy mergers
+and fly-by events following the derivation of the fraction of cold gas
+destabilized by encounters put forth by Cavaliere and
+Vittorini\cite{Cavaliere00,Menci03}.  The spectral energy distribution
+(SED) of a galaxy can be modelled by convolving the SFR with the SED
+of a single-aged stellar population\cite{Bruzual03}. I will compare the resulting
+dependence of SFR with observations\cite{Lewis02,Gomez03,Balogh03a} of
+local galaxies, ``observing'' the simulation with a suitable projection of positions and velocities in order to mimic the
+procedure adopted by observers.
+
+In addition to its redshift and environmental dependences, star
+formation depends upon galaxy mass.  The average starforming
+galaxy was more massive in the past, an
+effect known as {\em cosmic downsizing}\cite{Cowie99,Kauffmann03}.  This effect has also been
+observed in clusters, which show evidence of luminous post-starburst
+galaxies at intermediate redshifts that are absent in the nearby Coma
+cluster \cite{Poggianti03}.  The most straightforward explanation is
+that the mass of actively starforming galaxies falling into clusters
+decreases at low redshifts.  Can we understand downsizing in the
+context of galaxy-galaxy interactions?  If high mass galaxies have on
+average undergone more interactions, they may have depleted all of
+their gas by the current epoch, while low mass galaxies have not.  The
+simulation described above will allow me to explore the connection
+between interaction history and galaxy mass and how such a connection
+might explain cosmic downsizing.
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  TITLE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\large
+%\vspace{-4mm}
+%\begin{center}{\bf \underline{Observational Program:  Star Formation Rates at High Redshift}} \end{center}
+%\normalsize
+%\vspace{-4mm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:observations}
+
+\vspace*{-3mm}
+\subsection*{Observational Program:  Star Formation Rates at High Redshift}
+\vspace{-2mm}
+
+Past studies of the SFR in distant galaxies suffer from two
+limitations which prevent their use in measuring the SFR-environment
+correlation.  First, they have not included low-density regions.
+Second, they commonly utilize [OII] emission lines to measure the SFR.
+Although it is easily detectable at high redshift ($z \sim 1$), [OII]
+is not an ideal diagnostic for SFR \cite{Jansen01,Charlot01}. The
+strength of the [OII] 3727$\lambda$ line is not directly coupled to
+the ionizing luminosity of young stars, and it is sensitive to
+variations in the metallicity and the ionization state of the gas.
+More importantly, it is strongly affected by dust
+\cite{Blain99,Flores99,Smail99,Poggianti00,Fadda00,Duc02}.  Past
+studies may therefore have a highly biased view of the SFRs in distant
+galaxies.  For example, several spectroscopic surveys of distant
+clusters \cite{Couch87,Fabricant91,Fisher98,Dressler99,Poggianti99}
+have revealed a population of galaxies with spectra displaying strong
+Balmer absorption but lacking emission lines.  These objects have been
+interpreted as galaxies that are not currently forming stars, but have
+recently undergone a starburst \cite{Couch87,Poggianti99}. If this
+interpretation is correct, the starforming progenitors of these
+post-starburst galaxies have yet to be identified \cite{Couch01}.  An
+alternate interpretation is that they are galaxies in which star
+formation is totally obscured at optical wavelengths \cite{Smail99}.
+
+My observational plan is designed to remedy both of these problems.  I
+will map the SFR out to the low density regions (6R$_{\rm virial}$)
+surrounding CL1216, one of the clusters I have been studying as part
+of an $HST/ACS$ survey of ten $z \sim 0.8$ clusters (see Figure
+\ref{cl1216}).  I will use mid- to far-infrared data obtainable with
+\emph{SIRTF} to calculate robust SFRs that are unaffected by dust.  My
+proposed \emph{SIRTF} observations, including overheads, can be
+completed in 9 hours, well within the time for a reasonable program. I
+will simultaneously measure redshifts and [OII] line strengths using
+the Deep Extragalactic Imaging Multi-Object Spectrograph ({\em
+DEIMOS}), installed on Keck II.  Accounting for observational
+overheads, in two nights I can spectroscopically confirm $\sim$600
+galaxies that are both near the cluster redshift and within $\sim$6
+virial radii of CL1216.
+
+The proposed observations nicely complement other works in progress.
+In particular, Treu et al.\cite{Treu03} are conducting an optical
+spectroscopic survey of galaxies up to 5 Mpc from the center of
+CL0024+16 at $z$=0.4, for which they already have complementary {\em
+HST/WFPC2} imaging.  Their study provides an intermediate redshift
+sample, in addition to the zero redshift baseline discussed in the
+introduction, with which to compare my high redshift results.  In
+particular, my proposed optical spectroscopy will yield [OII]-derived
+SFRs, which can be compared directly with those measured at $z$=0.4.
+
+The DEEP2 survey will also return a wealth of information on the star
+formation properties of galaxies at $z \sim 1$ \cite{Davis03}.  One
+of their survey fields, the Groth Strip, will be particularly
+well-studied, with mid- to far-infrared data from {\em SIRTF}, {\em
+HST} imaging, groundbased $BRI$ imaging, and X-ray data.  My proposed
+data set will be of similar quality and wavelength coverage, but for a
+region surrounding a rich cluster.  This new dataset will allow a fair
+comparison between cluster and field environments at similar
+redshifts.
+
+\vspace*{-3mm}
+\subsubsection*{Strategy for Proposed \emph{SIRTF} Observations}
+\vspace{-2mm}
+
+The Multiband Imaging Photometer for \emph{SIRTF} (\emph{MIPS})
+simultaneously collects mid- to far-infrared data at three narrow
+bandpasses centered at 24 $\micron$, 72 $\micron$, and 160 $\micron$.
+Studying a sample of 156 local galaxies, Papovich \etal\
+(2002)\cite{Papovich02} found that the total infrared fluxes (8--1000
+$\micron$) of $z\sim$ 1 galaxies can be constrained to within a factor
+of 2.5 using 24 $\micron$ \emph{MIPS} data.  We therefore optimize our
+observations for the 24 $\micron$ band, while keeping in mind that the
+addition of 70 $\micron$ data will help to improve this constraint
+by a factor of $\la$6.
+
+In a study of three clusters at $z$=0.76, $z$=0.9, and $z$=0.92,
+Postman \etal\ (2001)\cite{Postman01} used [OII] to measure the mean
+SFRs of cluster members as a function of redshift.  Interpolating
+their results, I expect a mean [OII]-derived SFR of 1.5 ${\rm
+M}_{\odot} {\rm yr}^{-1}$ for cluster members at $z$=0.8, and higher
+values in the surrounding regions.  The ratio between IR-derived SFRs
+and [OII]-derived SFRs has been found to range from 10--100
+\cite{Duc02}.  Thus, I expect an average IR-derived SFR of more than
+15 ${\rm M}_{\odot} {\rm yr}^{-1}$.  In order to ensure high
+signal-to-noise photometry on galaxies with SFRs significantly below
+this average, I have calculated the exposure time necessary to detect
+a galaxy forming stars at a rate 15 times smaller than this average.
+
+According to Bell (2003)\cite{Bell03}, a SFR of 1 ${\rm M}_{\odot}
+{\rm yr}^{-1}$ corresponds to a total IR luminosity of $\log_{10}$
+(L$_{{\rm TIR}}$/L$_{\odot}$) $\sim$ 9.8.  The flux in the 24
+$\micron$ band is typically a factor of 0.16L$_{{\rm TIR}}$
+\cite{Papovich02}.  Thus, in order to detect galaxies with SFRs as low
+as 1 ${\rm M}_{\odot} {\rm yr}^{-1}$, our IR data must be sensitive to
+fluxes as low as $\log_{10}(L_{24 \micron} / L_{\odot}) \sim 9$.
+Assuming the concordance cosmology, an object at this luminosity at
+$z=0.8$ would have a flux of F$_{24 \micron} \sim$ 50 $\mu {\rm Jy}$.
+Galaxies smaller than 15'' (113 kpc at $z$=0.8) will be spatially
+unresolved in the 24 $\micron$ {\em MIPS} band.  Using SPOT, we
+estimate that the background in the field of CL1216 falls in the
+``medium'' category.  The integration time required for a 1$\sigma$
+detection of a 50 $\mu {\rm Jy}$ point source with a medium background
+is $\sim$400 seconds\footnote{{\tt
+http://sirtf.caltech.edu/SSC/mips/sensmedgifs/24scanmed.gif}}.
+Because L$_{{\rm TIR}}$ is a steep function of SFR, the
+signal-to-noise ratio (SNR) increases quickly with SFR.  A 400 second
+exposure time will therefore provide adequate SNRs for galaxies
+forming stars well below the average expected IR-derived rate of 15
+${\rm M}_{\odot} {\rm yr}^{-1}$ (see Figure \ref{sfr}).  Although both
+the expected flux and sensitivity are higher at 70 $\micron$,
+local confusion will limit its utility\footnote{{\tt http://sirtf.caltech.edu/SSC/mips/sensmedgifs/70scanmed.gif}}.  I therefore expect to have
+usable 70 $\micron$ data for a bright subset of the galaxies detected
+at 24 $\micron$.
+
+Since I wish to cover a relatively large area of the sky (0.5$^\circ
+\times$ 0.5$^\circ$), I will use the \emph{MIPS} Scan Map AOT.  The
+exposure time per pixel resulting from a single scan at a medium scan
+rate is 40 seconds at both 24 $\micron$ and 70 $\micron$.  A single map
+cycle consisting of 6 scan legs with a cross scan step of 302''
+(minimal overlap) and scan length of 0.5 degrees should cover the desired area with an exposure time of 40 seconds per pixel (see Figure
+\ref{visual}).  In order to attain a total exposure time of 400
+seconds per pixel, I propose 3 AORs consisting of 3 map cycles each
+and 1 AOR consisting of just 1 map cycle.  Using SPOT, I estimate that
+this program, including overheads, can be executed in (3 $\times$ 161
+min) + 56 min = 539 min $\sim$ 9 hours.
+
+\vspace{-3mm}
+
+\subsubsection*{Strategy for Proposed {\em DEIMOS} Observations}
+
+\vspace{-2mm}
+
+Because of its high throughput and its ability to take spectra of 140
+objects simultaneously, {\em DEIMOS} is the ideal instrument with which to execute my spectroscopic program.  Based upon spectra the EDisCS collaboration has
+already obtained for galaxies in the center of CL1216, I need 1 hour
+to acquire spectra with signal to noise suitable for redshift and
+[OII] linewidth determination.  {\em DEIMOS} has a $9' \times 9'$
+field of view.  Thus, in 9 hours, I can tile the 0.5$^\circ \times$
+0.5$^\circ$ area around CL1216.  Using photometric redshift
+pre-selection, $\ga$50$\%$ of spectroscopic targets should lie within
+the redshift range in which I am interested.  Thus, accounting for
+observational overheads I could spectroscopically confirm $\sim$600
+galaxies within both my target redshift range and $\sim$6 virial
+radii of CL1216 in less than two nights.
+
+%If {\em SIRTF} time proves difficult to obtain, I will fall back on
+%[OII]-derived SFRs, which are standard for high redshift galaxies.  If
+%I fail to procure Keck time, I can use photometric redshifts
+%combined with the IR data to accomplish our science goals.
+ 
+\clearpage
+
+\begin{figure}
+  \centerline{
+    \begin{minipage}[l]{5.5in}
+      %\epsscale{1}
+      %\plotone{cl1216.center.ps}
+      \psfig{figure=cl1216.center.ps,width=5.435294118truein,height=4.2truein}
+    \end{minipage} \ \hfill \
+    \begin{minipage}[l]{2in}
+      \caption{\footnotesize\baselineskip0.1cm{ The image at left shows a $\sim$0.43 Mpc $\times$ 0.56 Mpc region
+around the center of CL1216, imaged in \emph{F814W} with the $ACS/WFC$ on
+board the $HST$.  CL1216 is one of the high redshift clusters from the
+ESO Distant Cluster Survey (EDiSCS).  The EDiSCS collaboration, of
+which I am a member, has collected an extensive data set for the inner
+1.5 Mpc $\times$ 1.5 Mpc region of the cluster, including groundbased
+$BVRIK$ imaging, {\it F814W HST/ACS} imaging, and optical
+spectroscopy.  A larger 13.5 Mpc $\times$ 13.5 Mpc region around the
+cluster has been imaged in $VRI$ (sufficient for photometric redshift
+estimation) and in the X-ray with {\em XMM-Newton}.  Our proposed
+observations would add \emph{SIRTF} mid- to far-infrared data as well
+as \emph{DEIMOS} spectroscopy in this larger region. \label{cl1216}
+      }}
+    \end{minipage} 
+  }
+
+\end{figure}
+%----------
+\begin{figure}
+  \centerline{
+    \begin{minipage}[l]{3in}
+      %\epsscale{1}
+      %\plotone{sfr.ps}
+      \psfig{figure=sfr.ps,width=3.5truein,height=3.5truein}
+       \caption{\footnotesize\baselineskip0.1cm{Signal-to-noise ratio (SNR) expected in the 24 $\micron$ band, as a function of SFR.  The average IR-derived SFR for cluster members is expected to be 15 ${\rm M}_{\odot} {\rm yr}^{-1}$, where the plot cuts off. \label{sfr}}}
+    \end{minipage} \hfill \
+    \begin{minipage}[l]{3in}
+      \psfig{figure=both.color.ps,width=3truein,height=3truein}
+  \caption{\footnotesize\baselineskip0.1cm{SPOT-generated visualization of the proposed 24 $\micron$ (turquoise) and 70 $\micron$ (pink) \emph{MIPS} observations overlaid on a $2^{\circ} \times 2^{\circ}$ ISSA image of a field centered on CL1216.  This figure is available in color at {\tt http://www.astro.washington.edu/desai/SIRTF}.\label{visual}}}
+    \end{minipage}
+  }
+\end{figure}
+
+\clearpage
+
+\bibliographystyle{plan}
+\bibliography{plan}
+
+\end{document}

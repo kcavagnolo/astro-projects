@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+  <head>
+    <title>Scripts</title>
+  </head>
+<body bgcolor="#FFFFFF">
+
+<hr NOSHADE>
+<center>
+<h1>
+<i><font color="#0000C0">Scripts</font></i></h1></center>
+
+All my scripts can be found at the following location: 
+<a href="ftp://ftp.sr.bham.ac.uk/pub/rft/scripts">ftp://ftp.sr.bham.ac.uk/pub/rft/scripts/</a>. <br><p>
+I'll briefly discuss each one below, bolding/linking the ones that I think are the most useful, or at least that I have spent the most time on! <br>
+<p>
+Don't worry about the scripts with end with a ~(tilde) as they are just the most recent-but-one save that my text editor does. 
+<p>
+Also, quite a few of these scripts call each other. Normally, they will have something like /data1/rft/rftscripts/"filename".csh and you will just need to append the appropriate part of the script to link to where you have now saved the filename. 
+<br>
+<hr>
+
+<ul>
+<li><b> .cshrc </b><br>
+- Extremely useful startup script. This contains lots of nice aliases, trap errors, software links and other goodies. 
+<li> 2Dtempprof.csh<br>
+- This is an early attempt to script the extraction of 2D temperature profiles. It takes into account blank-sky background scaling, but not a script I have used for a while, and would probably not recommend using without a big rewrite. For use on XMM data only.  
+<li> FTZ2fits.csh <br>
+- A handy little script that I think is called in the init.csh script. Often .fits.gz files are given the extension .FTZ, and this script cycles through the whole directory and renames and unpacks the appropriate files.
+<li> XSA.jar <br>
+- Not a script but the .jar package that I downloaded to access the XMM Science Archive (see <a href="http://www.sr.bham.ac.uk/xmm2/internal/xmm_intro.html">http://www.sr.bham.ac.uk/xmm2/internal/xmm_intro.html</a>).
+<li><b> adapt.csh </b><br>
+- Written by Dave Akerman, this is a very handy script for extracting 2D temperature maps of XMM images. This runs in combination with tzmap.csh and combine.exe. Not used for quite a while, but with a bit of work should still be effective. 
+<li> ardlib_setup.csh <br>
+- Think that this is now redundant, but a while back there was no automatic way of setting up the ardlib.par CIAO file. For use with Chandra.
+<li> bg_cl.csh <br>
+- One of my first attempts to create a script that cleans background events lists. I'd really not worry too much about this one. For use with XMM.
+<li> bgrate_clean.csh <br>
+- Similar to above, script to manually filter background events based on a particular count rate value. Not recommended. 
+<li> bti_clean.csh <br>
+- Script for identifying the Bad Time Intervals (as opposed to GTi's) and extracting events. Useful for comparing between flaring and non-flaring events in the FOV and OOFOV. For use with XMM.
+<li><b>clean.f</b><br>
+- A Fortran script to do flare cleaning of a source dataset via the application of a Gaussian fit to the count rate histogram. Used in residspec.csh 
+<li> combine.exe <br>
+- For use with adapt.csh (see above).
+<li> compareoutofFOV <br>
+- A very old but potentially useful script by Andy Read. This compares events between a source dataset and blank-sky one in the OOFOV to determine an OOFOV scaling ratio. Can't remember if this is scaled by exposure time or not. (You want to be getting a scaling of order unity).  
+<li> createimage.csh <br>
+- Not really a program as such, but a few commands for creating images with XMM. It's a good opportunity to play around with different binning etc. 
+<li> createspectra_1, createspectra_2, doublesubtraction <br>
+- Written by Andy Read, these provided a partial template for my own scripts for extracting spectra (xmm_specgen.csh). Fairly dated by now I'd say, but a useful guide to studying blank-sky background subtraction, background scaling, and double subtraction. 
+<li><b> encap </b> <br>
+- Written by Dave Henley, this converts .ps files to .eps files (i.e. postscript to encapsulated postscript). Very handy. 
+<li><b> find_annuli.csh </b><br>
+- Script to adaptively determine annular regions from a given centre and minimum number of counts per annulus. Quite a bit of messing around between image and physical coordinates was done, am sure there is a better way of approaching it. Also, the only input file is an input events list, not a blank sky background. Ideally, would want to subtract the mean number of background counts in each bin first, but never got round to it. 
+<li> fits2FTZ.csh <br>
+- the inverse script to FTZ2fits.csh. 
+<li><b> fortran </b><br>
+- Actually a directory of Fortran scripts. These all link in with PGPLOT nicely, and this also contains a few datafiles from my work on NGC891. For ideas on how to link in to PGPLOT, see my .cshrc file. 
+<li> fov_extract.csh <br>
+- A script to study the effect of flaring in the OOFOV. 
+<li> get_reg.csh <br>
+- A potentially useful way to extract a single list of all regions detected by the XMMSAS source detection program for all three cameras. 
+<li><b> getscale </b><br>
+- I don't actually use this anymore, but this program determines the scaling ratios between source and blank-sky datasets using different criteria. All the inputs are hardwired into the code so a bit of work required to use it effectively. For use with XMM. 
+<li> hardspatvar.csh <br>
+- Script to look at the spatial variation of hard particles using the closed data. 
+<li> imageBGsub <br>
+- Another script written by Andy Read. This is to effectively subtract the background from an image to return a cleaned image.
+<li> imgen.csh <br>
+- Not entirely sure why I wrote this, but I believe that it was to be used as part of Al's cluster fitting software which has as input several datacubes of fixed binning and energy slices, which this script creates. For use with XMM. 
+<li><b> init.csh</b><br>
+- A nice initialisation script for working with XMM data. For running when the only 2 directories are /odf and /pps. Sets up an initial working environment, creates a few directories and searches out the blank-sky files that correspond to the source dataset (things like 'filter', 'mode'). Bear in mind that these locations are not going to be the same on your computer, should you choose to run it. 
+<li> jpfo/xmmspecmap.csh <br>
+- A very old script written by John Osmond. Not sure I have ever used this in anger, but was designed to do something similar to adapt.csh. Not well commented though, so slightly hard to follow. 
+<li> phys2im.csh <br>
+- Another conversion script, this time from physical to image coordinates. Not sure how much is hardwired into the code. 
+<li><b> proj*.csh</b> <br>
+- Very useful scripts to do simultaneous deprojection for all three XMM cameras. <b>proj1.csh</b> calculates the projected T, Z, norm while applying an additional component to take into account the difference between the source and blank-sky background spectra.<b> proj1b.csh</b> is basically the same script, except that each annulus is treated seperately (probably better). This creates an xspec outfile ${root}_proj1.xcm that needs to be run. <br>
+<b>proj2.csh</b> sorts out all the output files generated by the above XSPEC script, and outputs them into a nice ASCII data table. <br>
+<b>proj3.csh</b> takes the output result from the previous scripts, and sets up an XSPEC script to do the deprojection simultaneously for all 3 XMM cameras, while fixing some of the residual spectra parameters and metallicity to the projected value. (Technically, the residual spectra parameters should be better constrained by fixing these to the ratio of extraction areas. this will also reduce running time.) <br>
+<b>proj4.csh</b> is run after running the XSPEC script generated by <b>proj3.csh</b>, and does the same job as <b>proj2.csh</b>, in organising all the output files into a readable data table. 
+<li><b> radial.csh </b><br>
+- Old, simple and useful script initially written by Ben Maughan, and later slightly modified. This script generates radial surface brightness profiles in fixed or adaptive bins given a particular centre. 
+<li> readdata.csh <br>
+- Not a script as such, but a good template for starting shell scripting. Deals with reading in inputs from the command line, trap errors etc.
+<li><b> removeregions.csh </b><br>
+-Exceptionally handy script written by Andy Read. Given a list of regions to exclude, this script cycles through them all, removing them from the events list while retaining the 'events' status of the input file. 
+<li><b> residspec.csh </b><br> 
+- Extremely useful script for cleaning source and background data, applying cuts (using a Gaussian fitting mechanism, via <b>xmmlc_clean.csh</b> and <b> clean.f</b>), grouping spectra, and subtracting one off the other while preserving the statistics (using mathpha). Generates source minus background residuals for immediate input into XSPEC, plus appropriate arf/rmf files
+<li> runchain.csh<br>
+- A simple script to run emchain and epchain and copy the output to *_raw.fits in the parent directory. Note that epchain is a bit funny and gives some strange errors. I think that to get by this you have to set SAS_VERBOSITY to something quite high, like 5 (or is it low? I forget). 
+<li> runfilters.csh <br>
+- For use with Chandra data, on an e-science project that didn't quite work out. 
+<li> runpsextract.csh <br>
+- Think this is outdated, particularly as psextract has been superseded by something else for spectral extraction of extended sources. 
+<li> sassetup.csh <br>
+- A list of the environment variables required to run SAS effectively. These are better taken into account in the script <b> xmmsetup.csh</b>.
+<li> sky2det.csh <br>
+- Handy script for converting CIAO region files into detector coordinates using esky2det. 
+<li><b> skycast </b><br>
+- Written by Andy Read, this is very useful for 'skycasting' your source dataset onto a blank-sky events list so that the chips are all properly aligned. 
+<li> softxmmbg.csh, softxmmbg_spat.csh <br>
+- Scripts to identify the spatial and spectral variation of the soft X-ray background. 
+<li> spec.xcm <br>
+- small script just to show how to iterate through datafiles in XSPEC. 
+<li><b> src_detect.csh </b><br>
+- useful script for detecting sources in 5 energy bands over all 3 XMM cameras.The script get_reg.csh sorts all the outputs into some useful format. 
+<li> tzmap.csh <br>
+- See adapt.csh
+<li> xmm_clean.csh <br>
+- Not entirely happy with this script. Used it for a long time to clean source and background event lists for flaring, but think that it underestimated the amount of flaring, even with a 2-pass approach. 
+<li> xmm_findratios.csh <br>
+- Old script for finding scaling ratios between source and background events lists. 
+<li> xmm_lc.csh <br>
+- An even older script for flare cleaning source spectra. 
+<li><b> xmm_lcclean.csh</b><br>
+- My most recent version of flare cleaning spectra. Instead of using a recursive 3-sigma algorithm (as with some of the other scripts), this uses clean.f to generate a count rate histogram, fits a Gaussian, clips the data, and produces lots of nice output pictures. 
+<li> xmm_sclbg.csh <br>
+- A script to directly apply the count rate cuts from the source dataset to the blank-sky dataset, then scale it appropriately. 
+<li><b> xmm_specgen.csh</b><br>
+- My pride and joy, and probably unnecessarily complicated. This is a very heavily commented script (it needs to be) for extracting spectra and, if required, performing a double subtraction, generating rmf/arf files, and grouping spectra. Also gives the user an opportunity to weight the data due to vignetting, scale the background by a normalisation (typically close to unity). 
+<li> xmm_weightbg.csh <br>
+- Can't even remember writing this script, but it potentially useful for applying the bg normalisation directly to the events via the WEIGHT column. <b>xmm_specgen.csh</b>, on the other hand, applies the normalisation to the generated spectra itself. Should give the same result though. 
+<li> xmmcoords.csh <br>
+-I vaguely remember this not working when I tried to use it as part of another script. Think the basic ideas are still there though for converting between multiple coordinate systems: image, physical, detector. 
+<li><b> xmmmosaic.csh </b><br> 
+- A very good script written by Ben Maughan, for mosaicing EMOS/EPN images to create a single image, with all images corrected by an appropriate exposure map and normalisation. 
+<li> xmmpsf*.csh <br>
+- Written by Ewan O'Sullivan, these 3 scripts are very useful for showing how 2D-3D deprojection can be carried out in XSPEC, while accounting for PSF blurring. I moreorless got this to work, but only once... Needs a bit of work but would be very useful if this could work reliably. 
+<li><b> xmmradial.csh</b> <br>
+- This is a modified hack of <b> radial.csh</b>, that specifically extracts the radial profile along a line of user defined angle in boxes of user defined width. Useful for e.g. semi-minor axis radial profiles.  
+<li> <b> xmmsetup.csh</b><br>
+- Script that sets up the SAS environmant variables. 
+<li> xmmspec.csh <br>
+- Old script written by Ben Maughan for generating X-ray spectra. 
+<li> xmmspecmap.csh <br>
+- As above for jpfo/xmmspecmap.csh
+<li><b> xmmstring.csh </b> <br>
+- Very handy script written by Ben Maughan. For some reason, the SAS software is a bit reluctant to input standard CIAO region files, and needs to be input in a funny format. The output from this script can be used as an input into the spectral generation program. This script is just called at the appropriate point, so make sure that your code has it somewhere accessible. 
+
+
+</ul>
+<p>
+<br>
+<hr>
+    <address><a href="mailto:rft@star.sr.bham.ac.uk">Rowan Temple</a></address>
+    <!-- Created: Thurs May 14 13:25:00 GMT 2008 -->
+    <!-- hhmts start -->
+Last modified: Thu May 15 14:34:45 BST 2008
+<!-- hhmts end -->
+  </body>
+</html>

@@ -1,0 +1,155 @@
+# tcl script to run xspec
+# to run file, type:
+# linux> @/home/cavagnolo/research/rbs_797/analysis/rbs797_agn.xcm
+
+# define some options
+set conf 2.71
+set emin 0.5
+set emax 8.0
+set tcl_precision 12
+set xs_echo_script 1
+set fileid [open agn_params.log a]
+
+# basic setup
+query no
+cosmo 70 0 0.7
+chatter 10
+weight "standard"
+statistic chi
+#statistic cstat
+
+# read data, create model, and fit
+data agn.pi
+ignore bad
+ignore **-$emin $emax-**
+model wabs*(pow*zphabs)
+0.022,1 & 1.2 & & & 0.354
+fit 10000 0.01
+
+# make a plot
+setplot energy
+cpd agn_spec.ps/vcps
+plot ldata resid
+cpd /null
+
+# write results to log
+eval puts \$fileid \"-------------------------"
+eval puts \$fileid \"Name: RBS_0797"
+eval puts \$fileid \"Obsid: 7902"
+eval puts \$fileid \"Runname: agn"
+eval puts \$fileid \"Model: wabs(pow*zphabs)"
+eval puts \$fileid \"Fit confidence: $conf"
+eval puts \$fileid \"Fit emin-emax: $emin-$emax keV"
+eval puts \$fileid \"Flux & Lum confidence: 90"
+eval puts \$fileid \"Bolo emin-emax: 0.001-100.0 keV"
+eval puts \$fileid \"-------------------------"
+
+# get best-fit params and errors
+tclout par 1
+scan $xspec_tclout "%f" par
+error stopat 1000 0.05 maximum 10.0 $conf 1
+tclout error 1
+scan $xspec_tclout "%f %f" lo hi
+set elo [expr { $par - $lo }]
+set ehi [expr { $hi - $par }]
+eval puts \$fileid \"wabsNH: $par $elo $ehi"
+tclout par 2
+scan $xspec_tclout "%f" par
+error stopat 1000 0.05 maximum 10.0 $conf 2
+tclout error 2
+scan $xspec_tclout "%f %f" lo hi
+set elo [expr { $par - $lo }]
+set ehi [expr { $hi - $par }]
+eval puts \$fileid \"plind: $par $elo $ehi"
+tclout par 3
+scan $xspec_tclout "%f" par
+error stopat 1000 0.05 maximum 10.0 $conf 3
+tclout error 3
+scan $xspec_tclout "%f %f" lo hi
+set elo [expr { $par - $lo }]
+set ehi [expr { $hi - $par }]
+eval puts \$fileid \"plnorm: $par $elo $ehi"
+tclout par 4
+scan $xspec_tclout "%f" par
+error stopat 1000 0.05 maximum 10.0 $conf 4
+tclout error 4
+scan $xspec_tclout "%f %f" lo hi
+set elo [expr { $par - $lo }]
+set ehi [expr { $hi - $par }]
+eval puts \$fileid \"intNH: $par $elo $ehi"
+tclout par 5
+scan $xspec_tclout "%f" par
+error stopat 1000 0.05 maximum 10.0 $conf 5
+tclout error 5
+scan $xspec_tclout "%f %f" lo hi
+set elo [expr { $par - $lo }]
+set ehi [expr { $hi - $par }]
+eval puts \$fileid \"redshift: $par $elo $ehi"
+eval puts \$fileid \"-------------------------"
+
+# get info on stats
+tclout stat
+scan $xspec_tclout "%f" stat
+eval puts \$fileid \"stat $stat"
+tclout dof
+scan $xspec_tclout "%f" dof
+eval puts \$fileid \"dof $dof"
+goodness 1000 sim
+tclout goodness
+scan $xspec_tclout "%f" good
+eval puts \$fileid \"goodness $good of 1000 simed realizations have a fit statistic < $stat"
+eval puts \$fileid \"-------------------------"
+
+# make dummy response for bolometric
+dummyrsp 0.001 100.0 3000
+eval puts \$fileid \"ergs/cm2/sec"
+
+# 0.5-2.0 flux
+flux 0.5 2.0 0.354 err 100 90
+tclout flux 1
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"F(0.5-2) $fl $fllo $flhi"
+
+# 2.0-10.0 flux
+flux 2.0 10.0 0.354 err 100 90
+tclout flux 1
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"F(2-10) $fl $fllo $flhi"
+
+# bolometric flux
+flux 0.001 100.0 0.354 err 100 90
+tclout flux 1
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Fbol $fl $fllo $flhi"
+eval puts \$fileid \"-------------------------"
+
+
+# 0.5-2.0 lum
+eval puts \$fileid \"10^44 ergs/sec"
+lumin 0.5 2.0 0.354 err 100 90
+tclout lumin 1
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"L(0.5-2) $lum $lumlo $lumhi"
+
+# 2.0-10.0 lum
+lumin 2.0 10.0 0.354 err 100 90
+tclout lumin 1
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"L(2-10) $lum $lumlo $lumhi"
+
+lumin 0.001 100.0 0.354 err 100 90
+tclout lumin 1
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lbol $lum $lumlo $lumhi"
+eval puts \$fileid \"-------------------------"
+
+# get count rate
+eval puts \$fileid \"cts/sec"
+tclout rate 1
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate $rate $rerr"
+eval puts \$fileid \"-------------------------"
+
+# close it up
+close $fileid
+exit

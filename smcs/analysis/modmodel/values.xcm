@@ -1,0 +1,9 @@
+tclout stat
+set sin $xspec_tclout
+set targetStat [expr $sin + 1.0]
+set rfix 150.0
+set epsStat 0.01
+set mbest [massOfR $rfix rbounds]
+set step 0.98
+set vnorm [expr 4.0 * [mixmod_pi] / 3.0]
+set rhobar [expr $mbest / ($vnorm * $rfix * $rfix * $rfix)]

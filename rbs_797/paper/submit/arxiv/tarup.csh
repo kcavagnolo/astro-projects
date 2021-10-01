@@ -1,0 +1,1 @@
+tar -czvf arxiv.tar.gz agn.tex arx_1.4.ps arx_325.ps arx_4.8.ps arx_8.4.ps arx_cav_config.eps arx_edec.eps arx_nucspec.ps arx_pannorm.eps arx_r797_nhfro.eps arx_radiofit.eps arx_rbs797.ps arx_rbs797_opt.ps arx_sub_inner.ps arx_sub_outer.ps arx_suboptcolor.ps arx_suboptrad.ps arx_wdec.eps arxiv.bbl arxiv.tex cavities.tex common.sty emulateapj.cls figs.tex sfr.tex totals.tex

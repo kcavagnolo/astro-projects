@@ -1,0 +1,87 @@
+#!/bin/bash
+#
+# parameters: 
+#
+# 1 : name of old badpix FITS file (extracted from original events file): 
+#     "BADPIX##.fits" or the exact name, e.g. "badpix_ccd_11.fits"
+# 2 : name of new badpix file to be appended to old extension
+#
+
+set -e
+
+OLDFILE=$1
+NEWFILE=$2
+
+OUTFILE=dummy_DUMMY
+INLIST1=dummy_DUMMY_tab
+INLIST2=dummy_DUMMY_col
+
+# echo "list ..."
+rm -f $INLIST2
+touch $INLIST2
+echo "RAWX" >> $INLIST2
+echo "RAWY" >> $INLIST2
+echo "TYPE" >> $INLIST2
+echo "YEXTENT" >> $INLIST2
+echo "BADFLAG" >> $INLIST2
+
+#
+# check if placeholder "##" is in input file name
+#
+LEN=${#OLDFILE}
+P=$LEN
+PX1=-1
+PX2=-1
+while [ $P -gt 1 ]; do {
+  let 'P -= 1'
+  if [ "${OLDFILE:$P:2}" = "##" ]; then
+    PX1=$P
+    PX2=$P+2
+  fi
+  };
+done
+
+# echo "LEN = $LEN  PX1 = $PX1  PX2 = $PX2"
+
+#
+# if so, then substitute ## by the CCD number and loop over all 12 pn CCDs
+#
+if [ "$PX1" -gt -1 ]; then
+ NAME1="${OLDFILE:0:$PX1}"
+ NAME2="${OLDFILE:$PX2:$LEN}"
+
+ CCD=({01,02,03,04,05,06,07,08,09,10,11,12})
+
+ for k in 0 1 2 3 4 5 6 7 8 9 10 11; do {
+
+  rm -f $INLIST1
+  touch $INLIST1
+  INFILE="$NAME1""${CCD[${k}]}""$NAME2"
+  echo "$INFILE" >> $INLIST1
+  echo "$NEWFILE" >> $INLIST1
+  fmerge @$INLIST1 $OUTFILE @$INLIST2 > /dev/null
+  mv -f $OUTFILE $INFILE
+
+ };
+ done
+
+#  echo "Merged $NEWFILE with BADPIXnn extensions."
+
+#
+# if not, then only process this particular file name
+#
+else
+
+  rm -f $INLIST1
+  touch $INLIST1
+  INFILE="$OLDFILE"
+  echo "$INFILE" >> $INLIST1
+  echo "$NEWFILE" >> $INLIST1
+  fmerge @$INLIST1 $OUTFILE @$INLIST2 > /dev/null
+  mv -f $OUTFILE $INFILE
+
+#  echo "Merged $NEWFILE into $OLDFILE"
+
+fi
+
+rm -f $INLIST1 $INLIST2

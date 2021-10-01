@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<!-- base href="http://www.sr.bham.ac.uk/xmm2/scripts.html" --><title>Birmingham XMM Guide: Scripts</title></head><body bgcolor="#ffffff"><table border="1" width="100%"><tbody><tr><td><table color="#ffffff" bgcolor="#ffffff" border="1" cellpadding="10" cellspacing="0" width="100%"><tbody><tr><td><font color="black" face="" size="-1">This is <b><font color="#0039b6">G</font> <font color="#c41200">o</font> <font color="#f3c518">o</font> <font color="#0039b6">g</font> <font color="#30a72f">l</font> <font color="#c41200">e</font></b>'s <a href="http://www.google.com/intl/en/help/features.html#cached"><font color="blue">cache</font></a> of <a href="http://www.sr.bham.ac.uk/xmm2/scripts.html"><font color="blue">http://www.sr.bham.ac.uk/xmm2/scripts.html</font></a> as retrieved on Jan 22, 2008 23:48:56 GMT.<br>
+<b><font color="#0039b6">G</font> <font color="#c41200">o</font> <font color="#f3c518">o</font> <font color="#0039b6">g</font> <font color="#30a72f">l</font> <font color="#c41200">e</font></b>'s cache is the snapshot that we took of the page as we crawled the web.<br>
+The page may have changed since that time.  Click here for the <a href="http://www.sr.bham.ac.uk/xmm2/scripts.html"><font color="blue">current page</font></a> without highlighting.<br>
+This cached page may reference images which are no longer available. Click here for the <a href="http://64.233.167.104/search?q=cache:qCPbGw7_sb4J:www.sr.bham.ac.uk/xmm2/scripts.html+http://www.sr.bham.ac.uk/xmm2/&amp;hl=en&amp;client=firefox-a&amp;gl=us&amp;strip=1"><font color="blue">cached text</font></a> only.<br>To link to or bookmark this page, use the following url: <code>http://www.google.com/search?q=cache:qCPbGw7_sb4J:www.sr.bham.ac.uk/xmm2/scripts.html+http://www.sr.bham.ac.uk/xmm2/&amp;hl=en&amp;ct=clnk&amp;cd=1&amp;gl=us&amp;client=firefox-a</code></font><br><br><center><font size="-2"><i>Google is neither affiliated with the authors of this page nor responsible for its content.</i></font></center></td></tr>
+<tr><td>
+<font color="black" face="" size="-1">These terms only appear in links pointing to this page: <b>http www sr bham ac uk xmm2 </b></font>
+</td></tr></tbody></table></td></tr></tbody></table>
+<hr>
+<div style="position: relative;">
+
+
+
+
+<a name="top">
+
+</a><hr noshade="noshade">
+<center>
+<h1>
+<a name="top"><i><font color="#0000c0">Birmingham XMM Guide: Scripts</font></i></a></h1></center>
+
+<hr noshade="noshade">
+<p>
+</p><ul>
+<a href="#introduction">Introduction to Scripts</a><br>
+<a href="#description">Description of Individual Scripts</a><br>
+</ul>
+<p>
+</p><hr>
+<br>
+
+<h2><a name="introduction">Introduction to Scripts</a></h2>
+The scripts below have been written to reduce and analyse XMM-Newton
+data in a fast and simple way. They make extensive use of the SAS
+tasks, and HEASOFT's FTOOLS utilities, as well as the Chandra analysis
+package CIAO (though this is mostly for non-essential purposes). Many
+of the scripts simply combine several SAS analysis steps together,
+however it is advisable to read through a script before using it, to be
+clear on what it does. Some of the scripts were written for a specific
+task, or dataset, and while they have been made as general as possible,
+there may be assumptions, or default values within them which are not
+what you want.
+<p>
+There are a couple of useful points to note when using these scripts:
+</p><ul><li>To see the input arguments required by a script, type its name with no arguments 
+</li><li>They (almost) all name the output files (root)aaaa.bbb where root is 
+a string specified when calling the script. This helps keep track of which 
+files were created by which script. Note, there is a script, root_change.csh 
+that changes the roots of files for you.
+</li><li>It is ALWAYS a good idea to 'pipe' the output of a script to a log file, 
+called (root)log.txt, using tee. i.e.:<br>
+<tt>script.csh argument1 argument2 root |&amp; tee rootlog.txt</tt><br>
+This means you have a record of what the script did, and the arguments 
+you gave it. There are MANY occasions where doing this has saved my neck!!
+</li>
+</ul>
+To download an individual script, shift-click on its name in the list below. <a href="http://www.sr.bham.ac.uk/xmm2/xmmscripts.tar.gz">A zipped tarball containing all of the scripts is also available here</a>.
+<p>The scripts are written in TCSH shell, and will run on linux or
+solaris machines. To use them, it's best to place them in a directory
+that's in your PATH, e.g. put them somewhere like /data/xmmscripts/ and
+then put this directory in your path,<br>
+<tt>setenv PATH ${PATH}:/data/xmmscripts</tt><br>
+Or you could add this to your login script.
+</p><p>
+
+<a href="#top">back to top</a></p><p>
+</p><hr>
+
+<h2><a name="description">Description of Individual Scripts</a></h2>
+<p>
+</p><ul>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/fverify.csh">fverify.csh</a> - version 1 
+<ul><li>
+Examines all files in a directory to see if they are FITS files, and
+reports any which aren't. Can be useful if you think some of your ODF
+files are corrupted.
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmcomb_psf.csh">xmmcomb_psf.csh</a> - version 1
+<ul><li>
+Combines the psfs of the 3 telescopes by adding the fits images created by 
+calview together, after weighting the PN telescope's psf by a factor of 2 
+because of its extra counts. The resulting image is then normailsed, so the 
+sum is 1
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmexpmap.csh">xmmexpmap.csh</a> - version 1.1 
+<ul><li>
+Uses the SAS tool eexpmap to make an exposure map for an observation, then divides the image by it.
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmfilter.csh">xmmfilter.csh</a> - version 1
+<ul><li>
+Useful script which acts as a front end for evselect, and can be used to 
+filter events, make images, spectra, and lightcurves. 
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmfkeycheck.csh">xmmfkeycheck.csh</a> - version 1 
+<ul><li> 
+Compare the header keywords of two fits files, and reports any differences, 
+then copies any missing keywords from one header to the other.
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmlight_clean.csh">xmmlight_clean.csh</a> - version 3.3 
+<ul><li>Removes high background times from a dataset, and optionally
+filters on flag, pattern, energy etc to produce a clean filtered events
+list. The cleaning is done by iterative 3-sigma clipping until the mean
+counts per time bin stabilises.
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmmosaic.csh">xmmmosaic.csh</a> - version 1.3 
+<ul><li> 
+Creates a combined image of 2 or 3 cameras, optionally weighted by their 
+respective exposure maps. Essentially combines the SAS tasks eexpmap and emosaic.
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmsetup.csh">xmmsetup.csh</a> - version 1.3 
+<ul><li>
+Sets environment variables, and runs odfingest and cifbuild if required. 
+Should be run in the odf directory.
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmspec.csh">xmmspec.csh</a> - version 1
+<ul><li>
+Extracts a source and background spectrum from ds9 regions, and creates 
+an arf and an rmf (or optionally uses a pregenerated rmf) then associates 
+the products and groups the spectrum.
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/xmmstring.csh">xmmstring.csh</a> - version 1
+<ul><li>
+Useful script to convert a ds9 region file into a filter string that can 
+be used with evselect or xmmfilter.csh
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/upcase.csh">upcase.csh</a> - version 1 
+<ul><li>
+Uppercases all the filenames in a directory (uses upcase.pl from the 
+xmm website).
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/root_change.csh">root_change.csh</a> - version 1 
+<ul><li>
+Changes the root name of all the files in a directory.
+</li></ul></li>
+<li>
+<a href="http://www.sr.bham.ac.uk/xmm2/2drprof_sherpascript.txt">2drprof_sherpascript.txt</a>
+<ul><li>
+An example 2-D surface brightness fitting sherpascript
+</li></ul></li>
+</ul>
+
+<a href="#top">back to top</a><p>
+
+    </p><hr>
+    <address><a href="mailto:bjm@star.sr.bham.ac.uk">Ben Maughan</a></address>
+<!-- Created: Wed Jan 30 17:11:47 GMT 2002 -->
+<!-- hhmts start -->
+Last modified: Mon Apr 29 12:17:34 BST 2002
+<!-- hhmts end -->
+  
+</div></body></html>

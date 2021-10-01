@@ -1,0 +1,125 @@
+BUILDING THE MODELS
+
+The models use GSL (GNU scienctific library).  GSL is readily
+available for many systems, but you may need to fix the compiler
+switches (-I to get the header files and -L to link the libraries).
+The libraries libgsl and libgslcblas must be linked with the local
+model.
+
+The model.dat file can be edited to change the number of temperature
+and density parameters for clmass and monomass (one of each per shell;
+the numbers of these parameters must be equal) and the number of
+temperature parameters for nfwmass as needed.  The models themselves
+do not care how many parameters there are, as long as there are
+enough.  However, unused parameters only get in the way.
+
+To build the local models,
+heainit
+initpackage clmass model.dat /path/to/directory/with/model/source
+hmake
+
+In order to make libgsl available, you can either rebuild xspec to
+include it (in Xspec/src/main, edit the Makefile so that HD_CXXLIBS
+includes -lgsl -lgslcblas -L/path/to/gslib, then: rm xspec; hmake;
+hmake install), or manually include the libraries in the final link
+for the model, ie after the hmake for the model:
+
+g++ -shared -o libclmass.so Atmosphere.o clmassFunctionMap.o \
+    ClusterMassModel.o hydrostatic.o lpack_clmass.o monohydrostatic.o \
+    nfwhydrostatic.o Potential.o -lgsl -lgslcblas -L/usr/local/
+
+The perl script "cycle.pl" does these things for my computer system.
+
+NB: it is essential to build the local model using the same
+combination of compiler and linker (including versions) that were used
+to build XSPEC.  Failing to do so causes inexplicable bugs.
+
+
+USING THE MODELS
+
+To load the models in xspec12, use
+XSPEC> lmod clmass /path/to/directory/with/model/library
+
+The models all rely on the XFLT keywords that are used by projct.
+However, the regions must be round, not elliptical.  You can just
+specify the outer radius in XFLT0001, but I use the angular ranges
+XFLT0004/XFLT0005 in order to correct for the fraction of the
+geometric area covered.  This correction (or a suitable areascal) is
+essential for the model to work.  The keywords used by the models are: 
+XFLT0001 outer radius of annulus
+XFLT0002 must equal XFLT0001 if present
+XFLT0003 ignored
+XFLT0004 start angle (degrees)
+XFLT0005 end angle
+The spectrum is assumed to be extracted from an annular sector
+subtending an angle of (XFLT0005 - XFLT0004).  This value is always
+adjusted to be non-negative, but it is allowed to exceed 360 degrees
+(to make corrections a bit easier).  If XFLT0004 and XFLT0005 not
+specified, the sector angle defaults to 360 degrees.
+
+In order to use the mixing model, you must load the data first, one
+data group per annular sector.  Although it is not essential, things
+quickly get confusing if you do not number the data groups in radial
+order.  If there are multiple spectra per data group, the outer radius
+must be the same for every pha file in a group.
+
+Model parameters for clmass are (in order):
+rinner - inner radius of the innermost annulus.
+a - core radius for the beta model
+beta - beta
+switch - if 0, the outermost spherical shell is treated in the same
+   way as the rest; if 1, emission measures for the outermost shell
+   are computed on the assumption that the gas density follows a beta
+   model (a and beta above) beyond the inner edge of the outermost
+   shell.  The pressure is continuous at the inner edge of that shell,
+   so the linking of the temperatures still matters, but the mass
+   density for that shell needs to be frozen (it is ignored).
+   Although a and beta can be fitted, I would recommend against this.
+kTa... - Shell temperatures.  These need to be tied to the temperature
+   of the corresponding thermal model.  Eg if you use clmass * wabs *
+   mekal, then the mekal:kT for the innermost shell must be tied to
+   kTa, the mekal:kT for the next shell to kTb, etc.  (The tcl script
+   massmod_start will do this for you.)
+dena... - Gravitating mass densities for the shells.
+
+Parameters for monomass are the same, except that its density
+parameters, dela..., are differences between the densities in
+successive shells (dela = dena - denb, etc).  This model makes the
+denisty profile monotonic by keeping the density differences
+non-negative. 
+
+Parameters for nfwmass match those of clmass, but its last two
+parameters are:
+nfwa - the NFW scale radius in the same units as the radii (XFLT0001,
+   etc). 
+nfwpot - scale for the NFW potential ($4\pi G \rho_0 a^2 \mu m_H$ in
+   units of keV).
+
+To convert the densities to physical units, use
+$$ \rho_{physical} = \rho_{model} 
+   \left(R_{model} \over R_{physical}\right)^2 
+{(kT)_{physical} \over (kT)_{model}} {1 \over \mu m_H G}. $$
+The temperature factor is just energy/keV.  Model distance units are
+whatever you use in XFLT0001.
+
+All unused parameters (kTx, denx) must be frozen.  The norms for the
+thermal models (mekals in the example above) must all be tied - this
+happens by default.
+
+The linking and freezingcan be done by the routine massmod_start in
+mixcommon.tcl. 
+
+
+TCL SCRIPTS AND EXAMPLES
+
+There is a lot here that is undocumented, but the *.xcm files show
+examples of how to start the various models.  Support for nfwmass is
+incomplete, but fitcycle.* shows an older version of how to drive it.
+
+Information about the gas densities can be obtained by setting the
+XSPEC chatter level to 20.
+
+There are routines to compute conversions to physical units
+(setscales), to compute masses (massOfR - in model units) and for
+finding mass confidence ranges at fixed radius or fixed overdensity
+(MassConf).

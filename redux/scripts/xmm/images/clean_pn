@@ -1,0 +1,132 @@
+#!/bin/bash
+#ulimit -S -d 4194304
+
+PNid=$1
+tools=$2   
+
+export SAS_CCF=../ccf.cif
+export OUTSASDIR="./"
+
+$tools/extract_EXTNAME_extensions evli_pn.fits BADPIX
+echo ""
+echo "	cleaning additional bad pixels"
+
+#---
+infile=${tools}/badpix_row_200.fits[BADPIX][#row==1]
+#---
+#EXAMPLE: to flag pixel with coordinates 28,117 - 28,120 (4 pixels):
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 28 117 3 4 3
+#${tools}/merge_BADPIX_extension BADPIX03.fits BADPIX.fits
+
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 41 183 3 1 3
+#${tools}/merge_BADPIX_extension BADPIX05.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 26 37 3 1 3
+#${tools}/merge_BADPIX_extension BADPIX06.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 4 181 3 18 3
+#${tools}/merge_BADPIX_extension BADPIX06.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 63 144 3 1 3
+#${tools}/merge_BADPIX_extension BADPIX06.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 16 133 3 4 3
+#${tools}/merge_BADPIX_extension BADPIX10.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 35 41 3 4 3
+#${tools}/merge_BADPIX_extension BADPIX10.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 45 85 3 4 3
+#${tools}/merge_BADPIX_extension BADPIX11.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 49 121 3 4 3
+#${tools}/merge_BADPIX_extension BADPIX11.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 50 121 3 4 3
+#${tools}/merge_BADPIX_extension BADPIX11.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 1 161 3 4 3
+#${tools}/merge_BADPIX_extension BADPIX11.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 18 117 3 3 3
+#${tools}/merge_BADPIX_extension BADPIX12.fits BADPIX.fits
+#---
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 20 14 3 14 3
+#${tools}/merge_BADPIX_extension BADPIX12.fits BADPIX.fits
+
+#-------------------------------------------------------------------------------
+
+echo ""
+echo "	flag RAWX = 1 and RAWX = 64  as bad"
+
+$tools/merge_BADPIX_extension BADPIX##.fits $tools/badpix_col_1.fits
+
+$tools/merge_BADPIX_extension BADPIX##.fits $tools/badpix_col_64.fits
+
+#------------------------------------------------------------------------------------
+# clean col 12,13
+echo "	set RAWY = 12,13 to bad"
+
+$tools/merge_BADPIX_extension BADPIX##.fits $tools/badpix_row_12_13.fits
+
+#------------------------------------------------------------------------------------
+# clean col 200
+echo "	set RAWY = 200 to bad"
+ 
+$tools/merge_BADPIX_extension "BADPIX##.fits" $tools/badpix_row_200.fits
+
+
+#------------------------------------------------------------------------------------
+echo ""
+echo "	remove events from selected rows (clean_col) for event file"
+
+${PNid}/clean_col evli_pn.fits evli_pn_new.fits 
+
+echo ""
+echo "	remove events from selected rows (clean_col) for Out-of-Time event file"
+
+${PNid}/clean_col ooevli.fits ooevli_new.fits 
+
+#------------------------------------------------------------------------------------
+echo ""
+echo "	update badpix extentions and flag setting"
+
+echo "	update badpix extentions and flag setting" >> ${3}_PN_images.log
+echo "" >> ${3}_PN_images.log
+
+ebadpixupdate eventset=evli_pn_new.fits fromccf=N \
+              badpixtables="BADPIX01.fits:BADPIX01 BADPIX02.fits:BADPIX02 \
+	      BADPIX03.fits:BADPIX03 BADPIX04.fits:BADPIX04 \
+	      BADPIX05.fits:BADPIX05 BADPIX06.fits:BADPIX06 \
+	      BADPIX07.fits:BADPIX07 BADPIX08.fits:BADPIX08 \
+	      BADPIX09.fits:BADPIX09 BADPIX10.fits:BADPIX10 \
+	      BADPIX11.fits:BADPIX11 BADPIX12.fits:BADPIX12" >> ${3}_PN_images.log 2>&1
+
+
+ebadpixupdate eventset=ooevli_new.fits fromccf=N \
+              badpixtables="BADPIX01.fits:BADPIX01 BADPIX02.fits:BADPIX02 \
+	      BADPIX03.fits:BADPIX03 BADPIX04.fits:BADPIX04 \
+	      BADPIX05.fits:BADPIX05 BADPIX06.fits:BADPIX06 \
+	      BADPIX07.fits:BADPIX07 BADPIX08.fits:BADPIX08 \
+	      BADPIX09.fits:BADPIX09 BADPIX10.fits:BADPIX10 \
+	      BADPIX11.fits:BADPIX11 BADPIX12.fits:BADPIX12" >> ${3}_PN_images.log 2>&1
+
+
+rm BADPIX*.fits
+
+echo ""
+echo "	clean pn event and Out-of-Time event file finished"

@@ -1,0 +1,241 @@
+Creating PSF (Follow thread http://cxc.harvard.edu/ciao/threads/psf/):
+----------------------------------------------------------------------
+
+**************************************
+**************************************
+**************************************
+
+Addendum... fuck.
+
+"Caveats:
+
+As discussed in the PSF library manual (PS, 16pp), the libraries
+contain weight information to account for the finite domain of the
+data (i.e. the fact that not all the simulated photons fell within the
+regions stored in the library). However, mkpsf currently cannot access
+this weight information, and so cannot account for the total number of
+photons used to create the PSF. Users should beware of this limitation
+if the normalization of the PSFs (i.e. the fraction of PSF photons
+that fall within the output region) is important (e.g. when attempting
+to calculate encircled energy fractions, calculating the PSF profile
+at large distances from a source).
+
+Unless you specify a position and energy that corresponds to one of
+the grid points in the PSF libraries, mkpsf will use linear
+interpolation to create the model PSF. In this case, the model can
+only be considered an approximation to the true PSF, and must be used
+with care."
+
+So what? Well, in order to properly calculate EEF I must use one of
+the grid points:
+
+Energy -- 0.277 keV, 1.4967 KeV, 4.51 keV, 6.4 keV, and 8.6 keV
+Position -- 'f1' if the off-axis angle is within the library's FOV,
+otherwise use 'f2'
+
+And this means that everything I've done up to this point is
+wrong. Let's redo it all.
+
+**************************************
+**************************************
+**************************************
+
+Make some images
+
+~~~~~~~~~~~~~~~~~~~
+dmcopy "7902_clean.fits[energy=300:8000][sky=region(source.reg)]" temp.fits clobber=yes verbose=2
+dmcopy "temp.fits[bin sky=1]" img_clean.fits
+frm temp.fits
+~~~~~~~~~~~~~~~~~~~
+
+check that PSF libs are installed:
+
+~~~~~~~~~~~~~~~~~~~
+ls -1 $CALDB/data/chandra/acis/cpf/2dpsf/
+ls -1 $CALDB/data/chandra/hrc/cpf/2dpsf/
+punlearn dmextract; dmextract infile="7902_clean.fits[sky=region(agn_rough.reg)][bin energy=300:8000:100]" outfile=agn_energy.fits opt=generic clobber=yes verbose=2
+punlearn dmstat; dmstat "agn_energy.fits[cols count_rate]"
+
+COUNT_RATE[count/s]
+    min:        0             @:        212 
+    max:        0.0011226616622               @:        25 
+   mean:        0.00020242495087 
+  sigma:        0.00025130373215 
+    sum:        0.077933606083 
+   good:        385 
+   null:        0 
+~~~~~~~~~~~~~~~~~~~
+
+*************
+NB: Using 10 keV instead of 8 keV results in:
+*************
+
+COUNT_RATE[count/s]
+    min:	0	      @:	212 
+    max:	0.0011226616622 	      @:	25 
+   mean:	0.00016106467002 
+  sigma:	0.00023817525476 
+    sum:	0.078116364959 
+   good:	485 
+   null:	0 
+
+*************
+NB: Using 100 instead of 20 for the energy binning:
+*************
+
+COUNT_RATE[count/s]
+    min:	0	      @:	67 
+    max:	0.0045428634702 	      @:	6 
+   mean:	0.0010121247543 
+  sigma:	0.0012103258485 
+    sum:	0.077933606083 
+   good:	77 
+   null:	0 
+
+*************
+*************
+
+~~~~~~~~~~~~~~~~~~~
+punlearn dmlist; dmlist "agn_energy.fits[count_rate>0.001][cols energy,count_rate]" data,clean
+
+#  ENERGY               COUNT_RATE
+                790.0     0.00112266166217
+                850.0     0.00101822801918
+                870.0     0.00101822801918
+                910.0     0.00101822801918
+                990.0     0.00112266166217
+~~~~~~~~~~~~~~~~~~~
+
+*************
+NB: Using 0.004 instead of 0.001 yields:
+*************
+
+#  ENERGY               COUNT_RATE
+                750.0     0.00441232141644
+                850.0     0.00454286347018
+                950.0     0.00428177936270
+
+*************
+*************
+
+Epeak for the AGN in R797 is 0.85 keV. Use this as it mimics the CIAO
+thread use of 100 eV bins instead of 20 eV bins.
+
+Make a plot of the count rate vs. energy:
+
+~~~~~~~~~~~~~~~~~~~
+IDL:
+a=mrdfits('agn_energy.fits',1)
+set_plot,'PS'                                                              
+device,filename='agn_energy.ps'
+plot,a.energy,a.count_rate,xtitle='Energy [eV]',ytitle='Count Rate [cts/s]'
+device,/close
+set_plot,'X'
+~~~~~~~~~~~~~~~~~~~
+
+How far off-axis is the src?
+
+~~~~~~~~~~~~~~~~~~~
+punlearn dmcoords ; dmcoords 7902_clean.fits pcadf300337878N001_asol1.fits.gz x=4192.5 y=4213.5 opt=sky
+pget dmcoords theta
+
+1.241020573975892 arcminutes
+~~~~~~~~~~~~~~~~~~~
+
+Determine the number of src cts:
+
+~~~~~~~~~~~~~~~~~~~
+punlearn dmstat ; dmstat "img_clean.fits[sky=region(agn_rough.reg)]" centroid=no sigma=no
+
+EVENTS_IMAGE
+    min:        9             @:        ( 4196 4214 )
+    max:        171           @:        ( 4192 4214 )
+   mean:        36.3875 
+    sum:        2911 
+   good:        80 
+   null:        64 
+~~~~~~~~~~~~~~~~~~~
+
+Determine the number of bgd cts:
+
+~~~~~~~~~~~~~~~~~~~
+punlearn dmstat ; dmstat "img_clean.fits[sky=region(agn_rough_bgd.reg)]" centroid=no sigma=no
+
+EVENTS_IMAGE
+    min:        4             @:        ( 4199 4210 )
+    max:        48            @:        ( 4194 4208 )
+   mean:        18.042372881 
+    sum:        4258 
+   good:        236 
+   null:        164 
+~~~~~~~~~~~~~~~~~~~
+
+count area ratio:
+pi * r_src^2 / ( pi * (r_out^2 - r_in^2) ) = 5.13993^2 / ( 10^2 - 5.13993^2 ) = 0.359
+
+src cts scaled to count area:
+2911 - 0.35 * 4258 = 1420.7
+
+*** 1421 source counts ***
+
+Make the PSF:
+
+~~~~~~~~~~~~~~~~~~~
+punlearn mkpsf ; mkpsf infile=img_clean.fits \
+outfile=agn_psf_0.85keV.fits binspax=INDEF binspay=INDEF \
+sizeoutx=INDEF sizeouty=INDEF outpsffile="" coord=SKY x=4192.5 \
+y=4213.5 energy=1.4967 \
+"psflibfile=CALDB(DETECTOR=ACIS-S)" \
+clobber=yes verbose=2 mode=h
+
+CASE: Recursive interpolation...
+Rebinning images from 256x256 to 64x64
+File agn_psf_0.85keV.fits was created
+File agn_psf_1.497_4189.026_4353.014.fits was created
+File agn_psf_1.497_4100.713_4268.914.fits was created
+File agn_psf_1.497_4273.126_4264.701.fits was created
+File agn_psf_1.497_4184.813_4180.600.fits was created
+~~~~~~~~~~~~~~~~~~~
+
+Find signal in PSF:
+
+~~~~~~~~~~~~~~~~~~~
+punlearn dmstat ; dmstat agn_psf_0.85keV.fits centroid=no
+
+AXAF_2DPSF
+    min:	0	      @:	( 4065 4086 )
+    max:	0.2405204922        @:	( 4192 4214 )
+   mean:	1.9989199767e-05 
+  sigma:	0.0017835706904 
+    sum:	1.3100121959 
+   good:	65536 
+   null:	0 
+~~~~~~~~~~~~~~~~~~~
+
+Now normalize th PSF image to the source counts (1421 counts). The PSF
+image is multiplied by 1421/1.3100121959 to give 1084.7 counts.
+
+~~~~~~~~~~~~~~~~~~~
+punlearn dmimgcalc ; dmimgcalc infile=agn_psf_0.85keV.fits infile2=none weight=1084.7 operation=add out=agn_psf_0.85keV_norm.fits clobber=yes verbose=2
+
+Input file 1: agn_psf_0.85keV.fits
+Input file 2: none
+Output file: agn_psf_0.85keV_norm.fits
+~~~~~~~~~~~~~~~~~~~
+
+Remember to check the output norm psf too.
+
+~~~~~~~~~~~~~~~~~~~
+punlearn dmstat ; dmstat agn_psf_0.85keV_norm.fits centroid=no 
+
+agn_psf_0.85keV_norm.fits
+    min:        0             @:        ( 4065 4086 )
+    max:        281.4187603           @:        ( 4193 4214 )
+   mean:        0.021675606297 
+  sigma:        2.0306454528 
+    sum:        1420.5325343 
+   good:        65536 
+   null:        0 
+~~~~~~~~~~~~~~~~~~~
+
+The output PSF counts are ~1421 and the source counts are 1421. CHECKS!

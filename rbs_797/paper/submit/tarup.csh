@@ -1,0 +1,1 @@
+tar -czvf ms.tar.gz 1.4.ps 325.ps 4.8.ps 8.4.ps aastex.cls agn.tex apj_hyperref.bst cavagnolo.bib cav_config.eps cavities.tex common.sty edec.eps figs.tex ms.tex nucspec.ps pannorm.eps r797_nhfro.eps radiofit.eps rbs797_opt.ps rbs797.ps sfr.tex sub_inner.ps suboptcolor.ps suboptrad.ps sub_outer.ps totals.tex wdec.eps

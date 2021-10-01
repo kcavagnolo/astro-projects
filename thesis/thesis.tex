@@ -1,0 +1,210 @@
+%%%%%%%%%%%%%%%%
+% New commands %
+%%%%%%%%%%%%%%%%
+
+\input{newcomm}
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+\documentclass[final]{msuthesis}
+%\documentclass[twoside]{msuthesis}
+%\documentclass[draft]{msuthesis}
+\usepackage{mathrsfs,common,setspace,longtable}
+\allowlos{}
+\bibliographystyle{apj}
+\copyrightyear{2008}
+\title{\mytitle}
+\author{Kenneth W. Cavagnolo}
+\subject{Astronomy \& Astrophysics}
+\degree{Doctor of Philosophy}
+\department{Department of Astronomy and Astrophysics}
+\advisor{Dr. Megan Donahue}
+\colorfigures
+%\multivolume
+
+%%%%%%%%%%%
+% Symbols %
+%%%%%%%%%%%
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\abstract{
+\input{abstract.tex}
+}
+
+%%%%%%%%%%%%%%
+% Dedication %
+%%%%%%%%%%%%%%
+
+\dedication{Dedicated to my mother: Miss Lorna Lorraine Cox.}
+
+%%%%%%%%%%%%%%%%%%%
+% Acknowledgments %
+%%%%%%%%%%%%%%%%%%%
+\acknowledgments{
+\classack My dissertation would not have been possible without the
+multitude of grants from NASA and the Chandra X-ray Center. I also
+thank the MSU College of Natural Science for awarding me the
+Dissertation Completion Fellowship which helped fund my final year at
+MSU.
+
+My deepest thanks to Megan Donahue and Mark Voit for their guidance,
+wisdom, patience, and without whom I would be in quantum computing. I
+can only say, ``Thank you, Megan,'' for allowing me the time and space
+to find my bearings after my mother's passing, words are insufficient
+to express my gratitude. Many thanks to my friend Ming Sun who always
+listened, always had time for a question, and was never wrong. Thanks
+also to Jack Baldwin who nutured my painfully slow development as a
+research assistant -- a more soothing voice there has never been. On
+behalf of everyone that has never said so, ``We love you, Shawna
+Prater. MSU Astronomy and Astrophysics could not function without
+you.''  And of course, Debbie Simmons, without whom I would have been
+dropped from all courses and locked out of the building.
+
+Every time I feel the warmth of the Sun on my skin, it is an
+invigorating experience. Bathed in photons millions of years old from
+an inconceivably large nuclear power plant over a hundred million
+kilometers away, I feel connected to the Universe in a way that is
+surreal. To feel purposely cared for by the feckless Sun, whose
+existence and operation are arguably devoid of purpose, is quite
+profound. For that I say, ``Thank you, Sun!''}
+
+%%%%%%%%%%%
+% Preface %
+%%%%%%%%%%%
+
+\preface{Our universe is predominantly an untold story. Within a
+  larger, nested framework of complex mechanisms, humans evolved with
+  minimal impact on the systems which support and nurture our
+  existance. Yet, during the short epoch of global industrialization,
+  we have compromised the effectiveness and function of the systems
+  which formed the biodiversity which makes our planet such a
+  wonderful place. As an acknowledgment of our species' appreciation
+  for the Earth, and as a show of our understanding that humanity's
+  presence on Earth is fleeting, let us strive to utilize the pursuit
+  of knowledge, through application of reason and logic, such that our
+  actions benefit ``all the children, of all species, for all of
+  time'' \citep{2002c2c..book.....O}. Let us all exert effort such
+  that the Earth and the Universe will be enriched by humanity, and
+  that our actions -- local, global, and possibly interplanetary --
+  will leave the places we inhabit and visit nourished from our
+  presence.}
+
+%%%%%%%%%%%%
+% Initiate %
+%%%%%%%%%%%%
+
+\begin{document}
+%\extracopies
+\requirements
+
+%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction}
+\label{ch:intro}
+%%%%%%%%%%%%%%%%%%%%%%
+
+\input{intro}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Reprint cover page %
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\parbox[c][0.9\textheight][c]{\linewidth}{
+\begin{center}
+Chapter Two
+\end{center}
+\begin{spacing}{1.1}
+Cavagnolo, Kenneth W., Donahue, Megan, Voit, G. Mark, Sun, Ming
+(2008). Bandpass Dependence of X-ray Temperatures in Galaxy
+Clusters. {\underline{The Astrophysical Journal}}. 682:821-830.
+\end{spacing}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Bandpass Dependence of X-ray Temperatures in Galaxy Clusters}
+\label{ch:eband}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{energy_band}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Reprint cover page %
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\parbox[c][0.9\textheight][c]{\linewidth}{
+\begin{center}
+Chapter Three
+\end{center}
+\begin{spacing}{1.1}
+Cavagnolo, Kenneth W., Donahue, Megan, Voit, G. Mark, Sun, Ming
+(2008). Intracluster Medium Entropy Profiles For A Chandra Archival
+Sample of Galaxy Clusters. {\underline{The Astrophysical Journal
+Supplement Series}}. arXiv eprint 0902.1802.\\
+\end{spacing}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Intracluster Medium Entropy Profiles For A Chandra Archival Sample of Galaxy Clusters}
+\label{ch:ent_supp}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{ent_supp3}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Reprint cover page %
+%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\parbox[c][0.9\textheight][c]{\linewidth}{
+\begin{center}
+Chapter Four
+\end{center}
+\begin{spacing}{1.1}
+Cavagnolo, Kenneth W., Donahue, Megan, Voit, G. Mark, Sun, Ming
+(2008). An Entropy Threshold for Strong \halpha\ and Radio Emission in
+the Cores of Galaxy Clusters. {\underline{The Astrophysical
+Journal Letters}}. 683:107-110.\\
+\end{spacing}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{An Entropy Threshold for Strong \halpha\ and Radio Emission
+in the Cores of Galaxy Clusters}
+\label{ch:harad}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{haradent}
+
+%%%%%%%%%%%%%%%%%%
+\chapter{Summary}
+\label{ch:summary}
+%%%%%%%%%%%%%%%%%%
+
+\input{summary}
+
+%%%%%%%%%%%%%%%%
+%% APPENDICES %%
+%%%%%%%%%%%%%%%%
+
+\appendix
+\input{eband_tablecomm}
+\input{eband_tables}
+\input{ent_supp_tablecomm}
+\input{ent_supp_tables}
+\input{appendix}
+
+%%%%%%%%%%%%%%%%%%
+%% BIBLIOGRAPHY %%
+%%%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%

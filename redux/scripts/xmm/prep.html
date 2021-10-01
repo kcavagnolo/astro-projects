@@ -1,0 +1,421 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<!-- base href="http://www.sr.bham.ac.uk/xmm2/dataprep.html" --><title>Birmingham XMM Guide: Data Preparation</title></head><body bgcolor="#ffffff"><table border="1" width="100%"><tbody><tr><td><table color="#ffffff" bgcolor="#ffffff" border="1" cellpadding="10" cellspacing="0" width="100%"><tbody><tr><td><font color="black" face="" size="-1">This is <b><font color="#0039b6">G</font> <font color="#c41200">o</font> <font color="#f3c518">o</font> <font color="#0039b6">g</font> <font color="#30a72f">l</font> <font color="#c41200">e</font></b>'s <a href="http://www.google.com/intl/en/help/features.html#cached"><font color="blue">cache</font></a> of <a href="http://www.sr.bham.ac.uk/xmm2/dataprep.html"><font color="blue">http://www.sr.bham.ac.uk/xmm2/dataprep.html</font></a> as retrieved on Jan 22, 2008 23:07:52 GMT.<br>
+<b><font color="#0039b6">G</font> <font color="#c41200">o</font> <font color="#f3c518">o</font> <font color="#0039b6">g</font> <font color="#30a72f">l</font> <font color="#c41200">e</font></b>'s cache is the snapshot that we took of the page as we crawled the web.<br>
+The page may have changed since that time.  Click here for the <a href="http://www.sr.bham.ac.uk/xmm2/dataprep.html"><font color="blue">current page</font></a> without highlighting.<br>
+This cached page may reference images which are no longer available. Click here for the <a href="http://64.233.167.104/search?q=cache:zbG3NQg1d-AJ:www.sr.bham.ac.uk/xmm2/dataprep.html+http://www.sr.bham.ac.uk/xmm2/&amp;hl=en&amp;client=firefox-a&amp;gl=us&amp;strip=1"><font color="blue">cached text</font></a> only.<br>To link to or bookmark this page, use the following url: <code>http://www.google.com/search?q=cache:zbG3NQg1d-AJ:www.sr.bham.ac.uk/xmm2/dataprep.html+http://www.sr.bham.ac.uk/xmm2/&amp;hl=en&amp;ct=clnk&amp;cd=3&amp;gl=us&amp;client=firefox-a</code></font><br><br><center><font size="-2"><i>Google is neither affiliated with the authors of this page nor responsible for its content.</i></font></center></td></tr>
+<tr><td>
+<font color="black" face="" size="-1">These terms only appear in links pointing to this page: <b>http www sr bham ac uk xmm2 </b></font>
+</td></tr></tbody></table></td></tr></tbody></table>
+<hr>
+<div style="position: relative;">
+
+
+
+
+<a name="top">
+
+</a><hr noshade="noshade">
+<center>
+<h1>
+<a name="top"><i><font color="#0000c0">Birmingham XMM Guide: Data Preparation</font></i></a></h1></center>
+
+<hr noshade="noshade">
+<p>
+
+</p><ul>
+<a href="#setup">Initial setup</a><br>
+<a href="#proc">Process the ODFs</a><br>
+<a href="#clean">Clean and filter the data</a><br>
+</ul>
+<p>
+</p><hr>
+<br>
+
+<h2><a name="setup">Initial setup</a></h2>
+<ul><li>Set up your system by starting up ftools, ciao, and sas. I recommend 
+starting them in that order because you get access to a slightly better 
+version of ds9 with SAS
+
+<pre>xun4&gt; heasoft 
+xun4&gt; ciao 
+xun4&gt; sasstart
+</pre>
+</li></ul>
+<p>
+
+</p><ul><li>Now copy your data from the CD to a disk on the machine that you 
+intend to use for your analysis. Most of the data should be in a directory 
+called odf. Note, if you get your data on two CDs, which both contain odf 
+directories, then move them all into one directory called odf.
+
+<p>
+For example in my analysis of cluster J1226, I created a directory called 
+j1226 and unpacked my cd to there, giving me:
+</p><pre>xun4&gt; ls
+odf/                              x_20010727_0000003189_01_02.dsk*
+pipeprod/                         x_20010727_0000003189____02.set*
+voldesc.sfd*
+</pre>
+</li></ul>
+<p>
+
+</p><ul><li>All the files in the odf must have uppercase names. If they don't, then 
+use upcase.csh to rename them.
+
+<p>
+ e.g. While still in j1226, I typed: <br>
+
+</p><pre>xun4&gt; upcase.csh odf
+
+--------------------UPCASE.CSH version 1---------------------
+
+Input was /exgal1/bjm/scripts/upcase.csh odf
+
+Filenames in odf have been uppercased, uppercaseing script written 
+to rename.csh 
+-------------------------------------------------------------
+</pre>
+
+where rename.csh is the script that actually renames 
+the files (just a list of 'mv name.fit NAME.FIT')
+</li></ul>
+<p>
+
+</p><ul><li>Now you need to set some environment variables for this session. 
+To do this, move into the odf directory, and source xmmsetup.csh. This
+will set the variables, and runs cifbuild to make a ccf.cif file (contains 
+calibration info) and odfingest to make a SUM.SAS file (a summary of the 
+observation). This will take 5-10 mins. Note that if the calibration is 
+updated, you MAY want to run cifbuild again. To do this, delete the 
+ccf.cif file in odf, and source xmmsetup.csh again.
+<p> 
+Note also that if you start working in a new terminal, or logout, and 
+come back to this data, you'll need to set the environment variables 
+again. To do this, simply run xmmsetup.csh as before, in the odf 
+directory. If files called *SUM.SAS and ccf.cif exist, then the script 
+won't run odfingest or cifbuild respectively. Some datasets may come 
+with SUM.SAS or CIF files already created, so you will need to rename 
+these if you want xmmsetup.csh to create your own for you.
+
+</p><p> 
+So I did: 
+</p><pre>xun4&gt; cd odf/
+xun4&gt; source /xmm2/bjm/scripts/xmmsetup.csh
+
+----------------------XMMSETUP.CSH version 1.1---------------------
+ 
+No ccf.cif file found, so running cifbuild...\n <br>
+No SUM.SAS file found, so running odfingest...\n <br>
+-------------------------------------------------------------------
+</pre>
+</li></ul>
+<p>
+
+</p><ul><li>Now to look at the environment variables that have been set, type
+
+<pre>xun4&gt; setenv | grep SAS
+SAS_DIR=/soft/xmm/solaris/xmmsas_20010917_1110
+SAS_PATH=/soft/xmm/solaris/xmmsas_20010917_1110
+SAS_CCF=/xmm2/bjm/xmm/newj1226/odf/ccf.cif
+SAS_CCFPATH=/xmm2/caldb/xmm/ccf
+SAS_IMAGEVIEWER=ds9
+SAS_ODF=/xmm2/bjm/xmm/newj1226/odf/0279_0070340501_SCX00000SUM.SAS
+SAS_CCFFILES=/xmm2/caldb/xmm/ccf
+SAS_VERBOSITY=1
+SAS_SUPRESS_WARNING=3
+</pre>
+</li></ul><p>
+<a href="#top">back to top</a></p><p>
+</p><hr>
+
+<h2><a name="proc">Process the ODFs</a></h2>
+<ul><li>Next we want to run the processing tools to process the odf
+files into useful events lists. There are two types of tool available,
+the procs (epproc and emproc) and the chains (epchain and emchain)
+which do essentially the same job. However, the chains allow more user
+control, and can also be set to keep intermediate files (like the
+badpixel files) and can be stopped at certain points and restarted at
+others. An example of when this is useful is to stop the chain after
+bad pixel detection, add, or remove some pixels from the badpixel list,
+then complete the chain, if you're not happy with the bad pixels it
+detects by itself. The chains also appear to do a better job of
+detecting bad pixels and events than the procs, so I would recommend
+using them.
+<p>Move up a level, and make directories called epchain and emchain, then move into one, say 
+emchain. For these stages, it's useful to keep a log of the outputs of emchain and epchain...
+
+</p><pre>xun4&gt; ls
+emchain/                           rename.csh*
+epchain/                           voldesc.sfd*
+odf/                              x_20010727_0000003189_01_02.dsk*
+pipeprod/                         x_20010727_0000003189____02.set*
+
+xun4&gt; cd emchain/
+xun4&gt; nice +19 emchain |&amp; tee emchain_log.txt
+</pre>
+
+This last line starts emchain running (nicely!) which will output 
+LOADS of info to the screen, and take a while (30-60mins). The command 
+tee keeps a log of everything that goes to the screen in the file 
+emchain_log.txt (the &amp; also logs standard error output)
+
+<p>
+Next you want to move to the epchain directory, and run epchain
+
+</p><pre>xun4&gt; cd ../epchain/
+xun4&gt; nice +19 epchain |&amp; tee epchain_log.txt
+</pre>
+
+Which will output even more, and take even longer (couple of hours).
+<p>
+Note here that these chains will have already been done on your data 
+to produce the files in the products/ directory on your CD or in the 
+archive. I personally prefer to run them myself, and create all my own 
+products from the ODF, but note that this may just duplicate work that 
+has already been done in the products/ directory, and the files there 
+can be used for science, and are certainly useful to have a quick look 
+at the data.
+</p></li></ul>
+<p>
+
+</p><ul><li>You should now have an events list for the 2 MOS and 1 PN camera, 
+and identical attitude housekeeping files (AttHk), called something 
+like this:
+
+<pre>xun4&gt; ls emchain/
+atthk.dat
+emchain_log.txt
+P0070340501M1S001MIEVLI0000.FIT 
+P0070340501M2S002MIEVLI0000.FIT                                        
+xun4&gt; ls epproc/
+P0070340501PNS003PIEVLI0000.FIT  
+atthk.dat
+epchain_log.txt
+</pre>
+
+I then rename these to something obvious in my j1226 directory, like:
+
+<pre>xun4&gt; cp emchain/atthk.dat atthk.dat
+xun4&gt; cp emchain/P0070340501M1S001MIEVLI0000.FIT mos1_raw_evt.fits
+xun4&gt; cp emchain/P0070340501M2S002MIEVLI0000.FIT mos2_raw_evt.fits 
+</pre>
+
+Then I zip up the contents of emchain/ for safe keeping, and do the 
+same for PN events, so now in j1226, I have:
+
+<pre>xun4&gt; ls
+atthk.dat                          odf/
+emchain/                           pn_raw_evt.fits
+epchain/                           rename.csh*
+voldesc.sfd*			  pipeprod/
+mos1_raw_evt.fits                 x_20010727_0000003189_01_02.dsk*
+mos2_raw_evt.fits                 x_20010727_0000003189____02.set*
+</pre>
+</li></ul><p>
+<a href="#top">back to top</a></p><p>
+</p><hr>
+
+<h2><a name="clean">Clean and filter the data</a></h2>
+<ul><li> Next we want to clean and filter the events. First we clean the raw events by removing times when the background is flaring.
+
+<p>
+Make a directory called cleaning, move into it, and make links to your 
+filtered events. e.g.:
+
+</p><pre>xun4&gt; ln -s ../mos1_raw_evt.fits
+</pre>
+
+Now run xmmlight_clean.csh, a script which which recursively cleans the 
+data by removing all bins with counts &gt; 3sigma from mean, finds new mean, 
+new sigma, and repeats till it's stable. It is a bit sensitive to binsize, 
+so vary this to see if there is a large variation in the amount of time 
+removed. Note that by default the script makes a lightcurve in the range 
+10-15keV and uses this as the basis for the cleaning.
+
+<p> This step can be combined with some data quality filtering in one
+step, and it is easier, and probably better to do this, but I explain
+it seperately here to illustrate a couple of points. <a href="#note2">See the note below</a>.
+
+</p><pre>xun4&gt; xmmlight_clean.csh mos1_raw_evt.fits none 50 m1clean_ | tee m1clean_log.txt
+
+--------------------XMMLIGHT_CLEAN.CSH version 2---------------------
+
+Input was /exgal1/bjm/scripts/xmmlight_clean.csh mos1_raw_evt.fits none 50 m1lclean_
+
+Creating lightcurve histogram...
+  histogram written to m1lclean_lc_hist.fits
+
+Recursively cleaning the data until the mean counts per bin is constant
+
+  step 1   reduction in mean rate = 107.675 counts per bin
+  step 2   reduction in mean rate = 81.0015 counts per bin
+  step 3   reduction in mean rate = 57.4504 counts per bin
+  step 4   reduction in mean rate = 43.4806 counts per bin
+  step 5   reduction in mean rate = 19.1034 counts per bin
+  step 6   reduction in mean rate = 20.5706 counts per bin
+  step 7   reduction in mean rate = 14.1304 counts per bin
+  step 8   reduction in mean rate = 19.104 counts per bin
+  step 9   reduction in mean rate = 20.9666 counts per bin
+  step 10   reduction in mean rate = 20.2208 counts per bin
+  step 11   reduction in mean rate = 21.3565 counts per bin
+  step 12   reduction in mean rate = 29.4227 counts per bin
+  step 13   reduction in mean rate = 12.8295 counts per bin
+  step 14   reduction in mean rate = 7.25295 counts per bin
+  step 15   reduction in mean rate = 8.90328 counts per bin
+  step 16   reduction in mean rate = 8.59943 counts per bin
+  step 17   reduction in mean rate = 4.99702 counts per bin
+  step 18   reduction in mean rate = 8.01233 counts per bin
+  step 19   reduction in mean rate = 3.08048 counts per bin
+  step 20   reduction in mean rate = 1.49638 counts per bin
+  step 21   reduction in mean rate = 0 counts per bin
+  Cleaned histogram written to m1lclean_lc_hist_clean.fits
+
+Creating GTI file for time bins with (-2793.21 &lt; counts &lt; 1042.72) 
+    (&lt;20.8544 counts/s)...
+  GTI written to m1lclean_gti.fits
+
+Applying GTI to events...
+Cleaned events written to m1lclean_clean_evt.fits with mean rate 
+    6.80458 counts/s and a standard deviation of 4.6833 counts/s
+ 
+Old LIVETIME was 2.97136378364563E+04s, xmmlight_clean removed 7244.12s, 
+    leaving a LIVETIME of 2.24695147724152E+04s
+
+Lightcurve plotted to m1lclean_lc.eps and chipsscript written to 
+    m1lclean_chipsscript.txt
+----------------------------------------------------------------------
+</pre>
+
+<p>
+Repeat the cleaning for mos2 and pn, then move the cleaned, filtered data 
+back up a level, and delete any unwanted intermediate files - in cleaning 
+you should keep all the rootchipsscript, rootlc_hist, rootlc_hist_clean, 
+rootlc.eps files, and of course, your logs!
+
+</p><p>
+</p></li><li>Now we also need to apply some filtering to the events. There are various 
+criteria by which one can do this. Firstly, events are given a quality 
+flag. Broadly speaking, a flags &lt; 1024 are okay, and flags &gt;= 1024 are bad, 
+but the flags have different meanings for MOS and PN. Help is at hand, 
+though because the XMM chaps have collected together the flags they think 
+are best to select on into two variables, #XMMEA_EP for PN, and #XMMEA_EM 
+for MOS, which can just be used in the selection expression of evselect 
+(or my xmmfilter.csh and xmmlight_clean.csh).
+
+<p>
+
+</p><ul><li>
+A useful ftool is fstatistic, which will give statistics on a column of 
+a fits file, for example:
+
+<pre>xun4&gt; fstatistic mos1_raw_evt.fits flag -
+ The sum of the selected column is                   2785304.0
+ The mean of the selected column is                  5.2464014
+ The standard deviation of the selected column is    103.41005
+ The minimum of selected column is                          0.
+ The maximum of selected column is                   2050.0000
+ The number of points used in calculation is           530898 
+</pre>
+
+So before I do any cleaning, I have flags up to 2050
+</li>
+</ul>
+
+<p>
+We will also want to filter on pattern - events are given a pattern 
+depending on how many pixels they are detected in, i.e. single pixels, 
+double pixels...
+
+</p><p>
+For MOS, (see file:///soft/xmm/linux/xmmsas_20010618_1522/doc/emevents/node4.html)
+and PN (see http://xmm.vilspa.esa.es/sas/current/doc/epevents/node10.html)
+
+</p><pre> pattern 0 = single event
+ pattern 1-4 = double event
+         5-8 = triple
+         9-12 = quad
+</pre>
+
+Note, though, that the spectral responses are well calibrated for patterns 
+&lt;= 4 for PN, and patterns &lt;=12 for MOS. My approach has been to filter the 
+events lists into these ranges for each camera at this stage. However, 
+higher patterns should be okay for imaging (though not quite as reliable) 
+so if you're short of photons, you may want to apply less strict filtering 
+for imaging work.
+
+<p>
+So, I'm going to filter my MOS data with flag #XMMEA_EM and pattern &lt;= 12
+
+</p><p>
+To do this, I use a script called xmmfilter.csh which simply acts as a 
+user-friendly front end for the SAS tool evselect.
+(NOTE: This step can be combined with lightcurve cleaning, but is 
+included as an example of using xmmfilter.csh - the next step explains how to do this.)
+
+</p><pre>xun4&gt; xmmfilter.csh m1lclean_clean_evt.fits events mos1_P12Flag_evt.fits '#XMMEA_EM&amp;&amp;(PATTERN &lt;= 12)' none
+
+--------------------xmmfilter.csh version 1---------------------
+
+Input was /exgal1/bjm/scripts/xmmfilter.csh m1lclean_clean_evt.fits events 
+    mos1_P12Flag_evt.fits #XMMEA_EM&amp;&amp;(PATTERN &lt;= 12) none
+
+Creating new events file...
+
+evselect table=mos1_raw_evt.fits withfilteredset=yes 
+    filteredset=mos1_P12Flag_evt.fits filtertype=expression 
+    expression=#XMMEA_EM&amp;&amp;(PATTERN &lt;= 12) destruct=yes keepfilteroutput=yes 
+    writedss=yes
+
+Output events written to mos1_P12Flag_evt.fits
+
+There are 529034 events in the filter.
+-----------------------------------------------------------------
+</pre>
+
+This step is repeated for MOS2 and PN, though with PN, my filter is 
+'#XMMEA_EP&amp;&amp;(PATTERN &lt;= 4)'
+</li>
+
+<p>
+<a name="note2">
+</a></p><li><a name="note2"><u>Combining filtering with cleaning.</u>
+This step can be combined with the flare removal, by telling
+xmmlight_clean.csh your filter. The events are then filtered on flag
+and pattern before the lightcurve is cleaned, which should help to
+minimise the time removed. So we could have just linked to the raw
+events:
+</a><pre><a name="note2">xun4&gt; ln -s ../mos1_raw_evt.fits
+and then used:
+xun4&gt; xmmlight_clean.csh mos1_raw_evt.fits '#XMMEA_EM&amp;&amp;(PATTERN &lt;= 12)' 50 
+      m1lclean_ | tee m1lclean_log.txt
+</a></pre>
+
+<a name="note2">So in j1226/ I now have:
+
+</a><pre><a name="note2">xun4&gt; ls
+atthk.dat                          odf/
+cleaning/                         pipeprod/
+emchain/                           pn_clean_evt.fits
+epchain/                           pn_raw_evt.fits
+mos1_clean_evt.fits               rename.csh*
+mos1_raw_evt.fits                 voldesc.sfd*
+mos2_clean_evt.fits               x_20010727_0000003189_01_02.dsk*
+mos2_raw_evt.fits                 x_20010727_0000003189____02.set*
+</a></pre>
+
+<a name="note2">Right, now we've done the data prep, we can do some analysis. This will 
+fall into the largely separate categories of </a><a href="http://www.sr.bham.ac.uk/xmm2/imaging.html">imaging analysis</a>, and <a href="http://www.sr.bham.ac.uk/xmm2/spectra.html">spectral analysis</a>.
+</li>
+</ul>
+<p>
+<a href="#top">back to top</a></p><p>
+
+    </p><hr>
+    <address><a href="mailto:bjm@star.sr.bham.ac.uk">Ben Maughan</a></address>
+<!-- Created: Wed Jan 30 11:55:44 GMT 2002 -->
+<!-- hhmts start -->
+Last modified: Fri Mar  1 14:31:40 GMT 2002
+<!-- hhmts end -->
+  
+</div></body></html>

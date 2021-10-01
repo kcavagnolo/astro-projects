@@ -1,0 +1,904 @@
+%%%%%%%%%%%%%%%%%%%
+% Custom commands %
+%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\dmb}{\ensuremath{\dot{m_{\rm{B}}}}}
+\newcommand{\dme}{\ensuremath{\dot{m_{\rm{E}}}}}
+\newcommand{\ldisk}{\ensuremath{L_{\rm{disk}}}}
+\newcommand{\ms}{MS 0735.6+7421}
+\newcommand{\myi}{\ensuremath{I}}
+\newcommand{\myv}{\ensuremath{V}}
+\newcommand{\rbs}{RBS 797}
+\newcommand{\reff}{\ensuremath{r_{\rm{eff}}}}
+\newcommand{\rlos}{\ensuremath{r_{\rm{los}}}}
+\newcommand{\mykeywords}{galaxies: active -- galaxies: clusters:
+  general -- galaxies: clusters: intracluster medium -- X-rays:
+  galaxies: clusters}
+\newcommand{\mystitle}{\rbs\ AGN Outburst}
+\newcommand{\mytitle}{A Powerful, Possibly Line-of-Sight, AGN Outburst
+  in RBS 797}
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+\documentclass[11pt, preprint]{aastex}
+\usepackage{graphicx,common,longtable}
+%\documentclass[iop]{emulateapj-rtx4}
+%\documentclass[iop]{emulateapj}
+%\usepackage{apjfonts,common,graphicx,longtable}
+\usepackage[pagebackref,
+  pdftitle={\mytitle},
+  pdfauthor={K. W. Cavagnolo},
+  pdfkeywords={\mykeywords},
+  pdfsubject={Astrophysical Journal},
+  pdfproducer={ps2pdf},
+  pdfcreator={LaTeX with hyperref}
+  pdfdisplaydoctitle=true,
+  colorlinks=true,
+  citecolor=blue,
+  linkcolor=blue,
+  urlcolor=blue]{hyperref}
+\bibliographystyle{apj}
+\begin{document}
+\title{\mytitle}
+\shorttitle{\mystitle}
+\author{
+  K. W. Cavagnolo\altaffilmark{1,2},
+  B. R. McNamara\altaffilmark{1,3,4},
+  M. W. Wise\altaffilmark{5}, \\
+  P. E. J. Nulsen\altaffilmark{4},
+  M. Br\"uggen\altaffilmark{6}, 
+  M. Gitti\altaffilmark{4,7}, and
+  D. A. Rafferty\altaffilmark{8}
+}
+\shortauthors{Cavagnolo et al.}
+
+\altaffiltext{1}{Department of Physics \& Astronomy, University of
+  Waterloo, Waterloo, ON, Canada.}
+\altaffiltext{2}{UNS, CNRS UMR 6202 Cassiop\'{e}e, Observatoire de la
+  C\^{o}te d'Azur, Nice, France.}
+\altaffiltext{3}{Perimeter Institute for Theoretical Physics,
+  Waterloo, ON, Canada.}
+\altaffiltext{4}{Harvard-Smithsonian Center for Astrophysics,
+  Cambridge, MA, USA.}
+\altaffiltext{5}{Astronomical Institute Anton Pannekoek, University
+  of Amsterdam, Amsterdam, Netherlands.}
+\altaffiltext{6}{Jacobs University Bremen, Bremen, Germany.}
+\altaffiltext{7}{Astronomical Observatory of Bologna-INAF, Bologna,
+  Italy.}
+\altaffiltext{8}{Leiden Observatory, University of Leiden, Leiden,
+  Netherlands.}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+  Using a $50$ kilosecond Chandra X-ray Observatory image, we present
+  a analysis of the hot intracluster medium (ICM) and cavity system in
+  the galaxy cluster RBS 797. In addition to the two previously known
+  cavities in the cluster core, the new and deeper image has revealed
+  additional structure associated with the AGN. The surface
+  brightness decrements of the two cavities are unusually large, and
+  are consistent with elongated cavities lying along our
+  line-of-sight. We estimate a total AGN outburst energy and mean jet
+  power of $\approx 1-3 \times 10^{60}$ erg and $\approx 1-3 \times
+  10^{45} ~\lum$, respectively, depending on the assumed geometrical
+  configuration of the cavities. Thus, RBS 797 is apparently among
+  the the most powerful AGN outbursts known in a cluster. The average
+  mass accretion rate needed power the AGN by accretion alone is $\sim
+  1 ~\msolpy$. We show that accretion of cold gas onto the AGN at
+  this level is plausible, but that Bondi accretion of the hot
+  atmosphere is probably not. The BCG harbours an unresolved,
+  non-thermal nuclear X-ray source with a luminosity of $\lbol = 2.3
+  \times 10^{44} ~\lum$. The nuclear emission is probably associated
+  with a rapidly-accreting, radiatively inefficient accretion flow.
+  We present tentative evidence that star formation in the BCG is
+  being triggered by the radio jets.
+\end{abstract}
+
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
+
+\keywords{\mykeywords}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%
+
+Evidence gathered over the last decade suggests that the growth of
+galaxies and supermassive black holes (SMBHs) are coupled. This
+coupling may be governed by energetic feedback from active galactic
+nuclei (AGN) which regulates the growth of galaxies and their SMBHs
+\citep[\eg][]{1995ARA&A..33..581K, 1998A&A...331L...1S,
+  2000MNRAS.311..576K, 2002ApJ...574..740T}. The discovery of AGN
+induced cavities associated with cooling hot halos of massive galaxies
+and clusters has strengthened this idea \citep[see][for
+  reviews]{mcnamrev, Peterson \& Fabian 2006} by revealing that AGN
+mechanical heating is capable of regulating the radiative cooling of
+hot halos \citep[\eg][]{birzan04, dunn06, rafferty06}. {\bf Ken need
+  to add Peterson & Fabian 06 reference}
+
+Models of AGN feedback in the so-called ``radio mode'' posit that
+cooling gas from a galaxy's hot halo accretes onto the central SMBH,
+driving AGN activity that eventually offsets cooling in a thermally
+regulated feedback loop \citep[\eg][]{croton06, bower06, sijacki07,
+  McNamara \& Nulsen 2007}. While there is direct evidence that halo
+cooling and feedback are linked \citep[\eg][]{haradent, rafferty08},
+the observational constraints on how AGN are fueled and powered are
+more difficult to establish. Gas accretion alone can, in principle,
+fuel most AGN \citep[\eg][]{pizzolato05, 2006MNRAS.372...21A}.
+\citep[\eg][]{rafferty06}. However, for some relatively gas-poor
+systems hosting the energetic AGN exceeding $10^{61}$ erg (eg.,
+Hercules A, Hydra A, \ms\ , 3C444 {\bf Ken the reference to 3C444
+  is \bibitem[Croston et al.(2010)]{2010arXiv1011.6405C} Croston,
+  J.~H., Hardcastle, M.~J., Mingo, B., Evans, D.~A., Dicken, D.,
+  Morganti, R., \& Tadhunter, C.~N.\ 2010, arXiv:1011.6405 which we
+  should include} it has been pointed out that gas accretion alone may
+have difficulty sustaining their AGN unless accretion is unusually
+efficient. This problem has lead to speculation that some BCGs may
+host ultramassive black holes \citep[$> 10^{10} ~\msol$;
+  \eg][]{msspin}, or that some AGN are powered by the release of
+energy stored in rapidly-spinning SMBH \citep[\eg][]{minaspin}. In
+this paper, we explore these and other issues through an analysis of
+the powerful AGN outburst in the the RBS 797 cluster.
+
+The discovery of AGN-driven cavities in the intracluster medium (ICM)
+of \rbs\ was first reported by \citet{schindler01} using data from the
+Chandra X-ray Observatory (\cxo). Multifrequency radio observations
+showed that the cavities are co-spatial with extended radio emission
+centered on a strong, jetted radio source coincident with the
+\rbs\ brightest cluster galaxy (BCG) \citep{2002astro.ph..1349D,
+  gitti06, birzan08}. The observations implicate an AGN in the BCG as
+the cavities' progenitor, and \citet[][hereafter B04]{birzan04}
+estimate the AGN deposited $\approx 10^{60}$ erg of energy into the
+ICM at a rate of $\approx 10^{45} ~\lum$.
+
+The B04 analysis assumed the cavities are roughly spherical, symmetric
+about the plane of the sky, and that their centers lie in a plane
+passing through the central AGN and perpendicular to our
+line-of-sight. However, the abnormally deep surface brightness
+decrements of the cavities, and the nebulous correlation between the
+radio and X-ray morphologies, suggests the system may be more complex
+than B04 could constrain. Using a longer, follow-up \cxo\ observation,
+we examine the cavity system and other structure associated with the
+AGN, and we conclude that the AGN is probably more powerful than
+earlier estimates.
+
+Reduction of the X-ray and radio data is discussed in Section
+\ref{sec:obs}. Interpretation of observational results are given
+throughout Section \ref{sec:results}, and a brief summary concludes
+the paper in Section \ref{sec:con}. \LCDM. At a redshift of $z =
+0.354$, the look-back time is 3.9 Gyr, $\da = 4.996$ kpc
+arcsec$^{-1}$, and $\dl = 1889$ Mpc. All spectral analysis errors are
+90\% confidence, while all other errors are 68\% confidence.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Observations}
+\label{sec:obs}
+%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{X-ray Data}
+\label{sec:xray}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\rbs\ was observed with \cxo\ in October 2000 for 11.4 ks using the
+ACIS-I array (\dataset [ADS/Sa.CXO#Obs/02202] {ObsID 2202}) and in
+July 2007 for 38.3 ks using the ACIS-S array (\dataset
+[ADS/Sa.CXO#Obs/07902] {ObsID 7902}). Datasets were reduced using
+\ciao\ and \caldb\ versions 4.2. Events were screened of cosmic rays
+using \asca\ grades and {\textsc{vfaint}} filtering. The level-1
+events files were reprocessed to apply the most up-to-date corrections
+for the time-dependent gain change, charge transfer inefficiency, and
+degraded quantum efficiency of the ACIS detector. The afterglow and
+dead area corrections were also applied. Time intervals affected by
+background flares exceeding 20\% of the mean background count rate
+were isolated and removed using light curve filtering. The final,
+combined exposure time is 48.8 ks. Point sources were identified and
+removed via visual inspection and use of the \ciao\ tool
+{\textsc{wavdetect}}. We refer to the \cxo\ data free of point sources
+and flares as the ``clean'' data. A mosaiced, fluxed image (see Figure
+\ref{fig:img}) was generated by exposure correcting each clean dataset
+and reprojecting the normalized images to a common tangent point.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Radio Data}
+\label{sec:radio}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+Very Large Array (\vla) radio images at 325 MHz (A-array), 1.4 GHz (A-
+and B-array), 4.8 GHz (A-array), and 8.4 GHz (D-array) are presented
+in \citet{gitti06} and \citet{birzan08}. Our re-analysis of the
+archival \vla\ radio observations yielded no significant differences
+with these prior studies. Using the rms noise ($\sigma_{\rm{rms}}$)
+values given in \citet{gitti06} and \citet{birzan08} for each
+observation, emission contours between $3\sigma_{\rm{rms}}$ and the
+peak image intensity were generated. These are the contours referenced
+and shown in all subsequent discussion and figures.
+
+%%%%%%%%%%%%%%%%%%%
+\section{Results}
+\label{sec:results}
+%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Cavity Morphologies and ICM Substructure}
+\label{sec:morph}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Shown in Figure \ref{fig:img} is the 0.7--2.0 keV \cxo\ mosaiced clean
+image. Outside of $\approx 50$ kpc, the global ICM morphology is
+regular and elliptical in shape, with the appearance of being skewed
+along the northwest-southeast direction. The cavities discovered by
+\citet{schindler01} are clearly seen in the cluster core east and west
+of the nuclear X-ray source and appear to be enclosed by a thick,
+bright, elliptical ridge of emission which we discuss further in
+Section \ref{sec:ecav}. The western cavity has more internal
+structure, and its boundaries are less well-defined, than the eastern
+cavity. The emission from the innermost region of the core is
+elongated north-south and has a distinct `S'-shape punctuated by a
+hard nuclear X-ray source.
+
+Multifrequency radio images overlaid with ICM X-ray contours are shown
+in Figure \ref{fig:composite}. \rbs\ radio properties are discussed in
+\citet{gitti06}, and we summarize here. As seen in projection, the
+nuclear 4.8 GHz jets are almost orthogonal to the axis connecting the
+cavities. Radio imaging at $\approx 5\arcs$ resolution reveals the 325
+MHz, 1.4 GHz, and 8.4 GHz radio emission are diffuse and extend
+well-beyond the cavities, more similar to the morphology of a radio
+mini-halo than relativistic plasma confined to the cavities
+\citep[][Doria et al., in preparation]{2008A&A...486L..31C}. Of all
+the radio images, the 1.4 GHz emission imaged at $\approx 1 \arcs$
+resolution most closely traces the cavity morphologies, yet it is
+still diffuse and uniform over the cavities with little structure
+outside the radio core. Typically, the connection between a cavity
+system, coincident radio emission, and the progenitor AGN is
+unambiguous. This is not the case for \rbs, which suggests the cavity
+system may be more complex than it appears.
+
+To better reveal the cavity morphologies, residual X-ray images of
+\rbs\ were constructed by modeling the ICM emission and subtracting it
+off. The X-ray isophotes of two exposure-corrected images -- one
+smoothed by a $1\arcs$ Gaussian and another by a $3\arcs$ Gaussian --
+were fitted with ellipses using the \iraf\ task \textsc{ellipse}. The
+ellipse centers were fixed at the location of the BCG X-ray point
+source, and the eccentricities and position angles were free to
+vary. A 2D surface brightness model was created from each fit using
+the \iraf\ task \textsc{bmodel}, normalized to the parent X-ray image,
+and then subtracted off. The residual images are shown in Figure
+\ref{fig:subxray}.
+
+In addition to the central east and west cavities (labeled E1 and W1),
+tentative evidence for depressions north and south of the nucleus
+(labeled N1 and S1) are revealed. N1 and S1 lie along the 4.8 GHz jet
+axis and are coincident with spurs of significant 1.4 GHz emission. A
+possible depression coincident with the southeastern concentration of
+325 MHz emission is also found (labeled E2), but no counterpart on the
+opposing side of the cluster is seen (labeled W2). The N1, S1, and E2
+depressions do not show-up in surface brightness profiles extracted in
+wedges passing through each feature. So while coincidence with the
+radio emission hints at additional cavities, a deeper image would be
+required to confirm them. There is also an X-ray edge which extends
+southeast from E2 and sits along a ridge of 325 MHz and 8.4 GHz
+emission. No substructure associated with the western-most knot of 325
+MHz emission is found, but there is a stellar object co-spatial with
+this region. The X-ray and radio properties of the object are
+consistent with those of a galactic RS CVn star
+\citep{1993RPPh...56.1145S} -- if the star is less than 1 kpc away,
+$\lx \la 10^{31} ~\lum$ and $L_{325} \sim 10^{27} ~\lum$ -- suggesting
+the western 325 MHz emission may not be associated with the cluster.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Radial ICM Properties}
+\label{sec:icm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In order to analyze the \rbs\ cavity system and AGN outburst
+energetics in-detail, the radial ICM density, temperature, and
+pressure structure need to be measured. The radial profiles are shown
+in Figure \ref{fig:gallery}. A temperature (\tx) profile was created
+by extracting spectra from concentric circular annuli (2500 source
+counts per annulus) centered on the cluster X-ray peak, binning the
+spectra to 25 counts per energy channel, and then fitting each
+spectrum in \xspec\ 12.4 \citep{xspec}. Spectra were modeled with an
+absorbed, single-component \mekal\ model \citep{mekal1} over the
+energy range 0.7--7.0 \keV. For each annulus, weighted responses were
+created and a background spectrum was extracted from the ObsID matched
+\caldb\ blank-sky dataset normalized using the ratio of 9--12 keV
+count rates for an identical off-axis, source-free region of the
+blank-sky and target datasets. The absorbing Galactic column density
+was fixed to $\nhgal = 2.28 \times 10^{20} ~\pcmsq$ \citep{lab}, and a
+spectral model for the Galactic foreground was included as an
+additional, fixed background component during spectral fitting (see
+\citealt{2005ApJ...628..655V} and \citealt{xrayband} for method). Gas
+metal abundance was free to vary and normalized to the \citet{ag89}
+solar ratios. Spectral deprojection using the {\textsc{projct}}
+\xspec\ model did not produce significantly different results, thus
+only projected quantities are discussed.
+
+A 0.7--2.0 keV surface brightness profile was extracted from the
+\cxo\ mosaiced clean image using concentric $1\arcs$ wide elliptical
+annuli centered on the BCG X-ray point source (central $\approx
+1\arcs$ and cavities excluded). A deprojected electron density
+(\nelec) profile was derived from the surface brightness profile using
+the method of \citet{kriss83} which incorporates the 0.7--2.0 keV
+count rates and best-fit normalizations from the spectral analysis
+\citep[see][for details]{accept}. Errors for the density profile were
+estimated using 5000 Monte Carlo simulations of the original surface
+brightness profile. A total gas pressure profile was calculated as $P
+= n \tx$ where $n \approx 2.3 \nH$ and $\nH \approx
+\nelec/1.2$. Profiles of enclosed X-ray luminosity, entropy ($K = \tx
+\nelec^{-2/3}$) and cooling time ($\tcool = 3 n \tx~(2 \nelec \nH
+\Lambda)^{-1}$, where $\Lambda$ is the cooling function), were also
+generated. Errors for each profile were determined by summing the
+individual parameter uncertainties in quadrature.
+
+The radial profiles are consistent with those of a normal cool core
+cluster: outwardly increasing temperature profile, centrally peaked
+abundance profile, central cooling time of $\approx 400$ Myr within 9
+kpc of the cluster center, and a pronounced entropy core. Fitting the
+ICM entropy profile with the function $K = \kna +\khun (r/100
+~\kpc)^{\alpha}$, where \kna\ [\ent] is core entropy, \khun\ [\ent] is
+a normalization at 100 kpc, and $\alpha$ is a dimensionless index,
+reveals $\kna = 17.9 \pm 2.2 ~\ent$, $\khun = 92.1 \pm 6.2 ~\ent$, and
+$\alpha = 1.65 \pm 0.11$ for \chisq(DOF)$ = 9.3(57)$. Further, the
+radial analysis does not indicate any significant temperature,
+density, or pressure discontinuities to signal the existence of
+large-scale shocks or cold fronts.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ICM Cavities}
+\label{sec:cavities}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Cavity Energetics}
+\label{sec:ecav}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Of all the ICM substructure, the E1 and W1 cavities are unambiguous
+detections, and their energetics were determined following standard
+methods (see B04). Our fiducial cavity configuration assumes the
+cavities are symmetric about the plane of the sky, and the cavity
+centers lie in a plane which is perpendicular to our line-of-sight and
+passes through the central AGN (configuration-1 in Figure
+\ref{fig:config}). Hereafter, we denote the line-of-sight distance of
+a cavity's center from this plane as $z$, and the cavity radius along
+the line-of-sight as \rlos. The volume of a cavity with $z = 0$ is
+thus $V = 4\pi a b \rlos/3$ where $a$ and $b$ are the projected
+semi-major and -minor axes, respectively, of the by-eye determined
+ellipses in Figure \ref{fig:subxray}. The projected morphologies of E1
+and W1 are similar enough that the same regions were used for
+both. Initially, the cavities were assumed to be roughly spherical and
+\rlos\ was set equal to the projected effective radius, $\reff =
+\sqrt{ab}$. For configuration-1, the distance of each cavity from the
+central AGN, $D$, is simply the projected distance from the ellipse
+centers to the BCG X-ray point source. A systematic error of 10\% is
+assigned to the cavity volumes.
+
+Cavity ages were estimated using the \tsonic, \tbuoy, and
+\trefill\ timescales discussed in B04. The \tsonic\ age assumes a
+cavity reaches its present distance from the central AGN by moving at
+the local sound speed, while \tbuoy\ assumes the cavity buoyantly
+rises at its terminal velocity. \trefill\ is simply the time required
+to refill the volume displaced by the cavity. The energy in each
+cavity, $\ecav = \gamma PV/(\gamma-1)$, was calculated assuming they
+are held in pressure support by a relativistic plasma ($\gamma =
+4/3$). We assume the cavities are buoyant structures and that the
+time-averaged power needed to create each cavity is $\pcav =
+\ecav/\tbuoy$. The individual cavity properties are given in Table
+\ref{tab:cavities} and the aggregate properties in Table
+\ref{tab:totals}.
+
+For the spherical assumption of configuration-1, we measure a total
+cavity energy $\ecav = 3.23 ~(\pm 1.16) \times 10^{60}$ erg and total
+power $\pcav = 3.34 ~(\pm 1.41) \times 10^{45} ~\lum$. These values
+are larger than those of B04 ($\ecav = 1.52 \times 10^{60}$ erg,
+$\pcav = 1.13 \times 10^{44} ~\lum$) by a factor of $\approx 3$. This
+difference is due to larger E1 and W1 volumes found in the deeper
+image. Using the B04 cavity volumes in place of our own produces no
+significant differences between our energetics calculations and those
+of B04. The largest uncertainties in the energetic calculations are
+the cavity volumes and their 3-dimensional locations in the ICM,
+issues we consider next.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Surface Brightness Decrements within the Cavities}
+\label{sec:dec}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A cavity's morphology and location in the ICM affects the X-ray
+surface brightness decrement it induces. If the surface brightness of
+the undisturbed ICM can be estimated, then the decrement is useful for
+constraining the cavity line-of-sight size and its distance from the
+launch point \citep[\eg\ \rlos\ and $z$; see][for details]{hydraa}. We
+adopt the \citet{hydraa} definition of surface brightness decrement,
+$y$, as the ratio of the X-ray surface brightness inside the cavities
+to the value of the best-fit ICM surface brightness $\beta$-model at
+the same radius. Note the potential for confusion, since small values
+of $y$ correspond to large decrements. Consistent with the analysis of
+\citet{schindler01}, we find the best-fit $\beta$-model has parameters
+$S_0 = 1.65 ~(\pm 0.15) \times 10^{-3}$ \sbr, $\beta = 0.62 \pm 0.04$,
+and $r_{\rm{core}} = 7.98\arcs \pm 0.08$ for \chisq(DOF) =
+79(97). Using a circular aperture with radius $1\arcs$ centered on the
+deepest part of each cavity, we measure mean decrements of
+$\bar{y}_{\rm{W1}} = 0.50 \pm 0.18$ and $\bar{y}_{\rm{E1}} = 0.52 \pm
+0.23$, with minima of $y^{\rm{min}}_{\rm{W1}} = 0.44$ and
+$y^{\rm{min}}_{\rm{E1}} = 0.47$.
+
+To check if the spherical approximation for cavity configuration-1 can
+produce the measured decrements, the best-fit $\beta$-model was
+integrated over each cavity with a column of gas equal to $2\rlos$
+excluded. Integration revealed that decrements $y < 0.67$ cannot be
+achieved for the spherical case, indicating our assumption of $\rlos =
+\reff$ is poor. If the centers of E1 and W1 lie in the plane of the
+sky, the minimum line-of-sight depths needed to reproduce the
+decrements of E1 and W1 are $\rlos^{\rm{E1}} = 23.35$ kpc and
+$\rlos^{\rm{W1}} = 25.96$ kpc. The energetics for these morphologies
+are given as configuration-1a in Tables \ref{tab:cavities} and
+\ref{tab:totals}. If the cavities are moving away from the AGN along
+an axis perpendicular to our line-of-sight, then it is a bit odd that
+the cavities are compressed in the direction orthogonal to their
+inflation. But, it may be that the cavities are larger along that axis
+than we realize, for example if the bright rims are masking the true
+extent of the cavities.
+
+It is also possible that the cavities are inflating close to our
+line-of-sight and thus may be large, elongated structures as shown in
+configuration-2 of Figure \ref{fig:config}. Presented in Figure
+\ref{fig:decs} are curves showing how surface brightness decrement
+changes as a function of $z$ for various \rlos. The plots demonstrate
+that it is possible to reproduce the measured E1 and W1 decrements
+using larger cavities that have centers displaced from the plane of
+the sky. Consequently, the limiting case of $z = 0$ is a lower-limit
+on the AGN outburst energetics. If the cavity system lies close to our
+line-of-sight, and is much larger and more complex than the data
+allows us to constrain, it may explain the additional ICM
+substructures seen in the residual images and the ambiguous
+relationship between the X-ray and radio morphologies.
+
+It should be noted that deep cavities like in \rbs\ are uncommon, with
+most other cavity systems having minima $y \ga 0.6$ (B04). The large
+decrements raise the concern that the $\beta$-model fit has been
+influenced by the rim-like structures of E1-W1 and produced
+artificially large decrements (small $y$). The prominent rims can be
+seen in Figure \ref{fig:pannorm} which shows the normalized surface
+brightness variation in wedges of a $2.5\arcs$ wide annulus centered
+on the X-ray peak and passing through the cavity midpoints. In
+addition to excluding the cavities, we tried excluding the rims during
+$\beta$-model fitting, but this did not provide insight as too much of
+the surface brightness profile was removed and the fit did not
+converge. Extrapolating the surface brightness profile at larger radii
+inward resulted in even lower decrements. The rims, and their possible
+connection to gas shocking, are discussed below.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Do the Rims Indicate Shocks?}
+\label{sec:shocks}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+It is often assumed that cavity energetics calculations, like those in
+Section \ref{sec:ecav}, provide a reasonable estimate of the jet
+power, \pjet. However, \pcav\ and \pjet\ do not account for AGN output
+energy which may be channeled into shocks. Though the \cxo\ data does
+not indicate the presence of significant density or temperature jumps
+-- which would confirm the presence of a shock -- the cavity/rim
+morphologies and energetics are strikingly similar to those of \ms,
+which hosts a large-scale Mach $\approx 1.4$ shock. If significant ICM
+shocking has occurred in \rbs, then the cavity energetics clearly
+underestimate the AGN output, which directly impacts the discussion of
+AGN fueling in Section \ref{sec:accretion}.
+
+A simple model that captures how a bright, shocked rim helps enhance a
+cavity decrement is to assume the shocked region is cylindrical and
+uniformly compressed. Ignoring emission outside the shocked cylinder,
+a compression $\chi$ gives a decrement of $y = \sqrt{\chi} -
+\sqrt{\chi - 1}$, hence a decrement of $\ge 0.44$ can be obtained with
+$\chi \la 1.84$, \ie\ not dissimilar from the shock Mach numbers in
+Hercules A and \ms. This is a rough estimate (arguably pessimistic
+since the compressed gas is assumed to be uniform), but it
+demonstrates that we may be seeing shocking in \rbs. Assuming axial
+symmetry for the unshocked gas, including emission outside the
+cylinder adds more to the bright rim than the cavity center,
+increasing the surface brightness difference from rim to cavity, but
+generally reducing $y$. Because the ICM surface brightness drops
+rapidly outside the shocked region, the correction due to emission
+from outside the cylinder is modest, and it scales as $\chi^{-3/2}$,
+so its effect decreases as the compression increases.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Powering the Outburst}
+\label{sec:accretion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+If the AGN was powered by mass accretion alone, then \ecav\ gives a
+lower limit to the gravitational binding energy released as mass
+accreted onto the SMBH. Then, the total mass accreted can be
+approximated as $\macc = \ecav/(\epsilon c^2)$ with an average
+accretion rate $\dmacc = \macc/\tbuoy$. Apparently, the black hole's
+mass grew by $\ddmbh = (1-\epsilon)\macc$ at an average rate $\dmbh =
+\ddmbh/\tbuoy$ (see Table 2). Here, $\epsilon$ is the mass-energy
+conversion factor which may vary from 0.06--0.4, depending on the spin
+of the black hole. We adopt the commonly used value $\epsilon = 0.1$
+\citep{2002apa..book.....F}. The accretion properties associated with
+each cavity configuration are given in Table \ref{tab:totals}, and
+\macc\ lies in the range $2 \dash 3 \times 10^7 \msolpy$. Below, we
+consider if the accretion of cold or hot gas pervading the BCG could
+meet these requirements without being in conflict with observed BCG
+and ICM properties.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Cold Accretion}
+\label{sec:cold}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Substantial quantities of cold molecular gas and optical nebulae are
+found in many cool core clusters \citep{crawford99, edge01}. If
+rapidly-cooling thermal instabilities form in these structures, it is
+possible that they are the source of fuel for AGN activity and star
+formation \citep[\eg][]{pizzolato05, 2006NewA...12...38S,
+  2010MNRAS.408..961P}. We are unaware of a molecular gas mass
+(\mmol) measurement of \rbs\ , so we estimate it using the
+\mmol-\halpha\ correlation in \citet{edge01}. An optical spectrum
+(3200-7600 \AA) of the \rbs\ BCG reveals a strong \hbeta\ emission
+line \citep{rbs1, rbs2}, which we used as a surrogate for \halpha\ by
+assuming a Balmer decrement of EW$_{\hbeta}$/EW$_{\halpha}$ = 0.29
+\citep{2006ApJ...642..775M}, where EW is line equivalent width. Under
+these assumptions, we estimate $\mmol \sim 10^{10} ~\msol$, which is
+sufficiently in excess of the $\sim 10^7 ~\msol$ needed to power the
+outburst. Thus, there is reason to believe that an ample cold gas
+reservoir is available to fuel the AGN. It must be noted that the
+\mmol-\halpha\ relation has substantial scatter \citep{salome03}, and
+that the \rbs\ emission line measurements used here are highly
+uncertain (A. Schwope, private communication). The \mmol\ estimate
+could be off by more than an order of magnitude.
+
+Accreting gas from the reservoir will cause the central SMBH mass to
+grow, but, on average, black hole mass growth is coupled to the star
+formation properties of the host galaxy
+\citep[\eg][]{1995ARA&A..33..581K, 2000ApJ...539L...9F}. Assuming star
+formation accompanied the phase of accretion which powered the AGN
+outburst, the Magorrian relation \citep{magorrian} implies that for
+each unit of black hole mass growth, several hundred times as much
+goes into bulge stars \citep[\eg][]{2004ApJ...604L..89H}. Thus, the
+$\sim 1 ~\msolpy$ mass accretion rate needed to power the
+\rbs\ outburst suggests that $\sim 700 ~\msolpy$ of star formation
+would be required to grow the galaxy and its SMBH along the Magorrian
+relation. The present star formation rate is $\sim 1$--10
+\msolpy\ (see Section \ref{sec:bcg}), implying that the SMBH is
+currently growing faster than the slope of the Magorrian relation
+implies.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Hot Accretion}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Direct accretion of the hot ICM via the Bondi mechanism provides
+another possible AGN fuel source. The accretion flow arising from this
+process is characterized by the Bondi equation (Equation
+\ref{eqn:bon}) and is often compared with the Eddington limit
+describing the maximal accretion rate for a SMBH (Equation
+\ref{eqn:edd}):
+\begin{eqnarray}
+  \dmbon &=& 0.013 ~\kbon^{-3/2} \left(\frac{\mbh}{10^9
+    ~\msol}\right)^{2} ~\msolpy \label{eqn:bon}\\
+  \dmedd &=& \frac{2.2}{\epsilon} \left(\frac{\mbh}{10^9~\msol}\right)
+  ~\msolpy  \label{eqn:edd}
+\end{eqnarray}
+where $\epsilon$ is a mass-energy conversion factor, \kbon\ is the
+mean entropy [\ent] of gas within the Bondi radius, and \mbh\ is black
+hole mass [\msol]. We chose the relations of
+\citet{2002ApJ...574..740T} and \citet{2007MNRAS.379..711G} to
+estimate \mbh, and find a range of $0.6 \dash 7.8 \times 10^9 ~\msol$,
+from which we adopted the weighted mean value $1.5^{+6.3}_{-0.9}
+\times 10^9 ~\msol$ where the errors span the lowest and highest
+$1\sigma$ values of the individual estimates. For $\epsilon = 0.1$ and
+$\kbon = \kna$, the relevant accretion rates are $\dmbon \approx 4
+\times 10^{-4} ~\msolpy$ and $\dmedd \approx 33 ~\msolpy$. The
+Eddington and Bondi accretion ratios are given in Table
+\ref{tab:totals}, with $\dme \equiv \dmacc/\dmedd \approx 0.02$ and
+$\dmb \equiv \dmacc/\dmbon \approx 2000 \dash 4000$.
+
+The value of \dmb\ integrated over the duration of the AGN outburst is
+apparently larger than the available hot gas supply near the Bondi
+radius ($\approx 10$ pc). Using the upper limit of \mbh, $\approx 8
+\times 10^9 ~\msol$, and assuming gas near \rbon\ has a mean
+temperature of 0.5 keV, a \dmb\ of unity requires \kbon\ be less than
+$1 ~\ent$, corresponding to $\nelec \approx 0.4 ~\pcc$. This is four
+times the measured ICM central density, although the gas density near
+the Bondi radius could be considerably higher and evade detection.
+Nevertheless, a sphere more than 2 kpc in radius would required to
+house up to $10^7 ~\msol$ needed to power the AGN. These are
+properties of a galactic corona \citep{coronae}. A $\sim 2$ kpc, $\tx
+\sim 1$ keV, $\nelec \sim 0.4 ~\pcc$ corona would be easily detected
+in the \cxo\ observations as a bright point source with a distinct
+thermal spectrum. However, the spectrum of the observed nuclear X-ray
+point source (see Section \ref{sec:nuc}) is inconsistent with being
+thermal in origin (\ie\ no $E < 2$ keV Fe L-shell emission hump and no
+$E \approx 6.5$ keV Fe K-shell emission line blend). If the pervading
+ICM is instead the source of accretion fuel, these numbers imply the
+inner-core of the cluster would have been fully consumed during the
+outburst ($<$ 100 Myr), which seems unlikely.
+
+Because the nucleus is unresolved, the gas density at the Bondi radius
+could be much higher. Furthermore, it is possible that the central
+gas density was much higher in the past, as the AGN was turning on.
+Therefore, Bondi accretion cannot be ruled out. However, RBS 797, like
+other powerful AGN in clusters, would only be able to power their AGN
+by Bondi accretion with great difficulty (McNamara et al. 2010,
+Rafferty et al. 2006). {\bf Ken see Russell + 10 for an argument
+  assuming enhanced Compton cooling adds fuel.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Nuclear Emission}
+\label{sec:nuc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+There is a bright BCG X-ray point source apparent in the
+\cxo\ imaging, and its properties may also provide clues regarding
+on-going accretion processes. A source spectrum was extracted from a
+region enclosing 90\% of the normalized \cxo\ PSF specific to the
+nuclear source median photon energy and off-axis position. The source
+region had an effective radius of $0.86\arcs$, and a background
+spectrum was taken from an enclosing annulus that had 5 times the
+area. The shape and features of the background-subtracted spectrum,
+shown in Figure \ref{fig:nucspec}, are inconsistent with thermal
+emission. The spectrum was modeled using an absorbed power law with
+two Gaussians added to account for emission features around 1.8 keV
+and 3.0 keV. Including an absorption edge component to further correct
+for the ACIS 2.0 keV iridium feature did not significantly improve any
+fit, resulted in optical depths consistent with zero, and did not
+negate the need for a Gaussian around 1.8 keV. For the entire bandpass
+of both \cxo\ observations, the number of readout frames exposed to
+two or more X-ray photons (\ie\ the pile-up percentage) inside an
+aperture twice the size of the source region was $< 6\%$, and addition
+of a pileup component to the spectral analysis resulted in no
+significant improvements to the fits.
+
+A variety of absorption models were fit to the spectrum, and the
+best-fit values are given in Table \ref{tab:agn}. The model with a
+power-law distribution of $\nhobs \sim 10^{22} ~\pcmsq$ absorbers
+yielded the best statistical fit, and the low column densities
+indicate the nucleus may not be heavily obscured. If the Gaussian
+components represent emission line blends, they would be consistent
+with ion species of sulfur, silicon, argon and calcium, possibly
+indicating emission or reflection from dense, ionized material in or
+near the nucleus \citep[\eg][]{1990ApJ...362...90B,
+  1998MNRAS.297.1219I}.
+
+If mass accretion is powering the nuclear emission, the X-ray source
+bolometric luminosity, $\lbol = 2.3 \times 10^{44} ~\lum$, implies an
+accretion rate of $\dmacc \approx \lbol/(0.1 c^2) \approx 0.04
+~\msolpy \approx 0.001 \dme$, well into the regime where accretion
+flows are expected to be radiatively inefficient,
+\eg\ advection-dominated flows \citep{adaf}. Depending upon the exact
+properties of the accretion disk, for $\mbh > 10^9 ~\msol$, the
+optical luminosity of a $\dme \sim 0.001$ advection-dominated
+accretion disk is roughly $\la 10^{42} ~\lum$
+\citep{2002ApJ...570L..13C}, which is too faint for a point source to
+be detected against the extended emission of the BCG nucleus (see
+Section \ref{sec:bcg}). {\bf Ken, can you clarify where you got this
+  number and whether you are actually referring to Hbeta luminosity,
+  which is what Cao deals with.}  The low column densities suggested
+by the X-ray modeling could not conceal a $> 10^{42} ~\lum$ source, so
+if there is a bright, undetected optical point source, the emission
+must be beamed away from us.
+
+Extrapolation of the best-fit X-ray spectral model to radio
+frequencies reveals good agreement with the measured 1.4 GHz and 4.8
+GHz nuclear radio fluxes. Further, the continuous injection
+synchrotron model of \citet{1987MNRAS.225..335H} produced an
+acceptable fit to the X-ray, 1.4 GHz, and 4.8 GHz nuclear fluxes (see
+Figure \ref{fig:sync}). These results suggest the nuclear X-ray source
+may be unresolved synchrotron emission from the jets which are obvious
+in the high-resolution 4.8 GHz radio image. Regardless, there is no
+indication the X-ray source is the remnant of a very dense, hot gas
+phase which might be associated with a prior or on-going accretion
+event.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{AGN-BCG Interaction and Constraints on Star Formation}
+\label{sec:bcg}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The BCG's stellar structure and star formation properties were
+investigated using archival observations from the Hubble Space
+Telescope (\hst), \galex, and the \xmm/Optical Monitor
+(\xom). \hst\ imaged \rbs\ using the ACS/WFC instrument and the F606W
+(4500--7500 \AA; \myv) and F814W (6800--9800 \AA; \myi)
+filters. Images produced using the Hubble Legacy Archive pipeline
+version 1.0 were used for analysis. The \hst\ \myv+\myi\ image is
+shown in Figure \ref{fig:hst}. Comparison of the \hst\ and
+\cxo\ images reveals the BCG coincides with the nuclear X-ray
+source. The BCG has the appearance of being bifurcated, perhaps due to
+a dust lane, and there is no evidence of an optical point
+source. There are also several distinct knots of emission in the halo,
+and a faint arm of emission extending south from the BCG. There are
+two ACS artifacts in the \myi\ image which begin at $\approx 2.7\arcs$
+and $\approx 5.4\arcs$ from the BCG center. Within a $2\arcs$ aperture
+centered on the BCG, the measured magnitudes are $m_{\myv} = 19.3 \pm
+0.7$ mag and $m_{\myi} = 18.2 \pm 0.6$ mag, consistent with
+non-\hst\ measurements of \citet{rbs1}, indicating the
+\hst\ photometry in this region is unaffected.
+
+\rbs\ was imaged in the far-UV (FUV; 1344--1786 \AA) and near-UV (NUV;
+1771--2831 \AA) with \galex, and the near-UV with the
+\xmm/Optical-Monitor (\xom) using filters UVW1 (2410--3565 \AA) and
+UVM2 (1970--2675 \AA). The pipeline-reduced observations of
+\galex\ Data Release 5 were used for analysis, and the \xom\ data was
+processed using \sas\ version 8.0.1. \rbs\ is detected in all but the
+UVM2 observation as an unresolved source co-spatial with the optical
+and X-ray BCG emission. The individual filter fluxes are $f_{\rm{FUV}}
+= 19.2 \pm 4.8 ~\mu$Jy, $f_{\rm{NUV}} = 5.9 \pm 2.1 ~\mu$Jy,
+$f_{\rm{UVW1}} = 14.6 \pm 4.6$ $\mu$Jy and $f_{\rm{UVM2}} < 117$
+$\mu$Jy, all of which lie above the nuclear power-law emission we
+attribute to unresolved jets (see Section \ref{sec:nuc} and Figure
+\ref{fig:sync}).
+
+A radial $(\myv-\myi)$ color profile of the central $2\arcs$ ($\approx
+10$ kpc) was extracted from the \hst\ images and fitted with the
+function $\Delta(\myv-\myi) \log r + b$, where $\Delta(\myv-\myi)$
+[mag dex$^{-1}$] is the color gradient, $r$ is radius, and $b$ [mag]
+is a normalization. The best-fit parameters are $\Delta(\myv-\myi) =
+-0.20 \pm 0.02$ and $b = 1.1 \pm 0.01$ for \chisq(DOF) = 0.009(21),
+revealing a flat color profile.
+
+BCGs and elliptical galaxies in general have red centers and bluer
+halos due to the higher metallicity of the central stellar
+populations. {\bf should find a good ref. Mackie 198X might be a
+  good one} BCGs in cooling flows with significant star formation have
+unusually blue cores relative to the quiescent halos
+\citep[\eg][]{rafferty06}. Our analysis shows a flat color profile,
+which is consistent with a modest level of nuclear star formation, but
+is inconsistent with star formation occurring at several tens of solar
+masses per year. Lacking calibrated colors, the color gradient
+analysis alone is ambiguous, since other factors, such as dust,
+emission line contamination in the passbands, and metallicity
+variations could result in a flat profile. {\bf ref may want you to
+  show the color profile}
+
+Star formation rates were estimated from the UV fluxes using the
+relations of \citet{kennicutt2} and \citet{salim2007}, which yield
+rates in the range 1--10 ~\msolpy\ (see Table \ref{tab:sfr}), which
+are probably consistent with the flat color profile. These estimates
+should be considered upper limits because the center of the BCG is
+unresolved and some of the UV light may be coming from the AGN.
+
+The HST images have revealed a great deal of structure in the BCG. In
+order to investigate this structure, residual galaxy images were
+constructed by first fitting the \hst\ \myv\ and \myi\ isophotes with
+ellipses using the \iraf\ tool {\textsc{ellipse}}. Foreground stars
+and other contaminating sources were rejected using a combination of
+$3\sigma$ clipping and by masking. The ellipse centers were fixed at
+the galaxy centroid, and ellipticity and position angle were fixed at
+$0.25 \pm 0.02$ and $-64\mydeg \pm 2\mydeg$, respectively -- the mean
+values when they were free parameters. Galaxy light models were
+created using {\textsc{bmodel}} in \iraf\ and subtracted from the
+corresponding parent image, leaving the residual images shown in
+Figure \ref{fig:subopt}. A color map was also generated by subtracting
+the fluxed \myi\ image from the fluxed \myv\ image.
+
+The close alignment of the optical substructure with the nuclear AGN
+outflow clearly indicates the jets are interacting with matter in the
+BCG's halo. A spheroid {\bf XX arcsec} northeast of the nucleus
+resembles a galaxy which may be falling through the cluster and is
+being stripped \citep[see][for example]{2007ApJ...671..190S}. The
+numbered regions overlaid on the residual \myv\ image are the areas of
+the color map which have the largest color difference with surrounding
+galaxy light. Regions 1--5 are relatively the bluest with
+$\Delta(\myv-\myi) = -0.40, -0.30, -0.25, -0.22, ~\rm{and} -0.20$,
+respectively. Regions 6--8 are relatively the reddest with
+$\Delta(\myv-\myi) =$ +0.10, +0.15, and +0.18, respectively. Clusters
+like \rbs\ with a core entropy less than $30 ~\ent$ often host a BCG
+surrounded by extended \halpha\ nebulae
+\citep[\eg][]{mcdonald10}. Like these systems, the residual
+\myi\ image reveals what appear to be 8--10 kpc long ``whiskers''
+surrounding the BCG (regions 9--11). It is interesting that blue
+regions 1 and 4 reside at the point where the southern jet appears to
+be encountering whiskers 9 and 10.
+
+It is unclear whether the structure is associated with dusty star
+formation, emission line nebulae or both. The influence of optical
+emission lines on the photometry was estimated crudely in the nucleus
+using the ratio of line EWs taken from \citet{rbs1} to \hst\ filter
+widths. The nuclear \halpha\ contribution to the \myi\ image is
+estimated at $\approx 3\%$ using the scaled \hbeta\ line (see Section
+\ref{sec:cold}), and the combined \hbeta, \oii, and
+\oiii\ contribution to the nuclear \myv\ image is $\approx 7\%$. The
+observed structures have magnitude differences that significantly
+exceed these values, which suggests that emission lines alone may not
+be responsible for the structure. However, because the stellar
+continuum drops rapidly into the halo of the galaxy, bright knots of
+nebular emission would have larger equivalent widths at larger radii,
+and thus may be able to explain the extended structure.
+
+%%%%%%%%%%%%%%%%%%%%%
+\section{Conclusions}
+\label{sec:con}
+%%%%%%%%%%%%%%%%%%%%%
+
+We have presented results from a study of the AGN outburst in the
+galaxy cluster \rbs. \cxo\ observations have enabled us to constrain
+the energetics of the AGN outburst and analyze different powering
+mechanisms. We have shown the following:
+
+\begin{enumerate}
+\item In addition to the two previously-known cavities in the cluster
+  core, residual imaging reveals extensive structure in the ICM
+  (Figure \ref{fig:subxray}) associated with the AGN.
+\item We find that the two main cavities have surface brightness
+  decrements that are unusually deep. We can explain the deep
+  decrements using model cavities that are either highly-elongated in
+  the plane of the sky, or much larger, elongated cavities lying close
+  to the line of sight.
+\item Using the cavity decrements as a constraint, we estimate the
+  total AGN outburst energy to be $1 \dash 3 \times 10^{60}$ erg with
+  a total power output of $1 \dash 3 \times 10^{45} ~\lum$. The
+  cavities may be larger than we have assumed and we consider these to
+  be lower limits. The thick, bright rims surrounding the cavities may
+  also be signaling the presence of shocks, which would further boost
+  the AGN energy output. {\bf Ken, the rims are cool, so this
+    statement will be hard to understand. Our first observations of
+    bright rims we showed were not shocks, which was a big surprise at
+    the time.}
+\item We show that the AGN can be plausibly powered by accretion of
+  cold gas, but Bondi accretion from the hot atmosphere is almost
+  certainly implausible.
+\item Archival \hst\ imagery has revealed a great deal of structure in
+  the BCG associated with either star formation, nebular emission, or
+  both. The association of the optical structure with the radio lobes
+  and X-ray cavities indicates that the AGN is interacting with cooler
+  gas in the host galaxy. While we are unable to determine if any
+  regions of interest host star formation or line emission, the
+  convergence of what appear to be extended optical filaments, bluish
+  knots of emission, and the tip of one jet suggest there may be AGN
+  driven star formation.
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%
+\acknowledgements
+%%%%%%%%%%%%%%%%%
+
+KWC acknowledges financial support from L'Agence Nationale de la
+Recherche through grant ANR-09-JCJC-0001-01, and thanks David Gilbank,
+Sabine Schindler, Axel Schwope, and Chris Waters for helpful
+input. BRM was supported by a generous grant from the Canadian Natural
+Science and Engineering Research Council, and thanks support provided
+by the National Aeronautics and Space Administration through Chandra
+Award Number G07-8122X issued by the Chandra X-ray Observatory Center,
+which is operated by the Smithsonian Astrophysical Observatory for and
+on behalf of the National Aeronautics Space Administration under
+contract NAS8-03060. MG acknowledges support from the grants ASI-INAF
+I/088/06/0 and CXO GO0-11003X. Some results are based on observations
+made with the NASA/ESA Hubble Space Telescope, and obtained from the
+Hubble Legacy Archive, which is a collaboration between the Space
+Telescope Science Institute (STScI/NASA), the Space Telescope European
+Coordinating Facility (ST-ECF/ESA) and the Canadian Astronomy Data
+Centre (CADC/NRC/CSA).
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Figures and Tables %
+%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{cavities.tex}
+\input{totals.tex}
+\input{agn.tex}
+\input{sfr.tex}
+\input{figs.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+% End the document %
+%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

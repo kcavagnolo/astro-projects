@@ -1,0 +1,275 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+<!-- base href="http://www.sr.bham.ac.uk/xmm2/spectra.html" --><title>Birmingham XMM Guide: Spectral Analysis</title></head><body bgcolor="#ffffff"><table border="1" width="100%"><tbody><tr><td><table color="#ffffff" bgcolor="#ffffff" border="1" cellpadding="10" cellspacing="0" width="100%"><tbody><tr><td><font color="black" face="" size="-1">This is <b><font color="#0039b6">G</font> <font color="#c41200">o</font> <font color="#f3c518">o</font> <font color="#0039b6">g</font> <font color="#30a72f">l</font> <font color="#c41200">e</font></b>'s <a href="http://www.google.com/intl/en/help/features.html#cached"><font color="blue">cache</font></a> of <a href="http://www.sr.bham.ac.uk/xmm2/spectra.html"><font color="blue">http://www.sr.bham.ac.uk/xmm2/spectra.html</font></a> as retrieved on Jan 23, 2008 20:13:13 GMT.<br>
+<b><font color="#0039b6">G</font> <font color="#c41200">o</font> <font color="#f3c518">o</font> <font color="#0039b6">g</font> <font color="#30a72f">l</font> <font color="#c41200">e</font></b>'s cache is the snapshot that we took of the page as we crawled the web.<br>
+The page may have changed since that time.  Click here for the <a href="http://www.sr.bham.ac.uk/xmm2/spectra.html"><font color="blue">current page</font></a> without highlighting.<br>
+This cached page may reference images which are no longer available. Click here for the <a href="http://64.233.167.104/search?q=cache:gEe4aHLGc0EJ:www.sr.bham.ac.uk/xmm2/spectra.html+http://www.sr.bham.ac.uk/xmm2/&amp;hl=en&amp;client=firefox-a&amp;gl=us&amp;strip=1"><font color="blue">cached text</font></a> only.<br>To link to or bookmark this page, use the following url: <code>http://www.google.com/search?q=cache:gEe4aHLGc0EJ:www.sr.bham.ac.uk/xmm2/spectra.html+http://www.sr.bham.ac.uk/xmm2/&amp;hl=en&amp;ct=clnk&amp;cd=5&amp;gl=us&amp;client=firefox-a</code></font><br><br><center><font size="-2"><i>Google is neither affiliated with the authors of this page nor responsible for its content.</i></font></center></td></tr>
+<tr><td>
+<font color="black" face="" size="-1">These terms only appear in links pointing to this page: <b>http www sr bham ac uk xmm2 </b></font>
+</td></tr></tbody></table></td></tr></tbody></table>
+<hr>
+<div style="position: relative;">
+
+
+
+
+<a name="top">
+
+</a><hr noshade="noshade">
+<center>
+<h1>
+<a name="top"><i><font color="#0000c0">Birmingham XMM Guide: Spectral Analysis</font></i></a></h1></center>
+
+<hr noshade="noshade">
+<p>
+
+</p><ul>
+<a href="#extract">Extract spectra and generate response products</a><br>
+<a href="#fit">Fit spectra simultaneously from multiple EPIC cameras</a><br>
+</ul>
+<p>
+</p><hr>
+<br>
+
+<h2><a name="extract">Extract spectra and generate response products</a></h2>
+<ul><li>The first thing to do is decide on the regions you wish to extract spectra 
+from. Make a directory called spec, and link to your cleaned events tables, 
+then load one of them into ds9, and define a source region, and a background 
+region, and save these both separately as CIAO format region files. The 
+current documentation suggests that you use only circular regions, and it 
+is a good idea to define your background as a large region on the same CCD 
+as your source when possible. This avoids problems due to the response, and 
+internal background being different for different CCDs.
+
+
+<p> 
+There is a script called xmmspec.csh which will then extract a source and 
+background spectrum, make an arf and rmf file, group the spectrum, and 
+associate the response files so the output can be read directly into xspec 
+or sherpa.
+
+</p><p> 
+For example, I defined source and background regions for my mos1 data, 
+called mos1source70arcs.reg and mos1bg200arcs.reg and then use xmmspec 
+as follows:
+
+</p><pre>xun4&gt; xmmspec.csh mos1_clean_evt.fits mos1source70arcs.reg mos1bg200arcs.reg 
+          none rmfgen mos1spec_ |&amp; tee mos1spec_log.txt
+
+--------------------XMMSPEC.CSH version 1---------------------
+
+Input was /exgal1/bjm/scripts/xmmspec.csh mos1_clean_evt.fits 
+    mos1source70arcs.reg mos1bg200arcs.reg none rmfgen mos1spec_
+
+
+Attempting to detect previous filtering from table statistics...
+  events were filtered between pattern(s) 0 - 12
+
+Instrument is EMOS1 - using PI = 0-11999 channels in 15 channels bins
+
+single and double events (pattern &lt;= 12) are in use.
+Centre of region is (x,y) = 30464,26400 - If the region is not simple this 
+    may be incorrect.
+
+Extracting source spectrum...
+evselect table=mos1_clean_evt.fits:EVENTS withspectrumset=yes 
+    spectrumset=mos1spec_spec.fits energycolumn=PI spectralbinsize=15 
+    withspecranges=true specchannelmin=0 specchannelmax=11999 writedss=yes 
+    expression=(circle(30464,26400,1400,X,Y))
+  source spectrum written to mos1spec_spec.fits
+
+Extracting background spectrum...
+evselect table=mos1_clean_evt.fits:EVENTS withspectrumset=yes 
+    spectrumset=mos1spec_bgspec.fits energycolumn=PI spectralbinsize=15 
+    withspecranges=true specchannelmin=0 specchannelmax=11999 writedss=yes 
+    expression=(circle(23520,26624,4000,X,Y))
+  background spectrum written to mos1spec_bgspec.fits
+
+Generating RMF...
+rmfgen spectrumset=mos1spec_spec.fits rmfset=mos1spec_rmf.fits threshold=1e-5 
+    withenergybins=false pnline=0
+  RMF written to mos1spec_rmf.fits
+
+Making detector map to weight ARF...
+evselect table=mos1_clean_evt.fits:EVENTS destruct=false withfilteredset=true 
+    withimageset=true imageset=mos1spec_detmap.fits xcolumn=DETX ycolumn=DETY 
+    imagebinning=binSize ximagebinsize=120 yimagebinsize=120 
+    expression=(circle(30464,26400,1400,X,Y)) writedss=true updateexposure=true
+** evselect: warning (NoWCS), No WCS information available for image column DETX.
+** evselect: warning (NoWCS), No WCS information available for image column DETY.
+  detector map written to mos1spec_detmap.fits
+
+arfgen spectrumset=mos1spec_spec.fits arfset=mos1spec_arf.fits detmaptype=dataset 
+    detmaparray=mos1spec_detmap.fits: extendedsource=yes withrmfset=true 
+    rmfset=mos1spec_rmf.fits setbackscale=yes withbadpixcorr=true 
+    badpixlocation=mos1_clean_evt.fits withfilteredset=true 
+    filteredset=mos1spec_detmap_filter.fits withsourcepos=yes sourcecoords=pos 
+    sourcex=30464 sourcey=26400
+** arfgen::attcalc: warning (outOfImageRange),  401  events ( of  110885  ) out 
+   of range of  image
+  ARF written to mos1spec_arf.fits
+
+Computing BACKSCAL for background spectrum...
+backscale spectrumset=mos1spec_bgspec.fits withbadpixcorr=yes 
+    badpixlocation=mos1_clean_evt.fits
+
+Associating background spectrum and grouping counts into bins &gt;= 20 using rmf 
+    mos1spec_rmf.fits and arf mos1spec_arf.fits
+  Output written to mos1spec_spec_grppha.fits
+
+----------------------------------------------------------------------------------
+</pre>
+
+Now I repeat this for mos2 and the pn camera. Note that rmfgen and arfgen may 
+take a longish time to run (maybe even a few hours). The script gives you the 
+choice to use one of the pre-generated rmfs that come as part of the 
+calibration, however I've had problems with these giving me strange flux 
+estimates later on, so I generally use rmfgen.
+
+</li></ul>
+<a href="#top">back to top</a><p>
+</p><hr>
+
+<h2><a name="fit">Fit spectra simultaneously from multiple EPIC cameras</a></h2>
+<p>
+</p><ul><li>
+Included here an example xspec session where I fit the two MOS spectra extracted above with the same model (absorbed MeKaL).
+
+<pre>xun4&gt; xspec
+
+               Xspec 11.1.0    12:15:29 10-Jan-2002
+
+ For documentation, notes, and fixes see  http://xspec.gsfc.nasa.gov/
+
+ Plot device not set, use "cpd" to set it
+
+ Type "help" or "?" for further information
+XSPEC&gt;data mos1spec_spec_grppha.fits mos2spec_spec_grppha.fits
+ Net count rate (cts/s) for file   1  8.2745E-02+/-  2.5138E-03( 61.4% total)
+   using response (RMF) file...       mos1spec_rmf.fits
+   using auxiliary (ARF) file...      mos1spec_arf.fits
+   using background file...           mos1spec_bgspec.fits
+ Net count rate (cts/s) for file   2  9.4467E-02+/-  2.6441E-03( 63.6% total)
+   using response (RMF) file...       mos2spec_rmf.fits
+   using auxiliary (ARF) file...      mos2spec_arf.fits
+   using background file...           mos2spec_bgspec.fits
+   2 data sets are in use
+XSPEC&gt;cpd /xw
+XSPEC&gt;setplot energy
+XSPEC&gt;ignore 0-0.3
+XSPEC&gt;ignore 8.0-**
+XSPEC&gt;plot data
+XSPEC&gt;model wabs*mekal
+  Model:  wabs[1]( mekal[2] )
+Input parameter value, delta, min, bot, top, and max values for ...
+Current:           1     0.001         0         0     1E+05     1E+06
+wabs:nH&gt;0.0138
+Current:           1      0.01     0.001     0.001       100       100
+mekal:kT&gt;7
+Current:           1     -0.01     1E-06     1E-05     1E+19     1E+20
+mekal:nH&gt;0.001
+Current:           1     -0.01         0         0     1E+03     1E+03
+mekal:Abundanc&gt;0.3
+Current:           0     -0.01         0         0        10        10
+mekal:Redshift&gt;0.888
+Current:           1        -1         0         0         1         1
+mekal:Switch&gt;
+Current:           1      0.01         0         0     1E+24     1E+24
+mekal:norm&gt;
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  Model:  wabs[1]( mekal[2] )
+  Model Fit Model Component  Parameter  Unit     Value
+  par   par comp
+    1    1    1   wabs       nH       10^22     1.3800E-02 +/-      0.
+    2    2    2   mekal      kT       keV        7.000     +/-      0.
+    3    3    2   mekal      nH       cm-3      1.0000E-03 frozen
+    4    4    2   mekal      Abundanc           0.3000     frozen
+    5    5    2   mekal      Redshift           0.8880     frozen
+    6    6    2   mekal      Switch              1.000     frozen
+    7    7    2   mekal      norm                1.000     +/-      0.
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+ Chi-Squared =     1.3758436E+09 using   211 PHA bins.
+ Reduced chi-squared =      6614632.     for    208 degrees of freedom
+ Null hypothesis probability =    0.
+XSPEC&gt;freeze 1
+ Number of variable fit parameters =    2
+XSPEC&gt;fit 1000
+ Chi-Squared    Lvl  Fit param # 1     2           3           4
+                 5           6           7
+   232.120     -3     1.3800E-02   9.237      1.0000E-03  0.3000
+              0.8880       1.000      1.1865E-03
+   227.303     -4     1.3800E-02   10.11      1.0000E-03  0.3000
+              0.8880       1.000      1.2840E-03
+   226.436     -5     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2146E-03
+   225.918     -6     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2686E-03
+   225.590     -7     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2265E-03
+   225.399     -8     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2592E-03
+   225.279     -9     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2337E-03
+   225.208    -10     1.3800E-02   10.38      1.0000E-03  0.3000
+              0.8880       1.000      1.2536E-03
+   225.164    -11     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2381E-03
+   225.138    -12     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2502E-03
+   225.122    -13     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2408E-03
+   225.112    -14     1.3800E-02   10.37      1.0000E-03  0.3000
+              0.8880       1.000      1.2481E-03
+ ---------------------------------------------------------------------------
+ Variances and Principal axes :
+               2     7
+ 1.40E+00 | -1.00  0.00
+ 2.17E-09 |  0.00 -1.00
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+  Model:  wabs[1]( mekal[2] )
+  Model Fit Model Component  Parameter  Unit     Value
+  par   par comp
+    1    1    1   wabs       nH       10^22     1.3800E-02 frozen
+    2    2    2   mekal      kT       keV        10.37     +/-   1.183
+    3    3    2   mekal      nH       cm-3      1.0000E-03 frozen
+    4    4    2   mekal      Abundanc           0.3000     frozen
+    5    5    2   mekal      Redshift           0.8880     frozen
+    6    6    2   mekal      Switch              1.000     frozen
+    7    7    2   mekal      norm               1.2481E-03 +/-  0.4694E-04
+  ---------------------------------------------------------------------------
+  ---------------------------------------------------------------------------
+ Chi-Squared =      225.1121     using   211 PHA bins.
+ Reduced chi-squared =      1.077091     for    209 degrees of freedom
+ Null hypothesis probability = 0.212
+XSPEC&gt;plot data
+XSPEC&gt;error 2 1.0
+ Parameter   Confidence Range (     1.000)
+     2     9.28255         11.5644
+XSPEC&gt;new 1 0.0
+    2 variable fit parameters
+ Chi-Squared =      228.0797     using   211 PHA bins.
+ Reduced chi-squared =      1.091290     for    209 degrees of freedom
+ Null hypothesis probability = 0.174
+XSPEC&gt;flux 0.5 2.0
+ Model flux  1.6547E-04 photons ( 2.6600E-13 ergs)cm**-2 s**-1 (  0.500-  2.000) DtSet :  1
+ Model flux  1.6547E-04 photons ( 2.6600E-13 ergs)cm**-2 s**-1 (  0.500-  2.000) DtSet :  2
+XSPEC&gt;flux 0.0 10.0
+ Lower range       0.     reset by matrix bound to    0.205
+ Model flux  3.9504E-04 photons ( 7.7979E-13 ergs)cm**-2 s**-1 (  0.205- 10.000) DtSet :  1
+ Lower range       0.     reset by matrix bound to    0.205
+ Model flux  3.9504E-04 photons ( 7.7979E-13 ergs)cm**-2 s**-1 (  0.205- 10.000) DtSet :  2
+
+</pre></li></ul>
+<a href="#top">back to top</a><p>
+
+    </p><hr>
+    <address><a href="mailto:bjm@star.sr.bham.ac.uk">Ben Maughan</a></address>
+<!-- Created: Wed Jan 30 11:55:44 GMT 2002 -->
+<!-- hhmts start -->
+Last modified: Wed Jan 30 12:40:11 GMT 2002
+<!-- hhmts end -->
+  
+</div></body></html>

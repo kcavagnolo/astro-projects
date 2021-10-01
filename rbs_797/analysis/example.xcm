@@ -1,0 +1,244 @@
+# XSPEC script for PROJCT*WABS*(MEKAL+MKCFLOW).
+# To be run in the spectra directory.
+ 
+# set cosmology. NOTE: value of q0 ignored if Lamda0 is nonzero.
+cosmo 70 0 0.7
+ 
+# read in data files
+data 1:1 reg1_sou_g20.pi
+ignore 1:1 0.0-0.100000 12.0000-100.0
+data 2:2 reg2_sou_g20.pi
+ignore 2:2 0.0-0.100000 12.0000-100.0
+data 2:2 cooling_reg2_sou_g20.pi
+ignore 2:2 0.0-0.100000 12.0000-100.0
+data 3:3 cooling_reg3_sou_g20.pi
+ignore 3:3 0.0-0.100000 12.0000-100.0
+data 4:4 reg4_sou_g20.pi
+ignore 4:4 0.0-0.100000 12.0000-100.0
+data 5:5 reg5_sou_g20.pi
+ignore 5:5 0.0-0.100000 12.0000-100.0
+data 6:6 reg6_sou_g20.pi
+ignore 6:6 0.0-0.100000 12.0000-100.0
+data 7:7 reg7_sou_g20.pi
+ignore 7:7 0.0-0.100000 12.0000-100.0
+ 
+set model_name "projct_wabs_mekal_mkcflow"
+set xs_return_result 1
+set tcl_precision 12
+ 
+# USER may change command echoing,
+# it is a boolean value, can be 0 or 1  
+# useful for debugging
+set Echo_Mode 1
+set xs_echo_script $Echo_Mode
+ 
+# USER may change the chatter level,
+# ranges from 0 to 25
+# useful for debugging 
+set Chatter_Level 10
+chatter $Chatter_Level
+ 
+# USER may activate grid mode (set it to 1)
+# Default is not to use grid (set Grid_Mode 0)
+# Grid mode gives ability to fit model
+# few times using the different set of
+# initial parameters. The "best" model will be
+# choosen based on a simple criterion
+# of the lowest chi value. 
+set Grid_Mode 0
+ 
+# USER may change initial parameters
+set Abundance 0.300000
+set Redshift 0.354000
+if {$Grid_Mode == 0} {
+  set kT0 3.00000
+  set Nh0 0.100000
+} else {
+# specify the grid only if you set Grid_Mode 1
+  set kT0 {1.5 1.0 0.5 3. 5.}
+  set Nh0 {1. 0.5 0.1 5. 10.} 
+}
+ 
+# USER may change the weighting of chi statistics.
+# It is an alternative approach
+# for small number of counts. Continue to
+# use chi but change weighting for error estimate.
+# Available methods are:
+# "standard", "gehrels", "churazov", "model" 
+set Weighting_Method "standard"
+weight $Weighting_Method
+ 
+# USER may change conf. level (in sigma units)
+# for calculating parameter errors
+# Right now it is 1.0 sigma (always use .)
+set Conf_Level_Par 1.0
+ 
+# USER may change EbandLo, EbandHi, FluxName,
+# Conf_Level_Flux (in units of %), and Number_Runs
+# for calculating fluxes and their errors over interested
+# energy bands. Right now 2 bands are used: 
+# X-Ray band: (0.5-7) and Bolometric: (0.001-100).
+# Right now 1 sigma  (68%) errors are calculated.
+set EbandLo {0.5 0.001}
+set EbandHi {7.0 100.0}
+# Notice two types of flux will be calculated, the second
+# one (marked with c) is corrected for column density.
+# To write spectral results into fits file properly
+# flux names should not have more than 8 characters.
+set FluxName {FcXray FcBol}
+set Conf_Level_Flux 68
+set Number_Runs 100
+ 
+# set some other vars
+set model_savfl "$model_name.xspecsav"
+set fitsfl "source_mkcflow.spectra"
+set temp_fitsfl "z_temp.fits"
+set temp_headfl "z_head.txt"
+set date_value [ exec date ]
+setplot energy
+ignore bad
+ 
+# define and fit model
+model projct*wabs(mekal+mkcflow)
+0.00000
+0.00000
+0.00000
+0.100000
+3.00000
+1
+$Abundance
+$Redshift
+1
+1
+0.300000
+3.00000
+$Abundance
+$Redshift
+1
+1
+0.00000
+0.00000
+0.00000
+0.100000
+3.50000
+1
+$Abundance
+$Redshift
+1
+1
+0.300000
+3.50000
+$Abundance
+$Redshift
+1
+1
+0.00000
+0.00000
+0.00000
+0.100000
+4.00000
+1
+$Abundance
+$Redshift
+1
+1
+0.300000
+4.00000
+$Abundance
+$Redshift
+1
+1
+0.00000
+0.00000
+0.00000
+0.100000
+4.50000
+1
+$Abundance
+$Redshift
+1
+1
+0.300000
+4.50000
+$Abundance
+$Redshift
+1
+1
+0.00000
+0.00000
+0.00000
+0.100000
+5.00000
+1
+$Abundance
+$Redshift
+1
+1
+0.300000
+5.00000
+$Abundance
+$Redshift
+1
+1
+0.00000
+0.00000
+0.00000
+0.100000
+5.50000
+1
+$Abundance
+$Redshift
+1
+1
+0.300000
+5.50000
+$Abundance
+$Redshift
+1
+1
+0.00000
+0.00000
+0.00000
+0.100000
+6.00000
+1
+$Abundance
+$Redshift
+1
+1
+0.300000
+6.00000
+$Abundance
+$Redshift
+1
+1
+thaw 7,23,39,55,71,87,103
+freeze 4,20,36,52,68,84,100
+freeze 11,27,43,59,75,91,107
+newpar 7 = 13
+newpar 5 = 12
+newpar 23 = 29
+newpar 21 = 28
+newpar 39 = 45
+newpar 37 = 44
+newpar 55 = 61
+newpar 53 = 60
+newpar 71 = 77
+newpar 69 = 76
+newpar 87 = 93
+newpar 85 = 92
+newpar 103 = 109
+newpar 101 = 108
+newpar 48 0.0
+freeze 48
+newpar 64 0.0
+freeze 64
+newpar 80 0.0
+freeze 80
+newpar 96 0.0
+freeze 96
+newpar 112 0.0
+freeze 112
+query yes
+fit 100000
+ 

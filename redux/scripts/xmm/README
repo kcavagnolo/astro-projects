@@ -1,0 +1,12 @@
+go to odf dir
+sasstart
+run cifbuild
+run setup.csh
+run odfingest
+define SAS_ODF to be odf dir
+define SAS_CCF to be ccf.cif in odf dir
+run epchain
+run emchain
+run omichain
+run rgsproc
+run rgsproc entrystage=4:spectra

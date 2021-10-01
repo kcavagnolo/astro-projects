@@ -1,0 +1,232 @@
+query no
+cosmo 70 0 0.7
+data 1:1 RBS_0797_7902_annuli1_src1_grp.pi
+data 2:2 RBS_0797_7902_annuli2_src1_grp.pi
+data 3:3 RBS_0797_7902_annuli3_src1_grp.pi
+data 4:4 RBS_0797_7902_annuli4_src1_grp.pi
+data 5:5 RBS_0797_7902_annuli5_src1_grp.pi
+data 6:6 RBS_0797_7902_annuli6_src1_grp.pi
+data 7:7 RBS_0797_7902_annuli7_src1_grp.pi
+data 8:8 RBS_0797_7902_annuli8_src1_grp.pi
+data 9:9 RBS_0797_7902_annuli9_src1_grp.pi
+data 10:10 RBS_0797_7902_annuli10_src1_grp.pi
+data 11:11 RBS_0797_7902_annuli11_src1_grp.pi
+data 12:12 RBS_0797_7902_annuli12_src1_grp.pi
+ignore bad
+ignore **-0.7 7.0-**
+set tcl_precision 12
+set xs_echo_script 1
+chatter 10
+weight "standard"
+model wabs*(mekal)
+0.022,0 & 7.44 & 1 & 0.30,1 & 0.354 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+=1 & 7.44 & 1 & 0.30,1 & =5 & 0 & 1
+fit 1000
+addcomp 1 projct 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0 & 0.0
+fit 10000 0.01
+set fileid [open params.log a]
+eval puts \$fileid \"Name: RBS_0797"
+eval puts \$fileid \"Obsid: 7902"
+eval puts \$fileid \"Runname: annuli"
+eval puts \$fileid \"Numann: 12"
+eval puts \$fileid \"Fit confidence: 2.71"
+eval puts \$fileid \"Fit emin-emax: 0.7-7.0 keV"
+eval puts \$fileid \"Flux/Lum confidence: 90"
+eval puts \$fileid \"Flux/Lum emin-emax: 0.001-100.0 keV"
+eval puts \$fileid \"NH: frozen"
+eval puts \$fileid \"redshift: frozen"
+eval puts \$fileid \"Created: 2008-12-19 06:36:58 PM"
+eval puts \$fileid \"-------------------------"
+set rin 0.0
+eval puts \$fileid \"rin rout"
+eval puts \$fileid \"arcmin"
+eval puts \$fileid \"-------------------------"
+tclout xflt 1
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 1 $rin $rout"
+set rin $rout
+tclout xflt 2
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 2 $rin $rout"
+set rin $rout
+tclout xflt 3
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 3 $rin $rout"
+set rin $rout
+tclout xflt 4
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 4 $rin $rout"
+set rin $rout
+tclout xflt 5
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 5 $rin $rout"
+set rin $rout
+tclout xflt 6
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 6 $rin $rout"
+set rin $rout
+tclout xflt 7
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 7 $rin $rout"
+set rin $rout
+tclout xflt 8
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 8 $rin $rout"
+set rin $rout
+tclout xflt 9
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 9 $rin $rout"
+set rin $rout
+tclout xflt 10
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 10 $rin $rout"
+set rin $rout
+tclout xflt 11
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 11 $rin $rout"
+set rin $rout
+tclout xflt 12
+scan $xspec_tclout "%f %f" a rout
+eval puts \$fileid \"Radius 12 $rin $rout"
+set rin $rout
+eval puts \$fileid \"-------------------------"
+tclout stat
+scan $xspec_tclout "%f" stat
+eval puts \$fileid \"chisq $stat"
+tclout dof
+scan $xspec_tclout "%f" dof
+eval puts \$fileid \"dof $dof"
+goodness 1000 sim
+tclout goodness
+scan $xspec_tclout "%f" good
+eval puts \$fileid \"goodness $good of 1000 simed realizations have a fit statistic < $stat"
+eval puts \$fileid \"-------------------------"
+dummyrsp 0.001 100.0 3000
+eval puts \$fileid \"ergs/cm2/sec"
+flux 0.001 100.0 0.354 err 100 90
+tclout flux 1
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 1 $fl $fllo $flhi"
+tclout flux 2
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 2 $fl $fllo $flhi"
+tclout flux 3
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 3 $fl $fllo $flhi"
+tclout flux 4
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 4 $fl $fllo $flhi"
+tclout flux 5
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 5 $fl $fllo $flhi"
+tclout flux 6
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 6 $fl $fllo $flhi"
+tclout flux 7
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 7 $fl $fllo $flhi"
+tclout flux 8
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 8 $fl $fllo $flhi"
+tclout flux 9
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 9 $fl $fllo $flhi"
+tclout flux 10
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 10 $fl $fllo $flhi"
+tclout flux 11
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 11 $fl $fllo $flhi"
+tclout flux 12
+scan $xspec_tclout "%f %f %f" fl fllo flhi
+eval puts \$fileid \"Flux 12 $fl $fllo $flhi"
+eval puts \$fileid \"-------------------------"
+eval puts \$fileid \"ergs/sec"
+lumin 0.001 100.0 0.354 err 100 90
+tclout lumin 1
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 1 $lum $lumlo $lumhi"
+tclout lumin 2
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 2 $lum $lumlo $lumhi"
+tclout lumin 3
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 3 $lum $lumlo $lumhi"
+tclout lumin 4
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 4 $lum $lumlo $lumhi"
+tclout lumin 5
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 5 $lum $lumlo $lumhi"
+tclout lumin 6
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 6 $lum $lumlo $lumhi"
+tclout lumin 7
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 7 $lum $lumlo $lumhi"
+tclout lumin 8
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 8 $lum $lumlo $lumhi"
+tclout lumin 9
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 9 $lum $lumlo $lumhi"
+tclout lumin 10
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 10 $lum $lumlo $lumhi"
+tclout lumin 11
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 11 $lum $lumlo $lumhi"
+tclout lumin 12
+scan $xspec_tclout "%f %f %f" lum lumlo lumhi
+eval puts \$fileid \"Lumin 12 $lum $lumlo $lumhi"
+eval puts \$fileid \"-------------------------"
+eval puts \$fileid \"cts/sec"
+tclout rate 1
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 1 $rate $rerr"
+tclout rate 2
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 2 $rate $rerr"
+tclout rate 3
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 3 $rate $rerr"
+tclout rate 4
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 4 $rate $rerr"
+tclout rate 5
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 5 $rate $rerr"
+tclout rate 6
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 6 $rate $rerr"
+tclout rate 7
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 7 $rate $rerr"
+tclout rate 8
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 8 $rate $rerr"
+tclout rate 9
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 9 $rate $rerr"
+tclout rate 10
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 10 $rate $rerr"
+tclout rate 11
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 11 $rate $rerr"
+tclout rate 12
+scan $xspec_tclout "%f %f" rate rerr
+eval puts \$fileid \"Rate 12 $rate $rerr"
+eval puts \$fileid \"-------------------------"
+close $fileid
+exit

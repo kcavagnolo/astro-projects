@@ -1,0 +1,44 @@
+#!/bin/bash
+ulimit -S -d 2048000
+
+MOS2id=$1
+tools=$2
+
+cp evli_mos2.fits evli_mos2_old.fits
+
+export SAS_CCF=../ccf.cif
+export OUTSASDIR="./"
+
+CCD=({01,02,03,04,05,06,07})
+
+for k in 0 1 2 3 4 5 6; do {
+  EXTNAME=BADPIX${CCD[${k}]}
+  fextract infile=evli_mos2.fits"["${EXTNAME}"]" outfile=${EXTNAME}.fits clobber=yes
+};
+done
+
+echo ""
+echo "	cleaning additional bad pixels"
+
+infile=${tools}/badpix_row_200.fits[BADPIX][#row==1]
+# EXAMPLE: to flag pixels with coordinates 41,32 - 43,33 (2 pixels) in CCD 4:
+#ftcopy $infile BADPIX.fits clobber=yes
+#${tools}/write_badpix_row BADPIX.fits[BADPIX] 1 41 32 1 2 3
+#${tools}/merge_BADPIX_extension BADPIX04.fits BADPIX.fits
+
+echo ""
+echo "	update badpix extentions and flag setting"
+
+echo "" >> ${3}_MOS2_images.log 2>&1
+echo "	update badpix extentions and flag setting" >> ${3}_MOS2_images.log 2>&1
+
+ebadpixupdate eventset=evli_mos2.fits fromccf=N \
+           badpixtables="BADPIX01.fits:BADPIX01 BADPIX02.fits:BADPIX02 \
+	      BADPIX03.fits:BADPIX03 BADPIX04.fits:BADPIX04 \
+	      BADPIX05.fits:BADPIX05 BADPIX06.fits:BADPIX06 \
+	      BADPIX07.fits:BADPIX07" >> ${3}_MOS2_images.log 2>&1 
+	      
+rm BADPIX*.fits
+
+echo ""
+echo "	clean MOS2 event file finished"
