@@ -1,0 +1,27 @@
+#!/bin/csh -f
+source /usr/local/aips/LOGIN.CSH
+echo -n "AIPS version = " > /mnt/SINISTER/radio/ic4296/AB289.move.log
+which aips >> /mnt/SINISTER/radio/ic4296/AB289.move.log
+echo -n "Prep version = " >> /mnt/SINISTER/radio/ic4296/AB289.move.log
+ls -l /home/cavagnolo/research/ge_radio/scripts/AVLAPREP.001|awk -F" " '{print $6,$7,$8,$9,$10,$11,$12}' >> /mnt/SINISTER/radio/ic4296/AB289.move.log
+echo "  -------------" >> /mnt/SINISTER/radio/ic4296/AB289.move.log
+aips pr=1 notv >> /dev/null << EOD
+19373
+restore 0
+default clrmsg;prnumber=-1;clrmsg
+version'RUNFIL'
+run avlaprep
+compress
+default prtmsg;outprint'PWD:'!!'AB289.move.log
+docrt=-3;prnumber=-1;tput prtmsg;docrt 1
+pre_move
+getname 1
+userid 19374
+gx
+userid 19373
+type'empty catalog ?' checkcat
+tget prtmsg;prtmsg;docrt 1
+kleenex
+EOD
+echo
+exit(0)

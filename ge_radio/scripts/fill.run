@@ -1,0 +1,30 @@
+#!/bin/csh -f
+source /usr/local/aips/LOGIN.CSH
+echo -n "AIPS version = " > GP028.fill.log
+which aips >> GP028.fill.log
+echo -n "Prep version = " >> GP028.fill.log
+ls -l /home/cavagnolo/research/ge_radio/scripts/AVLAPREP.001|awk -F" " '{print $6,$7,$8,$9,$10,$11,$12}' >> GP028.fill.log
+echo "  -------------" >> GP028.fill.log
+aips pr=1 notv >> /dev/null << EOD
+19373
+restore 0
+default clrmsg;prnumber=-1;clrmsg
+version'RUNFIL'
+run avlaprep
+compress
+type'empty catalog ?' checkcat
+default prtmsg;outprint'PWD:'!!'GP028.fill.log
+docrt=-3;prnumber=-1;tput prtmsg;docrt 1
+pre_fillm
+datain'PWD:GP028_'
+gx
+indisk pdsk
+for j=1:checkcat;error 0;egetname j;datachks;end
+for j=1:checkcat;error 0;egetname j;freqchks;end
+type'empty catalog ?' checkcat
+tget prtmsg;prtmsg;docrt 1
+kleenex
+EOD
+echo "> Loaded data in AIPS"
+
+exit(0)

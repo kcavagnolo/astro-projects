@@ -1,0 +1,305 @@
+$ Lorant Sjouwerman, versions 1.. 2005, for NRAO
+
+$$ General catalog looks like
+$$ Multi-source UV data file
+$$ Multi-source TASAV file
+$$ Single-source calibrated data  - auvf
+$$ Single-source calibrated images- aimg
+
+$May need to redefine after a restore 0:
+$allzap
+$calcintt
+$guesintt
+$lsparm(5);tint;lsdisk
+
+procedure nvascln
+  scalar alj,uvj, maj
+  clrname;indisk lsdisk;recat;chkname;alj=1-error;getname 1;inname''
+  chkname;uvj=-error;intype'MA';inclass'NVAS07';chkname;maj=1-error
+  if((uvj=maj)&(uvj>0))then $count down in unlikely case of crash (status R/W)
+    type'CLEANUP SSRC, ALL:',maj,alj;for j=alj:1 by -1;egetn j;zap;end;clrtemp
+  else;type 'EXPECTED MA-FILES DO NOT MATCH UV-FILES; NO CLEANUP !';end
+finish
+
+procedure flatfov
+$LOS - compile flatn-ed radius blank-ed images out to where pbcorr=10.0 (=xpb)
+  scalar uvi,mai,fov,frq,kk,tbw,tint,xpb,xcst,nif,fbw,fta;xpb=10.0
+  string*4 cootype
+  clrname;indisk=lsdisk;intype'UV';chkname;uvi=1-error
+  if(uvi<3)then;type'ERROR: NO FILES PROCESSED !';else
+    if(uvi<4)then;type'WARNING: ONLY ONE UV-FILE - MAYBE CHECK?';end
+    egetname 1;tint=guesintt;kk=1
+    xcst=sqrt((3/ln(2))*(xpb)/(xpb+1)); $ bit more field for BW/TA: xpb+1
+    while (kk<7)
+      keyvalue=0;keystrng'';keyword='CTYPE'!!char(kk);gethead
+      if(substr(keystrng,1,2)='IF')then;keyword='NAXIS'!!char(kk)
+        keystrng'';gethead;nif=keyvalue(1);kk=10;else;kk=kk+1;end;end;kk=1
+    while (kk<7)
+      keyvalue=0;keystrng'';keyword='CTYPE'!!char(kk);gethead
+      if(substr(keystrng,1,4)='FREQ')then;keyword='CRVAL'!!char(kk)
+        keystrng'';gethead;frq=keyvalue(1);kk=10;else;kk=kk+1;end;end
+    for i=3:uvi;egetname i
+      task'TABGET';inext'FQ';invers 1;keyword'NUM ROW';keystrng'';getthead
+      kk=keyvalue(1);for j=1:kk;pixxy=j,4,1;tabget;tbw=keyvalue(1)
+        if(nif=2)then;pixxy=j,4,2;tabget;tbw=max(tbw,keyvalue(1));end
+      end;intype'MA';inseq=0;inclass'*001';chkname;mai=1-error
+      if(mai>1)then;type'WARNING: MULTIPLE IMAGES - CHECK?';end;
+      inclass'NVAS07'
+      chkname;if(error<1)then;type inname!!' : FLATFOV ALREADY DONE';mai=0;end
+      if (mai=1) then;inclass'*001'
+        for j=1:mai $ assume inseq starts at 1..
+          inseq=j;kk=1;cellsize=0;userid=0
+          while (kk<5)
+            keyvalue=0;keystrng'';keyword='CTYPE'!!char(kk);gethead
+            keyword='CDELT'!!char(kk);clrtemp
+        if(substr(keystrng,1,3)='RA-')then;gethead;cellsize(1)=keyvalue(1);end
+        if(substr(keystrng,1,4)='DEC-')then;gethead;cellsize(2)=keyvalue(1);end
+        if(substr(keystrng,1,4)='FREQ')then;keyword='CRVAL'!!char(kk)
+              keystrng'';gethead;fov=keyvalue(1)/1e9;fov=1350/fov;end;kk=kk+1
+          end;cellsize(1)=-1*cellsize(1)*3600;cellsize(2)=cellsize(2)*3600
+          fta=min(1.75e10/(frq*abs(lsparm(5))),(min(cellsize(1),cellsize(2))))
+        fbw=xcst*3*fta*frq/tbw               $ radius field/view due bandwidth
+        fta=xcst*3*fta/(tint*7.2722e-5)      $ radius field/view due averaging
+        fov=min(fov,fbw);fov=min(fov,fta)    $ min field/view radius, arcsec
+$        imsize(1)=ceil(2*fov/cellsize(1));imsize(2)=ceil(2*fov/cellsize(2))
+	imsize=1024
+        task'FLATN';inclass'?CL*';chkname;nfield=1-error;nmaps=1;clroname
+        outname=inname;coordina=0;reweight=0;doweight=0;edgskp=15;aparm=0
+        pbparm=1/xpb,0;type'MINIMUM FOV :'!!char(fov)!!' ARCSEC RADIUS'
+        inclass'?CL*';gx
+$	;allzap;recat
+$	 ;inclass'FLATN'
+$        tput;default blank;tget flatn;task'BLANK';opcode'RADI';dparm fov,0;
+$	 tvchan=0;
+$	 gx;allzap;recat
+  end;end;end;end
+finish
+
+procedure nvasimage
+$LOS - Determine noise, do primary beam correction, include copyright
+  scalar numfle,ll,mm
+  string*20 expnm
+  if(expnm='')then;tget fillm;ll=length(infile);expnm=substr(infile,6,ll-1);end
+  clrname;indisk=lsdisk;recat;chkname;numfle=1-error;mai=0
+  while((mai<numfle)&(inclass<>'BLANK'))
+    mai=mai+1;egetname mai;end;if(inclass<>'BLANK')then;mai=numfle+1;end
+  for j=mai:numfle;default imean;docat=1;intype'SC';egetname j;chkname
+    if(error=0)then;keyvalue=0;keystrng'';keyword='CRPIX1';gethead
+    ll=keyvalue(1);keyword='CRPIX2';gethead;mm=keyvalue(1);doinvers=1
+    blc(1)=ll-29;blc(2)=mm-30;trc(1)=ll+30;trc(2)=mm+29;imstat;doinv=-1
+    blc=0;trc=0;rms=pixstd;go;wa;if(pixstd=rms)then;keyword'ACTNOISE'
+    keytype'R';keyvalue=rms,0;puthead;end;end;end
+$  default'PBCOR';indisk=lsdisk;inclass'BLANK';chkname;pbparm=1/xpb,0
+$  for j=mai:numfle
+$    intype'SC';egetname mai;chkname;if(error=0)then;getoname mai
+$    outclass'RADCOR';outseq=0;inclass'BLANK';outdisk=indisk;gx;zap;recat;end
+$  end;
+$default'CPYRT';indisk=lsdisk;recat;infile='AVLA:Arch_Cprt
+$  for j=mai:numfle $ can only do on MA files
+$    intype'SC';egetname mai;chkname;getoname mai;outclass'NVAS07';
+$    if(inclass='RADCOR')then;gx;inclass'RADCOR';zap;recat;end;end
+finish
+
+$ procedure mkarr
+$   string*1 sx,lx,az
+$   string*4 nnsl
+$   scalar aw, ae, an, ai
+$   numbant=0;aw=0;ae=0;an=0
+$   keyword'NUM ROW';inext'AN';invers=0;getthead;k=keyvalue(1)
+$   for j=1:k
+$     pixxy=j,1,0;tabget;i=1;clrtemp
+$     while((substr(keystrng,i,i)<>':')&(i<9));i=i+1;end;clrtemp
+$     if (substr(keystrng,i+1,i+1)<>' ')then;lsvla=substr(keystrng,i+1,i+3)
+$     else;lsvla=substr(keystrng,i+2,i+4);end;az=substr(lsvla,1,1)
+$     if ((lsvla<>'OUT')&(lsvla<>'MPD'))then;numbant=numbant+1
+$       if (lsvla='VPT')then;ai=75;lx='P';else;ai=value(substr(lsvla,2,3))
+$         if(az='W')then;aw=max(aw,ai);else;if(az='E')then;ae=max(ae,ai);else
+$             if(az='N')then;an=max(an,ai);else;if(lx<>'P')then;
+$                 type lsvla!!' - ERROR: ANTENNA NOT KNOWN';end;end;end;end
+$   clrtemp;end;end;end
+$   if (lx<>'P')then;ai=max(aw,ae);ai=max(ai,an);lx='D';if(ai>36)then;lx='A'
+$       else;if(ai>18)then;lx='B';else;if(ai>9)then;lx='C';end;end;end;end
+$   ai=min(aw,ae);ai=min(ai,an);sx='A';if(ai<10)then;sx='D';else;if(ai<19)then
+$         sx='C';else;if(ai<37)then;sx='B';end;end;end;clrtemp
+$   if(numbant<10)then
+$     nnsl='0'!!char(numbant)!!sx!!lx;else;nnsl=char(numbant)!!sx!!lx;end
+$   return nnsl
+$ finish
+
+procedure mkarr
+   string*4 nnsl
+   nnsl='test
+   return nnsl
+finish
+
+procedure nvasname
+$LOS - makes the RA/Dec directory and returns the archive file name
+  scalar ki,ra1,ra2,dc1,dc2,rh,rm,rs,dd,dm,ds,rmsv,sbmv
+  scalar ifx,nif,nu,nu1,nu2,bw,nst,stv,msuv1,msuv2,msuv
+  string*1 pm,rmsc,stc,ik,rdi
+  string*2 zz
+  string*3 mmm
+  string*4 rmss,sbms,fras,frqs,nnsl,rads
+  string*30 dir
+  string*20 expnm
+$  expnm = ''
+  if(expnm='')then
+    keyword'OBSERVER';gethead;expnm=keystrng;keyword'DATE-OBS';gethead
+    mmm=substr(keystrng,5,6)
+    if(mmm='01')then;mmm='JAN';end;if(mmm='02')then;mmm='FEB';end
+    if(mmm='03')then;mmm='MAR';end;if(mmm='04')then;mmm='APR';end
+    if(mmm='05')then;mmm='MAY';end;if(mmm='06')then;mmm='JUN';end
+    if(mmm='07')then;mmm='JUL';end;if(mmm='08')then;mmm='AUG';end
+    if(mmm='09')then;mmm='SEP';end;if(mmm='10')then;mmm='OCT';end
+    if(mmm='11')then;mmm='NOV';end;if(mmm='12')then;mmm='DEC';end
+    expnm=expnm!!'_'!!substr(keystrng,1,4)!!mmm!!substr(keystrng,7,8)!!'_1'
+  end;ki=1;userid=0
+  while (ki<9)
+    ik=char(ki);keyvalue=0;keystrng'';keyword='CTYPE'!!ik;gethead;clrtemp
+    if(substr(keystrng,1,2)='RA')then
+      keyword='CRVAL'!!ik;gethead;ra1=keyvalue(1);ra2=keyvalue(2);msuv1=ra1+ra2
+      keyword='CDELT'!!ik;gethead;cellsize(1)=-1*keyvalue(1)*3600;ra1=ra1/15
+      ra2=ra2/15;rh=floor(ra1);ra1=(ra1-rh)*60;rm=floor(ra1);ra1=(ra1-rm)*60
+      rs=((floor((ra1+(3600*ra2))*1000)+0.005)/1000);clrtemp
+      if(abs(rs-floor(abs(rs)))<0.1)then;rs=0;zz='.0';else;zz='';end;clrtemp
+      keyword='NAXIS'!!ik;gethead;ra1=0.5*keyvalue(1)*cellsize(1);end
+    if(substr(keystrng,1,3)='DEC')then
+     keyword='CRVAL'!!ik;gethead;dc1=keyvalue(1);dc2=keyvalue(2);msuv1=dc1+dc2
+      keyword='CDELT'!!ik;gethead;cellsize(2)=keyvalue(1)*3600
+      if(dc1<0)then;pm='-';dc1=-1*dc1;dc2=-1*dc2;else;pm='+';end
+      dd=floor(dc1);dc1=(dc1-dd)*60;dm=floor(dc1);dc1=(dc1-dm)*60
+      ds=floor(dc1+(3600*dc2)+0.0005);clrtemp;keyword='NAXIS'!!ik
+      gethead;dc1=0.5*(keyvalue(1)-10)*cellsize(2);end $ie correct for (c)-top
+    if(substr(keystrng,1,2)='IF')then
+      keyword='NAXIS'!!ik;gethead;nif=keyvalue(1);clrtemp;end
+    if(substr(keystrng,1,4)='FREQ')then
+      keyword='CRVAL'!!ik;gethead;nu1=keyvalue(1)/1e6;nu2=keyvalue(2)/1e6
+      keyword='CDELT'!!ik;gethead;bw=keyvalue(1)/1e6;end;nu=(nu1+nu2);clrtemp
+    if(substr(keystrng,1,6)='STOKES')then
+      keyword='CRVAL'!!ik;gethead;stv=keyvalue(1)
+      keyword='NAXIS'!!ik;gethead;nst=keyvalue(1);clrtemp
+      if(nst=4)then;stc='F';else;if(nst=2)then;stc='H';else;if(stv=-1)then
+            stc='R';else;if(stv=-2)then;stc='L';else;if(stv=-5)then;stc='X'
+              else;if(stv=-6)then;stc='Y';else;if(stv >0)then;stc='I';else
+                    stc='U';end;end;end;end;end;end;end;end
+    if(substr(keystrng,1,1)='')then;ki=10;else;ki=ki+1;end
+  end;clrtemp $ build the output file name here
+  if(intype='UV')then;nu1=0;nu2=0;clrtemp;inext'FQ';for ifx=1:nif
+      pixxy=1,2,ifx;tabget;nu1=nu1+((keyvalue(1)+keyvalue(2))/1e6)
+      pixxy=1,3,ifx;tabget;nu2=nu2+((keyvalue(1)+keyvalue(2))/1e6);end
+    nu=nu+0.5*(nu1+(0.5*nu2));clrtemp;else;if(intype='MA')then;
+      fras=substr(char(0.5*(ra1+dc1)),1,4);nu=nu+(bw/(2*nif));else
+      type 'ERROR: FILE TYPE UNKNOWN (HOW DID THIS HAPPEN?)';end;end
+  frqs=substr(char((nu+5)/1000),1,4);clrtemp;sys2com(1)=' $aimg/
+  if (intype='MA')then; $read conv size,rms from header, use imsi*cell/2 for R
+   rdi='S';ra2=0.5*(ra1+dc1-9);if(ra2>60)then;rdi='M';ra2=ra2/60;end $ R-fov
+    if(ra2>60)then;rdi='D';ra2=ra2/60;end;rads=substr(char(ra2),1,4)
+    keyword='BMAJ';gethead;sbmv=keyvalue(1);keyword='BMIN';gethead
+    sbmv=1800*(sbmv+keyvalue(1));sbms=substr(char(sbmv),1,4)
+
+   keyvalue=0;keystrng'';keyword='ACTNOISE';gethead;rmsv=keyvalue(1) $ RMS<1e4
+    if(rmsv>1)then;rmsc='J';rmss=substr(char(rmsv),1,4);else;rmsv=rmsv*1000
+      if(rmsv>1)then;rmsc='M';rmss=substr(char(rmsv),1,4);else;rmsv=rmsv*1000
+        if(rmsv>1)then;rmsc='U';rmss=substr(char(rmsv),1,4);else
+          rmsv=rmsv*1000;rmsc='N';rmss=substr(char(rmsv),1,4)
+    end;end;end;clrtemp;fras='';while(length(frqs)<4);frqs=frqs!!'0';end
+    while(length(rads)<4);rads=rads!!'0';end;while(length(rmss)<4)
+      rmss=rmss!!'0';end;while(length(sbms)<4);sbms=sbms!!'0';end
+    dataout=frqs!!stc!!sbms!!'_'!!expnm!!'_'!!rmss!!rmsc!!fras!!rads!!rdi
+  else;outprint=frqs!!stc!!nnsl!!'_'!!expnm;dataout=outprint!!'.uvfits
+  end
+  msuv=(sqrt((msuv1*msuv1)+(msuv2*msuv2)))*3600
+  if(msuv>5)then $ not multisource UV, make a source dir
+    dir='';sysout'';syscom'umask 0;mkdir
+    if(rh<10)then;sys2com(2)='J0'!!char(rh);else;sys2com(2)='J'!! char(rh);end
+    if(rm<10)then;sys2com(3)='0'!!char(rm);else;sys2com(3)=char(rm);end
+   if(rs<10)then;sys2com(4)='0'!!char(rs)!!zz;else;sys2com(4)=char(rs)!!zz;end
+    sys2com(4)=substr(sys2com(4),1,4);clrtemp
+   if(dd<10)then;sys2com(5)=pm!!'0'!!char(dd);else;sys2com(5)=pm!!char(dd);end
+    if(dm<10)then;sys2com(6)='0'!!char(dm);else;sys2com(6)=char(dm);end
+    if(ds<10)then;sys2com(7)='0'!!char(ds);else;sys2com(7)=char(ds);end
+    sys2com(7)=substr(sys2com(7),1,2);clrtemp
+    sys2com(8) ' >& /dev/null
+   system;clrtemp;for i=1:7;dir=dir!!sys2com(i);end;ki=length(dir) $must be 23
+    dir=substr(dir,8,ki);if(ki<>23)then;type'OOPS: WRONG DIRECTORY NAME ?';end
+  end;syscom'';sys2com'';clrtemp
+  return
+finish
+
+procedure nvasarch
+$LOS - archives the files to disk - define $EXP (and $AVLA/$ADAT/$AIMG/$AUVF)
+  string*4 nnsl
+  string*20 expnm
+  string*64 expfile
+  scalar nn,mai,uvi,xe,nif
+  clrname;indisk=lsdisk;chkname;numfle=1-error;intype'UV';chkname;uvi=1-error
+  default fitab;indisk=lsdisk;recat;douvcomp=-1;nif=2;type expid
+$2IF IM, or reset in uv#1
+  if(numfle>3)then $ at least 1UVF, 1TSV, 1SS, 1MA
+    egetname 1;nnsl=mkarr;nvasname;i=1;clrtemp;syscom'
+$umask 0;mkdir
+$    while((substr(expnm,i,i)<>'_')&(i<21));i=i+1;end;dir=substr(expnm,1,i-1)
+   dataout='ADAT:'!!expnm!!'_'!!frqs!!stc!!nnsl!!'.uvfits
+    sysout'';sys2com'';sys2com(2) ' >& /dev/null
+   sys2com(1)' $ADAT/'!!dir;system;gx;clrtemp;egetname 2;clrtemp;syscom'\mv -f
+    dataout='ADAT:'!!expnm!!'_'!!frqs!!stc!!nnsl!!'.clfits
+    gx;sys2com(1)' $ADAT/'!!expnm!!'_* $ADAT/'!!dir;system
+    sys2com(1)' $ADAT/'!!expnm!!'.* $ADAT/'!!dir;
+$system
+    sys2com(1)' $ARUN/'!!expnm!!'.* $ADAT/'!!dir;
+$system;
+j=2;mai=0
+  while(j<numfle)
+      j=j+1;egetname j;if(intype='MA')then;mai=j;j=numfle+1;end;end
+      uvi=mai-1;for nn=3:uvi;egetname nn;chkname; $ archive calibrated UV file
+      xe=1-error;nvasname;sysout'';sys2com'';sys2com(3) ' >& /dev/null
+      dataout='AIMG:'!!dataout;dparm(5)=1;if(xe=1)then;gx;
+       if(numtab('PL')<1)then;type'NO UV PLOTS';else;if (numtab('PL')<2) then;
+         type'SINGLE PLOT, ASSUMING UV COVERAGE';
+         else;if(numtab('PL')>2)then;plver=3;dataout='AIMG:'!!outprint!!'.vis.ps
+           go lwpla;wait lwpla;syscom'convert $aimg/
+           sys2com(1)=outprint!!'.vis.ps $aimg/
+           sys2com(2)=outprint!!'.vis.gif
+         system;end;plver=2;dataout='AIMG:'!!outprint!!'.ri.ps
+           go lwpla;wait lwpla;syscom'convert $aimg/
+           sys2com(1)=outprint!!'.ri.ps $aimg/
+           sys2com(2)=outprint!!'.ri.gif
+         system;end;plver=1;dataout='AIMG:'!!outprint!!'.uv.ps
+       go lwpla;wait lwpla;dparm(5)=0;sys2com(1)=outprint!!'.uv.ps $aimg/
+       sys2com(2)=outprint!!'.uv.gif
+       system;sys2com(2)='';syscom'chmod 666 $aimg/
+      sys2com(1)=outprint!!'.*.ps
+      system;sys2com(1)=outprint!!'.*.gif
+      system;sys2com(1)=outprint!!'.uvfits
+$        sys2com(1)=outprint!!'*
+      system;end;end;clrtemp;syscom'\mv -f $aimg/
+$      sys2com(1)=substr(dataout,6,length(dataout))!!' $aimg/
+      sys2com(1)=outprint!!'.* $aimg/
+      sys2com(2)=dir;system;clrtemp;end;for nn=(uvi+1):numfle $ archive MAps
+      egetname nn;chkname;xe=1-error;if((intype='MA')&(inclass='NVAS07'))then
+      nvasname;sysout'';sys2com'';sys2com(8)' >& /dev/null
+      expfile=dataout;dataout='AIMG:'!!dataout
+      if(xe=1)then;gx;syscom'umask 0;\mv -f $aimg/
+        sys2com(1)=expfile!!'  $aimg/
+        sys2com(2)=expfile!!'.imfits
+        system;clrtemp;syscom'umask 0;fits2jpeg -nonLinear -fits $aimg/
+        sys2com(1)=expfile!!'.imfits -jpeg $aimg/
+        sys2com(2)=expfile!!'.jpg
+        sys2com(3)=' ; convert -size 150x150 $aimg/
+        sys2com(4)=expfile!!'.jpg
+        sys2com(5)=' -resize 150x150 -gamma 1.5 -depth 32 $aimg/
+        sys2com(6)=expfile!!'.JPG'!!' ; \mv -f $aimg/
+        sys2com(7)=expfile!!'* $aimg/
+      sys2com(8) dir!!sys2com(8);system;clrtemp;end;end;end;end
+  type 'NVASARCH DONE - CLEANING UP';nvascln
+finish
+
+$procedure nvas
+$  typ expid;flatfov;if(uvi>3)then;nvasimage;nvasarch;end
+$finish
+
+procedure nvas
+  typ expid;flatfov;if(uvi>3)then;nvasimage;end;clrtemp;clrname;indisk lsdisk
+    recat;chkname;alj=1-error;getname 1;inname'';chkname;uvj=-error;intype'MA'
+    inclass'NVAS07';chkname;maj=1-error;if (uvj=maj) then;nvasarch;end;clrtemp
+finish

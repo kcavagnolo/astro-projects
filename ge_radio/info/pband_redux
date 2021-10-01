@@ -1,0 +1,538 @@
+################################
+################################
+
+set variables if you want global vars:
+prefix = night1
+msfile = prefix+'.ms'
+vis = msfile
+calid = '2'
+
+################################
+################################
+
+step 0 -- read data into MS and checkout obs:
+
+importvla(archivefiles='mydata_1', vis=msfile, bandname='P')
+listobs(vis=msfile)
+
+################################
+################################
+
+step 0' -- set the flux density of the main flux calibrator:
+
+setjy(vis=msfile, field=calid, spw='0,1')
+
+*** NB NB NB ***
+*** NB NB NB ***
+Keep record of the Stokes' coeffs dumped by setjy,
+e.g. [I=12.0, Q=0.0, U=0.0, V=0.0] Jy.
+*** NB NB NB ***
+*** NB NB NB ***
+
+################################
+################################
+
+step 1 -- flag calibrator data with viewer (flagging of source data
+comes after calibration):
+
+viewer(infile=msfile)
+
+**settings**
+'MS and Visbility Selection'
+set field IDs equal to gain calibrator field # (e.g. calid)
+leave spectral windows at [0,1]
+
+'Display Axes'
+set X axis=Baseline
+set Y axis=Time
+set Animation axis=Channel
+
+(A)
+Now press 'play' and watch for bad channels
+Flag channels, antenna(e), time, etc
+Under 'Flagging Options' hit 'Save edits'
+Go back to (A) and iterate over Correlation and Spectral Window under 'Display Axes'
+
+# Also flag antenna which were totally dead
+flagdata(vis=msfile, spw='', mode='manualflag', timerange='', correlation='', antenna = 'EA28')
+flagdata(vis=msfile, spw='', mode='manualflag', timerange='', correlation='', antenna = 'EA26')
+
+################################
+################################
+
+step 3 -- save all the flags:
+
+flagmanager(vis=msfile, mode='save', versionname='afterviewer1', comment='flags after running viewer')
+
+################################
+################################
+
+step 3 -- flag calibrator data with plotxy:
+
+# Gain calib amp vs. time for correlation/spw combos
+plotxy(vis=msfile, field=calid, yaxis='amp', xaxis='time', selectdata=T, correlation='RR', spw='0')
+plotxy(vis=msfile, field=calid, yaxis='amp', xaxis='time', selectdata=T, correlation='LL', spw='0')
+plotxy(vis=msfile, field=calid, yaxis='amp', xaxis='time', selectdata=T, correlation='LL', spw='1')
+plotxy(vis=msfile, field=calid, yaxis='amp', xaxis='time', selectdata=T, correlation='RR', spw='1')
+
+# Gain calib amp vs. channel for correlation/spw combos
+plotxy(vis=msfile, field=calid, yaxis='amp', xaxis='channel', selectdata=T, correlation='RR', spw='0')
+plotxy(vis=msfile, field=calid, yaxis='amp', xaxis='channel', selectdata=T, correlation='LL', spw='0')
+plotxy(vis=msfile, field=calid, yaxis='amp', xaxis='channel', selectdata=T, correlation='LL', spw='1')
+plotxy(vis=msfile, field=calid, yaxis='amp', xaxis='channel', selectdata=T, correlation='RR', spw='1')
+
+# Phase calib amp vs. time for correlation/spw combos
+plotxy(vis=msfile, field='1', yaxis='amp', xaxis='time', selectdata=T, correlation='RR', spw='0')
+plotxy(vis=msfile, field='1', yaxis='amp', xaxis='time', selectdata=T, correlation='LL', spw='0')
+plotxy(vis=msfile, field='1', yaxis='amp', xaxis='time', selectdata=T, correlation='LL', spw='1')
+plotxy(vis=msfile, field='1', yaxis='amp', xaxis='time', selectdata=T, correlation='RR', spw='1')
+
+# Phase calib amp vs. channel for correlation/spw combos
+plotxy(vis=msfile, field='1', yaxis='amp', xaxis='channel', selectdata=T, correlation='RR', spw='0')
+plotxy(vis=msfile, field='1', yaxis='amp', xaxis='channel', selectdata=T, correlation='LL', spw='0')
+plotxy(vis=msfile, field='1', yaxis='amp', xaxis='channel', selectdata=T, correlation='LL', spw='1')
+plotxy(vis=msfile, field='1', yaxis='amp', xaxis='channel', selectdata=T, correlation='RR', spw='1')
+
+*** NB NB NB NB ***
+*** NB NB NB NB ***
+Flags do not need to be coherent! If data in one spw or correlation or
+channel are not flagged in another, that is okay. E.g. if one antenna
+is dead and it gets completely removed, it does not need to be removed
+in all spw, corr, or time. For imaging, the flags are cross-checked,
+so if one corr RR is flagged in one spw but not the other, data in
+both spw will be removed.
+*** NB NB NB NB ***
+*** NB NB NB NB ***
+
+################################
+################################
+
+step 4 -- save all the flags:
+
+flagmanager(vis=msfile, mode='save', versionname='afterplotxy', comment='flags after running plotxy')
+
+################################
+################################
+
+step 5 -- bandpass calibration for calibrators:
+
+This is a tricky step...
+
+Want stable solutions for the gain as a function of channel, i.e. a
+solution for the shape of the bandpass or a "bandpass solution." This
+solution is then applied to the data. If the solutions are acceptable,
+then no gain calibration needs to be run. However, if the solutions
+are noisy, then gaincal needs to be run.
+
+In the case of the gain calibrator, the solution interval should be of
+the order a couple minutes for a 15-20 minute stare. So try using
+solint='300s', check the solutions using plotcal, and if they look
+stable (as opposed to noisy for poor S/N data), then the solutions are
+acceptable.
+
+*** NB NB NB NB ***
+*** NB NB NB NB ***
+Set the reference antenna to one which was near the center of the
+array. Look at the config plot made early on.
+*** NB NB NB NB ***
+*** NB NB NB NB ***
+
+gain calibrator:
+bandpass(vis=msfile, caltable=prefix+".bcal", field=calid, spw="",
+	selectdata=False, timerange="", uvrange="", antenna="", scan="",
+	msselect="", solint="inf", combine="", refant="VA06", solnorm=False,
+	bandtype="B", append=False, fillgaps=0, degamp=3, degphase=3,
+	visnorm=False, maskcenter=0, maskedge=0, gaintable="",
+	gainfield=calid, interp=['linear'], spwmap=[], gaincurve=False,
+	opacity=0.0, parang=False)
+
+phase calibrator:
+bandpass(vis=msfile, caltable=prefix+".bcal", field="11,19,29,38", spw="",
+	selectdata=False, timerange="", uvrange="", antenna="", scan="",
+	msselect="", solint="inf", combine="", refant="VA06", solnorm=False,
+	bandtype="B", append=False, fillgaps=0, degamp=3, degphase=3,
+	visnorm=False, maskcenter=0, maskedge=0, gaintable="",
+	gainfield=calid, interp=['linear'], spwmap=[], gaincurve=False,
+	opacity=0.0, parang=False)
+
+################################
+################################
+
+step 7 -- examine solutions:
+
+default(plotcal)
+
+gain calib:
+plotcal(caltable=prefix+'.bcal', xaxis='chan', yaxis='amp', iteration='antenna', field=calid)
+plotcal(caltable=prefix+'.bcal', xaxis='chan', yaxis='phase', iteration='antenna', field=calid)
+plotcal(caltable=prefix+'.bcal', xaxis='chan', yaxis='snr', iteration='antenna', field=calid)
+
+phase calib:
+plotcal(caltable=prefix+'.bcal',xaxis='chan',yaxis='amp', iteration='antenna', field='1')
+plotcal(caltable=prefix+'.bcal',xaxis='chan',yaxis='phase', iteration='antenna', field='1')
+plotcal(caltable=prefix+'.bcal',xaxis='chan',yaxis='snr', iteration='antenna', field='1')
+
+Things to look out for in plotcal solutions:
+
+inversions -- this is a sign of RFI. Re-run flagging for the antenna,
+channel, spw, correlation where the inversion occurred, flag and retry
+bandpass
+
+low gain amplitudes -- this suggests that the antenna was not
+receiving during some scans, was off-source, or that something else
+may be wrong. Check the observing logs and check a plot of gain amp
+vs. time in plotxy.
+
+noise -- ...
+
+Now check calibration table using listcal. CC says, "The whole goal of
+the calibration process is to make the calibration table look
+'right.'" Go through each spw, correlation, and calibrator and check a
+channel at the center of the bandpass (e.g. for 32 channels, pick
+channel 16).
+
+default(listcal)
+listcal(vis=msfile, caltable=prefix+'.bcal', field=calid, spw='0:16')
+listcal(vis=msfile, caltable=prefix+'.bcal', field='1', spw='0:16')
+
+Things to look out for in listcal solutions:
+
+phase drift -- > +/- 20deg
+amp drift -- > 5-10%
+is refant amp=1.0 and phase=0.0?
+
+################################
+################################
+
+step 9 -- apply bcal(t) calibration:
+
+applycal(vis=msfile, gaintable=[prefix+'.bcal'], gainfield=['1','*'], interp=['linear','nearest'], spwmap=[], field='1,2')
+applycal(vis=msfile, gaintable=[prefix+'.bcal'], gainfield=['0','*'], interp=['linear','nearest'], spwmap=[], field=calid)
+plotxy(vis=msfile, xaxis='channel', yaxis='amp', datacolumn='corrected', iteration='field')
+
+################################
+################################
+
+step 7b? -- solve for time dependent antenna gains:
+
+gaincal(vis=msfile, caltable=prefix+'.gcal', gaintable=prefix+'.bcal',
+        gainfield='', interp='nearest', field='0,1', spw='0~1:5~27',
+	gaintype='G', solint='inf', combine='', calmode='ap', minsnr=1.0,
+	refant='VA06')
+plotcal(caltable=prefix+'.gcal',yaxis='amp')
+
+################################
+################################
+
+step 8 -- scale phase calibrator(s) by gain calibrator(s):
+
+fluxscale(vis=msfile, caltable=prefix+'.gcal', fluxtable=prefix+'.fcal', reference='0', transfer='')
+plotcal(caltable=prefix+'.fcal',yaxis='amp')
+
+################################
+################################
+
+step 9 -- apply calibration:
+
+applycal(vis=msfile, gaintable=[prefix+'.fcal',prefix+'.bcal'], gainfield=['1','*'], interp=['linear','nearest'], spwmap=[], field='1,2')
+applycal(vis=msfile, gaintable=[prefix+'.fcal',prefix+'.bcal'], gainfield=['0','*'], interp=['linear','nearest'], spwmap=[], field=calid)
+plotxy(vis=msfile, xaxis='channel', yaxis='amp', datacolumn='corrected', iteration='field')
+
+################################
+################################
+
+step 9.5 -- clean-up source data:
+
+for fiel '2'
+viewer(infile=msfile)
+plotxy(vis=msfile, field='2', yaxis='amp', xaxis='time', selectdata=T, correlation='RR', spw='0')
+plotxy(vis=msfile, field='2', yaxis='amp', xaxis='time', selectdata=T, correlation='LL', spw='0')
+plotxy(vis=msfile, field='2', yaxis='amp', xaxis='time', selectdata=T, correlation='LL', spw='1')
+plotxy(vis=msfile, field='2', yaxis='amp', xaxis='time', selectdata=T, correlation='RR', spw='1')
+plotxy(vis=msfile, field='2', yaxis='amp', xaxis='channel', selectdata=T, correlation='RR', spw='0')
+plotxy(vis=msfile, field='2', yaxis='amp', xaxis='channel', selectdata=T, correlation='LL', spw='0')
+plotxy(vis=msfile, field='2', yaxis='amp', xaxis='channel', selectdata=T, correlation='LL', spw='1')
+plotxy(vis=msfile, field='2', yaxis='amp', xaxis='channel', selectdata=T, correlation='RR', spw='1')
+flagmanager(vis=msfile, mode='save', versionname='afterplotxy', comment='flags after running plotxy')
+
+################################
+################################
+
+step 10 -- perform simple imaging:
+
+default('clean')
+
+# Dirty image (no iterative cleaning)
+clean(vis=msfile, imagename='dirtyimg', field='2', imsize=[1024,1024],
+	cell=['1.25arcsec', '1.25arcsec'], weighting='briggs', robust=0.5,
+	interactive=F, mode='mfs', niter=0)
+
+# Wide-field, low-res clean image (iterative cleaning)
+clean(vis=msfile, imagename='lowresimg', field='2', niter=6000,
+	imsize=[4096,4096], cell=['3arcsec', '3arcsec'],
+	weighting='briggs', robust=0.0, interactive=F, spw='0~1:5~27',
+	width=1, threshold=0.0)
+
+# Wide-field, high-res clean image (iterative cleaning)
+clean(vis=msfile, imagename='highresimg', field='2', niter=6000,
+	imsize=[4096,4096], cell=['1arcsec', '1arcsec'],
+	weighting='briggs', robust=0.0, interactive=F, spw='0~1:2~28',
+	width=1, threshold=0.0, imagermode='mosaic')
+
+################################
+################################
+
+step 12 -- split out source data and make FITS:
+
+default('split')
+default('exportfits')
+default('imhead')
+
+# gain calibrator
+field = '3C138'
+calsplitms = prefix+'.'+field+'.split.ms'
+split(vis=msfile, outputvis=calsplitms, field=calid, spw='', datacolumn='corrected')
+clnfits = prefix+'.'+field+'.clean.fits'
+aspid0 = exportfits(imagename=clnfits, fitsimage=clnfits, async=True)
+print "The return value for this exportfits async task for tm is "+str(aspid0)
+imhead(imagename=clnfits, mode='summary')
+
+# phase calibrator
+field = '0409-179'
+phasplitms = prefix+'.'+field+'.split.ms'
+split(vis=msfile, outputvis=phasplitms, field='1', spw='', datacolumn='corrected')
+clnfits = prefix+'.'+field+'.clean.fits'
+aspid1 = exportfits(imagename=clnfits, fitsimage=clnfits, async=True)
+print "The return value for this exportfits async task for tm is "+str(aspid1)
+imhead(imagename=clnfits, mode='summary')
+
+# source
+field = 'NGC1316'
+srcsplitms = prefix+'.'+field+'.split.ms'
+split(vis=msfile, outputvis=srcsplitms, field='2', spw='', datacolumn='corrected')
+clnimg = 'highresimg.image'
+clnfits = prefix+'.'+field+'.clean.fits'
+aspid1 = exportfits(imagename=clnimg, fitsimage=clnfits, async=True)
+print "The return value for this exportfits async task for tm is "+str(aspid1)
+imhead(imagename=clnfits, mode='summary')
+
+################################
+################################
+       SELF-CALIBRATION
+################################
+################################
+
++ P-band, A-config primary beam -> 9000", 150', 2.5deg
++ Want to oversample resolution by factor of 3-5
++ 4.5-6.0" resolution
+5x: 0.9-1.2"/cell ==> 10000-7500 pix/side
+4x: 1.125-1.5"/cell ==> 8000-6000 pix/side
+3x: 1.5-2"/cell ==> 6000-4500 pix/side
+
+1.25"/cell => 7200 pix/side => takes 35 min
+
+widefield(vis=prefix+".NGC1316.split.ms", imagename=['selfcal'], outlierfile="",
+	field=calid, spw="0~1:2~28", selectdata=False, timerange="", uvrange="",
+	antenna="", scan="", mode="mfs", niter=200, gain=0.1, threshold=0.0,
+	psfmode="clark", ftmachine="wproject", facets=1, wprojplanes=400,
+	multiscale=[], negcomponent=-1, interactive=False, mask=[], nchan=-11,
+	start=0, width=1, imsize=[7200, 7200],cell=['1.25arcsec','1.25arcsec'],
+	phasecenter=['0'], restfreq="", stokes="I", weighting="briggs",
+	robust=0.0, npixels=0, noise="1.0Jy", cyclefactor=1.5,
+	cyclespeedup=-1, npercycle=100, uvtaper=False, outertaper=[],
+	innertaper=[], restoringbeam=[''])
+
+gaincal(vis=prefix+".NGC1316.split.ms", caltable="selfcal.gcal", field=calid,
+	spw="0~1:2~28", selectdata=False, timerange="", uvrange="",
+	antenna="", scan="", msselect="", solint="60s", combine="",
+	preavg=-1.0, refant="VA06", minsnr=0.0, solnorm=False, gaintype="G",
+	calmode="p", append=False, splinetime=3600.0, npointaver=3,
+	phasewrap=180.0, gaintable=[''], gainfield=[''],
+	interp=['linear'], spwmap=[], gaincurve=False, opacity=0.0,
+	parang=False)
+
+plotcal
+
+applycal(vis=prefix+".NGC1316.split.ms", field=calid, spw="0~1:2~28",
+	selectdata=False, timerange="", uvrange="", antenna="", scan="",
+	msselect="", gaintable=['selfcal.gcal'], gainfield=['*'],
+	interp=['nearest'], spwmap=[], gaincurve=False, opacity=0.0,
+	parang=False, calwt=True)
+
+When satisfied:
+
+gaincal(vis=prefix+".NGC1316.split.ms", caltable="selfcal.gcal", field=calid,
+	spw="0~1:2~28", selectdata=False, timerange="", uvrange="",
+	antenna="", scan="", msselect="", solint="60s", combine="",
+	preavg=-1.0, refant="VA06", minsnr=0.0, solnorm=False, gaintype="G",
+	calmode="ap", append=False, splinetime=3600.0, npointaver=3,
+	phasewrap=180.0, gaintable=[''], gainfield=[''],
+	interp=['linear'], spwmap=[], gaincurve=False, opacity=0.0,
+	parang=False)
+
+applycal(vis=prefix+".NGC1316.split.ms", field=calid, spw="0~1:2~28",
+	selectdata=False, timerange="", uvrange="", antenna="", scan="",
+	msselect="", gaintable=['selfcal.gcal'], gainfield=['*'],
+	interp=['nearest'], spwmap=[], gaincurve=False, opacity=0.0,
+	parang=False, calwt=True)
+
+
+
+################################
+################################
+          STATISTICS
+################################
+################################
+
+stats step 14 -- calculate stats of image:
+
+print '--Imstat (cube)--'
+default('imstat')
+imagename = clnimage
+
+# Do whole image
+# or you could stick to the cleanbox
+box = ''
+#box = '108,108,148,148'
+
+cubestats = imstat()
+
+################################
+################################
+
+stats step 15 -- calculate image moments:
+
+print '--ImMoments--'
+default('immoments')
+imagename = clnimage
+
+# Do first and second moments
+moments = [0,1]
+
+# Need to mask out noisy pixels, currently done
+# using hard global limits
+excludepix = [-100,0.009]
+
+# Include all planes
+planes = ''
+
+# Output root name
+momfile = prefix + '.moments'
+outfile = momfile
+immoments()
+momzeroimage = momfile + '.integrated'
+momoneimage = momfile + '.weighted_coord'
+
+# get image moment stats
+print '--Imstat (moments)--'
+default('imstat')
+imagename = momzeroimage
+momzerostats = imstat()
+imagename = momoneimage
+momonestats = imstat()
+
+# view moments
+print '--View image (Moments)--'
+viewer(momzeroimage)
+print "You can add mom-1 image "+momoneimage+" as a contour plot"
+
+################################
+################################
+
+stats step 16 -- save info to a log file:
+
+import datetime
+datestring=datetime.datetime.isoformat(datetime.datetime.today())
+outfile = 'out.'+prefix+'.'+datestring+'.log'
+logfile=open(outfile,'w')
+print >>logfile,'Results for '+prefix+' :'
+print >>logfile,""
+
+print ' NGC5921 results '
+print ' =============== '
+
+print >>logfile,' NGC5921 results '
+print >>logfile,' =============== '
+
+# Use the ms tool to get max of the MSs
+# Eventually should be available from a task
+# Pull the max cal amp value out of the MS (if you split this)
+ms.open(calsplitms)
+thistest_cal = max(ms.range(["amplitude"]).get('amplitude'))
+ms.close()
+oldtest_cal = 34.0338668823
+diff_cal = abs((oldtest_cal-thistest_cal)/oldtest_cal)
+
+print ' Calibrator data ampl max = ',thistest_cal
+print '   Previous: cal data max = ',oldtest_cal
+print '   Difference (fractional) = ',diff_cal
+print ''
+
+print >>logfile,' Calibrator data ampl max = ',thistest_cal
+print >>logfile,'   Previous: cal data max = ',oldtest_cal
+print >>logfile,'   Difference (fractional) = ',diff_cal
+print >>logfile,''
+
+# Pull the max src amp value out of the MS
+ms.open(srcsplitms)
+thistest_src = max(ms.range(["amplitude"]).get('amplitude'))
+ms.close()
+oldtest_src =  46.2060050964 # now in all chans
+diff_src = abs((oldtest_src-thistest_src)/oldtest_src)
+
+print ' Target Src data ampl max = ',thistest_src
+print '   Previous: src data max = ',oldtest_src
+print '   Difference (fractional) = ',diff_src
+print ''
+
+print >>logfile,' Target Src data ampl max = ',thistest_src
+print >>logfile,'   Previous: src data max = ',oldtest_src
+print >>logfile,'   Difference (fractional) = ',diff_src
+print >>logfile,''
+
+# Now use the stats produced by imstat above
+thistest_immax=cubestats['max'][0]
+oldtest_immax = 0.052414759993553162
+diff_immax = abs((oldtest_immax-thistest_immax)/oldtest_immax)
+
+print ' Clean image max = ',thistest_immax
+print '   Previous: max = ',oldtest_immax
+print '   Difference (fractional) = ',diff_immax
+print ''
+
+print >>logfile,' Clean Image max = ',thistest_immax
+print >>logfile,'   Previous: max = ',oldtest_immax
+print >>logfile,'   Difference (fractional) = ',diff_immax
+print >>logfile,''
+
+thistest_imrms=cubestats['rms'][0]
+oldtest_imrms = 0.0020218724384903908
+diff_imrms = abs((oldtest_imrms-thistest_imrms)/oldtest_imrms)
+
+print ' Clean image rms = ',thistest_imrms
+print '   Previous: rms = ',oldtest_imrms
+print '   Difference (fractional) = ',diff_imrms
+print ''
+
+print >>logfile,' Clean image rms = ',thistest_imrms
+print >>logfile,'   Previous: rms = ',oldtest_imrms
+print >>logfile,'   Difference (fractional) = ',diff_imrms
+print >>logfile,''
+
+# Now the moment images
+thistest_momzeromax=momzerostats['max'][0]
+oldtest_momzeromax = 1.40223777294
+diff_momzeromax = abs((oldtest_momzeromax-thistest_momzeromax)/oldtest_momzeromax)
+
+print ' Moment 0 image max = ',thistest_momzeromax
+print '   Previous: m0 max = ',oldtest_momzeromax
+print '   Difference (fractional) = ',diff_momzeromax
+print ''
+
+print >>logfile,' Moment 0 image max = ',thistest_momzeromax
+print >>logfile,'   Previous: m0 max = ',oldtest_momzeromax
+print >>logfile,'   Difference (fractional) = ',diff_momzeromax
+print >>logfile,''
+
+thistest_momoneavg=momonestats['mean'][0]
+oldtest_momoneavg = 1479.77119646

@@ -1,0 +1,51 @@
+#!/bin/csh -f
+source /usr/local/aips/LOGIN.CSH
+echo -n "AIPS version = " > GP028.log
+which aips >> GP028.log
+echo -n "Prep version = " >> GP028.log
+ls -l /home/cavagnolo/research/ge_radio/scripts/AVLAPREP.001|awk -F" " '{print $6,$7,$8,$9,$10,$11,$12}' >> GP028.log
+echo -n "Pipe version = " >> GP028.log
+ls -l /home/cavagnolo/research/ge_radio/scripts/AVLAPIPE.001|awk -F" " '{print $6,$7,$8,$9,$10,$11,$12}' >> GP028.log
+echo -n "Post version = " >> GP028.log
+ls -l /home/cavagnolo/research/ge_radio/scripts/AVLAPOST.001|awk -F" " '{print $6,$7,$8,$9,$10,$11,$12}' >> GP028.log
+echo -n "GP028.run      started on " >> GP028.log
+echo `date` >> GP028.log
+echo "  -------------" >> GP028.log
+aips pr=1 notv >> /dev/null << EOD
+19373
+restore 0
+default clrmsg;prnumber=-1;clrmsg
+version'RUNFIL'
+run avlaprep
+run avlapipe
+run nvasdefs
+compress
+default prtmsg;outprint'PWD:'!!'GP028.log
+docrt=-3;prnumber=-1;tput prtmsg;docrt 1
+procedure expid
+  string*20 expnm
+  string*75 expmsg
+  expnm='GP028'
+  expmsg='PWD:'!!'GP028.log
+  return expnm
+finish
+type expid
+
+docrt=1;type expid
+run avlapost
+avlapipe
+
+type'empty catalog ?' checkcat
+flatfov;nvasimage
+nvasarch
+tget prtmsg;prtmsg;docrt 1
+prnumber -1;prtask'';prtime 0;clrmsg
+kleenex
+EOD
+echo -n "> 19373 GP028.run "`date`
+echo >> GP028.log
+echo -n "GP028.run finished on " >> GP028.log
+echo `date` >> GP028.log
+echo >> GP028.log
+echo
+exit(0)

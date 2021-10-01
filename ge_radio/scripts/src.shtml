@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><!-- start of nrao-header.html -->
+
+
+  
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+    <link rel="icon" href="http://www.aoc.nrao.edu/common/favicon.ico">
+    <link rel="stylesheet" href="src_files/nraostyle.css" media="screen">
+    <!-- end of nrao-header.html -->
+
+
+<title>VLA Archive Imaging Pilot</title>
+
+  <!-- Start of nrao-nav1.html -->
+  </head><body>
+    <div id="main">
+      <div id="topbar">
+	<div id="logo">
+	  <a href="http://www.nrao.edu/">
+	    <img src="src_files/nrao_logo_pms_51.png" alt="NRAO" align="left" border="0" height="51" width="39">
+	  </a>
+	  National Radio<br>Astronomy Observatory
+	</div>
+	<div id="search">
+	  <form name="gs" method="get" action="http://search.nrao.edu/search" style="display: inline;">
+	    <input name="q" size="15" maxlength="255" type="text">
+	    <input name="btn" value="Search NRAO" type="submit">
+	  </form>
+	</div>
+	<div id="subnavArea">
+	  <!-- End of nrao-nav1.html -->
+
+
+&nbsp;<a class="navig" href="http://www.nrao.edu/">NRAO Home</a> &gt;
+<a class="navig" href="http://www.aoc.nrao.edu/%7Evlbacald/avla.shtml">VLA Archive Images</a> &gt;
+<a href="http://www.aoc.nrao.edu/%7Evlbacald/index.shtml">NRAO VLA Archive Survey pilot (<font color="#ff3300">NVAS</font> pilot)</a>
+
+NRAO VLA Archive Survey Code Page
+          <!-- Start of nrao-nav2menu1.html -->
+        </div>
+      </div>
+    </div>
+    <hr style="height: 1px;">
+    <table border="0" cellpadding="5" cellspacing="0" height="100%" width="100%">
+      <tbody><tr>
+        <td rowspan="3" align="left" bgcolor="#375774" height="100%" valign="top" width="210"> 
+          <font color="#ffffff">
+	    <b>
+              <!-- End of nrao-nav2menu1.html -->
+
+</b></font><p><font color="#ffffff"><b><font color="#f0f000" size="+1">Home Links</font></b></font></p>
+<p><font color="#ffffff"><b><a class="leftmenu" href="http://www.nrao.edu/"><font color="#ff9900">NRAO</font>, the National Radio Astronomy Observatory</a></b></font></p>
+<p><font color="#ffffff"><b><a class="leftmenu" href="http://archive.nrao.edu/">NRAO Data <font color="#ff9900">Archive</font> System</a></b></font></p>
+<p><font color="#ffffff"><b><a class="leftmenu" href="http://www.vla.nrao.edu/">NRAO Very Large Array <font color="#ff9900">(VLA)</font></a></b></font></p>
+<p><font color="#ffffff"><b><a class="leftmenu" href="http://www.aoc.nrao.edu/aips/">NRAO Astronomical Image Processing System <font color="#ff9900">(AIPS)</font></a></b></font></p>
+<p><font color="#ffffff"><b><a class="leftmenu" href="http://www.aoc.nrao.edu/%7Evlbacald/">Main page <font color="#ff6600">(NVAS Home)</font></a></b></font></p>
+<p><font color="#ffffff"><b><a class="leftmenu" href="http://www.vla.nrao.edu/astro/prop/largeprop/">NRAO <font color="#ff9900">Large</font> proposal links</a></b></font></p>
+
+<p></p><hr><p></p>
+<p><font color="#ffffff"><b><font color="#f0f000" size="+1">Cone Search</font></b></font><b>&nbsp;&nbsp;<font color="#ffffff" size="-3">(uses cookies)</font></b></p>
+<p></p><table border="0" cellpadding="0" cellspacing="3%">
+<tbody><tr><td>&nbsp;<font color="#ffffff">Name&nbsp;look&nbsp;up&nbsp;:&nbsp;<br><font size="-4">&nbsp;(paste&nbsp;J2000&nbsp;below)</font></font></td>
+<td><form target="lookup" action="http://nedwww.ipac.caltech.edu/cgi-bin/nph-objsearch" method="post"><input name="objname" size="3" value="NED" type="text"><input name="extend" value="no" type="hidden"><input name="out_equinox" value="J2000.0" type="hidden"><input name="of" value="pre_text" type="hidden"></form></td>
+<td><form target="lookup" action="http://simbad.u-strasbg.fr/simbad/sim-id" method="post"><input name="Ident" size="6" value="SIMBAD" type="text"></form></td>
+</tr></tbody></table>
+
+<!--form action="http://www.aoc.nrao.edu/cgi-bin/archive-pos.pl" method="POST"-->
+<form action="https://webtest.aoc.nrao.edu/cgi-bin/lsjouwer/archive-pos.pl" method="post">
+<table border="0" cellpadding="0" cellspacing="3%">
+<tbody><tr><td>&nbsp;<font color="#ffffff">Position&nbsp;J</font></td>
+    <td><input name="nvas_pos" size="18" value="17 45 40.038 -29 00 28.07" type="text"></td></tr>
+<tr><td>&nbsp;<font color="#ffffff">Radius  </font>&nbsp;</td>
+    <td><input name="nvas_rad" size="5" value="0.25" type="text">
+              <font color="#ffffff">&nbsp;&nbsp;arcminutes</font></td></tr>
+<tr><td>&nbsp;<font color="#ffffff">RMS &nbsp;&nbsp;&nbsp;&#8804;</font>&nbsp;</td>
+    <td><input name="nvas_rms" size="5" value="10000" type="text">
+              <font color="#ffffff">&nbsp;&nbsp;microJy</font></td></tr>
+<tr><td colspan="2">&nbsp;<input name="nvas_scl" value="yes" type="radio">&nbsp;<font color="#ffffff">Scale (?5&nbsp;GHz)/frequency 
+<br>&nbsp;<input name="nvas_scl" value="no" checked="checked" type="radio">&nbsp;<b>Do not</b> scale search radius</font></td></tr>
+<tr><td><input name="submit" fgcolor="#f0f000" value="Search" type="submit"></td>
+    <td><select name="nvas_bnd">
+           <option value=""> Frequency ranges:
+           </option><option value=""> All available bands
+           </option><option value="L"> 1.15-1.75 GHz (L)
+           </option><option value="C"> 4.20-5.10 GHz (C)
+           </option><option value="X"> 6.80-9.60 GHz (X)
+           </option><option value="U"> 13.5-16.3 GHz (U)
+           </option><option value="K"> 20.4-25.5 GHz (K)
+           </option><option value="Q"> 38.0-51.0 GHz (Q)
+        </option></select></td></tr>
+</tbody></table></form>
+<p></p>
+
+<p></p><hr><p></p>
+<p><b><font color="#f0f000" size="+1">Separate VLA images:</font><br><font color="#fffff0"></font></b></p>
+<p>
+</p><font color="#fffff0"><li><b><a class="leftmenu" href="http://www.cv.nrao.edu/nvss/"><font color="#ff9900">NVSS</font> (AllSky 1.4 GHz/45")</a>
+</b></li><li><b><a class="leftmenu" href="http://sundog.stsci.edu/top.html"><font color="#ff9900">FIRST</font> (SDSS 1.4 GHz/5")</a>
+</b></li><li><b><a class="leftmenu" href="http://www.cv.nrao.edu/sirtf_fls"><font color="#ff9900">Spitzer FLS</font> (1.4 GHz/5")</a>
+</b></li><li><b><a class="leftmenu" href="http://lwa.nrl.navy.mil/VLSS/"><font color="#ff9900">VLSS</font> (AllSky 75 MHz/80")</a>
+</b></li><li><b><a class="leftmenu" href="http://images.nrao.edu/"><font color="#ffffff">NRAO Image 
+    <font color="#ff9900">Gallery</font></font></a>
+</b></li></font>
+<p></p>
+
+<p></p><hr><p></p>
+<p><b><font color="#f0f000" size="+1">Browse:</font>
+<font color="#f0f000">
+</font></b></p><ul>
+<font color="#f0f000"><li><b><a class="leftmenu" target="notes" href="http://www.aoc.nrao.edu/%7Evlbacald/read.shtml"><font color="#ff9900">README 
+    !</font></a>&nbsp;&nbsp;<font color="#ffffff" size="-3">(pop-up window)</font>
+</b></li><li><b><a class="leftmenu" href="http://www.aoc.nrao.edu/%7Evlbacald/read.shtml"><font color="#ff9900">README 
+    !</font></a>&nbsp;&nbsp;<font color="#ffffff" size="-3">(in the browser)</font>
+</b></li><li><b><a class="leftmenu" href="http://www.aoc.nrao.edu/%7Evlbacald/ArchIndex.shtml">VLA archive images</a>
+</b></li><li><b><a class="leftmenu" href="http://www.aoc.nrao.edu/%7Evlbacald/ArchDates.shtml">Dates processed</a>
+</b></li><li><b><a class="leftmenu" href="http://www.aoc.nrao.edu/%7Evlbacald/ArchExpts.shtml">Projects processed</a>
+</b></li><li><b><a class="leftmenu" href="http://www.aoc.nrao.edu/%7Evlbacald/src.shtml">AIPS pipeline code</a>
+</b></li></font></ul>
+<b><font color="#f0f000"></font>
+</b><p></p>
+
+<p></p><hr><p></p>
+
+<b><em><font color="#ffffff" size="-3">Version 2008-Sep-26&nbsp;<table border="0" cellpadding="0" cellspacing="0"><tbody><tr><td><img src="src_files/0.png" border="0"></td><td><img src="src_files/0.png" border="0"></td><td><img src="src_files/9.png" border="0"></td><td><img src="src_files/0.png" border="0"></td><td><img src="src_files/8.png" border="0"></td><td><img src="src_files/0.png" border="0"></td></tr></tbody></table></font></em>
+
+
+
+              <!-- Start of nrao-menu2.html -->
+            </b>
+          
+        </td>
+        <td id="contentArea" valign="top">
+	  <!-- End of nrao-menu2.html -->
+
+
+<br><p></p><h1> <u>NRAO VLA Archive Survey Code Page</u> </h1><p></p>
+
+<p>&nbsp;&nbsp;
+<a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPREP.001">[AVLAPREP.001]</a>&nbsp;&nbsp;
+<a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPIPE.001">[AVLAPIPE.001]</a>&nbsp;&nbsp;
+<a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPIPE.HLP">[AVLAPIPE.HLP]</a>&nbsp;&nbsp;
+<a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPOST.001">[AVLAPOST.001]</a>&nbsp;&nbsp;
+</p>
+<br>
+<p>
+<br>
+</p>
+<p>The <a href="http://www.aoc.nrao.edu/%7Evlbacald/">NRAO VLA Archive Survey</a>
+(<font color="#ff3300">NVAS</font> for short) pipeline consists of some
+PERL scripts that interact, using a UNIX command line interface, with
+the VLA data archive and a current version of AIPS with the AIPS
+procedures defined below. We are keeping the PERL scripts and local
+logistical files to our selves for now, as they are mainly tuned to
+our local environment to run bulk pipelines. However, the AIPS
+procedures are public and summarized below. They probably will end up
+in the AIPS distribution later.
+</p><blockquote>
+When you have calibrated your data using the VLA data calibration
+pipeline, or even used part of the code, it would be appreciated if
+you would mention the VLA pipeline next to an
+<a href="http://www.vla.nrao.edu/astro/guides/vlas/current/node53.html">acknowledgment to NRAO</a>
+in the publication of your scientific results; e.g. <em>"The VLA data
+was calibrated using NRAO's <tt>"VLA data calibration pipeline"</tt> in AIPS
+(Sjouwerman, 2006, in preparation</em>)" [ask <a href="http://www.nrao.edu/cgi-bin/contact?key=lorant%2bsjouwerman">Lorant Sjouwerman</a>].
+<b>Thanks!</b>
+<br>
+On my side I would like to acknowledge the efforts of the <b>Cast of
+AIPS</b>, in particular <u>Eric Greisen</u>, for making and
+maintaining the AIPS-tasks and environment needed to reduce VLA data
+(and any other radio astronomy data) in AIPS over the years.
+</blockquote>
+
+<p></p>
+
+<p></p><h2>AIPS Procedures</h2>
+
+The AIPS procedure files consist of three different types of
+procedures; probably the most useful for the general user is the
+pipeline code itself (i.e. <a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPIPE.001">AVLAPIPE.001</a>
+and <a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPIPE.HLP">AVLAPIPE.HLP</a>). Consult
+<a target="tmp" href="http://www.aoc.nrao.edu/aips/cook.html#C12">Chapter 12</a> of the
+<a target="tmp" href="http://www.aoc.nrao.edu/aips/cook.html">AIPS CookBook</a>
+on how to use RUN files and procedures in AIPS. Essentially there are:
+
+
+<ul>
+<li><a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPREP.001">AVLAPREP.001</a>&nbsp;&nbsp;
+<font color="#ff3300">(6.5KB)</font>
+<br>This is a collection of AIPS/POPS procedures to get a downloaded
+archive file into AIPS and perform some checks (such as deleting
+unwanted files, investigate the source list, convert to J2000 and move
+away data to other user numbers). These procedures are mainly
+logistical tricks for us to get the data "pipeline ready".
+<br>It is probably not too useful for the general user.
+         
+</li><li><a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPIPE.001">AVLAPIPE.001</a>&nbsp;&nbsp;
+<font color="#ff3300">( 28KB )</font>
+and <a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPIPE.HLP">AVLAPIPE.HLP</a>&nbsp;&nbsp;
+<font color="#ff3300">( 20KB )</font>
+<br>These are the core VLA pipeline scripts, the ones that you're
+probably after. They are slightly modified versions of 
+<font color="#0000ff">"VLARUN"</font> already in the AIPS
+distribution, so you can try those directly if you do not get this
+download working (or if you want to skip it and start without hassle).
+The HELP-file, <font color="#0000ff">"AVLAPIPE.HLP"</font>,
+is needed as a place holder for your inputs (such as <code>inname</code>, 
+<code>inclass</code>, <code>solint</code>, <code>imsize</code>, etc.).
+The AIPS/POPS procedures are in <font color="#0000ff">"AVLAPIPE.001"</font>.
+
+When installed correctly, (see section 3.10/3.10.2 (page 3-16/3-17) of
+<a target="tmp" href="http://www.aoc.nrao.edu/aips/cook.html#C03">Chapter 3</a>
+in the AIPS Cookbook), typing <b><code>explain avlapipe</code></b> in
+AIPS will give you all the help you need, that is, about this pipeline
+procedure. For example, if you also download 
+<a href="http://www.aoc.nrao.edu/%7Evlbacald/src/NVASDEFS.001">NVASDEFS.001</a> in the same area and type 
+<b><code>run nvasdefs</code></b>, before typing 
+<b><code>inputs avlapipe</code></b> on a new line, it will show you
+the defaults used for <font color="#ff3300">NVAS</font>.
+<br>For general help on AIPS, read the 
+<a target="tmp" href="http://www.aoc.nrao.edu/aips/cook.html">AIPS Cookbook</a>
+and perhaps, for synthesis imaging in general, the
+proceedings/handbooks from the NRAO Summer Schools:
+<a target="tmp" href="http://adsabs.harvard.edu/cgi-bin/nph-abs_connect?bibcode=1999ASPC..180&amp;db_key=AST&amp;sort=BIBCODE&amp;nr_to_return=500&amp;data_and=YES&amp;toc_link=YES">Synthesis Imaging in Radio Astronomy II</a>.
+
+</li><li><a href="http://www.aoc.nrao.edu/%7Evlbacald/src/AVLAPOST.001">AVLAPOST.001</a>&nbsp;&nbsp;
+<font color="#ff3300">(111 B )</font>
+<br>This is a collection of AIPS/POPS procedures to get a pipelined
+experiment into the VLA image (and calibrated data) archive.
+<br>It is probably not too useful for the general user, maybe except
+for the writing out of image and data FITS files, if you don't mind
+standardized names for them.
+
+</li></ul>
+
+<h2><font color="#ff3300">NVAS</font> Contact</h2>
+
+Contact <a href="http://www.nrao.edu/cgi-bin/contact?key=lorant%2bsjouwerman">Lorant Sjouwerman</a>
+for any remarks, suggestions and/or reasonable complaints. Compliments and encouragements should 
+go to the division head (<a href="http://www.nrao.edu/cgi-bin/contact?key=claire%2bchandler">C. Chandler</a>).
+Thanks for using this service!
+
+
+<!-- Start of nrao-trailer.html -->
+<div id="footerUtilities">
+  <a href="https://staff.nrao.edu/">Staff</a> |
+  <a href="http://www.nrao.edu/cgi-bin/contact">Contact Us</a> |
+<!--
+  <a href="https://careers.nrao.edu/">Careers</a> |
+-->
+  <a href="http://www.nrao.edu/admin/hr/careers.shtml">Careers</a> |
+
+  <a href="http://www.nrao.edu/navbar/directories.shtml">Directories</a> |
+  <a href="http://www.nrao.edu/navbar/sitemap.shtml">Site Map</a> |
+  <a href="http://www.nrao.edu/index.php/Help">Help</a> |
+  <a href="http://www.nrao.edu/policy/">Policies</a> |
+  <a href="http://www.nrao.edu/policy/diversity.shtml">Diversity</a> |
+  <a href="http://search.nrao.edu/">Search</a>
+</div>
+<div id="footer">
+ <a href="http://www.nrao.edu/">
+  <img src="src_files/logoNRAO.jpg" alt="NRAO" style="float: left;" align="middle" border="0" height="41" vspace="5" width="41">
+ </a>
+ <a href="http://www.nsf.gov/">
+  <img src="src_files/logoNSF.jpg" alt="NSF" style="float: left;" align="middle" border="0" height="57" hspace="10" width="57">
+ </a> 
+ <a href="http://www.aui.edu/">
+  <img src="src_files/logoAUI.gif" alt="AUI" style="float: left; margin-right: 20px;" align="middle" border="0" height="49" vspace="1" width="74">
+ </a> 
+ <p style="padding-top: 10px;">
+  Copyright © 2009 Associated Universities, Inc.<br>
+  The National Radio Astronomy Observatory is a facility of the National
+  Science Foundation operated under cooperative agreement by Associated
+  Universities, Inc.
+ </p>  
+</div>
+<!-- End of nrao-trailer.html -->
+
+
+<em>Modified on 2006-Nov-17 (text), 
+                2006-Oct-31 (canvas)</em>
+<!-- Start of nrao-end.html -->
+
+
+		</td>
+	</tr>
+</tbody></table>
+
+<!-- End of nrao-end.html -->
+</body></html>

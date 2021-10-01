@@ -1,0 +1,691 @@
+$ Ver 1.0 : Copy of private Ver 3.0 of VLARUN (public version is 2.5):
+$ was 3.0 : Add PLVER (in goplt) for plot files and to include TASAV (12MAY04)
+$           Repositioned inseq=0 to safeguard to SU-tab confusion (12NOV04)
+$           Rearanged inputs and options, added integration time calculation,
+$           QUACK, selective plotting, INNAME vs DOCAT, alternative flux cal,
+$           selective imaging, SCIMG for targets, use model in CALIB, find VLA
+$           array, use model,..
+$
+$Next vers add        polarization calibration, SCIMG->SCIMG?
+$                     find imsize, find cutoffflux, include infile
+$---------------------------------------------------------------
+$0000000011111111112222222222333333333344444444445555555555666666666677777777778
+$2345678901234567890123456789012345678901234567890123456789012345678901234567890
+$===============================================
+$! Calibrating amplitude and phase, and imaging VLA data
+$# RUN POPS VLA UTILITY CALIBRATION IMAGING
+$---------------------------------------------------------------
+$;  Copyright (C) 2002-2006
+$;  Associated Universities, Inc. Washington DC, USA.
+$;
+$;  This program is free software; you can redistribute it and/or
+$;  modify it under the terms of the GNU General Public License as
+$;  published by the Free Software Foundation; either version 2 of
+$;  the License, or (at your option) any later version.
+$;
+$;  This program is distributed in the hope that it will be useful,
+$;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+$;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+$;  GNU General Public License for more details.
+$;
+$;  You should have received a copy of the GNU General Public
+$;  License along with this program; if not, write to the Free
+$;  Software Foundation, Inc., 675 Massachusetts Ave, Cambridge,
+$;  MA 02139, USA.
+$;
+$;  Correspondence concerning AIPS should be addressed as follows:
+$;         Internet email: aipsmail@nrao.edu.
+$;         Postal address: AIPS Project Office
+$;                         National Radio Astronomy Observatory
+$;                         520 Edgemont Road
+$;                         Charlottesville, VA 22903-2475 USA
+$---------------------------------------------------------------
+$===============================================================
+
+procedure pipeinit
+  scalar lsdisk,lsname,lsrant,lscont,lserr,lsplot,lsflag,k,lsflux,lstarg,lsmodl
+  scalar lsids,star,tint,fsw,kj
+  string*2 lstyp
+  string*3 lsvla
+  string*6 lsidc,lsstrng
+  string*16 lsidn,lscal,lsobj
+  string*16 lsampcal(20),lsbndcal(5),lsphacal(20),lspntcal(25),lsallcal(30),
+  array lsbadd(10),lsparm(16),lssid(1000) $ D=1,C=3.3,B=10.8,A=35.4,PT=73
+finish
+pipeinit
+
+procedure pipeinpt
+  lsampcal     '3C48', '0134+329','0137+331','J0137+3309'
+  lsampcal(5)~ '3C138','0518+165','0521+166','J0521+1638'
+  lsampcal(9)~ '3C147','0538+498','0542+498','J0542+4951'
+  lsampcal(13)~'3C286','1328+307','1331+305','J1331+3030'
+  lsampcal(17)~'3C295','1409+524','1411+522','J1411+5212'
+  lserr=0;lsbadd=baddisk;lsdisk=indisk;lsname=docat
+  lsidn=inname;lsidc=inclass;lsids=inseq;lstyp'UV';fsw=doalign;lsflag=flagver
+  lsparm(2)=solint;lsparm(13)=factor;lsrant=refant;lsmodl=domodel
+  lscal=keystrng;lsflux=flux;lsparm(3)=uvrange(1);lsparm(4)=uvrange(2)
+  for k=1:20;lsphacal(k)=sources(k);end;for k=1:5;lsbndcal(k)=calsour(k);end
+  lsparm(11)=dopol;lsparm(12)=bpa;lscont=docont;lsplot=plver;lsparm(1)=doall
+  lsparm(5)=doarray;lsparm(6)=imsize(1);lsparm(7)=niter;lsparm(8)=cutoff
+  lsparm(9)=docal;lsparm(10)=doresid
+$ check input values
+$->lsbadd
+  if (lsdisk<=0) then;lserr=1;type'SPECIFY THE INDISK';end
+  if(lsname<=0)then;inname=lsidn;inclass=lsidc;inseq=lsids;intype=lstyp;chkname
+    if (error<>0) then
+      lserr=2; type 'SPECIFY INNAME, ETC, OR THE CATALOG NUMBER = DOCAT'
+    else
+      userid=0;k=1;lsname=0
+      while (lsname=0);egetname k
+        if (( (lsidn=inname)&(lsidc=inclass) )&(lsids=inseq)) then
+          lsname=k;lsidn=inname;lsidc=inclass;lsids=inseq;lstyp=intype
+  else;k=k+1;end;end;end;else
+    if ( ((inname <> '')!(inclass <> '')) ! (inseq <> 0) ) then
+      lserr=2; type 'DO NOT SPECIFY BOTH INNAME, ETC, AND VARIABLE DOCAT'
+    else
+      getname(lsname);lsidn=inname;lsidc=inclass;lsids=inseq;lstyp=intype
+    end
+  end
+
+$->inname
+$->inclass
+$->inseq
+$->fsw
+$->lsflag
+  if (lsparm(2)<=0) then; lserr=3; type 'SPECIFY THE SOLUTION INTERVAL';end
+  if (lsparm(13)<1)then;lsparm(13)=1;type'FACTOR<1 QUESTIONABLE, SET TO 1';end
+  if (lsrant<=0)then;lsrant=0;type'AIPS WILL CHOOSE THE REFERENCE ANTENNA';end
+  if ( (lsmodl>0) & (length(lscal)>0) ) then
+    lserr=4;type 'CANNOT USE STANDARD SOURCE MODEL FOR ALTERNATIVE CALIBRATOR'
+  end
+$->lscal
+    if (length(lscal)<>0) then
+      type 'USING NON-STANDARD AMPLITUDE CALIBRATOR, FLUX, UVRANGE :'
+      type lscal, lsflux, lsparm(3), lsparm(4);lsampcal='';lsampcal(1)=lscal
+    end
+
+$->lsflux
+$-> #3+#4 uvrange
+  for i=1:20;for j=1:16;if(substr(lsphacal(i),j,j)='*')then;if (lserr<>7) then
+    if((i=1)&(j=1))then;star=1;else;
+      star=-1;lserr=7;type'ONLY USE * IN THE 1ST CHARACTER OF THE 1ST SOURCE'
+  end;end;end;end;clrtemp;end
+  if (lsname>0) then; indisk=lsdisk; getname(lsname); clrtemp
+    if ( (inclass='CH 0') & (substr(lsbndcal(1),1,1) = ' ') ) then
+      lserr=8;type 'SPECIFY THE BANDPASS CALIBRATOR = CALSOUR'
+  end;end;clrtemp
+$-> #11 dopol
+$-> #12 bpa
+$->lscont
+$->lsplot
+  if (lsparm(1) > 0) then
+    if (lsparm(5)<0) then;type 'SETFC WILL DETERMINE THE CELL SIZE'
+    else;
+      if (lsparm(5)=0) then;
+        keyword='TELESCOP';gethead;
+        if (substr(keystrng,1,3)<>'VLA') then;
+          lserr=5; type 'CANNOT DETERMINE ARRAY - THIS IS NOT THE VLA'
+        else;keyword'NUM ROW';inext'AN';invers=0;getthead;k=keyvalue(1)
+          for j=1:k
+            pixxy=j,1,0;tabget;i=1;clrtemp
+            while((substr(keystrng,i,i)<>':')&(i<9));i=i+1;end
+            if (substr(keystrng,i+1,i+1)<>' ')then;
+              lsvla=substr(keystrng,i+1,i+3);else
+              lsvla=substr(keystrng,i+2,i+4);end
+            if ((lsvla<>'OUT')&(lsvla<>'MPD'))then;
+              if (lsvla='VPT')then;lsparm(5)=75;else
+                if (substr(keystrng,i+1,i+1)<>' ')then;
+                  keyword=substr(keystrng,i+2,i+8);else
+                  keyword=substr(keystrng,i+3,i+9);end
+                  lsparm(5)=max(lsparm(5),value(keyword));clrtemp;end;end;end
+          if (lsparm(5)<75) then;if (lsparm(5)>36) then;lsparm(5)=36;else
+          if (lsparm(5)>18) then;lsparm(5)=11;else
+          if(lsparm(5)>9)then;lsparm(5)=3.5;else;lsparm(5)=1;end;end;end;end
+        end;if(lsparm(5)=0)then;lserr=5;type'WHAT ARRAY?! USE DOARRAY';else
+        if(lsparm(5)>0)then
+          type char(lsparm(5))!!' KILOMETERS WILL BE USED AS MAXIMUM BASELINE'
+    end;end;end;end
+    if (lsparm(6)>=0)then;if((lsparm(6)<128)!(imsize(2)<128))then
+      lserr=6; type 'SPECIFY THE IMSIZE CORRECTLY (>127 OR <0)';end;end
+
+$-> #7 niter
+    if (lsparm(7) < 0) then; lsparm(7) = 7e4; end
+$-> #8 cutoff
+$-> #9 docal
+$-> #10 doresid
+
+  end
+finish
+
+procedure getidn
+  indisk=lsdisk;inname=lsidn;inclass=lsidc;inseq=lsids;intype=lstyp
+finish
+
+procedure gx
+$  inputs
+  go;wait
+finish
+
+procedure getset
+  default;getidn;clrtemp
+finish
+
+procedure lsclrcal
+$ consolidate lists, deal with calcode='*' later
+  scalar lsidx,l,m,n
+  task'TABGET';getset;inext'NX';invers 0;keyvalue=0;keystrng''
+  keyword'NUM ROW';getthead;lsidx=keyvalue(1);clrtemp;n=0;lssid=0
+  if (keyvalue(1)>1000)then;type'WARNING: MORE THAN 1000 SCANS !';end
+  for i=1:lsidx $ remember source number
+    pixxy=i,3,0;tabget;error=0
+    for l=1:n;if(lssid(l)=keyvalue(1))then;error=1;end;end;clrtemp
+    if(error=0)then;n=n+1;lssid(n)=keyvalue(1);end
+  end;inext'SU';invers 0;keyvalue=0;keystrng'';keyword'NUM ROW'
+  getthead;lsidx=keyvalue(1);clrtemp;sources'';l=1;m=1;n=1
+  for i=1:lsidx
+    pixxy=i,2,0;tabget;k=length(keystrng);j=0;clrtemp
+    while (j<20);j=j+1;if (substr(lsampcal(j),1,k)=substr(keystrng,1,k)) then
+        lsampcal(l)=lsampcal(j);j=30;lsparm(14)=l;l=l+1;end;end;j=0;clrtemp
+    while (j<20);j=j+1;if (substr(lsphacal(j),1,k)=substr(keystrng,1,k)) then
+        lsphacal(m)=lsphacal(j);j=30;lsparm(15)=m;m=m+1;end;end;j=0;clrtemp
+    while (j<5);j=j+1;if (substr(lsbndcal(j),1,k)=substr(keystrng,1,k)) then
+        lsbndcal(n)=lsbndcal(j);j=30;lsparm(16)=n;n=n+1;end;end;clrtemp
+  end;lspntcal'';lsallcal'';for j=l:20;lsampcal(j)='';end
+  for j=m:20;lsphacal(j)='';end;for j=n:5;lsbndcal(j)='';end
+  for j=1:lsparm(15);lspntcal(j)=lsphacal(j);end;k=lsparm(15)
+  for j=1:lsparm(16);lspntcal(j+k)=lsbndcal(j);end;j=0;l=1;clrtemp
+  while (j<(lsparm(15)+lsparm(16)));j=j+1;if (length(lspntcal(j))>0) then
+    lspntcal(l)=lspntcal(j);if(l<>j)then;lspntcal(j)='';end;l=l+1;end;end
+$here - clean up pnt cal for doubles - subtract from total count below
+  k=lsparm(15)+lsparm(16);for j=1:k;lsallcal(j)=lspntcal(j);end;l=1
+  for j=1:lsparm(14);i=length(lsampcal(j));lsidx=0;m=j
+    while ((lsidx<k)&j<30);lsidx=lsidx+1
+      if (substr(lspntcal(lsidx),1,i)=substr(lsampcal(j),1,i)) then;j=30;end
+  end;if (j<30) then;lsallcal(l+k)=lsampcal(m);l=l+1;end;end;j=0;l=1;clrtemp
+  while (j<(lsparm(14)+lsparm(15)+lsparm(16)));j=j+1
+    if (length(lsallcal(j))>0) then;lsallcal(l)=lsallcal(j)
+      if(l<>j)then;lsallcal(j)='';end;l=l+1;end;end
+$typ 'LSAMPCAL, LSPHACAL, LSBNDCAL, LSPNTCAL, AND LSALLCAL :'
+$typ lsampcal; typ lsphacal; typ lsbndcal; typ lspntcal; typ lsallcal;
+  return;clrtemp
+finish
+
+procedure numtab(lsstrng)
+  keystrng'';j=0;clrtemp
+  while ((j<15)&(keystrng<>lsstrng))
+    j=j+1;keyword'EXTYPE'!!char(j);gethead;end;clrtemp
+  if (keystrng=lsstrng) then
+    keyword'EXTVER'!!char(j);gethead;else;keyvalue=0;end
+  keyword'';keystrng'';clrtemp
+return keyvalue(1);finish
+
+procedure numbasel
+  scalar numarow,numbout,numbant,numbase,idx;string*16 nameant
+  numbout=0;keyword'NUM ROW';inext'AN';invers=0;getthead;numarow=keyvalue(1)
+  for numbant=1:numarow
+    pixxy=numbant,1,0;tabget;nameant=keystrng;idx=1;clrtemp
+    while(substr(nameant,idx,idx)<>':');idx=idx+1;end
+    if(substr(nameant,idx+1,idx+3)='OUT')then;numbout=numbout+1;end
+    if(substr(nameant,idx+2,idx+4)='OUT')then;numbout=numbout+1;end
+  end;numbase=(numarow-numbout)*(numarow-numbout-1)/2;clrtemp
+$  type char(numarow-numbout)!!' ANTENNAS',char(numbase)!!' BASELINES'
+  return numbase
+finish
+
+procedure calcintt
+  scalar numxrow,numscan,numbbeg,numbend,numcnst,sum,avr,rms,rmax;rmax=300
+  array interval(1000),numbvis(1000);avr=0;if(rmax>1000)then;rmax=1000;end
+  if (numtab('NX')<1) then;type'NOT MULTISOURCE - NO INTTIME CALCULATED'
+  else
+    keyword'NUM ROW';inext'NX';invers 0;getthead;numxrow=keyvalue(1)
+    if(numxrow>rmax)then;numxrow rmax;end
+    for numscan=1:numxrow;clrtemp
+      pixxy=numscan,2,0;tabget;interval(numscan)=86400*keyvalue(1)
+      pixxy=numscan,5,0;tabget;numbbeg=keyvalue(1)
+      pixxy=numscan,6,0;tabget;numbend=keyvalue(1)
+      numbvis(numscan)=numbend-numbbeg+1;avr=max(avr,numbvis(numscan))
+    end;numcnst=numbasel;sum=0
+    if (avr > 0) then
+      for numscan=1:numxrow;if (numbvis(numscan)>0) then
+          sum=sum+( (numcnst*interval(numscan)) / numbvis(numscan) )
+      end;end;clrtemp;avr=sum/numxrow;sum=0
+      for numscan=1:numxrow;if (numbvis(numscan)>0) then
+          sum=sum+((numcnst*interval(numscan))/numbvis(numscan)-avr)**2
+    end;end;clrtemp;rms=sum/numxrow;clrtemp;end
+$  type char(numxrow)!!' SCANS/SAMPLES WITH RMS(SEC) +/-'!!char(rms)
+$  type char(avr)!!' SECOND INTEGRATIONS (APPROXIMATELY)'
+  end
+  return avr
+finish
+
+procedure guesintt
+  scalar intcst,intavr,intmod,intime
+  intavr=calcintt;intcst=intavr;keyword'TELESCOP';gethead
+  if (keystrng='VLA') then;intcst=1+(2/3);end
+  if (keystrng='VLBA') then;intcst=0.131072;end
+  if (intcst=intavr) then;type'UNKNOWN TELESCOPE :'!!keystrng;end
+  if (intavr>10) then
+$    intime=10*floor(0.5+(intavr/10))
+    intime=10*floor(intavr/10)
+  else;if (intavr>0) then
+      intmod=mod(intavr,intcst)
+$      intime=intcst*((intavr-intmod)/intcst+floor(0.5+(intmod/intcst)))
+      intime=intcst*((intavr-intmod)/intcst+floor(intmod/intcst))
+  else;intime=intavr;end;end;clrtemp
+  if(numtab('NX')>0)then;type char(intime)!!' SECOND INTEGRATIONS (GUESS)';end
+  return intime
+finish
+
+procedure checkids
+$LOS - account for fast switching source names - check on pos, qual, calco
+  scalar ra1a,ra1b,ra2a,ra2b,dc1a,dc1b,dc2a,dc2b,n,m,l,idx
+  scalar q1,q2
+  string*1 co1,co2
+  string*16 n1,n2
+  array alist(100),blist(100)
+  inext'SU';invers 0;keyword'NUM ROW';keyvalue 0;keystrng'';getthead
+  n=keyvalue(1);idx=1;aparm 0;bparm 0;alist 0;blist 0
+  if (n < 2) then; type'ONE SOURCE ONLY, SKIPPING FASTSWITCH TEST';else
+    for m=1:(n-1);clrtemp
+      pixxy m,11;tabget;ra1a keyvalue(1);ra1b keyvalue(2)
+      for l=(m+1):n;clrtemp
+        pixxy l,11;tabget;ra2a keyvalue(1);ra2b keyvalue(2)
+        if (abs(ra1a-ra2a)=0) then
+          if ( abs((ra1b-ra2b)*3600*1000) < 3 ) then $ RA within 3 mas!
+            pixxy m,12;tabget;dc1a keyvalue(1);dc1b keyvalue(2)
+            pixxy l,12;tabget;dc2a keyvalue(1);dc2b keyvalue(2)
+            if (abs(dc1a-dc2a)=0) then
+              if ( abs((dc1b-dc2b)*3600*1000) < 3 ) then $ DC within 3 mas!
+                pixxy m,3;tabget;q1 keyvalue(1);pixxy l,3;tabget;q2 keyvalue(1)
+                if (q1=q2) then $ same qualifier; same calcode?
+                  pixxy m,4;tabget;co1 keystrng;pixxy l,4;tabget;co2 keystrng
+                  if (co1=co2) then
+                    pixxy m,1;tabget;q1 keyvalue(1)
+                    pixxy l,1;tabget;q2 keyvalue(1)
+                    pixxy m,2;tabget;n1 keystrng;pixxy l,2;tabget;n2 keystrng
+                    if (idx>100) then
+                      type 'TOO MANY SOURCES TO DO DSORC - DO BY HAND!'
+                     type 'NEXT =.'!!char(idx)!!' DO:'!!char(l)!!'.&.'!!char(m)
+                    else
+                      if (length(n1)<length(n2)) then $ keep shortest name
+                        alist(idx) q2;blist(idx) q1
+                      else;alist(idx) q1;blist(idx) q2
+    end;end;idx=idx+1;end;end;end;end;end;end;end;end;clrtemp
+    if (idx>1) then;task'DSORC';n=0
+      outname inname;outclass inclass;outseq inseq;outdisk indisk
+      while (n<idx)
+       for l=1:10;aparm(l)=alist(l+n);bparm(l)=blist(l+n);end;gx;n=n+10;clrtemp
+    end;end
+    if(idx>100)then;type'TOO MANY SOURCES FOR DSORC';error 1;end;clrtemp
+  end
+finish
+
+procedure chkobjct
+  if (( (lsobj='1331+305') ! (lsobj='1328+307') ) ! (lsobj='J1331+3030') )
+    then; object='3C286';end
+  if (( (lsobj='0137+331') ! (lsobj='0134+329') ) ! (lsobj='J0137+3309') )
+    then; object='3C48';end
+  if (( (lsobj='0521+166') ! (lsobj='0518+165') ) ! (lsobj='J0521+1638') )
+    then; object='3C138';end
+  if (( (lsobj='0542+498') ! (lsobj='0538+498') ) ! (lsobj='J0542+4951') )
+    then; object='3C147';end
+  if (( (lsobj='1411+522') ! (lsobj='1409+524') ) ! (lsobj='J1411+5212') )
+    then; object='3C295';end;clrtemp;return
+finish
+
+procedure checkbnd
+  band='';j=1
+  while (j<9)
+    keyword='CTYPE'!!char(j);gethead;keyword='CRVAL'!!char(j);clrtemp
+    if (keystrng='FREQ') then;gethead;j=9;else;j=j+1;end;end
+  keyvalue(1)=keyvalue(1)/1e9;
+  if ( (keyvalue(1)>38)    & (keyvalue(1)<51) )    then; band='Q';end
+  if ( (keyvalue(1)>20.4)  & (keyvalue(1)<25.5) )  then; band='K';end
+  if ( (keyvalue(1)>13.5)  & (keyvalue(1)<16.3) )  then; band='U';end
+  if ( (keyvalue(1)> 6.8)  & (keyvalue(1)< 9.6) )  then; band='X';end
+  if ( (keyvalue(1)> 4.2)  & (keyvalue(1)< 5.1) )  then; band='C';end
+  if ( (keyvalue(1)> 1.15) & (keyvalue(1)< 1.75) ) then; band='L';end
+  if ( (keyvalue(1)>0.298) & (keyvalue(1)<0.345) ) then; band='P';end
+  if ( (keyvalue(1)>0.072) & (keyvalue(1)<0.076) ) then; band='4';end;clrtemp
+  return
+finish
+
+procedure chkmodel
+  error=0;sysout='';sys2com''
+  syscom'ls -1 $AIPSTARS/
+  sys2com(1) inname!!'.MODEL'
+  sys2com(2) ' >& /dev/null
+  system
+finish
+
+procedure loadmodl
+  scalar lsidx,l
+  array lsload(5)
+  task'TABGET';getset;inext'SU';invers 0;keyvalue=0;keystrng''
+  keyword'NUM ROW';getthead;lsidx=keyvalue(1);l=1;clrtemp
+  for i=1:lsidx
+    pixxy=i,2,0;tabget;k=length(keystrng);j=1;clrtemp
+    while (j<21)
+      if (substr(lsampcal(j),1,k)=substr(keystrng,1,k)) then
+        lsload(l)=i;j=30;l=l+1;else;j=j+1;clrtemp
+  end;end;end;lsidx=0;checkbnd;keyword'EPOCH';keyvalue=0;keystrng='';gethead
+  if (keyvalue(1)<1999) then;lsidx=1;end
+  for j=1:(l-1)
+    lsobj=lsampcal(j);chkobjct;clrtemp;intype'MA';outdisk=lsdisk
+    inname=object!!'_'!!band;inclass'MODEL';inseq=1;indisk=lsdisk;chkname
+$$  if (error>0) then;type lsampcal(lsload(j))!!' MODEL ='inname;chkmodel
+    if (error>0) then;type lsampcal(j)!!' MODEL ='inname;chkmodel
+      if(error<1)then;go calrd;if (lsidx>0) then;eposwtch;end;end;end $ J2000
+  end;return
+finish
+
+procedure vlanew
+  clrstat;j=numtab('BP');if (j>0) then;inext'BP';invers=-1;extdest;end
+  j=numtab('CL');if (j>1) then;inext'CL';for k=2:j;invers=k;extdest;end;end
+  j=numtab('SN');if (j>0) then;inext'SN';invers=-1;extdest;end
+  j=numtab('XX');if (j>0) then;inext'XX';invers=-1;extdest;end
+  if (inclass='LINE') then
+    j=numtab('FG');if (j>1) then;inext'FG';for k=2:j;invers=k;extdest;end;end
+    j=numtab('CL');if (j>1) then;inext'CL';for k=2:j;invers=k;extdest;end;end
+    j=numtab('BP');if (j>0) then;inext'BP';invers=-1;extdest;end
+    j=numtab('PL');if (j>0) then;inext'PL';invers=-1;extdest;end
+  end;j=numtab('PL');if (j>0) then;inext'PL';invers=-1;extdest;end;clrtemp
+  type'DONE CLEANUP OF OLD TABLE EXTENTION FILES (CL,SN,FG,BP,PL,XX)'
+finish
+
+procedure allzap
+  chkname;if(error<1)then;for j=1:(1-error);zap;end;end;clrtemp
+finish
+
+procedure allplot
+  tvinit;j=numtab('PL');type 'NUMBER OF PLOT FILES TO SHOW ON TV:'!!char(j)
+  if (j>0) then
+    for k=1:j;plver=k;type 'PLOT'char(k)!!'/'!!char(j);go tvpl;read;end
+    else;type 'NOTHING TO PLOT - DONE';end
+finish
+
+procedure goplt
+  if (lsplot>=0) then;go;end
+finish $UV and vis only
+procedure goplt0
+  if (lsplot>0) then;go;end
+finish $SN only
+procedure goplt1
+  if (lsplot>1) then;go;end
+finish $SN+CL
+procedure goplt2
+  if (lsplot>2) then;go;end
+finish $SN+CL+BP
+procedure goplt3
+  if (lsplot>3) then;go;end
+finish $CL,BP applied
+
+procedure calpipe(lsdisk,lsname,lsrant)
+  vnum=33;dowait=true;getidn;vlanew;j=0;clrtemp
+  if (inclass='CH 0') then;inclass'LINE';vlanew;end;clrtemp
+  if(fsw>0)then;checkids;if(inclass='CH 0')then;inclass'LINE';checkids;end;end
+  if ((numtab('FG')<1)&(lsflag>=0)) then
+    if (lsflag>=1) then
+      task'QUACK';getset;flagver=1;opcode'BEG';i=min(3*tint,20)
+      reason char(i)!!' SEC AUTO-QUACK';aparm=0,i/60,(tint/60)*1.1;j=1
+      while (j<9);keyword='CTYPE'!!char(j);gethead;clrtemp
+        if(keystrng='FREQ')then
+          keyword='CRVAL'!!char(j);gethead;keyval(1)=keyval(1)/1e10;j=9
+          if (keyval(1) < 1.8) then;clrtemp;go;else;tput quack
+            type 'QUACK SKIPPED FOR THIS HIGH FREQUENCY OBSERVATION'
+            type 'MAY BE A FAST-SWITHCING OBS - IE LOSS OF ALL DATA'
+            type 'RUN BY HAND IF YOU REALLY WANT THIS QUACK';tget quack
+      end;else;j=j+1;end;end
+    end;task'FLAGR';getset
+    docal 2;solint=max(3*tint-2,2.7*tint);vector=-1;docrt 0;go
+  end
+  task'SNPLT';getset;inext'CL';nplots 8;optype'AMP';vput;pixrange=0.7,1.8
+  goplt1;task'SETJY';getset;optype'REJY';aparm=0;freqid=1;go;optype'CALC'
+    if (length(lscal)<>0) then
+      optype'';zerosp=lsflux,0;lsallcal=lscal,lspntcal
+    end;sources=lsampcal;go;clrtemp
+  task'CALIB';getset;docalib=2;refant=lsrant;aparm=3,0,0,0,0,0,4,0,0;calcode''
+    solint=lsparm(2);calsour=lspntcal;snver=numtab('SN')+1;solmode'P'
+    soltype'L1R';baddisk=lsbadd;vput;kj=0;userid=0;clrtemp
+    while (kj<9)
+      kj=kj+1;keyvalue=0;keystrng'';keyword='CTYPE'!!char(kj);gethead;clrtemp
+      if(substr(keystrng,1,4)='FREQ')then;keyword='CRVAL'!!char(kj);gethead
+    kj=10;end;end;vget;if((keyvalue(1))>17e9&(solint>0.5))then;solint=1/3
+      aparm(7)=3.5;vput;type' AUTOMATIC RESET: SOLINT=20SEC (HIGH FREQ)';end
+  if(star>0)then;calsour'';calcode'*';end;go
+  if (lsmodl>0) then $ use models for ones that exist
+    loadmodl;vget calib;calsour='';in2seq=0;in2disk=lsdisk;in2class'MODEL'
+    for j=1:(l-1)
+      inext'SU';pixxy=lsload(j),2,0;tabget;calsour(1)=keystrng;clrtemp
+      pixxy=lsload(j),4,0;tabget;calcode=substr(keystrng,1,4);clrtemp
+      lsobj=lsampcal(j);chkobjct;in2name=object!!'_'!!band
+      vput calib;inname=in2name;inclass=in2class;inseq=in2seq;indisk=in2disk
+$ if no model, use point with full uvrange
+      chkname;vget calib;if (error>0)then;clr2name;end;go
+    end;clrtemp
+  else;uvrange=lsparm(3),lsparm(4);calsour=lsampcal;go;end
+  vget snplt;inext'SN';optype'PHAS';goplt0;clrtemp
+  task'CLCAL';getset;freqid=1;refant=lsrant;gainuse=numtab('CL')+1
+    snver=numtab('SN');gainver=numtab('CL');sources'';soucode'';
+    calsour=lsphacal;calcode'';vput;if(star>0)then;calsour'';calcode'*';end;go
+    calsour=lsallcal;sources=calsour;interpol'SELF'
+    if(star>0)then;calsour'';calcode'*';soucode'*';end;go
+  vget snplt;inext'CL';optype'PHAS';goplt1;clrtemp
+  vget calib;solmode'A&P';calsour=lspntcal;calcode'';snver=numtab('SN')+1
+  solint=lsparm(13)*lsparm(2);clr2name;vput
+  if(star>0)then;calsour'';calcode'*';end;go
+  if (lsmodl>0) then
+    loadmodl;vget calib;calsour='';in2seq=0;in2disk=lsdisk;in2class'MODEL'
+    for j=1:(l-1)
+      inext'SU';pixxy=lsload(j),2,0;tabget;calsour(1)=keystrng;clrtemp
+      pixxy=lsload(j),4,0;tabget;calcode=substr(keystrng,1,4);clrtemp
+      lsobj=lsampcal(j);chkobjct;in2name=object!!'_'!!band;calcode''
+      vput calib;inname=in2name;inclass=in2class;inseq=in2seq;indisk=in2disk
+$ if no model, use point with full uvrange
+      chkname;vget calib;if (error>0)then;clr2name;end;go
+    end;inseq=0;indisk=lsdisk;inclass'MODEL';intype'MA'
+    for j=1:(l-1)
+      lsobj=lsampcal(j);chkobjct;inname=object!!'_'!!band;chkname
+      if (error<1) then;zap;end;end
+  else;uvrange=lsparm(3),lsparm(4);calsour=lsampcal;go;end
+  vget snplt;inext'SN';optype'AMP';goplt0;optype'PHAS';pixrange=-20,20;goplt0
+  task'GETJY';getset;calsour=lsampcal;snver=numtab('SN');
+  if (star>0) then;
+$    for j=1:lsparm(14);sources(j)='-'!!lsampcal(j);end;k=lsparm(14)+1
+$    if (length(lscal)>0) then;sources(k)='-'!!lscal;k=k+1;end
+$    for j=k:(25-k+2);sources(j)=lspntcal(j-k+2);end;
+soucode='*'
+  else
+    sources=lspntcal;if (length(lscal)>0) then;sources(11)='-'!!lscal;end
+  end;go
+  if (lscont<1) then
+    type '********************************************************'
+    type '** WRITE DOWN THE FLUX DENSITIES FOR YOUR CALIBRATORS **'
+    type '**       (AND DO NOT FORGET THE ERRORS EITHER!)       **'
+    type '********************************************************';read
+  end
+  vget clcal;gainver=numtab('CL');gainuse=numtab('CL')+1;snver=numtab('SN')
+  if(star>0)then;calsour'';calcode'*';end;go;calsour=lsallcal;sources=calsour
+  interpol'SELF';if(star>0)then;calsour'';calcode'*';soucode'*';end;go
+  vget snplt;inext'CL';optype'AMP';goplt1;optype'PHAS';goplt1;clrtemp
+  if (inclass='CH 0') then
+    task'TACOP';getset
+      outdisk=indisk;outname=inname;outclass'LINE';outseq=inseq;ncount=1
+      keystrng'';inext'FG';invers=numtab('FG');if (invers>0) then;go;end
+      inext'CL';invers=numtab('CL');keyvalue 0;outseq=inseq;vput;go;clrtemp
+    task'BPASS';getset;inclass'LINE';calsour=lsbndcal,lsampcal;docal=2
+      solint=-1;bpassprm(5)=-1;bpassprm(9)=1;baddisk=lsbadd;go;clrtemp
+    task'POSSM';getset;inclass'LINE';bpver 0;aparm=0,1,.4,1.2,-30,30,0,2,3,0
+      nplots=6;goplt2;sources=lsbndcal;docalib 2;doband 1;aparm=1 0;aparm(9)=3
+      antennas=lsrant,0;goplt2;nplots=0;vput;goplt2;stokes'I';antennas=0;goplt2
+      sources=lsampcal;goplt3
+    vget tacop;inclass'LINE';outclass'CH 0';invers=numtab('BP');inext'BP';go
+  end;task'TASAV';getset;outdisk=indisk;go;dowait=false;vnum=0;clrtemp
+finish
+
+procedure calcrms
+  scalar nbas,nvis,tbw,rms,minhrs
+  keyword'GCOUNT';gethead;nvis=keyvalue(1);nbas=numbasel;j=1
+  minhrs=nvis*tint/(nbas*3600) $ underesimate of obs hours (overestimate rms)
+  while (j<9) $ bandwidth in a channel, continuum or spectral line
+    keyword='CTYPE'!!char(j);gethead;keyword='CDELT'!!char(j);clrtemp
+    if (keystrng='FREQ') then;gethead;j=9;else;j=j+1;end;end;tbw=keyvalue(1)
+  if (lsidc <> 'CH 0') then;j=1 $ continuum, multiple IFs averaged
+    while (j<9)
+      keyword='CTYPE'!!char(j);gethead;keyword='NAXIS'!!char(j);clrtemp
+      if(keystrng='IF')then;gethead;j=9;else;j=j+1;end;end;tbw=tbw*keyvalue(1)
+  end;checkbnd;if((band='P')!(band='4'))then;tbw=tbw/3.2;else;tbw=tbw/50;end
+  tbw=sqrt(tbw*minhrs/24e6);rms=-1
+  if (band='Q')then;rms=3.0e-5/tbw;end;if (band='K')then;rms=2.5e-5/tbw;end
+  if (band='U')then;rms=2.0e-5/tbw;end;if (band='X')then;rms=5.3e-6/tbw;end
+  if (band='C')then;rms=6.4e-6/tbw;end;if (band='L')then;rms=6.6e-6/tbw;end
+  if (band='P')then;rms=1.7e-4/tbw;end;if (band='4')then;rms=1.5e-2/tbw;end
+  if (rms<0) then;type 'CANNOT CALCULATE RMS FROM OBSERVING BAND ..';end
+  typ 'ESTIMATED RMS:' char(rms*1000)!!' MILLI JANSKY'
+  return rms
+finish
+
+procedure setboxfle
+  scalar ci,bi
+  string*12 srcnme
+  string*48 fbox
+  srcnme=inname;ci=0;bi=length(srcnme)
+  while(ci<bi);ci=ci+1
+    if(substr(srcnme,ci,ci)='/')then;substr(srcnme,ci,ci)=',';end;clrtemp;end
+  fbox'/tmp/SETFC@
+  fbox=fbox!!srcnme!!'_'!!inclass!!'.'!!char(inseq)!!'-'!!char(indisk)
+  ci=0;bi=length(fbox)
+  while(ci<bi);ci=ci+1
+    if(substr(fbox,ci,ci)=' ')then;substr(fbox,ci,ci)=',';end;clrtemp;end
+  return fbox
+finish
+
+procedure delboxfle
+  sys2com'';sysout'';syscom 'rm -f
+  sys2com(1) 'X'!!boxfile;substr(sys2com(1),1,1)=''
+  sys2com(2) ' >& /dev/null
+  if(substr(boxfile,1,1)<>' ')then;system;end;clrtemp
+finish
+
+procedure catboxfile
+  string*20 expnm
+  string*75 expmsg
+  if (substr(expmsg,1,5)='ARUN:')then
+    expmsg = substr(expmsg,6,71);sysout='$ARUN/'!!expmsg
+  else;if (substr(expmsg,1,6)<>'$ARUN/')then;sysout = '$ARUN/'!!expmsg
+  else;sysout = expmsg;end;end;sys2com'';syscom 'echo
+  sys2com(1) ' "SETFC FILE FOR SOURCEX'!!inname!!' BELOW IS:"';
+  substr(sys2com(1),24,24)='';clrtemp;system;syscom 'cat
+  sys2com(1) 'X'!!boxfile;substr(sys2com(1),1,1)='';clrtemp
+  system
+finish
+
+procedure setimsize
+  scalar szf, kk, prbm
+  string*48 bxf
+  array szc(2), szi(2), orgc(2), orgi(2)
+  vput imagr;task'SETFC';sources'';bcount=1;bxf=setboxfle;boxfile=bxf
+  bparm=0;infile='';shift=0;flux=0;pbparm=0.25,0;delboxfle
+  orgc=cellsize;cellsize=0;orgi=lsparm(6);imsize=0;kk=1
+  while (kk<9)
+    keyword='CTYPE'!!char(kk);gethead;keyword='CRVAL'!!char(kk);clrtemp
+    if (keystrng='FREQ') then;gethead;kk=9;else;kk=kk+1;end;end
+  keyvalue(1)=keyvalue(1)/1e9;prbm=0.375/keyvalue(1);bparm(1)=prbm;bparm(2)=30
+  bparm(3)=1;bparm(4)=0;bparm(5)=0.031;bparm(6)=256;bparm(7)=256;bparm(8)=100
+  gx;bparm(4)=3*prbm;bparm(1)=-0.7*bparm(1);bcount=nfield+1
+  type'SEARCHING FOR NVSS SOURCES';gx;szf=nfield;szc=cellsize;szi=imsize
+  vget imagr;if(lsparm(5)<0)then;cellsize=szc;else;cellsize=orgc;end
+  if(lsparm(6)<0)then;imsize=256;nfield=szf;boxfile=bxf;else;imsize=orgi;end
+  vput imagr
+finish
+
+procedure imapipe(k,lsdisk,lsname)
+  vnum=33;dowait=true
+  if (k=1) then
+    task'SPLIT';getset;outdisk=indisk;outclass=inclass;docalib=2
+      baddisk=lsbadd;douvcomp=-1;go
+    if (inclass='CH 0') then;inclass'LINE';outclass=inclass;doband=1;bpver=0
+      go;end;end;clrtemp
+  task'TABGET';getset;inext'SU';invers=0;keyvalue=0;keystrng'';vput;clrtemp
+  task'IMAGR';getset;outdisk=indisk;flux=lsparm(8);baddisk=lsbadd;j=1
+  while (j<9)
+    keyword='CTYPE'!!char(j);gethead;keyword='CRVAL'!!char(j);clrtemp
+    if (keystrng='FREQ') then;gethead;j=9;else;j=j+1;end;end
+  cellsize=1.75e10/(keyvalue(1)*abs(lsparm(5)));do3dimag=1;overlap=2;vput
+  keyword'NUM ROW';inext'SU';invers=0;keystrng'';getthead;clrtemp
+  for i=1:keyvalue(1) $ check if source is in index and uvfile exists
+    vget tabget;pixxy=i,2,0;tabget;vget imagr;inname=keystrng;j=1;intype'UV'
+    inseq=0;chkname;type ' ';niter=lsparm(7);lstarg=1;clrtemp;vput
+    if (error < 1) then $ source file exists, but same source number ?
+      vget tabget;pixxy=i,1,0;tabget;error=1;k=1
+      while ((lssid(k)>0) & (k<1001))
+        if (lssid(k)=keyvalue(1))then error=0;end
+        k=k+1;end;keyword'GCOUNT';gethead
+      if(keyvalue(1)<10)then;type'NO DATA';error=1;end;end;vget imagr
+    if (error < 1) then
+      if ((lsparm(7)=7e4)&(lsparm(8)<0))then;flux=6*calcrms;end
+      if ((lsparm(6)<0)!(lsparm(5)<0))then;setimsize;else;imsize=lsparm(6);end
+      while (j<30)
+        k=length(inname)
+        if (substr(lsallcal(j),1,k)=substr(inname,1,k)) then $ calibrator
+          lstarg=0;j=30
+          if(lsparm(6)>=-0.99)then;niter=min(500,lsparm(7))
+            nfield=1;boxfile'';imsize=min(256,lsparm(6))
+            if(imsize(1)<0)then;imsize=256;end;end
+        else;j=j+1;end $ check next source, if not found -> target
+      end;if(substr(boxfile,1,1)<>' ')then;catboxfile;end
+
+j=1
+$calibrator lstarg=0
+$target if lstarg=1
+
+
+      while (j<9)
+        keyword='CTYPE'!!char(j);gethead;keyword='NAXIS'!!char(j);clrtemp
+        if (keystrng='IF') then;gethead;j=9;else;j=j+1;end;end
+        type '    NOW STARTING WITH SOURCE  :'!!char(i)!!'  ='!!inname;type ' '
+      if (inclass='CH 0') then
+        for k=1:keyvalue(1);bif=k;eif=k
+          if ((lstarg>0)!(lsparm(9)>0)) then;go;end
+        end;clrtemp;k=keyvalue(1)
+        inclass'LINE';keyvalue=0;keystrng'';j=1;chkname
+        if (error < 1) then
+          while (j<9)
+            keyword='CTYPE'!!char(j);gethead;clrtemp
+            if (keystrng='FREQ') then
+              keyword='NAXIS'!!char(j);gethead;echan=keyvalue(1);j=9
+            else;j=j+1;end
+          end;bchan=floor(echan/10);echan=ceil(echan*9/10)
+          if (bchan=1) then;bchan=2;end;j=k
+            for k=1:j;bif=k;eif=k;if ((lstarg>0)!(lsparm(9)>1)) then;go;end
+        end;end;clrtemp
+      else
+        bif=1;eif=keyvalue(1);vput;out2disk=indisk
+        if ( (lsparm(10)=0) ! ((lsparm(9)<1)&(lstarg<1)) )then;go;clrtemp
+        else
+          solint=lsparm(2);dotv=1;nmaps=lsparm(10);refant=lsrant;aparm=4,0
+          if (lsparm(10)<0) then;dotv=-1;nmaps=-1*nmaps;end;go scimg;clrtemp
+      end;end;boxfile=setboxfle;delboxfle;vput imagr
+$ make uv and visibility plot
+      task'UVPLT';ltype=-3;bparm 6,7;dotv -1;goplt;bparm 9,10;goplt;bparm 0
+      goplt;vget imagr;inclass'IMAGR';inseq=0;intype'UV';indisk=lsdisk;allzap
+$      inclass'SCIMG';allzap
+      inclass'IBM*';intype'MA';allzap
+      inclass'RBM*';allzap;inclass'LBM*';allzap;recat;clrtemp
+    else;type '   NO UV-FILE, SKIPPING SOURCE :'!!inname!!'  =#'!!char(i)
+  end;end;dowait=false;vnum=0
+finish
+
+procedure avlapipe
+  tput avlapipe;vnum=33;vput avlapipe;pipeinpt;clrtemp
+  if (lserr <> 0) then; type '*** ERROR - ARE ALL INPUTS SET PROPERLY ? ***'
+  else;lsclrcal;tint=guesintt;clrtemp
+    if (tint > 0) then;calpipe(lsdisk,lsname,lsrant);clrtemp
+      if (lsparm(1)>0) then;imapipe(1,lsdisk,lsname)
+      else;type'CALIBRATION DONE - SKIPPING SPLIT AND IMAGING'
+        type'-----------------------------------------------------------'
+      end;type ' '
+      if (lsplot>0) then;type 'VIEW CAL-PLOTS WITH GETSET;ALLPLOT';end;type ' '
+    else;type '* * *';type 'SINGLE DISH VLBI EXPERIMENT?';type '* * *';end
+  end;tget avlapipe;vnum=0;type'* APPEARS TO HAVE ENDED SUCCESSFULLY *';clrtemp
+finish

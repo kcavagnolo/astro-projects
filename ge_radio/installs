@@ -1,0 +1,24 @@
+aips:
+
+casa:
+
+scisoft (pgplot):
+OSX -- http://web.mac.com/npirzkal/Scisoft/Scisoft.html
+Ubuntu -- see docs/iraf_on_64bit
+
+jobserve:
+
+difmap:
+
+mapplot:
+1) mkdir mapplot; mv mapplot.tar.gz mapplot; cd mapplot
+2) tar -cvzf mapplot.tar.gz
+3) cd CITVLB
+2) rm mapplot (the included executable will only work if you have all
+       the same libraries in all the same places)
+3) rm mapplot.o
+4) Edit the Makefile to put in the location of the local pgplot
+   installation.
+5) make mapplot
+6) ./mapplot  (and see if it works)
+

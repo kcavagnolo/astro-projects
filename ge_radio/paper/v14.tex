@@ -1,0 +1,696 @@
+%%%%%%%%%%%%%%%%%%%
+% Custom commands %
+%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\birzan}{B\^irzan}
+\newcommand{\samp}{21}
+\newcommand{\phigh}{\ensuremath{P_{\mathrm{1.4}}}}
+\newcommand{\pthree}{\ensuremath{P_{\mathrm{327}}}}
+\newcommand{\plow}{\ensuremath{P_{\mathrm{200-400}}}}
+\newcommand{\shigh}{\ensuremath{\sigma_{\mathrm{1.4}}}}
+\newcommand{\sthree}{\ensuremath{\sigma_{\mathrm{327}}}}
+\newcommand{\slow}{\ensuremath{\sigma_{\mathrm{200-400}}}}
+\newcommand{\rhigh}{\ensuremath{r_{\mathrm{1.4}}}}
+\newcommand{\rlow}{\ensuremath{r_{\mathrm{200-400}}}}
+\newcommand{\mytitle}{A RELATIONSHIP BETWEEN AGN JET POWER AND RADIO POWER}
+\newcommand{\mystitle}{AGN \pjet-\prad\ Relation}
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+%\documentclass[12pt, preprint]{aastex}
+%\documentclass{aastex}
+\documentclass{emulateapj}
+\usepackage{apjfonts,graphicx,here,common,longtable,ifthen,amsmath,amssymb,natbib}
+\usepackage[pagebackref,
+  pdftitle={\mytitle},
+  pdfauthor={Dr. Kenneth W. Cavagnolo},
+  pdfsubject={Astrophysical Journal},
+  pdfkeywords={galaxies: active -- galaxies: clusters: general --
+    X-rays: galaxies -- radio continuum: galaxies},
+  pdfproducer={LaTeX with hyperref},
+  pdfcreator={LaTeX with hyperref}
+  pdfdisplaydoctitle=true,
+  colorlinks=true,
+  citecolor=blue,
+  linkcolor=blue,
+  urlcolor=blue]{hyperref}
+\bibliographystyle{apj}
+\begin{document}
+\title{\mytitle}
+\shorttitle{\mystitle}
+\author{
+K. Cavagnolo\altaffilmark{1,6},
+B. McNamara\altaffilmark{1,2,3},
+P. Nulsen\altaffilmark{3},\\
+C. Carilli\altaffilmark{4},
+C. Jones\altaffilmark{3},
+\& L. \birzan\altaffilmark{5},
+}
+\altaffiltext{1}{Department of Physics and Astronomy, University of
+  Waterloo, Waterloo, ON N2L 3G1, Canada.}
+\altaffiltext{2}{Perimeter Institute for Theoretical Physics, 31
+  Caroline Street N, Waterloo, ON N2L 2Y5, Canada.}
+\altaffiltext{3}{Harvard-Smithsonian Center for Astrophysics, 60
+  Garden Street, Cambridge, MA 01238, USA.}
+\altaffiltext{4}{National Radio Astronomy Observatory, P.O. Box 0,
+  Socorro, NM 87801-0387, USA.}
+\altaffiltext{5}{Leiden Observatory, University of Leiden, P.O. 9513,
+  2300 RA Leiden, The Netherlands}
+\altaffiltext{6}{kcavagno@uwaterloo.ca}
+\shortauthors{K. W. Cavagnolo et al.}
+\journalinfo{}
+\slugcomment{For submission to ApJ}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+  Using X-ray data collected with the \cxo\ and multi-frequency VLA
+  radio data, we investigate the scaling relationship between active
+  galactic nucleus jet power, \pjet, and observed radio power,
+  \prad. We seek to determine if the \pjet-\prad\ scaling relations
+  presented in \citet{birzan08} for, primarily, brightest cluster
+  galaxies (BCGs) are continuous in form and scatter from giant
+  elliptical galaxies (gEs) up to BCGs. We expand the sample used in
+  \citet{birzan08} to lower radio power by incorporating measurements
+  for \samp\ gEs. Combining our results with those presented in
+  \citet{birzan08}, we find a mean scaling relation of $\pjet \approx
+  4\times10^{16}~ \prad^{0.68} ~\lum$ with a scatter of $\approx 0.7$
+  dex. We briefly comment on the consistency of our results with
+  theoretical models, specifically those of
+  \citet{1979ApJ...232...34B} and \citet{1999MNRAS.309.1017W}. Our
+  results are consistent with models for confined radio sources that
+  are close to minimum energy density, with the ratio of lobe energy
+  in neutralizing species to that in relativistic electrons of $\ga
+  100$. We also discuss the importance of environment when measuring a
+  \pjet-\prad\ relation, and a possible connection to the process of
+  entrainment. A brief discussion of the implications and utility of
+  our results for large-scale structure formation models is also
+  included.
+\end{abstract} 
+
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
+
+\keywords{galaxies: active -- galaxies: clusters: general -- X-rays:
+  galaxies -- radio continuum: galaxies}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%
+
+Observational evidence accumulated over the last decade indicates that
+most galaxy bulges harbor a central supermassive black hole (SMBH).
+It has been suggested that SMBHs co-evolved with the host galaxy,
+giving rise to the well-known correlations between bulge luminosity,
+stellar velocity dispersion, and central black hole mass
+\citep{1995ARA&A..33..581K, magorrian, 2000ApJ...539L...9F,
+  2000ApJ...539L..13G, marconihunt03, 2005MNRAS.362...25B}. Models
+also suggest that these correlations were imprinted by co-evolution
+through galaxy mergers and by the influence of feedback from active
+galactic nuclei (AGN) \citep[\eg][]{1998A&A...331L...1S,
+  2000MNRAS.311..576K}. Around the same time, the
+\cxo\ \citep{chandra} found direct evidence for AGN feedback when
+observations unambiguously revealed AGN induced cavities and shock
+fronts in the X-ray emitting gas surrounding many massive galaxies
+\citep[\eg][]{2000ApJ...534L.135M, perseus1, schindler01}.
+
+It was recognized that X-ray cavities provide an unambiguous gauge of
+the total mechanical energy and mean jet power produced by SMBHs
+\citep{2000ApJ...534L.135M}. Jet powers, \pjet, are approximated using
+estimates of cavity age and measurement of the $pV$ work done by an
+AGN in excavating a cavity \citep[see][for a reviews]{cfreview,
+  mcnamrev}. It is important to note that cavity power, \pcav, is the
+measured quantity and it is assumed to be a good estimate of the
+physical quantity \pjet. Several detailed studies of cavities have
+shown that AGN feedback supplies enough energy to regulate star
+formation and suppress cooling of the hot halos of galaxies and
+clusters \citep{birzan04, 2005MNRAS.364.1343D, rafferty06, dunn08,
+  birzan08, 2008ApJ...680..897D}. Likewise, the existence of
+correlations between low core entropy, short central cooling time,
+cooling luminosity, and \pjet\ indicate the presence of a finely-tuned
+environmental feedback loop \citep[\ie][]{haradent,
+    2008ApJ...687..899R, accept, 2009A&A...501..835M,
+    2009MNRAS.395..764S}
+
+The mounting observational evidence has changed our view of galaxy
+formation. A consensus has emerged that AGN feedback plays an
+important role in suppressing star formation in bulges at late
+times. Including energetic feedback from AGN in numerical simulations
+has been shown to bring the shape and normalization of the galaxy
+luminosity function into better agreement with observations
+\citep{croton06, bower06, saro06, sijacki07}. However, the details of
+how AGN couple to their ambient environments remain poorly understood
+\citep{2008ASPC..386..343D, 2009arXiv0910.3691M}.  A long-standing
+problem with extragalactic radio sources has been finding a method to
+reliably measure their total mechanical output, which is central to
+understanding AGN feedback \citep[\eg][]{1991Natur.349..138R,
+  1996AJ....112....9L}.
+
+Individual studies of X-ray cavities have yielded reliable constraints
+on AGN energetics, ages, and radio lobe composition. But, the
+systematic study of large samples of cavities has been restricted by
+observational limitations such as the need for long exposure times and
+high spatial resolution \citep{2009arXiv0909.0397B}. Therefore,
+measuring and calibrating correlations between simple observables,
+like AGN radio power (\prad), and jet power (\eg\ \pjet) in bright,
+relatively nearby objects will enable more statistical studies of
+feedback in galaxies, groups, and clusters that are beyond the grasp
+of current X-ray instrumentation. A robust \pjet-\prad\ scaling
+relation could then be applied to measurements from current and future
+all-sky radio surveys (\eg\ NVSS, SUMSS, LOFAR, SKA) to study SMBH
+formation history and subsequent AGN mechanical heating of the
+Universe \citep{croton06, 2006MNRAS.366..397S}.
+
+Observational relationships between \pjet\ and \prad\ for samples of,
+primarily, BCGs were presented in \citet[][hereafter B04]{birzan04}
+and \citet[][hereafter B08]{birzan08}. In B08, scaling relations
+between \pjet\ and 327 MHz, 1.4 GHz, and bolometric radio luminosities
+were presented. B08 showed that $\pjet \propto \prad^{0.5-0.7}$
+depending on the choice of frequency. However, there are few objects
+in the B08 study with $\prad \lesssim 10^{38} ~\lum$ and $\pjet
+\lesssim 10^{43} ~\lum$, \ie\ the region generally populated by
+low-power radio galaxies.
+
+In this paper we extend the study of B08 with the inclusion of
+\samp\ gEs from systems with lower X-ray luminosities than rich
+clusters. Combining the B08 results and the results in this paper, we
+find a relationship between jet power and radio power which is similar
+at high and low radio frequencies. The relationships span 6-8 orders
+of magnitude in \pjet\ and \prad, and have the general form $\pjet
+\sim 10^{43} (\prad/10^{40})^{0.7} ~\lum$ with dominantly intrinsic
+scatter of $\sim 0.7$ dex. We also find encouraging similarity between
+our best-fit relations, previous studies, and theoretical AGN models.
+
+This paper is structured as follows: \S\ref{sec:sample} outlines the
+sample of selected gEs. X-ray and radio data reduction is discussed in
+\S\ref{sec:data}. Results and discussion are presented in
+\S\ref{sec:r&d}. The summary and concluding remarks are given in
+\S\ref{sec:summary}. \LCDM\ All quoted uncertainties are 68\%
+confidence.
+
+%%%%%%%%%%%%%%%%%%
+\section{Sample}
+\label{sec:sample}
+%%%%%%%%%%%%%%%%%%
+
+Our sample of \samp\ gEs is taken from the sample of 160 gEs compiled
+by Jones et al. \citetext{in preparation}. The B08 sample is taken
+from \citet[][hereafter R06]{rafferty06}. Information regarding our gE
+sample is listed in Table \ref{tab:sample}. The Jones et
+al. compilation is drawn from the samples of
+\citet{1999MNRAS.302..209B} and \citet{2003MNRAS.340.1375O} using the
+criteria that the $K$-band luminosity is $> 10^{10}~\Lsol$ and the
+object has been observed with \chandra. Of the 160 gEs, extended X-ray
+emission was detected in 109 objects. AGN activity was suspected in 27
+objects based solely on the presence of surface brightness depressions
+in the X-ray emitting gas. We have further excluded dwarf galaxies
+($M_V < -19.5$) from the sample since it is not clear that the
+substructure in the X-ray gas is associated with an AGN, leaving
+\samp\ objects. The \samp\ gEs in our sample are in relatively low
+density environments, \ie\ these are not the central dominant or
+brightest galaxies in clusters or groups. The gEs studied here have
+X-ray halos and radio sources with luminosities lower than are
+typically found for cDs and BCGs.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observations and Data Analysis}
+\label{sec:data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%
+\subsection{X-ray}
+\label{sec:xray}
+%%%%%%%%%%%%%%%%%%
+
+Outburst powers are determined in the usual manner from the X-ray data
+(see B04 and R06). Gas properties used here are taken from the
+analysis by Jones et al. (in preparation). Cavity locations and sizes
+are from Nulsen et al. (in preparation), with cavity volumes and their
+errors calculated by the method of B04. The enthalpy of each cavity is
+determined as $H_{\mathrm{cav}} = [\gamma/(\gamma-1)] p V$, where $p$
+is the gas pressure at the radius of the projected center of the
+cavity, $V$ is cavity volume, and $\gamma = 4/3$ is assumed for the
+ratio of specific heat capacities within the cavities. To estimate the
+average power of an outburst, the enthalpy of each cavity is divided
+by an estimate of its age. These power estimates are summed for all
+the cavities in each system to obtain an estimate of the average
+outburst power of its AGN. For compatibility with B08, here we give
+results only for the buoyancy age estimates,
+$t_{\mathrm{buoy}}$. Because the uncertainties are large (chiefly due
+to the uncertain volume estimates), errors are propagated in log space
+assuming that the errors in the observable inputs $p$, $V$, and age
+are independent of one another.
+
+%%%%%%%%%%%%%%%%%%
+\subsection{Radio}
+\label{sec:radio}
+%%%%%%%%%%%%%%%%%%
+
+Radio powers were estimated using the relation $\nu_0 L_{\nu_0} = 4
+\pi D_L^2 (1+z)^{\alpha-1} S_{\nu_0} \nu_0$, where $S_{\nu_0}$ is the
+flux density at the observed frequency, $\nu_0$, over the integrated
+area of the source, $z$ is redshift, $D_L$ is luminosity distance, and
+$\alpha$ is radio spectral index. The radio powers estimated using
+200-400 MHz and 1.4 GHz fluxes are denoted as \plow\ and \phigh,
+respectively. The redshift dependent $\alpha$ correction in $\nu_0
+L_{\nu_0}$ is small for our sample since the objects are nearby. We
+have assumed the radio spectra behave as $S_{\nu} \propto
+\nu^{-\alpha}$ with a spectral index of $\alpha = 0.8$, typical for
+extragalactic radio galaxies \citep{1992ARA&A..30..575C}.
+
+The 1.4 GHz continuum radio flux for each source was taken from the
+flux-limited NRAO VLA Sky Survey (NVSS, \citealt{nvss}). For NGC 1553,
+which lies outside the NVSS survey area, the 843 MHz continuum radio
+flux was taken from the Sydney University Molonglo Sky Survey (SUMSS,
+\citealt{sumss1, sumss2}). The 1.4 GHz flux for N1553 was estimated
+using $\alpha = 0.89$, which was calculated from the 843 MHz SUMSS
+flux and 5 GHz Parkes flux \citep{1970ApL.....5...29W}.
+
+The radio morphologies for our sample are heterogeneous: some sources
+are large and extended, while others are compact. To ensure the entire
+radio source was measured, a fixed physical aperture of 1 Mpc was
+searched around the X-ray centroid of each target. For each target
+field, all detected radio sources were overlaid on a composite image
+of X-ray, optical (DSS I/II\footnote{http://archive.stsci.edu/dss/}),
+and infrared emission
+(2MASS\footnote{http://www.ipac.caltech.edu/2mass/}). When available,
+the deeper and higher resolution radio data from VLA
+FIRST\footnote{http://sundog.stsci.edu} was included. A visual
+inspection was then performed to establish which radio sources were
+associated with the target gE. After confirming which radio sources
+within the search region were associated with the target gE, the
+fluxes of the individual sources were added and the associated
+uncertainties summed in quadrature.
+
+Archival VLA data for each source in the sample was also reduced and
+analyzed. The continuum VLA data was reduced using a customized
+version of the NRAO VLA Archive
+Survey\footnote{http://www.aoc.nrao.edu/$\sim$vlbacald} reduction
+pipeline. In the cases where high-resolution VLA archival data is
+available, multifrequency images were used to confirm the connection
+between NVSS detected radio sources and the host gE. Images at 1.4 GHz
+were further used to check NVSS fluxes. We found flux agreement for
+most sources, the exceptions being IC 4296 and NGC 4782, where the
+NVSS flux is approximately a factor of 2 lower. These sources are
+unique because the radio lobes contain significant power in diffuse,
+extended emission which is not detected in NVSS. For these sources,
+the fluxes measured from the archival VLA data are used in our
+analysis. The additional data analysis step was also used to
+investigate the poorly confined sources discussed in Section
+\S\ref{sec:r&d}. For the systems where nuclear radio emission was
+resolved, we found, on average $S_{\nu_0,\mathrm{nucleus}} /
+S_{\nu_0,\mathrm{total}} \la 0.1$, suggesting the nuclear contribution
+to the low-resolution NVSS measurements has a negligible impact on our
+results.
+
+B08 found that using lower frequency radio data, \ie\ 327 MHz versus
+1400 MHz, resulted in a lower scatter \pjet-\prad\ relation. For our
+sample of gEs, the quality and availability of 327 MHz data were not
+ideal, and thus we gathered low-frequency radio fluxes from the CATS
+Database\footnote{http://www.sao.ru/cats/} \citep{cats}. The CATS
+Database is a compilation of more than 350 various radio catalogs
+(\eg\ WENSS, WISH, TXS, B3). CATS was queried for low frequency
+counterparts to the the NVSS and SUMMS sources. Fluxes in the
+frequency range 200-400 MHz were then retrieved from the returned
+lists. Of the \samp\ gEs in our sample, 17 of them were found to have
+radio sources in the CATS database with measured fluxes in the 200-400
+MHz range.
+
+Our approach for searching CATS implies that objects with
+low-frequency radio emission but without a higher frequency
+counterpart will not be included in our sample. However, because CATS
+does not provide images for visual inspection, and is composed of
+catalogs having a wide variety of spatial resolutions and flux limits,
+our method of using highly-restricted search areas mitigates the
+inclusion of spurious sources. Therefore, the 200-400 MHz radio powers
+shown in Figure \ref{fig:pcav} might underestimate the 200-400 MHz
+fluxes for these gEs. However, because of the large range of radio
+powers, a systematic shift by a factor of a few along the \prad\ axis
+for all the gE points would not alter the best-fit slope
+significantly.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results and Discussion}
+\label{sec:r&d}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\pjet-\prad\ Scaling Relation}
+\label{sec:relation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The results from the X-ray and radio data analysis are shown in the
+plots of \pcav-\phigh\ and \pcav-\plow\ presented in Figure
+\ref{fig:pcav}. A subjective figure of merit (FM) was assigned to each
+set of cavities -- shown as color coding in Figure \ref{fig:pcav} and
+listed in Table \ref{tab:sample}. We assigned FMs because no automated
+algorithm exists for detecting cavities and determining their
+volumes. The FMs represent our qualitative visual assessment. FM-A
+cavities are associated with AGN radio activity and have well-defined
+boundaries; FM-B cavities are associated with AGN radio activity, but
+lack well-defined boundaries; FM-C cavities have poorly-defined
+boundaries, and their connection to AGN radio activity is
+unclear. FM-C cavities are excluded from all fitting, as are a subset
+of objects we have defined as being poorly confined and which are
+discussed in Section \ref{sec:jet}.
+
+Figure \ref{fig:pcav} shows a continuous power law relationship
+between cavity power and radio power over approximately 8 orders of
+magnitude in radio power and 6 orders of magnitude in cavity power. To
+determine the form of the power-law relation, we performed linear fits
+in log-space for each frequency regime using the bivariate correlated
+error and intrinsic scatter (\bces) algorithm \citep{bces}. The
+orthogonal \bces\ algorithm takes in asymmetric uncertainties for both
+variables, assumes the presence of intrinsic scatter, and performs a
+linear least-squares regression which minimizes the squared orthogonal
+distance to the best-fit relation. This differs from the fitting
+approach in B08 which minimized the distance in the
+\pcav\ coordinate. The best-fit parameter uncertainties were
+calculated using $10,000$ Monte Carlo bootstrap resampling trials.
+
+The best-fit orthogonal \bces\ determined linear function in log-space
+for the \pcav-\phigh\ and \pcav-\plow\ relations are:
+\begin{eqnarray}
+  \log~\pcav &=& 0.72~(\pm 0.13)~\log~\phigh + 1.92~(\pm 0.17) \label{eqn:high}\\
+  \log~\pcav &=& 0.64~(\pm 0.08)~\log~\plow + 1.55~(\pm 0.12) \label{eqn:low}
+\end{eqnarray}
+where \pcav\ is in units $10^{42} ~\lum$, and \phigh\ and \plow\ are
+in units $10^{40} ~\lum$. The scatter for each relation is $\shigh =
+0.77$ dex and $\slow = 0.61$ dex, and the respective correlation
+coefficients are \rhigh\ = 0.73 and \rlow\ = 0.81. We have quantified
+the total scatter about the best-fit relation using a weighted
+estimate of the orthogonal distances to the best-fit line
+\citep[see][]{2009A&A...498..361P}. For comparison, the B08 scaling
+relations are
+\begin{eqnarray}
+  \log~\pcav &=& 0.35~(\pm 0.07)~\log~\phigh + 1.85~(\pm 0.10) \\
+  \log~\pcav &=& 0.51~(\pm 0.07)~\log~\pthree + 1.51~(\pm 0.12) \label{eqn:err}
+\end{eqnarray}
+where \pcav\ is in units $10^{42} ~\lum$, and \phigh\ and \pthree\ are
+in units $10^{24}$ W Hz$^{-1}$ (or $\approx 10^{40} ~\lum$). The
+relations have scatters of $\shigh = 0.85$ dex and $\sthree = 0.81$
+dex. An error in Equation 15 of B08 has been corrected in Equation
+\ref{eqn:err} \citep{birzan08err}.
+
+In contrast to B08, the slopes of the relations in this work now agree
+to within their uncertainties. Note that we find a steeper
+relationship at 1.4 GHz than B08. This difference in slope at 1.4 GHz
+between our work and B08 is due to the additional data points at lower
+\pjet\ and the different fitting method. The B08 points tend to be
+clumped in a fairly narrow power range, which gave the few points at
+the upper and lower power extremes excessive leverage over the
+slope. The new data extends to lower jet powers, giving a more uniform
+sampling and a more robust measurement of the slope and zero point.
+
+As a simple check, we point out two systems with accurate estimates of
+AGN jet power: Cygnus A and Hercules A. For Cygnus A (point with
+largest \phigh\ in Figure \ref{fig:pcav}), where our
+\pjet-\prad\ relations appear to overestimate the jet power by a
+factor of $\approx 40$, the total kinetic luminosity of $\sim
+2\times10^{46} ~\lum$ calculated by \citet{2006ApJ...644L...9W} using
+the shock is consistent with the \pjet\ value of $\sim 5\times10^{46}
+~\lum$ predicted by our relations. Hercules A (which is not in the B08
+sample) is a similar case to Cygnus A. With $\pcav = 310\times10^{42}
+~\lum$ and $\phigh = 4100\times10^{40} ~\lum$, Hercules A falls in the
+same region of Figure \ref{fig:pcav} as Cygnus A. But, the total
+kinetic luminosity of $\sim 1.6\times10^{46} ~\lum$ calculated by
+\citet{herca} using the shock agrees with the prediction from our
+relations, $\sim 3.2\times10^{46} ~\lum$.
+
+The substantial scatter in the \pjet-\prad\ relations highlight that
+radio power is an inaccurate surrogate for determining AGN power in
+individual systems. As seen in systems like Hydra A \citep{hydraa} or
+MS 0735.6+7421 \citep{ms0735}, the energetics can be dominated by the
+effects of an AGN outburst which is more powerful than average. This
+may be particularly true for gEs, which have lower pressure halos and
+are more susceptible to disruption by AGN outbursts
+\citep{2006MNRAS.372.1161W, 2008ApJ...687L..53P}. B08 showed that
+correcting for the effect of radio aging by including a scaling with
+break frequency does reduce the scatter within the relations, but by
+only $\approx 50\%$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparison with Models and Observational Studies}
+\label{sec:models}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A multitude of jet models can be found in the literature
+\citep[\ie][]{1973MNRAS.164..243L, 1974MNRAS.166..513S,
+  1974MNRAS.169..395B, 1989ApJ...345L..21B, 2002ApJS..141..337C,
+  2002ApJS..141..371C}, and it is beyond the scope of this paper to
+evaluate all of them. Therefore, we restrict our focus to models which
+explicitly deal with correlations between jet power and radio
+emission. We also examine earlier observational studies of
+\pjet-\prad\ other than B08. In this section we use the common
+parameterization for jet power $\pjet = \eta \prad^{\Gamma}$, where
+\pjet\ is total kinetic jet power, $\eta$ is some normalization,
+$\Gamma$ is a scaling index, and \prad\ is emergent synchrotron power.
+
+For flat-spectrum compact radio cores (\eg\ small scale jets and not
+radio lobes), the jet model by \citet{1979ApJ...232...34B} predicts
+$\Gamma = 12/17~(\approx 0.71)$. Starting with the
+\citet{1979ApJ...232...34B} model, \citet{1995A&A...293..665F} found a
+similar slope when assuming emergent jet power scales with accretion
+power in a jet-disk system. The more general model for scale-invariant
+jets by \citet{2003MNRAS.343L..59H} also predicts $\Gamma =
+12/17$. \citet{2005ApJ...633..384H} undertook an observational study
+using 5 GHz core powers and an estimate of $\pjet$ from the Galactic
+X-ray binary mass-radio-X-ray fundamental plane relation
+\citep{2003MNRAS.344...60G, 2003MNRAS.345.1057M}. Fixing $\Gamma =
+12/17$, \citet{2005ApJ...633..384H} found $\eta \approx 6\times10^{44}
+~\lum$ with \prad\ in units of $10^{40} ~\lum$.  Utilizing a
+collection of objects from the R06 sample and 5 GHz core powers
+corrected for relativistic Doppler boosting,
+\citet{2007MNRAS.381..589M} found that $\Gamma = 0.81$ with $\eta
+\approx 2\times10^{44} ~\lum$ with \prad\ in units of $10^{40} ~\lum$.
+
+\citet[][hereafter W99]{1999MNRAS.309.1017W} derive $\Gamma$ and
+$\eta$ using the hypersonic jet model of \citet{1991MNRAS.250..581F}
+assuming radio lobes are at minimum energy density \citep[see][for
+  details]{1980ARA&A..18..165M}. W99 derived $\Gamma = 6/7$ with $\eta
+\approx f^{3/2}~4.61\times10^{41} ~\lum$ when \prad\ is in units of
+$10^{40} ~\lum$. We have adjusted the fiducial W99 normalization from
+151 MHz to 1.4 GHz assuming $S_{\nu} \propto \nu^{-0.8}$. The factor
+$f$ consolidates a variety of unknowns (see W99 for details). The
+fiducial W99 model ($f=1$) yields $\eta$ two orders of magnitude lower
+than our best-fit normalizations. Because the W99 model has been
+widely used for estimating jet power, the difference in $\eta$'s needs
+to be explored.
+
+The W99 normalization has a weak dependence on ambient gas density.
+Using observationally consistent shallower and lower density gas
+profiles than those used to derive the fiducial W99 model results in
+faster jet outflow velocities, which in turn increases $\eta$ by
+factors of $\sim 2-5$. In addition, the W99 model has a critical
+dependence on the fractional deviation from the minimum-energy
+condition and $k$, which is the ratio of energy in neutralizing
+species to relativistic electrons. We find that for $k$ lying in the
+range of tens to hundreds, values consistent with observational
+findings \citep{2005MNRAS.364.1343D, 2006MNRAS.372.1741D,
+  2006ApJ...648..200D, birzan08}, brings the W99 normalization into
+agreement with our work. Figure \ref{fig:radeff} shows that the W99
+zero-point lies significantly below our best-fit
+\pjet-\prad\ relations, but the slopes formally agree. W99 find that
+to fit their model to narrow-line region luminosities (assuming
+$L_{\mathrm{NLR}} \propto \pjet$) for sources in the 7C and 3CRR
+surveys, $f$ must equal 20, which is the upper-limit of $f$ in their
+model and implies $k \approx 20$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Poorly Confined Sources}
+\label{sec:jet}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+It appears the X-ray data are not deep enough to define the extent of
+the cavities for several objects in our sample: IC 4296
+\citep{1988ApJ...324..198K, 2003ApJ...585..677P}, NGC 315
+\citep{1979ApJ...228L...9B, 1981A&A....95..250W}, NGC 4261
+\citep{1997ApJ...484..186J, 2000ApJ...534..165J}, NGC 4782
+\citep{2007ApJ...664..804M}, and NGC 7626 \citep{1985ApJ...291...32B}.
+For these objects, the X-ray surface brightness decrements are
+reminiscent of tunnels rather than bubbles, and the radio morphologies
+are distinctly different from the rest of the gE and B08
+objects. X-ray cavities typically enclose the jet+lobe radio emission
+(see Figure \ref{fig:pics} for an example in M84). However, for the PC
+sources, the only indication of gas excavation in the X-ray halo is
+found near the base of the jets, seemingly at the ``edge'' of the
+X-ray halo (see Figure \ref{fig:pics} for an example in NGC 4261). The
+appearance of breaking-out from the X-ray halo is our reason for
+suggesting these sources are poorly confined.  Because we do not have
+a robust measurement of \pcav\ for the PC systems, they were excluded
+from the preceding analysis of the \pjet-\prad\ relations.
+
+The observed tunnels do not capture the total $p~dV$ work being done
+by the jets. There may well be cavities which are not imaged extending
+to larger radii and enclosing the radio lobes. But, for PC systems the
+ambient medium at those radii is too faint to yield a cavity
+detection. To test this, we calculated \pcav\ values for the PC
+systems assuming radio lobe morphology approximates the volume of
+cavities potentially at larger radii. Pressure profiles were
+extrapolated to large radii using the best-fit parameters of a
+$\beta$-model \citep{betamodel} fit to the surface brightness profile,
+assuming the ambient atmosphere is isothermal, and adding a background
+gas pressure of $10^{-13}$ dyne \pcmsq. The assumed background gas
+pressure is based on the mean value observed in the outskirts of
+clusters and groups. See the
+\accept\ database\footnote{http://www.pa.msu.edu/astro/MC2/accept} for
+a catalog of such pressure profiles. Cavity ages were calculated
+assuming excavation at the gas sound speed. As a result of the radio
+lobes extending into regions where the pressure profiles are very
+steep and approaching the background pressure, the large volumes are
+offset by much lower pressures and longer ages, resulting in modest
+values of \pcav.
+
+Two of the PC sources, NGC 315 and NGC 4261, are part of a sample of
+nine FR-I objects analyzed in detail by \citet[][hereafter
+C08]{2008MNRAS.386.1709C} using \xmm\ X-ray observations. Provided in
+C08 are the $4pV$ enthalpies for each FR-I source (calculated using
+the radio lobe volumes and the external thermal pressure at the lobe
+mid-point), and the mean temperature of the group environments into
+which the lobes are expanding. Assuming lobe inflation occurs at the
+ambient gas sound speed, we calculated \pcav\ values for each of the
+C08 FR-I sources. For N315 and N4261 we find no significant difference
+between the \pcav\ values calculated using the \chandra\ data and the
+\xmm\ data from C08. Using the NVSS search method outlined in Section
+\ref{sec:radio} we calculated \phigh\ for each C08 FR-I source. Our PC
+objects and the C08 FR-I objects are plotted in Figure
+\ref{fig:radeff}.
+
+In Figure \ref{fig:radeff} we highlight the location of the PC sources
+relative to our best-fit 1.4 GHz relation and the W99 relation. Figure
+\ref{fig:radeff} shows that the PC and C08 FR-I sources reside well
+below our best-fit relation. This discrepancy implies that these
+sources have the lowest jet power per unit radio power of all objects
+in the sample. One explanation is that these sources may have lower
+$k$ values, possibly because there are intrinsic differences in radio
+sources (light and heavy jets), or because all jets are born light and
+become heavy on large scales due to entrainment. Another explanation
+is that that PC sources are more powerful than our measurements
+indicate due to energy being imparted to shocks. On average, shock
+energy is a small correction to \pcav, factor of a few in clusters
+\citep{mcnamrev}, but the frequency and variety of AGN driven shocks
+is broad, ranging from strong (Mach $\ga 2$) -- Centaurus A, NGC 3801
+\citep{2003ApJ...592..129K, 2009MNRAS.395.1999C, 2007ApJ...660..191C}
+-- to weak (Mach $\la 2$) -- 3C31, Cygnus A, Hydra A, Hercules A, M87,
+MS 0735.6+7421, NGC 4552, NGC 4636, NGC 4782
+\citep{2002MNRAS.336.1161L, 2006ApJ...644L...9W, hydraa, herca,
+  2007ApJ...665.1057F, ms0735, 2006ApJ...648..947M,
+  2009arXiv0909.2942B, 2007ApJ...664..804M} -- to undetected -- 3C
+186, 3C 388, NGC 6764 \citep{2008ApJ...684..811S, 2006ApJ...639..753K,
+  2008ApJ...688..190C}. However, this explanation would require that
+the fraction of jet power going into shocks is preferentially higher
+for systems with relatively high implied radiative efficiencies
+(\ie\ $\pjet/\prad < \eta$).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary and Conclusions}
+\label{sec:summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We have presented analysis of the jet power versus radio power scaling
+relation for a sample of \samp\ giant elliptical galaxies observed
+with the \cxo. Cavity powers were calculated for each set of cavities
+using similar methods to those outlined in R06. Radio powers were
+estimated using 1.4 GHz and 200-400 MHz fluxes taken from the
+NVSS/SUMSS surveys and the CATS database.
+
+Incorporating the data from B08, we find a continuous power-law
+relation between \pjet-\prad\ covering 6 decades in \prad\ and 8
+decades in \pjet\ (Figure \ref{fig:pcav}). We find similar forms for
+the power laws describing the \pjet-\prad\ trend with the mean form
+$\pjet \approx 5.93\times10^{43} (\prad/10^{40})^{0.68} ~\lum$, and a
+scatter about the fit of $\approx 0.7$ dex. Our relations agree
+reasonably well with previous observational studies and predictions
+from theoretical jet models.
+
+Several groups have applied the \birzan\ scaling relations to study
+the effects of AGN feedback on structure formation,
+\eg\ \citet{best07} and \citet{2007MNRAS.379..260M}, with some groups
+now suggesting that distributed low-power radio galaxies may dominate
+heating of the intracluster medium,
+\eg\ \citet{2009arXiv0908.3158H}. Up to now, the available
+observational results, which were primarily calibrated to high-power
+radio sources, did not clearly indicate if a \pjet-\prad\ relation
+would be continuous, or of comparable scatter, for lower power radio
+sources. Assuming there is no redshift evolution of \pjet-\prad, our
+relations suggest higher mass galaxies dominate over lower mass
+galaxies in the process of mechanical heating within clusters. The
+next step is to study the process of mechanical heating in a
+cosmological context, \eg\ evaluating the contribution of mechanically
+dominated AGN on the bolometric AGN luminosity function over cosmic
+time \citep{2009MNRAS.395..518C}.
+
+We discussed a subset of objects that we classified as being poorly
+confined (PC) by their environments (Figure \ref{fig:radeff}). These
+objects have \pjet/\prad\ ratios which are large relative to the rest
+of our sample. In addition, PC sources reside in the same region of
+the \pjet-\prad\ plane as the FR-I sources taken from C08. Possible
+explanations for the nature of these sources lie in the long-standing
+effort to understand the connection between properties of radio
+galaxies and their environment. Radio emission from lobes depends on
+their composition, so that the large scatter in the
+\pjet-\prad\ relationship may result from processes such as gas
+entrainment and shocks. It seems likely that some of the scatter
+arises as radio sources age, but it remains unclear what other factors
+are important.
+
+With tighter, self-consistent observational constraints on the
+\pjet-\prad\ relation across several decades in both parameters, and
+host system mass, the need to rely on theoretical models to relate jet
+power to observed radio properties has weakened. Using \pjet-\prad\ as
+an aide, a better understanding of the supermassive black hole power
+plants which underlie AGN activity can be undertaken. Moreover, future
+AGN feedback models, when used in simulations, must replicate the
+observed relations studied in this work.
+
+%%%%%%%%%%%%%%%%%
+\acknowledgements
+%%%%%%%%%%%%%%%%%
+
+KWC and BRM acknowledge generous support from the Natural Science and
+Engineering Research Council of Canada and grants from the \cxo. KWC
+sincerely thanks Judith Croston, David Rafferty, and Chris Willott for
+helpful insight. The \cxo\ Center is operated by the Smithsonian
+Astrophysical Observatory for and on behalf of NASA under contract
+NAS8-03060. The National Radio Astronomy Observatory is a facility of
+the National Science Foundation operated under cooperative agreement
+by Associated Universities, Inc. This research has made use of
+software provided by the \chandra\ X-ray Center, the NASA/IPAC
+Extragalactic Database operated by the California Institute of
+Technology Jet Propulsion Laboratory, and NASA's Astrophysics Data
+System. Some software was obtained from the High Energy Astrophysics
+Science Archive Research Center, provided by NASA's Goddard Space
+Flight Center.
+
+%%%%%%%%%%%%%%
+% Facilities %
+%%%%%%%%%%%%%%
+
+{\it Facilities:} \facility{CXO (ACIS)} \facility{VLA}
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Figures  and Tables%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{sample.tex}
+\input{figs.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+% End the document %
+%%%%%%%%%%%%%%%%%%%%
+\end{document}
+
+% LocalWords:  CTI

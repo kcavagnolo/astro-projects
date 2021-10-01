@@ -1,0 +1,232 @@
+$$ General naming utilities - default to data disk 1 (safest of all)
+procedure pipedef1
+  string*12 pnam
+  string*6 pcls
+  scalar pseq,pdsk
+  pdsk=1
+finish
+pipedef1
+procedure namepipe
+  pnam=inname;pcls=inclass;pseq=inseq;indisk=pdsk
+finish
+procedure pipename
+  inname=pnam;inclass=pcls;inseq=pseq;indisk=pdsk
+finish
+
+procedure checkcat
+$LOS - count and make sure catalog starts at one (and not more than 10 files)
+  scalar numcat
+  clrname;indisk=pdsk;chkname;numcat=(-1*error)+1
+$ for later: find out how to deal with CH0/LINE data in MOVE
+  if(numcat>0)then;recat;end;clrtemp
+  return numcat
+finish
+
+procedure gw
+$  inputs
+  go;wait
+finish
+
+procedure pre_fillm
+$LOS - sets VLA archive defaults for fillm
+  default fillm;outdisk=pdsk;doall=1;douvcomp=-1;cparm(8)=0.05;bparm(10)=0.75
+finish
+
+procedure fname
+  return inname!!'.'!!inclass!!'.'!!char(inseq)
+finish
+
+procedure del
+  error=1;zap
+finish
+
+procedure numants
+  scalar numarow,numbout,numbant,numbase,idx;string*16 nameant
+  numbout=0;keyword'NUM ROW';inext'AN';invers=0;getthead;numarow=keyvalue(1)
+  for numbant=1:numarow
+    pixxy=numbant,1,0;tabget;nameant=keystrng;idx=1;clrtemp
+    while(substr(nameant,idx,idx)<>':');idx=idx+1;end
+    if(substr(nameant,idx+1,idx+3)='OUT')then;numbout=numbout+1;end
+    if(substr(nameant,idx+2,idx+4)='OUT')then;numbout=numbout+1;end
+  end;numbase=(numarow-numbout);clrtemp
+$  type char(numarow-numbout)!!' ANTENNAS',char(numbase)!!' BASELINES'
+  return numbase
+finish
+
+procedure skipdata
+$LOS - delete unwanted data sets - currently all but continuum X and C bands
+  if((inclass='CH 0')!(inclass='LINE'))then;del;type'ZAP LINE :'fname;end
+  if(inclass='4 BAND')then;del;type'ZAP 4-BAND :'fname;end
+  if(inclass='P BAND')then;del;type'ZAP P-BAND :'fname;end
+$  if(inclass='L BAND')then;del;type'ZAP L-BAND :'fname;end
+  if(inclass='C BAND')then;del;type'ZAP C-BAND :'fname;end
+  if(inclass='X BAND')then;del;type'ZAP X-BAND :'fname;end
+  if(inclass='U BAND')then;del;type'ZAP U-BAND :'fname;end
+  if(inclass='K BAND')then;del;type'ZAP K-BAND :'fname;end
+  if(inclass='Q BAND')then;del;type'ZAP Q-BAND :'fname;end;clrtemp
+  if(error<1)then $ file not zapped, check for single dish vlbi; #vis=0
+    task'tabget';userid 0;inext'nx';invers=0;keyvalue=0;keystrng''
+    keyword'num row';getthead;pixxy=keyvalue(1),6,0;tabget;clrtemp
+    if(keyvalue(1)=0)then;del;type'ZAP S-DISH :'fname;end
+  end
+$also zap if solar/planetary/pulsar mode - su table proper motion??
+$ and what about PT-link?  antenna VPT is not OUT, later also EVLA names
+finish
+
+procedure checkids
+$LOS - account for fast switching source names - check on pos, qual, calco
+  scalar ra1a,ra1b,ra2a,ra2b,dc1a,dc1b,dc2a,dc2b,n,m,l,idx
+  scalar q1,q2
+  string*1 co1,co2
+  string*16 n1,n2
+  array alist(100),blist(100)
+  inext'su';invers 0;keyword'num row';keyvalue 0;keystrng'';getthead
+  n=keyvalue(1);idx=1;aparm 0;bparm 0;alist 0;blist 0
+  for m=1:(n-1);clrtemp
+    pixxy m,11;tabget;ra1a keyvalue(1);ra1b keyvalue(2)
+    for l=(m+1):n;clrtemp
+      pixxy l,11;tabget;ra2a keyvalue(1);ra2b keyvalue(2)
+      if (abs(ra1a-ra2a)=0) then
+        if ( abs((ra1b-ra2b)*3600*1000) < 3 ) then $ RA within 3 mas!
+          pixxy m,12;tabget;dc1a keyvalue(1);dc1b keyvalue(2)
+          pixxy l,12;tabget;dc2a keyvalue(1);dc2b keyvalue(2)
+          if (abs(dc1a-dc2a)=0) then
+            if ( abs((dc1b-dc2b)*3600*1000) < 3 ) then $ DC within 3 mas!
+              pixxy m,3;tabget;q1 keyvalue(1);pixxy l,3;tabget;q2 keyvalue(1)
+              if (q1=q2) then $ same qualifier; same calcode?
+                pixxy m,4;tabget;co1 keystrng;pixxy l,4;tabget;co2 keystrng
+                if (co1=co2) then
+                pixxy m,1;tabget;q1 keyvalue(1);pixxy l,1;tabget;q2 keyvalue(1)
+                  pixxy m,2;tabget;n1 keystrng;pixxy l,2;tabget;n2 keystrng
+                  if (idx>100) then;
+                    type 'too many sources to do dsorc - do by hand!'
+                    type 'next =.'!!char(idx)!!' do:'!!char(l)!!'.&.'!!char(m)
+                  else
+                    if (length(n1)<length(n2)) then $ keep shortest name
+                      alist(idx) q2;blist(idx) q1
+                    else;alist(idx) q1;blist(idx) q2
+  end;end;idx=idx+1;end;end;end;end;end;end;end;end;clrtemp
+  if (idx>1) then;task'dsorc';n=0
+    outname inname;outclass inclass;outseq inseq;outdisk indisk
+    while (n<idx)
+      for l=1:10;aparm(l)=alist(l+n);bparm(l)=blist(l+n);end;gw;n=n+10;clrtemp
+  end;end
+  if(idx>100)then;type'too many sources for dsorc';error 1;end;clrtemp
+finish
+
+procedure checkcal
+$LOS   Currently (Sep 22, 2005) can/will do 3C286 and 3C48 at X and C
+$LOS   (and for now skip 3C286/3C48/3C138/3C147 Q,K,U and 3C48 L)
+  scalar idx,jdx
+  string*16 sname
+  task'tabget';userid 0;inext'su';invers=0;keyvalue=0;keystrng'';error=1
+  keyword'num row';getthead;idx=keyvalue(1);clrtemp
+  for jdx=1:idx
+    pixxy=jdx,2,0;tabget;sname=substr(keystrng,1,length(keystrng))
+    if(sname='3c286')then;error=-1;jdx=idx+1;end
+    if(sname='3c48')then;error=-1;jdx=idx+1;end
+    if(sname='3C138')then;error=-1;jdx=idx+1;end
+    if(sname='3C147')then;error=-1;jdx=idx+1;end
+    if(sname='3C295')then;error=-1;jdx=idx+1;end
+    if(error>0)then $ try B1950 name
+      if(sname='1328+307')then;error=-1;jdx=idx+1;end
+      if(sname='0134+329')then;error=-1;jdx=idx+1;end
+      if(sname='0518+165')then;error=-1;jdx=idx+1;end
+      if(sname='0538+498')then;error=-1;jdx=idx+1;end
+      if(sname='1409+524')then;error=-1;jdx=idx+1;end
+      if(error>0)then $ try J2000
+        if(sname='1331+305')then;error=-1;jdx=idx+1;end
+        if(sname='0137+331')then;error=-1;jdx=idx+1;end
+        if(sname='0521+166')then;error=-1;jdx=idx+1;end
+        if(sname='0542+498')then;error=-1;jdx=idx+1;end
+        if(sname='1411+522')then;error=-1;jdx=idx+1;end
+        if(error>0)then $ try J2000 name
+          if(sname='J1331+3030')then;error=-1;jdx=idx+1;end
+          if(sname='J0137+3309')then;error=-1;jdx=idx+1;end
+          if(sname='J0521+1638')then;error=-1;jdx=idx+1;end
+          if(sname='J0542+4951')then;error=-1;jdx=idx+1;end
+          if(sname='J1411+5212')then;error=-1;jdx=idx+1;end
+    end;end;end;clrtemp
+  end
+$ if error>0 check on coords (for different name than standard)
+$ but keyval not reliable to do this.. ??
+$ end
+  if(error>0)then;del;type'ZAP - NO STD CAL SRC FOR :'fname;error=1
+  else;checkids;error=-1;end;clrtemp
+finish
+
+procedure j2000fix
+$LOS - convert data to J2000 by default use of uvfix
+  task'uvfix';outname=inname;outclass=inclass;outseq=inseq;outdisk=indisk
+  shift=0;uvfixprm=0;tput uvfix;outclass'prefix';rename
+  tget uvfix;inclass'prefix';gw;zap;inclass=outclass;clrtemp
+finish
+
+procedure addcalco
+$LOS - check for a calcode and add them if non-existent
+  scalar maxcat,maxrow,hasacode,m2d,fnd,ii,jj
+  task'TABGET';inext'SU';keyword'NUM ROW';getthead
+  maxrow=keyvalue(1);hasacode=0;jj=0
+  while((jj<maxrow)&(hasacode=0));jj=jj+1;pixxy=jj,4;tabget
+    if(keystrng<>' ')then;hasacode=1;end;end;clrtemp
+  if(hasacode=0)then;fnd=0;type 'SEARCHING SOURCES TO ADD CALIBRATOR CODES'
+$ go through SU and check against calibrator list
+    for jj=1:maxrow;clrtemp
+      pixxy=jj,2;tabget;error=0;syscom'grep -i
+      if(keystrng='J0137+3309')then;keystrng'0137+331';end
+      if(keystrng='J0521+1638')then;keystrng'0521+166';end
+      if(keystrng='J0542+4951')then;keystrng'0542+498';end
+      if(keystrng='J1331+3030')then;keystrng'1331+305';end
+      if(keystrng='J1411+5212')then;keystrng'1411+522';end
+      if((substr(keystrng,1,1)='J')&(substr(keystrng,2,2)<>'U'))then
+        m2d=floor(value(substr(keystrng,9,10))/6);keystrng=substr(keystrng,2,8)
+        sys2com(1)'X'!!keystrng!!char(m2d);else;sys2com(1)'X'!!keystrng
+      end;clrtemp;jj=0;ii=length(keystrng) $ safeguard against spaces in name
+      while((jj<ii)&substr(keystrng,jj,jj)<>' ');jj=jj+1;end;m2d=jj+1;clrtemp
+      if(m2d>1)then;for ii=m2d:ii;substr(keystrng,ii,ii)=' ';end;clrtemp
+        keystrng'Y';sys2com(2)'X'!!'/users/lsjouwer/calvlaobs/csource.mas
+        keyvalue=0;substr(sys2com(1),1,1)'';substr(sys2com(2),1,1)'';clrtemp
+      system;if(error=-1)then;fnd=fnd+1;pixxy=jj,4;tabput;end;end
+      if(fnd>0)then;type char(fnd)!!' CALCODES ADDED' $ ZAP if no code found
+  else;type'ERROR: PIPELINE WILL FAIL TO COMPLETE (NO CALS)';zap;end;end;end
+finish
+
+procedure datachks
+$LOS - delete unwanted data sets, check for standard calibrators and make J2000
+  if(error<1)then  $ file exists
+    skipdata;if(error<1)then  $ file was not zapped
+      checkcal;if(error<1)then  $ file has standard calibrator in it
+        addcalco
+        j2000fix
+  end;end;end;clrtemp
+finish
+
+procedure freqchks
+$LOS - split up in frequency IDs, run INDXR, and remove
+  scalar rows, nfrq
+  if(error<1)then  $ file exists
+    inext'FQ';invers=1;keyword='NUM ROW';getthead;nfrq=keyvalue(1)
+    if (nfrq > 1) then
+      if (nfrq > 9) then;type' WARNING! MORE THAN 9 FREQUENCY ID-S!';end
+      tput getthead;default'UVCOP';tget getthead;keyword='';task'UVCOP';tput
+      for rows=1:nfrq
+        pixxy=rows,1,1;inver=1;inext='FQ';tabget;tget;freqid=keyvalue(1)
+        outclass=substr(inclass,1,1)!!substr(inclass,3,6)!!char(freqid)
+        type'COPYING FREQUENCY ID #'!!char(freqid);gw
+        default'INDXR';tget uvcop;task'INDXR';inclass outclass;gw;task'DQUAL'
+$out not in! ** outname=inname;outclass=inclass;outseq=inseq;outdisk=indisk;gw
+        tget uvcop;freqid=1;clrtemp
+  end;end;end;if(nfrq>1)then;type fname!!' SPLIT IN :'!!char(nfrq);zap;end
+finish
+
+procedure pre_move
+$LOS - moves file to another AIPS user number
+  default move;indisk=pdsk;outseq=-1;opcode'MOVE';clrtemp
+finish
+
+procedure expid
+  string*20 expnm
+  string*75 expmsg
+  return expnm
+finish
+type expid

@@ -1,0 +1,361 @@
+; AVLAPIPE - Lorant Sjouwerman, NRAO - 27 Oct 2005
+; Ver 1.0 : Copy of private Ver 3.0 of VLARUN (public version is 2.3):
+; was 3.0 : Corrections/additions to go with VLARUN Ver 3.0
+;---------------------------------------------------------------
+;! calibrating amplitude and phase, and imaging VLA data
+;# RUN POPS VLA UTILITY CALIBRATION IMAGING
+;---------------------------------------------------------------
+;;  Copyright (C) 2002-2005
+;;  Associated Universities, Inc. Washington DC, USA.
+;;
+;;  This program is free software; you can redistribute it and/or
+;;  modify it under the terms of the GNU General Public License as
+;;  published by the Free Software Foundation; either version 2 of
+;;  the License, or (at your option) any later version.
+;;
+;;  This program is distributed in the hope that it will be useful,
+;;  but WITHOUT ANY WARRANTY; without even the implied warranty of
+;;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;;  GNU General Public License for more details.
+;;
+;;  You should have received a copy of the GNU General Public
+;;  License along with this program; if not, write to the Free
+;;  Software Foundation, Inc., 675 Massachusetts Ave, Cambridge,
+;;  MA 02139, USA.
+;;
+;;  Correspondence concerning AIPS should be addressed as follows:
+;;         Internet email: aipsmail@nrao.edu.
+;;         Postal address: AIPS Project Office
+;;                         National Radio Astronomy Observatory
+;;                         520 Edgemont Road
+;;                         Charlottesville, VA 22903-2475 USA
+;---------------------------------------------------------------
+AVLAPIPE  LLLLLLLLLLLLUUUUUUUUUUUU CCCCCCCCCCCCCCCCCCCCCCCCCCCCC
+AVLAPIPE : Applies amplitude and phase calibration to VLA data
+
+          This procedure does quick and dirty VLA calibration
+          and imaging of line and continuum data, including high
+          frequency data, but without full polarization calibra-
+          tion. The assumptions made in this procedure may not
+          be the best - but it is a great help for lazy people.
+
+          To run this procedure you MUST type
+          > RESTORE 0 (recommended!)
+          > RUN AVLAPIPE
+          > COMPRESS
+          to define the procedure (only once) in AIPS, and then
+          > TASK'AVLAPIPE';INPUTS
+          > AVLAPIPE
+          to actually execute it (after reviewing the inputs!)
+
+          Do FILLM and visibility FLAGGING before AVLAPIPE (and
+          also split the data into single-frequency files).
+          You can also use the autoflagging feature (FLAG >=0),
+          but you may want to skip this for fast-switching obs.
+          Compile all flagging in the continuum (CH 0) flag
+          table #1 - also add line flags here (in CH 0)! Flag
+          tables with higher numbers get deleted at restarts.
+          If there is an FG-table, autoflagging is switched off!
+
+          This is the input dialog to the quick VLA pipeline
+          There are NO DEFAULTS! It assumes you have observed
+          3C286 or another VLA amplitude calibrator (see HELP)
+          for absolute amplitude calibration. It will use up
+          to 5 sources (may be 3C286 etc) for bandpass in LINE,
+          and can use up to 20 possible phase calibrator names.
+
+          Bandpass calibrators defined by CALSOUR can be any
+          (but maximum 5) sources in your data. It is ONLY USED
+          for line data sets, using an average of the 5 sources.
+
+          When you run AVLAPIPE with DOCONT<1 the procedure will
+          STOP once (very soon after starting) in the beginning,
+          after GETJY so you can check your calibrator fluxes.
+
+          When you run AVLAPIPE with DOALL>0 the procedure will
+          do the imaging for you using IMSIZE, NITER, CUTOFF and
+          DOARRAY (which is the longest baseline cq resolution).
+          AIPS can also determine these parameters (see help!).
+
+          When you run AVLAPIPE with PLVER>0 the procedure will
+          also makes plot files at critical calibration stages
+          and save with TASAV. View plots on the original multi-
+          source files (also LINE) with: getn [catno]; allplot
+
+                                   -----------------------------
+BADDISK                            Disks to avoid for scratch
+INDISK                             Working disk, thus in/outdisk
+DOCAT                              Catalog number of the UV-file
+                                    must be 'CH 0' for line data
+                                    (or use getname/inname etc)
+INNAME                             Name etc, of UV-file; if used
+INCLASS                             specify them all and set the
+INSEQ                               DOCAT variable less than 1!
+
+DOALIGN                            Correct fast-sw source names?
+FLAGVER                            Level of automatic flags used
+                                    < 0 : no automatic flagging.
+                                    0: default FLAGR (multi src)
+                                    1: QUACK on beginning (<20s)
+SOLINT                             CALIB phase solution interval
+FACTOR                              FACTOR*SOLINT for amplitude
+                                    solution intervals (in min)
+REFANT                             Good reference antenna number
+                                    (AIPS will choose if left 0)
+
+DOMODEL                            Use standard models in CALIB?
+                                    Type CALDIR to see if they
+                                    exist for your source in 3C
+                                    names (see the EXPLAIN file)
+                                    and in your frequency band.
+                                    Utilize UVRANGE if not there
+                                     or accept default point src
+KEYSTRNG                           Alternative calibrator name &
+FLUX                                use this total flux density
+UVRANGE                            UV range for flux calibrator
+SOURCES                            Phase calibrators (max 20, or
+                                    '*' = any calcode CONTINUUM)
+                                    All others are your targets!
+CALSOUR                            Bandpass calibrators (max 5)
+                                    >CALSOUR only used for LINE<
+dopol                              SOURCES' source number to use
+                                    as polarization calibrator,
+bpa                                & Polarization position angle
+
+DOCONT                             Continue after GETJY, no stop
+PLVER                              Make diagnostic plots if > 0.
+                                     -- See EXPLAIN AVLAPIPE --
+DOALL                              Also do a split and imaging?
+
+                                   -- ONLY USED IF DOALL > 0 --
+                                      i.e., only for imaging
+DOARRAY                            Max baseline in kilometers:
+                                    A=35.4, B=10.8, C=3.3, D=1
+                                    Pixelsize=17.5/(GHz*doarray)
+                                   =0 -> let it find the array.
+                                   <0 -> SETFC determines pixels
+IMSIZE                             Square size of image (pixels)
+                                   <0 -> SETFC determines IMSIZE
+                                   <-9 then also for calibrators
+NITER                              Max number of iterations/chan
+                                    Zero means zero! (dirty img)
+                                    (wise to leave 0 for line..)
+CUTOFF                             Min flux to consider in clean
+DOCAL                              Also image the calibrators ?
+                                    >0 do continuum, >1 line too
+
+                                   - INTERACTIVE SELF_CAL MODE -
+DORESID                            Instead of IMAGR, do SCIMG on
+                                    targets if set. ABS(DORESID)
+                                    is the number of iterations.
+                                    DORESID<0 limits the TV use.
+                                    All this may not be useful;
+                                    it only applies to continuum
+                                    data of any target source...
+----------------------------------------------------------------
+
+AVLAPIPE
+Type: Procedure
+Use:  AVLAPIPE is the procedure that blindly applies VLA calibration
+
+$----------------------------------------------------------------------------
+
+      Type RUN AVLAPIPE to define the AVLAPIPE procedure (once would be enough)
+
+CLEAN STARTING CONDITIONS
+      Make sure only one frequency-ID is present (otherwise use UVCOP to
+      split them apart and INDXR to re-index the files). It can process both
+      continuum and line data, but the line files must have inclass 'CH 0'
+      and 'LINE'. If any, flags must be made in the highest numbered FG table
+      on the continuum or 'CH 0' files, so if you flag the 'LINE' data
+      you have to copy the line flags/flag-table to the 'CH 0' file.
+      Restarting is straightforward - fluxes are reset and tables are deleted
+      although naming back fast-switching sources is irreverisble (DOALIGN>0).
+
+ADVICE !
+      When using AVLAPIPE for the first time on a data set (or on line data)
+      do not do any cleaning, nor self-cal (very fragile!) - it will go much
+      faster and will tell you right away if you should expect problems. If 
+      you switch on autoflagging (but see below), you'll see where extra flags
+      are needed and whether it did what you expected and intended (typo's in
+      the input, can you do self-cal, better reference antenna, solint, etc).
+      Maybe also wait with the imaging at this stage and make plots (PLVER>0).
+      ** Set NITER low or CUTOFF high on a first image try, also set IMSIZE>0.
+
+DOCAT, or all of INNAME, INCLASS, INSEQ (and INDISK):
+      The catalog number of the file to calibrate (the continuum, or the 
+      'CH 0'-file for spectral line data). If INNAME etc are used, then
+      set DOCAT to a non-positive value (<=0) -> DOCAT=0;GETNAME <catno>
+
+DOALIGN:
+      Sometimes, with fast-switching, calibrator source names are messed up,
+      in particular you may have more than one name for the same source. Set
+      DOALIGN positive to do a check on position (better than 3 mas in R.A.
+      and in DEC.), qualifier and calcode. If two sources are the same it will
+      keep the shortest name and save you ending up with multiple images of
+      the same source. Up to 100 source names can be modified.
+
+FLAGVER:
+      A negative value means to do no automated flagging. NOTE: if an FG table
+      is detected, it will NOT DO any form of automated flagging on the data.
+      You may want to NOT do autoflagging when you have very short scans (i.e.
+      in fast-switching mode) - flag by hand in higest FG-table (always kept).
+        0 -> Only perform FLAGR, OPTYPE'TIME' on the raw multisource data set
+             An integration time is guessed and three samples make up SOLINT.
+        1 -> Include also QUACK, OPCODE'BEG', APARM(2)=MIN(20 SEC, 3 samples)
+             Again, you may not want to do this if you have short scans (~30s).
+....    2 -> Nothing yet (but probably flag the single source calibrated data)
+
+
+SOLINT, FACTOR:
+      SOLINT is the solution interval in minutes used in CALIB (and SCIMG) for
+      phase calibration - typically the scan length on your phase calibrator,
+      but much shorter (0.2-0.5) for high-frequency data. FACTOR scales SOLINT
+      to a new value for amplitude calibration; probably best between 1-10.
+      AVLAPIPE first calibrates the phases, then the amplitudes (including
+      phase), i.e., the second SN table should have phases very close to 0!
+
+REFANT:
+      Well behaving antenna (number) to be used as reference antenna. Usually
+      one in the center of the array. AIPS will make a choice if left zero.
+
+DOMODEL:
+      If set positive, CALIB will use a (standard) model for any of the five
+      standard flux density calibrators (3C48, 3C138, 3C147, 3C286, 3C295, or 
+      their standardized IAU names - see KEYSTRNG below) that are in your data 
+      set, assuming they exist. Currently they exist for the higher frequencies
+      (5 GHz and up), but more are added when they become available. For the
+      latest available models type 'CALDIR' and/or 'EXPLAIN CALRD'. Note that
+      if you select this mode, AVLAPIPE will crash if no model is available!
+      For lower frequencies, and for smaller arrays, it is usually sufficient
+      to use a non-positive DOMODEL, i.e., to use a point source model for the 
+      standard flux density calibrators.
+
+KEYSTRNG and FLUX:
+      If none of the standard flux calibrators is observed (see below), then
+      enter the name and flux density of an alternative source here.
+      NOTE: if specified it will be used by force even if a standard calibrator
+            is present! So you can force your own flux scale if desired.
+      List of all names recognized as a VLA amplitude calibrator in SETJY:
+        - 3C48  is also known as: 0134+329, 0137+331, or J0137+3309
+        - 3C138 is also known as: 0518+165, 0521+166, or J0521+1638
+        - 3C147 is also known as: 0538+498, 0542+498, or J0542+4951
+        - 3C286 is also known as: 1328+307, 1331+305, or J1331+3030
+        - 3C295 is also known as: 1409+524, 1411+522, or J1411+5212
+      At least one of these names (3C or other) must be in the data set for
+      the flux calibration. If a different source is used, then you have to
+      specify this other source using KEYSTRNG and FLUX (and maybe UVRANGE).
+
+UVRANGE:
+      UVRANGE to go with the standard or alternative flux calibrator. Leave
+      zero if you are using a standard calibrator source model (DOMODEL>0),
+      or want a point source model approximation for the one in KEYSTRNG.
+
+SOURCES:
+      Specify your continuum phase calibrators. Limited to 20 in total, and if
+      there are more, use '*' in the FIRST argument to select sources with any 
+      calcode. Also include your flux and/or bandpass calibrators if you want 
+      them to be calibrated. Any source not appearing in SOURCES are "targets".
+      Use SOURCES='*','' if all your phase calibrators have calcodes.
+
+CALSOUR:
+      Specify up to five bandpass calibrator sources. Only used for line data.
+
+
+....dopol                              SOURCES' source number to use 
+....                                    as polarization calibrator,
+....bpa                                & Polarization position angle
+....implement RLDIF
+
+DOCONT:
+      If set positive, then AVLAPIPE will pause after GETJY, until you press
+      <RETURN>. This allows you to check the flux densities (with their errors)
+      of your secondary calibrators, which is a good practice and diagnostic.
+
+PLVER:
+      Make diagnostic plots; a positive value means to make these plot files:
+      1 -> Only make plot files of SN tables
+      2 -> Also include plots of CL tables
+      3 -> (LINE data) add plots of the BP table
+      4 -> (LINE data) also plot BP calibrators with CL and BP table applied
+
+DOALL:
+     If set positive, then AVLAPIPE will continue with the imaging part. If set
+     non-positive (<=0, to avoid imaging if you're not sure about the results),
+     open another AIPS window to look at the diagnostic plots (make sure you
+     set PLVER, preferably as high as possible), and if satisfied you can
+     continue with imaging if you type "IMAPIPE(1,<indisk>,<catno>)" in the
+     AVLAPIPE window directly after the calibration part has finished. The '1'
+     in the first argument of IMAPIPE means to start with SPLIT, but if you
+     have splitted the data already in the other window, use a 'zero' instead.
+
+DOARRAY (if DOALL>0):
+     Sets the resolution; use the maximum baseline length in kilometers. The
+     pixel size will be 17.5 divided by the product of the frequency (in GHz,
+     read from the UV file header) and the value you set for DOARRAY. For the
+     VLA arrays use, e.g., for A-array 35.4, B 10.8, C 3.3, and D 1 kilometer,
+     and set it to 73 kilometer if Pie Town was used.
+     If set to 0, AVLAPIPE will guess the maximum unprojected baseline from
+     the antenna file and fix values to 36, 11, 3.5, 1, or 75 respectively.
+     If negative, SETFC will be used to figure out the best cell size.
+
+IMSIZE (if DOALL>0):
+     The image size in pixels, with a minimum of 128. For calibrators it is
+     assumed that 256 is large enough in all cases, so this applies to targets.
+     If negative, AIPS will try to image the full primary beam (using SETFC);
+     if large negative (<-9), then this also applies to calibrator sources.
+
+NITER (if DOALL>0):
+     The number of clean components to be used in the imaging. Maybe it would
+     be wise to use zero or a low number for spectral line data and re-image
+     with a larger value after AVLAPIPE has finished and you're convinced that
+     there is no bad data (or a faulty calibration) that would mess things up.
+     For calibrators, if DOCAL set positive (>0), a maximum of 500 is used as 
+     there should be no need for deep cleans for calibration check images,
+.... <check following statement>
+     unless the full primary beam is imaged (IMSIZE<-9); then NITER=NITER.
+     If negative, AIPS will set it to a huge number (6e6) and instead thus
+     effectively use CUTOFF below to determine when to stop. Note that NITER=0
+     means zero iterations, i.e., make the dirty image (and ignore CUTOFF).
+
+CUTOFF (if DOALL>0):
+     Stop cleaning when this level (in Jy) is reached in the residual image.
+     If CUTOFF is negative and NITER (large!) positive, then it will stop
+     cleaning after the first negative clean component. Same for calibrators 
+     and targets, but also competes with NITER, i.e., whichever is reached
+     first will determine when clean stops. If both NITER and CUTOFF are
+     negative, AIPS will estimate a conservative value for the noise level
+     from the visibility data header, and stop at three times this noise level.
+     This also applies to calibrators if both NITER and CUTOFF are negative.
+     NOTE that for strong sources the dynamic range limitation may prevent it
+     from reaching this limit - it is VERY wise to set either NITER or CUTOFF
+     (or both) on a first trial of using the pipeline on a particular data set.
+
+DOCAL (if DOALL>0):
+     Set positive to have the calibrators imaged too for checking purposes or
+     if you're interested in the source. A positive DOCAL up to one will limit
+     the imaging of calibrators to the continuum data of spectral line sets,
+     larger than one will also image the line data of the calibrators. Set
+     IMSIZE and NITER (and CUTOFF) negative if you want larger images than 256
+     pixels squared and deeper cleans than 500 iterations for the calibrators.
+
+DORESID (if DOALL>0):
+     Continuum data only (spectral line data ignores DORESID and uses IMAGR).
+     This option should be used with EXTREME care. It allows one to use SCIMG 
+     instead of IMAGR, i.e., to perform self-cal hybrid mapping on the target
+     sources only. Care should be taken that there is enough flux in the field
+     for self-cal to work. Also note that the input SOLINT is taken, which in
+     most cases will be an invalid assumption. Be safe and leave zero to use 
+     IMAGR. Otherwise the absolute value of DORESID determines the number of
+     cycles (NMAPS in SCIMG). The sign of DORESID determines the level of
+     interactive TV use: if negative, the only display is at the end of each 
+     clean; if positive then also interact with that image including UV data 
+     editing options. Use of DORESID other than zero is highly discouraged.
+
+
+$---------------------------------------------------------------------------
+AVLAPIPE :          Procedure to calibrate VLA data blindly.
+Documenter:         Lorant Sjouwerman, lsjouwerman@nrao.edu
+Related Programs:   VLA calibration, imaging and plotting routines
+
+----------------------------------------------------------------------------
