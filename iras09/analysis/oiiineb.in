@@ -1,0 +1,26 @@
+title oiii nebula
+table power law slope -1.7
+luminosity 46.698970004
+//illumination angle 50 deg
+radius 22.5345174 //vary
+//grid, range 22 to 23 in 0.3 dex steps
+hden 3.986771734 //vary
+//grid, range 3.5 to 4.5 in 0.3 dex steps
+abundances old solar 84 
+metals deplete
+grains
+//magnetic field, log(B)=-5.301029996
+iterate to convergence
+print line faint 1
+punch last continuum "oiiineb.con" units kev
+punch last reflected continuum "oiiineb.ref" units kev
+punch last overview "oiiineb.ovr"
+punch last xspec atable reflected lines "reflin_oiiineb.fit" 
+punch last xspec atable reflected spectrum "refspec_oiiineb.fit" 
+punch last xspec atable reflected diffuse continuum "refcon_oiiineb.fit" 
+//punch asserts last "oiiineb.asr"
+//assert line luminosity "totm" 0 5.163 error 0.1
+//assert temperature hydrogen 2 5.195 error 0.1
+//assert carbon 5 ionization -2.602 error 0.1
+//assert nzone < 25
+//assert itrzn < 8

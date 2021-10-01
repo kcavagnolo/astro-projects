@@ -1,0 +1,1100 @@
+% This is a LaTeX style file to prepare IRAM 30m and interferometer proposals.
+% [R. Lucas original version] [C. Thum  / R.Neri / J.M. Winters 12 Feb 2010]
+% 
+% This should be edited for each deadline ...
+%
+\def \deadline {18 Mar 2010}
+\def \period {01 Jun 2010 --- 30 Nov 2010}
+%
+%\input article.sty
+%\input art11.sty
+%
+% modifications to the standard LaTeX styles
+\textheight 290mm
+\textwidth 178mm
+\oddsidemargin -8mm
+\evensidemargin -8mm
+\marginparwidth 50pt
+\topmargin -22mm
+\brokenpenalty=10000
+\sloppy
+%
+% Some commands taken from A&A and elsewhere...
+%
+\newcommand{\msun}{\mbox{M$_\odot$}}
+\newcommand{\sun}{\odot}
+\newcommand{\kms}{\mbox{km~s$^{-1}$}}
+\newcommand{\micron}{\mbox{$\mu$m}}
+\newcommand{\twelveco}{\mbox{$^{12}$CO}} 
+\newcommand{\thirteenco}{\mbox{$^{13}$CO}}
+\newcommand{\htwo}{\mbox{H$_2$}}
+\newcommand{\htwoo}{\mbox{H$_2$O}}
+\newcommand{\htwos}{\mbox{H$_2$S}}
+\newcommand{\hcoplus}{\mbox{HCO$^+$}}
+\newcommand{\sotwo}{\mbox{SO$_2$}}
+\newcommand{\Ta}{\hbox {$T^*_A$}}
+\pagestyle{headings}
+%
+% Table of contents : redefine box size for numbers (default is too small)
+\def\l@subsection{\@dottedtocline{2}{1.5em}{4.3em}}
+\def\l@subsubsection{\@dottedtocline{3}{3.8em}{6.2em}}
+\def\l@paragraph{\@dottedtocline{4}{7.0em}{8.1em}}
+\def\l@subparagraph{\@dottedtocline{5}{10em}{10em}}
+%
+% \list parameters have been adjusted in the `thebibliography'
+% environment to the match A&A layout of References.
+\def\thebibliography#1{\section*{References\markboth
+ {REFERENCES}{REFERENCES}}\list
+% The \arabic{enumi} command has been removed because we don't use
+% numbered citations in astronomical journals.
+ {}{\setlength\labelwidth{1.4em}\leftmargin\labelwidth
+ \setlength\parsep{0pt}\setlength\itemsep{0pt}
+ \setlength{\itemindent}{-\leftmargin}
+ \usecounter{enumi}}
+ \def\newblock{\hskip .11em plus .33em minus -.07em}
+ \sloppy
+ \sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist
+%
+%\newenvironment{captions}
+\def \captions    {\newcounter{fign}\section*{Figure Captions}
+	\begin{list}{\bf Fig. \Arabic{fign}.}
+	{\usecounter{fign}\setlength{\leftmargin}{0mm}
+	\setlength{\itemindent}{0mm}}
+	\small}
+\def \endcaptions    {\end{list}\normalsize}
+%
+% Redefine \@cite so no square brackets are output.
+% Redefine \@biblabel so the label is not output in the bibliography.
+\def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\def\@biblabel#1{}
+% \vx reserves a fixed vertical space #1
+    \def \vx#1{\rule[-#1]{0mm}{#1}}
+% no page headings or numbers whatsoever
+    \pagestyle{empty}
+%
+% Specific commands
+%
+% \blank will produce the proposal form.
+%
+\newif\if@noblank\@noblanktrue \def \blank{\@noblankfalse}
+%
+\def\ful@l{~\raisebox{1mm}{\circle*{3.5}}}
+\def\chec@koff{~\raisebox{1mm}{\circle{3.5}}}
+\def\chec@kon{\if@noblank\ful@l\else\chec@koff\fi}
+\def\chec@k#1{#1\chec@kon\else\chec@koff\fi}
+\def\nochec@k#1{#1\chec@koff\else\chec@kon\fi}
+\newif\if@pico\@picotrue
+\def\picoveleta{\@picotrue}\def\plateaudebure{\@picofalse}
+\newif\if@onemmcat \@onemmcatfalse\def\onemmcat{\@onemmcattrue}
+\newif\if@twommcat \@twommcatfalse\def\twommcat{\@twommcattrue}
+\newif\if@threemmcat \@threemmcatfalse\def\threemmcat{\@threemmcattrue}
+\newif\if@dualfrcat \@dualfrcatfalse\def\dualfrcat{\@dualfrcattrue}
+\newif\if@timefiller \@timefillerfalse\def\timefiller{\@timefillertrue}
+\newif\if@specialcat \@specialcatfalse\def\specialcat{\@specialcattrue}
+
+\newif\if@pooledobserving \@pooledobservingfalse\def\pooledobserving{\@pooledobservingtrue}
+\newif\if@serviceobserving \@serviceobservingfalse\def\serviceobserving{\@serviceobservingtrue}
+\newif\if@remoteobserving \@remoteobservingfalse\def\remoteobserving{\@remoteobservingtrue}
+\newif\if@polarimeter \@polarimeterfalse\def\polarimeter{\@polarimetertrue}
+
+\newif\if@exgalcont \@exgalcontfalse\def\exgalcont{\@exgalconttrue}
+\newif\if@exgalco \@exgalcofalse\def\exgalco{\@exgalcotrue}
+\newif\if@exgalother \@exgalotherfalse\def\exgalother{\@exgalothertrue}
+\newif\if@solarcont \@solarcontfalse\def\solarcont{\@solarconttrue}
+\newif\if@solarlines \@solarlinesfalse\def\solarlines{\@solarlinestrue}
+\newif\if@solarother \@solarotherfalse\def\solarother{\@solarothertrue}
+\newif\if@galcont \@galcontfalse\def\galcont{\@galconttrue}
+\newif\if@gallines \@gallinesfalse\def\gallines{\@gallinestrue}
+\newif\if@galcloud \@galcloudfalse\def\galcloud{\@galcloudtrue}
+\newif\if@galcse \@galcsefalse\def\galcse{\@galcsetrue}
+\newif\if@galyse \@galysefalse\def\galyse{\@galysetrue}
+\newif\if@galcloud \@galcloudfalse\def\galcloud{\@galcloudtrue}
+\newif\if@galchem \@galchemfalse\def\galchem{\@galchemtrue}
+\newif\if@galother \@galotherfalse\def\galother{\@galothertrue}
+\newif\if@mapping \@mappingfalse\def\mapping{\@mappingtrue}
+\newif\if@detection \@detectionfalse\def\detection{\@detectiontrue}
+\newif\if@sizemeasure \@sizemeasurefalse\def\sizemeasure{\@sizemeasuretrue}
+\newif\if@snapshot \@snapshotfalse\def\snapshot{\@snapshottrue}
+\newif\if@mosaic \@mosaicfalse\def\mosaic{\@mosaictrue}
+\newif\if@othertype \@othertypefalse\def\othertype{\@othertypetrue}
+
+
+%
+% new section "author" allows two PIs (July 2003) -------------------------
+% option "remark" to add a remark concerning the project, the pi, or whatever
+%
+
+\newif\if@pifirstname \@pifirstnamefalse
+\newif\if@apifirstname \@apifirstnamefalse
+\newif\if@pinote \@pinotefalse
+\def\pinote#1{\@pinotetrue\gdef\@pinote{#1}}\def\@pinote{}
+
+\def\pifirstname#1{\@pifirstnametrue\gdef\@pifirstname{#1}}
+\def\pilastname#1{\gdef\@pilastname{#1}}
+\def\piinstitute#1{\gdef\@piinstitute{#1}}
+\def\pistreetandnumber#1{\gdef\@pistreetandnumber{#1}}
+\def\pizipandcity#1{\gdef\@pizipandcity{#1}}
+\def\picountry#1{\gdef\@picountry{#1}}
+\def\piphone#1{\gdef\@piphone{#1}}
+\def\pifax#1{\gdef\@pifax{#1}}
+\def\piemail#1{\gdef\@piemail{#1}}
+
+\def\apifirstname#1{\@apifirstnametrue\gdef\@apifirstname{#1}}
+\def\apilastname#1{\gdef\@apilastname{#1}}
+\def\apiinstitute#1{\gdef\@apiinstitute{#1}}
+\def\apistreetandnumber#1{\gdef\@apistreetandnumber{#1}}
+\def\apizipandcity#1{\gdef\@apizipandcity{#1}}
+\def\apicountry#1{\gdef\@apicountry{#1}}
+\def\apiphone#1{\gdef\@apiphone{#1}}
+\def\apifax#1{\gdef\@apifax{#1}}
+\def\apiemail#1{\gdef\@apiemail{#1}}
+
+\def\bpifirstname#1{\gdef\@bpifirstname{#1}}
+\def\bpilastname#1{\gdef\@bpilastname{#1}}
+\def\bpiinstitute#1{\gdef\@bpiinstitute{#1}}
+\def\bpistreetandnumber#1{\gdef\@bpistreetandnumber{#1}}
+\def\bpizipandcity#1{\gdef\@bpizipandcity{#1}}
+\def\bpicountry#1{\gdef\@bpicountry{#1}}
+\def\bpiphone#1{\gdef\@bpiphone{#1}}
+\def\bpifax#1{\gdef\@bpifax{#1}}
+\def\bpiemail#1{\gdef\@bpiemail{#1}}
+
+\def\appdef#1#2{\@ifxundefined#1{\toks@{}}{\toks@\expandafter{#1}}
+ \toks@ii{#2}\edef#1{\the\toks@\the\toks@ii}}
+\toksdef\toks@ii=\tw@ 
+\long\def\@ifxundefined#1{\@ifx{\undefined#1}}
+\def\@boolean#1#2{ 
+  \long\def#1{#2 \expandafter\boolean@true \else \expandafter\boolean@false \fi }}
+\def\@boole@def#1#{\@boolean{#1}} \@boole@def\@ifx#1{\ifx#1}
+\long\def\boolean@true#1#2{#1}
+\long\def\boolean@false#1#2{#2} 
+
+\global\let\@coauthor\@empty
+\global\let\coauthor\relax
+\def\coauthor#1#2#3{\appdef\@coauthor{#1 (#2 -- #3); }}
+
+%
+% end section "author" -------------------------
+%
+
+\def\others#1{\gdef\@others{#1}}
+\def\sourcelist#1{\gdef\@sourcelist{#1}}
+\def\epoch#1{\gdef\@epoch{#1}}
+\def\techsourcelist#1{\gdef\@techsourcelist{#1}}
+\def\techEMIR#1{\gdef\@techEMIR{#1}}
+\def\techHERA#1{\gdef\@techHERA{#1}}
+\def\techBOLO#1{\gdef\@techBOLO{#1}}
+\def\extendedsourcelist#1{\gdef\@extendedsourcelist{#1}}
+\def\abstract#1{\gdef\@abstract{#1}}
+\newif\if@resubmit \@resubmitfalse
+\def\resubmit#1{\@resubmittrue\gdef\@resubmitn{#1}}
+\newif\if@continue \@continuefalse
+\def\continue#1{\@continuetrue\gdef\@continuen{#1}}
+%
+\def\@hours{}
+\def\hours#1{\gdef\@hours{#1}}
+\def\@lstaa{}\def\@lstab{}\def\@lstac{}
+\def\@lstba{}\def\@lstbb{}\def\@lstbc{}
+\def\lsta#1#2#3{\gdef\@lstaa{#1}\gdef\@lstab{#2}\gdef\@lstac{#3}}
+\def\lstb#1#2#3{\gdef\@lstba{#1}\gdef\@lstbb{#2}\gdef\@lstbc{#3}}
+\def\@sensa{}\def\@sensb{}\def\@sensc{}
+\def\sens#1#2#3{\gdef\@sensa{#1}\gdef\@sensb{#2}\gdef\@sensc{#3}}
+\def\@tracka{}\def\@trackb{}\def\@trackc{}\def\@trackd{}\def\@trackany{}
+%\def\notracks#1#2#3#4#5{\gdef\@tracka{#1}\gdef\@trackb{#2}\gdef\@trackc{#3}\gdef\@trackd{#4}\gdef\@trackany{#5}} %winter
+\def\notracks#1#2#3{\gdef\@trackc{#1}\gdef\@trackd{#2}\gdef\@trackany{#3}}            %summer
+\def\@hoursEMIR{}
+\def\@hoursHERA{}
+\def\@hoursBOLO{}
+\def\hoursRxs#1#2#3{\gdef\@hoursEMIR{#1}\gdef\@hoursHERA{#2}\gdef\@hoursBOLO{#3}}
+\def\constraints#1{\gdef\@constraints{#1}}\def\@constraints{}
+\global\let\@avoidance\@empty
+\global\let\avoidance\relax
+\def\avoidance#1{\appdef\@avoidance{#1\\ }}
+\def\frequencies#1#2#3{\gdef\@frequenciesone{#1}\gdef\@frequenciestwo{#2}\gdef\@frequenciesthree{#3}}
+\def\@frequenciesone{}\def\@frequenciestwo{}\def\@frequenciesthree{}
+
+\def\abstract#1{\gdef\@abstract{#1}}\def\@abstract{}
+\def\observer#1{\gdef\@observer{#1}}\def\@observer{}
+\def\reducer#1{\gdef\@reducer{#1}}\def\@reducer{}
+%\newif\if@receiveraandb \@receiveraandbfalse\def\receiveraandb{\@receiveraandbtrue}
+%\newif\if@receivercandd \@receivercanddfalse\def\receivercandd{\@receivercanddtrue}
+%\newif\if@receiveraandd \@receiveraanddfalse\def\receiveraandd{\@receiveraanddtrue}
+%\newif\if@receiverbandc \@receiverbandcfalse\def\receiverbandc{\@receiverbandctrue}
+\newif\if@bolometerfirstsession 
+    \@bolometerfirstsessionfalse\def\bolometerfirstsession{\@bolometerfirstsessiontrue}
+\newif\if@bolometersecondsession 
+    \@bolometersecondsessionfalse\def\bolometersecondsession{\@bolometersecondsessiontrue}
+
+\newif\if@twomm \@twommfalse\def\twomm{\@twommtrue}
+\newif\if@atwothirty \@atwothirtyfalse\def\atwothirty{\@atwothirtytrue}
+\newif\if@btwothirty \@btwothirtyfalse\def\btwothirty{\@btwothirtytrue}
+\newif\if@pointeightmm \@pointeightmmfalse\def\pointeightmm{\@pointeightmmtrue}
+\newif\if@onemmbolo \@onemmbolofalse\def\onemmbolo{\@onemmbolotrue}
+\newif\if@diabolo \@diabolofalse\def\diabolo{\@diabolotrue}
+
+%\newif\if@emir \@emirfalse\def\emir{\@emirtrue}
+%\newif\if@hera \@herafalse\def\hera{\@heratrue}
+%\newif\if@bolometer \@bolometerfalse \def\bolometer{\@bolometertrue}
+%\newif\if@other \@otherfalse\def\other{\@othertrue}
+
+\newif\if@emir \@emirfalse 
+\def\emir#1{\@emirtrue\gdef\@hoursEMIR{#1}}
+\newif\if@hera \@herafalse 
+\def\hera#1{\@heratrue\gdef\@hoursHERA{#1}}
+\newif\if@bolometer \@bolometerfalse 
+\def\bolometer#1{\@bolometertrue\gdef\@hoursBOLO{#1}}
+\newif\if@other \@otherfalse 
+\def\other#1{\@othertrue\gdef\@hoursOTHER{#1}}
+
+
+
+\newif\if@confnew \@confnewfalse\def\confnew{\@confnewtrue}
+\newif\if@recsd \@recsdfalse\def\recsd{\@recsdtrue}
+\newif\if@widex \@widexfalse\def\widex{\@widextrue}
+\newif\if@LargeProgram \@LargeProgramfalse\def\LargeProgram{\@LargeProgramtrue}
+\newif\if@confany \@confanyfalse\def\confany{\@confanytrue}
+\newif\if@confd \@confdfalse\def\confd{\@confdtrue}
+\newif\if@confc \@confcfalse\def\confc{\@confctrue}
+\newif\if@confb \@confbfalse\def\confb{\@confbtrue}
+\newif\if@confa \@confafalse\def\confa{\@confatrue}
+\def\confany{\@confanytrue\@confafalse\@confbfalse\@confcfalse\@confdfalse}
+\newif\if@shortspacing \@shortspacingfalse\def\shortspacing{\@shortspacingtrue}
+
+\def\confidential#1{\gdef\@confidential{#1}}\def\@confidential{}
+
+\def\position#1{\gdef\@position{#1}}\def\@position{}
+\def\structuresize#1{\gdef\@structuresize{#1}}\def\@structuresize{}
+\def\continuumflux#1{\gdef\@continuumflux{#1}}\def\@continuumflux{}
+\def\continuumsize#1{\gdef\@continuumsize{#1}}\def\@continuumsize{}
+
+\def\mosaicoffset#1{\gdef\@mosaicoffset{#1}}\def\@mosaicoffset{}
+
+\def\continuumfreq#1{\gdef\@continuumfreq{#1}}\def\@continuumfreq{}
+\def\contamination#1{\gdef\@contamination{#1}}\def\@contamination{}
+\def\avoidfreq#1{\gdef\@avoidfreq{#1}}\def\@avoidfreq{}
+\def\bandres#1{\gdef\@bandres{#1}}\def\@bandres{}
+\def\linezerowidth#1{\gdef\@linezerowidth{#1}}\def\@linezerowidth{}
+\def\numberlines#1{\gdef\@numberlines{#1}}\def\@numberlines{}
+\def\linefreq#1{\gdef\@linefreq{#1}}\def\@linefreq{}
+\def\linesize#1{\gdef\@linesize{#1}}\def\@linesize{}
+\def\linestrength#1{\gdef\@linestrength{#1}}\def\@linestrength{}
+\def\correlatorsetup#1{\gdef\@correlatorsetup{#1}}\def\@correlatorsetup{}
+\def\configuration#1{\gdef\@configuration{#1}}\def\@configuration{}
+\def\observingtime#1{\gdef\@observingtime{#1}}\def\@observingtime{}
+\def\baselinerange#1{\gdef\@baselinerange{#1}}\def\@baselinerange{}
+\def\configlist#1{\gdef\@configlist{#1}}\def\@configlist{}
+\def\hourangles#1{\gdef\@hourangles{#1}}\def\@hourangles{}
+\def\hourangletime#1{\gdef\@hourangletime{#1}}\def\@hourangletime{}
+\def\phasecalibrators#1{\gdef\@phasecalibrators{#1}}\def\@phasecalibrators{}
+\def\ampcalibrator#1{\gdef\@ampcalibrator{#1}}\def\@ampcalibrator{}
+\def\bandpass#1{\gdef\@bandpass{#1}}\def\@bandpass{}
+\def\particulars#1{\gdef\@particulars{#1}}\def\@particulars{}
+\def\recone#1#2#3#4{\gdef\@reconeline{#1}\gdef\@reconefr{#2}
+   \gdef\@reconeband{#3}\gdef\@reconeif1{#4}}
+\def\@reconeline{}\def\@reconefr{}\def\@reconeband{}\def\@reconeif1{}
+\def\rectwo#1#2#3{\gdef\@rectwoline{#1}\gdef\@rectwofr{#2}
+   \gdef\@rectwoband{#3}}
+\def\@rectwoline{}\def\@rectwofr{}\def\@rectwoband{}
+\def\corroneinp#1{\gdef\@corrone{\mbox{ }#1}}
+\def\corrtwoinp#1{\gdef\@corrtwo{\mbox{ }#1}}
+\def\specone#1#2#3#4{\gdef\@speconewid{#1}\gdef\@speconefr{#2}
+  \gdef\@speconerec{#3}\gdef\@speconemode{#4}}
+\def\@speconewid{}\def\@speconefr{}\def\@speconerec{}\def\@speconemode{}
+\def\spectwo#1#2#3#4{\gdef\@spectwowid{#1}\gdef\@spectwofr{#2}
+   \gdef\@spectworec{#3}\gdef\@spectwomode{#4}}
+\def\@spectwowid{}\def\@spectwofr{}\def\@spectworec{}\def\@spectwomode{}
+\def\specthree#1#2#3#4{\gdef\@specthreewid{#1}\gdef\@specthreefr{#2}
+   \gdef\@specthreerec{#3}\gdef\@specthreemode{#4}}
+\def\@specthreewid{}\def\@specthreefr{}\def\@specthreerec{}\def\@specthreemode{}
+\def\specfour#1#2#3#4{\gdef\@specfourwid{#1}\gdef\@specfourfr{#2}
+   \gdef\@specfourrec{#3}\gdef\@specfourmode{#4}}
+\def\@specfourwid{}\def\@specfourfr{}\def\@specfourrec{}\def\@specfourmode{}
+\def\specfive#1#2#3#4{\gdef\@specfivewid{#1}\gdef\@specfivefr{#2}
+   \gdef\@specfiverec{#3}\gdef\@specfivemode{#4}}
+\def\@specfivewid{}\def\@specfivefr{}\def\@specfiverec{}\def\@specfivemode{}
+\def\specsix#1#2#3#4{\gdef\@specsixwid{#1}\gdef\@specsixfr{#2}
+   \gdef\@specsixrec{#3}\gdef\@specsixmode{#4}}
+\def\@specsixwid{}\def\@specsixfr{}\def\@specsixrec{}\def\@specsixmode{}
+\def\specseven#1#2#3#4{\gdef\@specsevenwid{#1}\gdef\@specsevenfr{#2}
+   \gdef\@specsevenrec{#3}\gdef\@specsevenmode{#4}}
+\def\@specsevenwid{}\def\@specsevenfr{}\def\@specsevenrec{}\def\@specsevenmode{}
+\def\speceight#1#2#3#4{\gdef\@speceightwid{#1}\gdef\@speceightfr{#2}
+   \gdef\@speceightrec{#3}\gdef\@speceightmode{#4}}
+\def\@speceightwid{}\def\@speceightfr{}\def\@speceightrec{}\def\@speceightmode{}
+%
+%Define 30meter receiver parameters
+%
+\global\let\@HERAparameters\@empty
+\global\let\HERAparameters\relax
+\def\HERAparameters#1#2#3#4#5#6#7#8{\appdef\@HERAparameters{#1&HERA~#2&#3&#4&#5&#6&#7&#8\\}}
+%
+%\def\@HERAone{}\def\@HERAtwo{}\def\@HERAthree{}\def\@HERAfour{}
+%\def\@HERAfive{}\def\@HERAsix{}\def\@HERAseven{}\def\@HERAeight{}
+%
+\global\let\@HERAmap\@empty
+\global\let\HERAmap\relax
+\def\HERAmap#1#2#3#4#5#6#7#8{\appdef\@HERAmap{#1&#2&#3&#4&#5&#6&#7&#8\\}}
+%
+\global\let\@EMIRparameters\@empty
+\global\let\EMIRparameters\relax
+\def\EMIRparameters#1#2#3#4#5#6#7#8#9{
+    \appdef\@EMIRparameters{#1&#2&#3&#4&#5&#6&#7&#8&#9\\}}
+%
+\global\let\@EMIRmap\@empty
+\global\let\EMIRmap\relax
+\def\EMIRmap#1#2#3#4#5#6#7#8{\appdef\@EMIRmap{#1&#2&#3&#4&#5&#6&#7&#8\\}}
+%
+%
+\global\let\@BOLOonoff\@empty
+\global\let\BOLOonoff\relax
+\def\BOLOonoff#1#2#3#4{\appdef\@BOLOonoff{#1&#2&#3&#4\\}}
+%
+\global\let\@BOLOmap\@empty
+\global\let\BOLOmap\relax
+\def\BOLOmap#1#2#3#4#5#6#7#8#9{\appdef\@BOLOmap{#1&#2&#3&#4&#5&#6&#7&#8&#9\\}}
+%
+%
+% Define title and authors format (\frontpage)
+%
+\def\frontpage{ \if@pico \picofront \else \pdbifront   \fi \normalsize}
+\def\warning#1  { \if@pico \mbox{}  \else #1 \fi} 
+%
+% Pico Veleta first page
+%
+\def\picofront {
+\small
+\setlength{\unitlength}{1mm}
+\noindent\begin{picture}(185,275)(4,0)
+%
+\put(0,269){\Huge IRAM}
+%
+\put(25,275){\makebox(0,0)[tl]{\parbox[t]{100mm}
+{ 
+\begin{raggedright}
+{\bf 300, rue de la Piscine\\
+38406 ST. MARTIN d'HERES (France)\\
+Fax: (33/0) 476 42 54 69 \\
+\vspace{3mm}
+{\large \bf PROPOSAL FOR 30M TELESCOPE}}\\
+%Deadline: \deadline\, -- Period: \period
+Deadline: \deadline\, \hskip3mm  Period: \period
+\end{raggedright} 
+}}} 
+%
+% Box for Proposal number
+\put(127,252){\framebox(56,23){ } }
+\put(155,271){\makebox(0,0)[b]{\bf For IRAM use}}
+\put(127,269){\line(1,0){56}}
+\put(128,262){Registration N$^\circ$:}
+\put(128,255){Date: }
+%
+% Title box:
+\thicklines\put(0,230){\framebox(183,18){}}
+\thinlines
+\put(3,243){\bf TITLE} 
+\if@noblank
+\put(92,240){\makebox(0,0){\parbox[t]{170mm}
+{\begin{center}\large\bf\@title\end{center}}}}
+\fi
+%
+% Proposal type:
+\put(0,226){{\bf Type:} 
+{\em Solar system:}\/ continuum \chec@k{\if@solarcont} 
+lines \chec@k{\if@solarlines} 
+other \chec@k{\if@solarother}  }
+%
+\put(103.3,226){{\em Extragalactic:}\/ continuum \chec@k{\if@exgalcont} 
+~CO lines \chec@k{\if@exgalco} 
+other \chec@k{\if@exgalother}}
+%
+\put(11.6,221.3){{\em Galactic:}\/ continuum \chec@k{\if@galcont}
+lines \chec@k{\if@gallines} ~circumstel.\ env.\ \chec@k{\if@galcse}
+young stel.\ obj.\ \chec@k{\if@galyse}
+cloud struct.\ \chec@k{\if@galcloud} ~chem.\ \chec@k{\if@galchem}
+other \chec@k{\if@galother} }
+%
+% Abstract box:
+\thicklines\put(0,171){\framebox(183,47){}}
+\thinlines
+\put(3,213){\bf ABSTRACT}
+\if@noblank
+\put(7,211){\makebox(0,0)[tl]{\parbox[t]{170mm}{\@abstract}}}
+\fi
+% 
+
+% Resubmission ?
+\put(0,166){Is this a resubmission of a previous proposal ?}
+\put(81,166){  no \nochec@k{\if@resubmit} }
+\put(93,166){  yes \chec@k{\if@resubmit} --}
+\put(108,165.2){\makebox(70,20)[br]{  proposal number(s): \dotfill}}
+\if@noblank\if@resubmit\put(142,166){\@resubmitn}\fi \fi
+%
+% Continuation ?
+\put(0,161){Is this a continuation  of (a) previous proposal(s) ?}
+\put(81,161){  no \nochec@k{\if@continue} }
+\put(93,161){  yes \chec@k{\if@continue} --}
+\put(108,160.2){\makebox(70,20)[br]{  proposal number(s): \dotfill}}
+\if@noblank\if@continue\put(142,161.5){\@continuen}\fi\fi
+%
+\put(0,159){\line(1,0){185}}
+% Hours requested
+\put(0,155.5){{\bf Hours} requested for this period \makebox[7.0cm]{}
+               {\bf LST range}(s) and number of intervals  }
+\thicklines
+\if@noblank\put(0,146){\makebox(10,7)[cl]{\bf Total}
+                       \framebox(10,7){\bf \@hours} }
+\else\put(0,146){\framebox(16,7){} }
+\fi
+\if@noblank\put(26,146){\makebox(10.5,7)[cl]{EMIR}
+                       \framebox(10,7){\bf \@hoursEMIR} }
+\else\put(26,146){\framebox(16,7){} }
+\fi
+\if@noblank\put(53,146){\makebox(11.0,7)[cl]{HERA}
+                       \framebox(10,7){\bf \@hoursHERA} }
+\else\put(53,146){\framebox(16,7){} }
+\fi
+\if@noblank\put(80,146){\makebox(15,7)[cl]{MAMBO}
+                       \framebox(10,7){\bf \@hoursBOLO} }
+\else\put(82,146){\framebox(16,7){} }
+\fi
+
+
+\thinlines
+%\put(33,152){LST range(s):}
+\if@noblank\put(121,151){  from: \@lstaa}\else\put(121,151){  from:}\fi
+\if@noblank\put(144,151){  to: \@lstab}\else\put(144,151){  to:}\fi
+\if@noblank\put(160,151){  intervals: \@lstac}
+\else\put(160,151){  intervals:}\fi
+\if@noblank\put(121,146){  from: \@lstba}\else\put(121,146){  from:}\fi
+\if@noblank\put(144,146){  to: \@lstbb}\else\put(144,146){  to:}\fi
+\if@noblank\put(160,146){  intervals: \@lstbc}
+\else\put(160,146){  intervals:}\fi
+%
+\put(0,144){\line(1,0){185}}
+%
+%\put(0,138){{\bf Number of hours} foreseen 
+%for full completion of this proposal:}
+%\if@noblank\put(102,135.5){\framebox(15,7){\@totalhoursa}}
+%\else\put(102,135.5){\framebox(15,7){ }}\fi
+%\put(117,138){  of which}
+%\if@noblank\put(135,135.5){\framebox(15,7){\@totalhoursb}}
+%\else\put(135,135.5){\framebox(15,7){}}\fi
+%\put(150,138){  were already allocated}
+%\put(0,134){\line(1,0){185}}
+
+%
+% Special requirements
+%
+\put(0,140){{\normalsize\bf Special requirements:\hskip 0.7cm}
+Large Program \,\chec@k{\if@LargeProgram}\hskip2mm 
+pooled obs \,\chec@k{\if@pooledobserving}\hskip2mm 
+service obs \,\chec@k{\if@serviceobserving}\hskip2mm 
+remote obs \,\chec@k{\if@remoteobserving}\hskip2mm 
+polarimeter \,\chec@k{\if@polarimeter}%\hskip2mm 
+}
+\put(0,137){\line(1,0){185}}
+%
+% Scheduling constraints
+%                                  %\hskip 1.3cm}
+\put(0,133){\normalsize\bf Scheduling constraints: } 
+\put(50,132){\makebox(135,10)[b]{\dotfill}}
+\if@noblank\put(50,133){\@constraints}\fi
+\put(0,130){\line(1,0){185}}
+%
+% Receivers
+%
+\put(0,126)   {\normalsize\bf Receivers:} 
+\put(50,126)  {EMIR \,\chec@k{\if@emir}}
+\put(80,126)  {HERA \,\chec@k{\if@hera}} 
+\put(110,126) {MAMBO \, \chec@k{\if@bolometer}}   
+\put(150,126) {Other\,  \chec@k{\if@other}}
+%
+% Frequencies
+%\put(0,112.5){{\normalsize\bf Frequencies:} (to 0.1 GHz and corrected
+%for redshift) }
+%\put(90,112){\makebox(95,10)[b]{\dotfill} }
+%\if@noblank\put(90,112.5){\@frequenciesone}\fi
+%\put(90,108.8){\makebox(95,10)[b]{\dotfill} }
+%\if@noblank\put(0,109.3){\@frequenciestwo}\fi
+%\put(0,108.8){\makebox(87,10)[b]{\dotfill} }
+%\if@noblank\put(90,109.3){\@frequenciesthree}\fi
+%
+% Source list
+\thicklines
+%put(0,6){\framebox(185,101) { } }
+\put(0,6){\framebox(185,117) { } }
+\thinlines
+\put(92,6){\line(0,1){117}}
+\put(2,115){{\normalsize \bf List of Objects} (give most common names)}
+%\put(2,111){with equatorial coordinates}
+\put(2,14){( for additional sources which do not fit here  }
+\put(2,10){~~use the {\tt $\backslash$extendedsourcelist }  macro~)}
+\put(29,107){Epoch:}
+\if@noblank\put(44,107){\@epoch}\fi
+\put(5,103){Source}
+\put(32,103){RA}
+\put(54,103){DEC}
+\put(73,103){V$_{\rm LSR}$ or $z$} 
+\put(1,101){\line(1,0){90}}
+\put(1,18){\line(1,0){90}}
+\put(23,101){\line(0,-1){82}}
+\put(47,101){\line(0,-1){82}}
+\put(70,101){\line(0,-1){82}}
+\if@noblank\put(0,100){\makebox(0,0)[tl]{\parbox[t]{102mm}{
+\begin{tabular}{p{20mm}p{20mm}p{20mm}p{20mm}}\@sourcelist \end{tabular}} } }\fi
+%
+%
+% Investigators
+\put(94,119) {{\bf Principal Investigator:}} 
+%\put(94,115) {(name, institute, address, tel., fax, e-mail)}
+
+\if@pifirstname
+ \if@noblank\put(94,112){\makebox(0,0)[tl]{\parbox[t]{85mm}{\bf \@pifirstname\ \@pilastname}}} \fi 
+ \if@noblank\put(94,108){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@piinstitute}}} \fi
+ \if@noblank\put(94,104){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@pistreetandnumber}}} \fi
+ \if@noblank\put(94,100){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@pizipandcity\ \ ({\sc \@picountry})}}} \fi
+ \if@noblank\put(94, 96){\makebox(0,0)[tl]{\parbox[t]{85mm}{Tel:\ \@piphone\ \ \ \ \ Fax:\ \@pifax}}} \fi
+ \if@noblank\put(94, 92){\makebox(0,0)[tl]{\parbox[t]{85mm}{Email:\ \@piemail}}} \fi  
+ \put(94,78){{\bf Other Investigators} (name, institution):} 
+ \put(94,70){\parbox[t]{85mm}{\@coauthor}} \fi
+
+\if@apifirstname
+ \if@noblank\put(94,99){\makebox(0,0)[tl]{\parbox[t]{85mm}{{\bf Co-PI:\ \@apifirstname\ \@apilastname}\ \ (\@apiemail)}}} \fi
+ \if@noblank\put(94,95){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@apiinstitute}}} \fi
+ \if@noblank\put(94,91){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@apistreetandnumber}}} \fi
+ \if@noblank\put(94,87){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@apizipandcity\ \ ({\sc \@apicountry})}}} \fi
+ \if@noblank\put(94,83){\makebox(0,0)[tl]{\parbox[t]{85mm}{Tel:\ \@apiphone\ \ \ \ \ Fax:\ \@apifax}}} \fi
+
+ \if@noblank\put(94,78){\makebox(0,0)[tl]{\parbox[t]{85mm}{{\bf Co-PI:\ \@bpifirstname\ \@bpilastname}\ \ (\@bpiemail)}}} \fi 
+ \if@noblank\put(94,74){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@bpiinstitute}}} \fi
+ \if@noblank\put(94,70){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@bpistreetandnumber}}} \fi
+ \if@noblank\put(94,66){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@bpizipandcity\ \ ({\sc \@bpicountry})}}} \fi
+ \if@noblank\put(94,62){\makebox(0,0)[tl]{\parbox[t]{85mm}{Tel:\ \@bpiphone\ \ \ \ \ Fax:\ \@bpifax}}} \fi 
+ \put(94,52){{\bf Other Investigators} (name, institution):} 
+ \put(94,46){\parbox[t]{85mm}{\@coauthor}} \fi
+
+\if@noblank\put(94,12){{\bf Expected observer(s)} \@observer}
+\else\put(94,12){\bf Expected observer(s)}\fi
+%
+\put(0,1){\em join to this form: scientific aims $\leq 2$ typed pages
+%and $\leq 2$ of Figs., Tables and list of related publications}
+($\leq 4$ pages for Large Programs) and $\leq 2$ pages Figs., Tabs., and Refs.} 
+
+
+%\put(165,1){\em $^*$imperatively}
+\end{picture}
+\textheight 270mm
+\newpage
+}
+%
+%Plateau de Bure first page
+\def\pdbifront {
+\small
+\setlength{\unitlength}{1mm}
+\noindent\begin{picture}(185,275)(4,0)
+%
+\put(0,269){\Huge IRAM}
+%
+\put(25,275){\makebox(0,0)[tl]{\parbox[t]{100mm}
+{ 
+\begin{raggedright}
+{\bf 300, rue de la Piscine\\
+38406 ST. MARTIN d'HERES (France)\\
+Fax: (33/0) 476 42 54 69 \\
+\vspace{3mm}
+{\large \bf PROPOSAL FOR INTERFEROMETER}}\\
+%Deadline: \deadline\, -- Period: \period
+Deadline: \deadline\, \hskip 7mm Period: \period
+\end{raggedright} 
+}}} 
+%
+% Box for Proposal number
+\put(127,252){\framebox(58,23){ } }
+\put(155,271){\makebox(0,0)[b]{\bf For IRAM use}}
+\put(127,269){\line(1,0){58}}
+\put(128,262){Registration N$^\circ$:}
+\put(128,255){Date: }
+%
+%
+% Title box:
+\thicklines\put(0,235){\framebox(185,15){}}
+\thinlines
+\put(3,245){\bf TITLE}
+\if@noblank
+\put(92,242){\makebox(0,0){\parbox[t]{170mm}
+{\begin{center}\large\bf\@title\end{center}}}}
+\fi
+%
+%
+% Proposal type:
+\put(  0,230){\bf CATEGORY:} 
+\put( 50,230){\makebox(0,0)[br]{3mm: \chec@k{\if@threemmcat} }}
+\put( 75,230){\makebox(0,0)[br]{2mm: \chec@k{\if@twommcat} }}
+\put( 100,230){\makebox(0,0)[br]{1.3mm: \chec@k{\if@onemmcat} }}
+%\put(105,229.4){\makebox(0,0)[br]{dual freq.: \chec@k{\if@dualfrcat} }}
+\put(125,230){\makebox(0,0)[br]{time filler: \chec@k{\if@timefiller} }}
+\put(148,229.4){\makebox(0,0)[br]{special: \chec@k{\if@specialcat} }}
+%\put(180,230){\makebox(0,0)[br]{SD: \chec@k{\if@recsd} }}
+\put(185,229.4){\makebox(0,0)[br]{Large Program: \chec@k{\if@LargeProgram} }}
+\put(0,227)  {\line(1,0){185}}
+\put(  0,223){{\bf Scientific type:}
+{\em Extragalactic}:\/ continuum \chec@k{\if@exgalcont}
+~CO lines \chec@k{\if@exgalco} 
+other \chec@k{\if@exgalother} }
+%
+\put(113,223){{\em Solar system:}\/ continuum \chec@k{\if@solarcont} 
+lines \chec@k{\if@solarlines} 
+other \chec@k{\if@solarother} }
+%
+\put(  0,218){{\em Galactic}:\/ continuum \chec@k{\if@galcont} 
+~~lines \chec@k{\if@gallines} ~~circumstel. env. \chec@k{\if@galcse}
+~~young stel.\ obj.\ \chec@k{\if@galyse}
+~~cloud struct.\ \chec@k{\if@galcloud} ~chem. \chec@k{\if@galchem}
+~~other \chec@k{\if@galother} }
+%
+\put(  0,213){{\bf Observing type:}\/ 
+~~~mapping \chec@k{\if@mapping} 
+~~~mosaic \chec@k{\if@mosaic} 
+~~~size measure \chec@k{\if@sizemeasure} 
+~~~snapshot \chec@k{\if@snapshot} 
+~~~detection \chec@k{\if@detection} 
+~~~other \chec@k{\if@othertype} }
+%
+% Abstract box:
+\thicklines\put(0,162){\framebox(185,48){}}
+\thinlines
+\put(3,204){\bf ABSTRACT}
+\if@noblank
+\put(7,202){\makebox(0,0)[tl]{\parbox[t]{170mm}{\@abstract}}}
+\fi
+% 
+% Resubmission ?
+\put(  0,157){Is this a resubmission of a previous proposal ?}
+\put( 81,157){  no \nochec@k{\if@resubmit} }
+\put( 93,157){  yes \chec@k{\if@resubmit} --}
+\put(108,156.2){\makebox(70,20)[br]{  proposal number(s): \dotfill}}
+  \if@noblank\if@resubmit\put(142,157.5){\@resubmitn}\fi\fi
+%
+% Continuation ?
+\put(  0,152){Is this a continuation  of (a) previous proposal(s) ?}
+\put( 81,152){  no \nochec@k{\if@continue} }
+\put( 93,152){  yes \chec@k{\if@continue} --}
+\put(108,151.2){\makebox(70,20)[br]{  proposal number(s): \dotfill}}
+   \if@noblank\if@continue\put(142,152.5){\@continuen}\fi \fi
+%%
+%\put(0,147){\line(1,0){185}}
+%% Hours requested
+%\put(0,142){Observing parameters for each band:}
+%\if@noblank\put( 72,142){  from: \@lstaa}\else\put(72,142){  from:}\fi
+%\if@noblank\put(100,142){  to: \@lstab}\else\put(100,142){  to:}\fi
+%\if@noblank\put(120,142){  number of intervals: \@lstac}
+%\else\put(120,142){  number of intervals:}\fi
+%\if@noblank\put( 72,137){  from: \@lstba}\else\put( 72,137){  from:}\fi
+%\if@noblank\put(100,137){  to: \@lstbb}\else\put(100,137){  to:}\fi
+%\if@noblank\put(120,137){  number of intervals: \@lstbc}
+%\else\put(120,137){  number of intervals:}\fi
+%%
+% Remote, service observing and bolometer sessions
+%
+%  \put(0,134){\line(1,0){185}}
+\put(0,147){\line(1,0){185}}
+%\put(0,134){  Special requirements {\em(dates, etc...)}:}
+%\if@noblank\put(60,134){\@constraints}\fi
+%\put(0,131){\line(1,0){185}}
+%
+%  \put(0,126){\normalsize\bf Configurations:
+\put(0,139){\normalsize\bf Configurations:
+%
+%~~~A     \chec@k{\if@confa} % winter
+%~~~B     \chec@k{\if@confb} % winter
+~~~C     \chec@k{\if@confc} 
+~~~D     \chec@k{\if@confd} 
+~~~Any   \chec@k{\if@confany}
+~~~~30M {\rm short spacings} \chec@k{\if@shortspacing}
+~WideX \chec@k{\if@widex}
+}
+%
+%
+% Frequencies
+%\put(0,132){\normalsize{\bf Frequencies} (exact)  3mm:}
+\put(0,132){\normalsize{\bf Frequencies}  3mm:}
+\if@noblank\put(50,132){\@frequenciesone}\fi
+\put(80,132){\normalsize 2mm:}
+\if@noblank\put(92,132){\@frequenciestwo}\fi
+\put(130,132){\normalsize 1.3mm:}
+\if@noblank\put(145,132){\@frequenciesthree}\fi
+
+% Confidentiality section
+%
+\put(0,125){\normalsize{\bf Confidential information}:}
+\if@noblank \put(60,125){\@confidential}\fi
+%
+% Source list
+\thicklines
+\put(0,6){\framebox(185,114) { } }
+\thinlines
+\put(92,6){\line(0,1){114}}
+\put(2,109){{\normalsize \bf List of Objects} (give most common names)}
+\put(2,105){with equatorial coordinates in J2000 (accurate }
+\put(2,101){to 2$''$) and LSR velocities}
+\put(2,14){( for additional sources which do not fit here  }
+\put(2,10){~~use the {\tt $\backslash$extendedsourcelist }  macro~)}
+\put(5,97){Source}
+\put(32,97){$\alpha_{J2000}$}
+\put(54,97){$\delta_{J2000}$}
+\put(71,97){v$_{\rm LSR}$/z$_{\rm Radio}$}
+\put(1,95){\line(1,0){90}}
+\put(1,18){\line(1,0){90}}
+\put(23,95){\line(0,-1){77}}
+\put(47,95){\line(0,-1){77}}
+\put(70,95){\line(0,-1){77}}
+\if@noblank\put(0,94){\makebox(0,0)[tl]{\parbox[t]{86mm}{
+\begin{tabular}{p{20mm}p{20mm}p{20mm}p{20mm}}\@sourcelist \end{tabular}} } }\fi
+%%
+%
+% Investigators
+\put(94,113) {{\bf Principal Investigator:}} 
+
+\if@pifirstname
+ \if@noblank\put(94,106){\makebox(0,0)[tl]{\parbox[t]{85mm}{\bf \@pifirstname\ \@pilastname}}} \fi 
+ \if@noblank\put(94,102){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@piinstitute}}} \fi
+ \if@noblank\put(94,98){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@pistreetandnumber}}} \fi
+ \if@noblank\put(94,94){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@pizipandcity\ \ ({\sc \@picountry})}}} \fi
+ \if@noblank\put(94,90){\makebox(0,0)[tl]{\parbox[t]{85mm}{Tel:\ \@piphone\ \ \ \ \ Fax:\ \@pifax}}} \fi
+ \if@noblank\put(94,86){\makebox(0,0)[tl]{\parbox[t]{85mm}{Email:\ \@piemail}}} \fi  
+ \put(94,72){{\bf Other Investigators} (name, institution):} 
+ \if@noblank\put(94,64){\parbox[t]{85mm}{\@coauthor}}\fi \fi
+
+\if@apifirstname
+ \if@noblank\put(94,109){\makebox(0,0)[tl]{\parbox[t]{85mm}{{\bf Co-PI:\ \@apifirstname\ \@apilastname}\ \ (\@apiemail)}}} \fi
+ \if@noblank\put(94,105){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@apiinstitute}}} \fi
+ \if@noblank\put(94,101){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@apistreetandnumber}}} \fi
+ \if@noblank\put(94,97){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@apizipandcity\ \ ({\sc \@apicountry})}}} \fi
+ \if@noblank\put(94,93){\makebox(0,0)[tl]{\parbox[t]{85mm}{Tel:\ \@apiphone\ \ \ \ \ Fax:\ \@apifax}}} \fi
+
+ \if@noblank\put(94,88){\makebox(0,0)[tl]{\parbox[t]{85mm}{{\bf Co-PI:\ \@bpifirstname\ \@bpilastname}\ \ (\@bpiemail)}}} \fi 
+ \if@noblank\put(94,84){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@bpiinstitute}}} \fi
+ \if@noblank\put(94,80){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@bpistreetandnumber}}} \fi
+ \if@noblank\put(94,76){\makebox(0,0)[tl]{\parbox[t]{85mm}{\@bpizipandcity\ \ ({\sc \@bpicountry})}}} \fi
+ \if@noblank\put(94,72){\makebox(0,0)[tl]{\parbox[t]{85mm}{Tel:\ \@bpiphone\ \ \ \ \ Fax:\ \@bpifax}}} \fi 
+ \put(94,62){{\bf Other Investigators} (name, institution):} 
+ \if@noblank\put(94,56){\parbox[t]{85mm}{\@coauthor}}\fi \fi 
+
+\if@noblank\put(94,22){{\bf who will reduce data:} \@reducer}
+\else\put(94,22){\bf who will reduce data}\fi
+
+\put(0,1){\em join to this form: scientific aims $\leq 2$ typed pages
+($\leq 4$ pages for Large Programs) and $\leq 2$ pages Figs., Tabs., and Refs.} 
+%list of related publications}
+\end{picture}
+\textheight 275mm
+\newpage
+}
+
+%------------------------------------------------------------------------------
+% define technical sheet for 30meter
+\def\techsheetPV{
+\if@pico
+\newpage
+{\small
+\begin{center}
+{\large\bf Technical Summary}\\
+%{\em Please fill in the respective receiver table(s)}
+\end{center}
+{\scriptsize 
+\begin{tabular}{lll@{\hspace{15mm}{}}ll}
+{\bf Variables used:} & \Ta       & expected line antenna temperature 
+                      & T         & requested telescope time per setup \\ 
+                      &$\Delta$v  & required velocity resolution 
+                      & pwv       & precipitable water vapor: 1, 2, 4, 7, 
+                                    or 10 mm. \\
+\end{tabular}
+} %\\[0.6ex]\hline
+\begin{itemize}
+\if@emir
+  \item[\Large$\mathbf\star$] {{\bf EMIR \\[0.5ex]}{\scriptsize
+             Note that up to 4 IF signals can be recorded and up 
+             to 2 EMIR (always dual polarization) bands can be 
+             combined in one EMIR setup. For a summary of EMIR
+             connectivity consult the IRAM Granada home page or 
+             the Call for Proposals 
+             \\[1ex]}}
+  %\if@noblank 
+    \begin{tabular}{@{}cc|ccccccc}
+    \multicolumn{9}{@{}l}{\bf Transitions \rule[0em]{0em}{5ex}}
+                 \\[0.6ex]\hline
+    %
+    setup&band&species&transition&frequency&\Ta&rms&$\Delta$v&backend $^a)$\\ 
+         &    &       &          & GHz     &mK &mK &\kms\\[0.2ex]\hline
+    \@EMIRparameters  [0.2ex]\hline 
+    \end{tabular}\newline{\scriptsize
+    \ $^a)$ V: VESPA, W: WILMA, 4: 4 MHz filterbank, 1: 1 MHZ filterbank}
+
+    \begin{tabular}{@{}c|c@{\ $\times$}cccccc}
+    \multicolumn{8}{@{}l}{\bf Observing  parameters\rule[0em]{0em}{3ex}} \\
+    \multicolumn{8}{@{}l}{\scriptsize map size in arcmin} \\[0.5ex]\hline
+    setup &\multicolumn{2}{c}{map size} & mapping & switching & pwv & T 
+                                                              & remark\\
+    No.   &\multicolumn{2}{c}{$\Delta x\times\Delta y$} &mode $^a)$ & 
+            mode $^b)$ & mm & hours &    \\[1ex]  \hline
+    \@EMIRmap   [0.5ex]\hline
+    \multicolumn{6}{l}{Total EMIR time requested:}&\@hoursEMIR\\[0.2ex]\hline 
+    \end{tabular}\newline{\scriptsize
+    \ $^a)$ none, OTF (on--the--fly), R: Raster \\
+    \ $^b)$ PSw: position switching, FSw: frequency switching, 
+            Wsw: wobbler sw.}
+  %\fi
+\fi
+%
+\if@hera
+  \item[\Large$\star$] {\bf HERA \rule[0em]{0em}{5ex}} \\[1ex]   
+  \if@noblank 
+    \begin{tabular}{@{}cc|cccccc}
+    \multicolumn{8}{@{}l}{\bf Frequencies for the two HERA polarizations}
+                      \\[0.6ex]\hline
+    %
+    setup & polar--&species &transition &frequency &\Ta & rms & $\Delta$v \\ 
+          & ization&        &            & GHz       & mK  & mK  & \kms
+                                                           \\[0.5ex]\hline
+    \@HERAparameters    [0.5ex]\hline
+    \end{tabular}
+
+    \begin{tabular}{@{}c|c@{\ $\times$}cccccl}
+    \multicolumn{8}{@{}l}{\bf Observing  parameters\rule[0em]{0em}{2ex}} \\
+    \multicolumn{8}{@{}l}{\scriptsize map size in arcmin} \\[0.5ex]\hline
+    setup &\multicolumn{2}{c}{map size} & mapping & switching & pwv & T 
+                                                              & remark\\
+    No.   &\multicolumn{2}{c}{$\Delta x\times\Delta y$}& mode $^a)$ & 
+            mode $^b)$ &  mm & hours &                   \\[1ex]  \hline
+    \@HERAmap   [0.5ex]\hline
+    \multicolumn{6}{l}{Total HERA time requested:} & \@hoursHERA &
+                                                     \\[0.2ex]\hline 
+    \end{tabular} \newline {\scriptsize
+    \ $^a)$ OTFF: fully sampled OTF, OTFU: undersampled OTF, R: Raster\\ 
+    \ $^b)$ PSw: position switching, FSw: frequency sw., WSw: wobbler sw.}
+  \fi
+\fi
+%
+\if@bolometer
+  \if@hera     \if@emir   \newpage     \fi   \fi
+  \item[\Large$\star$] {\bf Bolometer \rule[0em]{0em}{3ex}\\[1ex]}
+  \if@noblank
+    \begin{tabular}{@{}cccc}
+    \multicolumn{4}{@{}l}{\bf ONOFF observations\rule{0em}{4ex}}\\%[0.5ex]\hline
+    \multicolumn{4}{@{}l}{\scriptsize $S_\nu = $expected source flux
+                 density} \\[0.5ex]\hline
+    $S_\nu $ & aimed for rms& number of & T\\
+    mJy           & mJy          &  sources  &  hours  \\[0.5ex]\hline
+    \@BOLOonoff  [0.5ex]\hline
+    \end{tabular}\\[1ex]
+
+
+    \begin{tabular}{@{}ccc@{\ $\times$}cccccl}
+    \multicolumn{9}{@{}l}{\bf Mapping observations\rule{0em}{3ex}}\\
+    \multicolumn{9}{@{}l}{\scriptsize $S_\nu = $expected source peak
+                 brightness; map size in arcmin} \\[0.5ex]\hline
+    $S_\nu$  & rms $^a)$ &\multicolumn{2}{c}{size} & number of & pwv & T & 
+               special $^b)$ & remark\\
+    mJy/beam & mJy/beam  & \multicolumn{2}{c}{$\Delta x\times\Delta y$} & 
+               sources   & [mm] &[hours] & obs. mode  &   \\[0.5ex]\hline
+    \@BOLOmap    [0.5ex]\hline
+    %\multicolumn{9}{c}{\rule{0em}{0.1ex}}\\[0.1ex]\hline %\hline
+    \multicolumn{9}{c}{}\\[0.01ex]\hline 
+    \multicolumn{6}{l}{Total bolometer time requested (ONOFFs and
+                       maps):\rule{0em}{3ex}}& \@hoursBOLO & \\[0.2ex]\hline 
+    \end{tabular}\newline{\scriptsize
+    \ $^a)$ in the inner part of the map \\
+    \ $^b)$ RW: rotated wobbler,  SA: shift--and--add}\\[1ex]%\hline
+    %
+  \fi
+\fi
+%
+\if@hera\else  \if@emir  \else          \if@bolometer     \else
+\item proposal incomplete: no receiver selected on the front page\fi\fi\fi 
+\end{itemize}
+} %SMALL
+\fi %if@pico
+} %end of techsheetPV
+%
+%----------------------------------------------------------------------------
+% Define Technical sheet for Plateau de Bure
+%----------------------------------------------------------------------------
+\def\techsheet{
+\if@pico
+\else
+\newpage
+{\small
+\begin{center}
+{\bf IRAM Plateau de Bure Interferometer:
+Proposal Technical Summary}\\
+{\em Please fill one sheet per frequency setup}
+\end{center}
+\begin{itemize}
+\item {\bf Category and Project type:}  
+\if@noblank{
+\if@onemmcat   {1.3-mm\,\,~}\fi
+\if@twommcat   {2-mm\,\,~}\fi
+\if@threemmcat   {3-mm\,\,~}\fi
+\if@dualfrcat   {dual-frequency\,\,~}\fi
+\if@timefiller  {{\em \underline{Time-filler}\,\,}~}\fi
+\if@specialcat   {{\em \underline{Special}}\,\,~}\fi
+\if@exgalcont  {continuum\,\,~}\fi
+\if@exgalco    {lines\,\,~}\fi
+\if@galcont   {continuum\,\,~} \fi
+\if@gallines   {lines\,\,~}\fi
+\if@mapping {mapping\,\,~}\fi
+\if@detection    {detection\,\,~}\fi
+\if@sizemeasure {size~measurement\,\,~}\fi
+\if@snapshot    {snapshots\,\,~}\fi
+\if@mosaic      {mosaic\,\,~}\fi
+\if@othertype   {other type\,\,~}\fi }\fi
+\item {\bf Source position and velocity:}\\
+\if@noblank \@techsourcelist \fi
+\medskip\\
+%
+\item {\bf For all projects (detection, mapping, mosaic, and snapshot):}\\
+\smallskip\\
+% Summer
+\begin{tabular}{lccc}
+{\it -- Configuration required:} & C & D & Any \\
+{\it -- No. of tracks requested:} & \if@noblank\@trackc\fi & \if@noblank\@trackd\fi & \if@noblank\@trackany\fi\\
+% Winter
+%\begin{tabular}{lccccc}
+%{\it -- Configuration required:} & A & B & C & D & Any \\
+%{\it -- No. of tracks requested:} & \if@noblank\@tracka\fi & \if@noblank\@trackb\fi & \if@noblank\@trackc\fi & \if@noblank\@trackd\fi & \if@noblank\@trackany\fi\\
+%
+\end{tabular}
+%
+%\item {\bf For detection projects:}
+\begin{itemize}
+\item {\it Observing time requested: 1.6 $\times$ on-source time}
+\if@noblank = \@observingtime h\fi
+\item {\it Sensitivity:}
+{ \begin{tabular}{ccc}
+{Resolution} & {on-source time} & {$1\sigma$-sensitivity} \\
+\if@noblank\@sensa\fi \,MHz   & \if@noblank\@sensb\fi \,hrs   & \if@noblank\@sensc\fi \,mJy \\
+\end{tabular}}
+\end{itemize}
+%
+\item {\bf For Mosaic projects:}
+\begin{itemize}
+\item {\it offest positions:} 
+\if@noblank\@mosaicoffset\fi
+\end{itemize}
+%
+\item {\bf Size of largest structure (in arcseconds):}
+\if@noblank \@structuresize \fi
+\item {\bf Continuum part:}
+\begin{itemize}
+\item {\it Expected continuum flux:}  
+\if@noblank \@continuumflux \fi
+\item {\it Expected continuum source size:}
+\if@noblank \@continuumsize \fi
+\item {\it Preferred observing frequency (pure continuum projects):}
+\if@noblank \@continuumfreq \fi
+\end{itemize}
+\item {\bf For line projects: }{\it (add sketch of frequency setup, e.g. as separate .eps file in your .tar archive)}
+\begin{itemize}
+\item {\it Expected width of spectral line (to zero power) }
+\if@noblank \@linezerowidth \fi
+\item {\it Line rest frequencies:}
+\if@noblank \@linefreq \fi
+\item {\it Expected source size in each line:}
+\if@noblank \@linesize \fi
+\item {\it Expected line strength:}
+\if@noblank \@linestrength \fi
+\end{itemize}
+%\item {\bf Receiver and correlator setup:}
+%\begin{itemize}
+%\item {\it Correlator setup: provide output of ASTRO LINE command generated by PRINT}\\
+%\end{itemize}
+%\if@noblank \@correlatorsetup \fi
+%
+\item {\bf Receiver and correlator setup:}
+\begin{itemize}
+\item {\it Receiver configuration (fill in empty columns) :}\\
+{\tt \begin{tabular}{l|l|l|l|l}
+& {\em line name} & {\em Freq. (GHz)} & {\em band} & IF1 (MHz)\\
+\hline
+LINE & \if@noblank\@reconeline\fi & \if@noblank\@reconefr\fi
+& \if@noblank\@reconeband\fi & \if@noblank\@reconeif1\fi\\ 
+\hline
+\end{tabular}}
+\mbox{ }\\
+\item {\it Correlator input (specify 2 out of the following: Q1, Q2, Q3, Q4):}
+
+{\tt Narrow correlator input 1:}\if@noblank\@corrone \fi \\
+{\tt Narrow correlator input 2:}\if@noblank\@corrtwo \fi
+%
+\smallskip
+\item {\it Correlator configuration (fill in empty columns) : }\\
+{\tt \begin{tabular}{l|l|l|ll|ll}
+             & {\em width} & {\em freq.} & \multicolumn{2}{l|}{\em Correlator input} & \multicolumn{2}{l}{\em Mode}\\
+\hline
+SPECTRAL 1 &\if@noblank\@speconewid\fi 
+& \if@noblank\@speconefr\fi
+& /NARROW & \if@noblank\@speconerec\fi & /BAND & \if@noblank\@speconemode\fi \\
+SPECTRAL 2 &\if@noblank\@spectwowid\fi 
+& \if@noblank\@spectwofr\fi 
+& /NARROW & \if@noblank\@spectworec\fi & /BAND & \if@noblank\@spectwomode\fi \\
+SPECTRAL 3 &\if@noblank\@specthreewid\fi 
+& \if@noblank\@specthreefr\fi 
+& /NARROW & \if@noblank\@specthreerec\fi & /BAND & \if@noblank\@specthreemode\fi \\
+SPECTRAL 4 &\if@noblank\@specfourwid\fi 
+& \if@noblank\@specfourfr\fi 
+& /NARROW & \if@noblank\@specfourrec\fi & /BAND & \if@noblank\@specfourmode\fi \\
+SPECTRAL 5 &\if@noblank\@specfivewid\fi 
+& \if@noblank\@specfivefr\fi 
+& /NARROW & \if@noblank\@specfiverec\fi & /BAND & \if@noblank\@specfivemode\fi \\
+SPECTRAL 6 &\if@noblank\@specsixwid\fi 
+& \if@noblank\@specsixfr\fi 
+& /NARROW & \if@noblank\@specsixrec\fi & /BAND & \if@noblank\@specsixmode\fi \\
+SPECTRAL 7 &\if@noblank\@specsevenwid\fi 
+& \if@noblank\@specsevenfr\fi 
+& /NARROW & \if@noblank\@specsevenrec\fi & /BAND & \if@noblank\@specsevenmode\fi \\
+SPECTRAL 8 &\if@noblank\@speceightwid\fi 
+& \if@noblank\@speceightfr\fi 
+& /NARROW & \if@noblank\@speceightrec\fi & /BAND & \if@noblank\@speceightmode\fi \\
+ \hline
+ \end{tabular} }
+\end{itemize}
+%
+\smallskip
+\end{itemize}}
+\fi}
+%
+\def\maketitle{
+\textheight 270mm
+\newpage
+\if@noblank
+\begin{center}{\Large\bf\@title\if@pinote\footnote{\@pinote}\fi}\end{center}
+\fi}
+%
+\def\proposaltext{\vskip 5mm {\bf  Proposal history:\hskip 5mm}}
+\def\proposalhistory#1{
+     \if@continue \proposaltext #1 \vskip 2mm \mbox{}\\ 
+        \else \if@resubmit \proposaltext #1 \vskip 2mm \mbox{}\\  \else \mbox{} \fi
+          \mbox{} \fi} 
+%
+\def\shortspacingtext{\vskip 5mm {\bf \noindent Request for 30M short spacings:\hskip 5mm}}
+\def\shortspacingparagraph#1{
+     \if@shortspacing \shortspacingtext #1 \fi}
+%
+\def\extsourcelist{\vskip5mm\parindent0pt{\bf Extended source list 
+     (cont'd from cover page)}\hfill\hfill\\[1ex]} 
+\def\extendedsourcelist#1{\extsourcelist  
+    \small 
+    \begin{tabular}{lrrc}
+    \hline
+    Source    &\makebox[6em][c]{RA} &\makebox[6em][c]{Dec} & LSR Velocity \\
+    &\makebox[6em][c]{(\if@noblank\@epoch\fi)} 
+    &\makebox[6em][c]{(\if@noblank\@epoch\fi)} 
+    & (km/s)\\[0.5ex]
+    \hline
+    #1
+    \hline
+    \end{tabular}
+}
+%
+

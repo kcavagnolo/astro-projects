@@ -1,0 +1,204 @@
+\newcommand{\iras}{IRAS 09104+4109}
+\newcommand{\irs}{IRAS09}
+\newcommand{\rxj}{RX J0913.7+4056}
+\documentclass[11pt]{article}
+\usepackage{proposal,graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\picoveleta
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Constraining the Cold Gas Mass in RBS 797, One of the Most Powerful AGN Outbursts}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\exgalco
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\abstract{A maximum of nine lines is reserved for the abstract.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: telescope time includes all overheads, like in the Time
+% Estimator
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\hours{XX}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Receivers (remove the '%' sign when using the receiver) argument:
+% telescope time, hours, requested for this receiver
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\emir{XX}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sidereal time intervals: {start hour}{end hour}{number of intervals}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%\lsta{11}{11}{10}
+%\lstb{23}{23}{10}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Special requirements 
+%%%%%%%%%%%%%%%%%%%%%%
+
+\remoteobserving
+%\LargeProgram
+%\pooledobserving
+%\serviceobserving
+%\polarimeter
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\constraints{None}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\pifirstname{Kenneth}
+\pilastname{Cavagnolo}
+\piinstitute{University of Waterloo; Dept. of Physics \& Astronomy}
+\pistreetandnumber{200 University Avenue West}
+\pizipandcity{Waterloo, Ontario, Canada N2L 3G1}
+\picountry{Canada}
+\piphone{(+001) 519888456735074}
+\pifax{(+001) 5197468115}
+\piemail{kcavagno@uwaterloo.ca}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\coauthor{Chiara Ferrari}{Observatoire de la C\^ote d'Azur}{France}
+\coauthor{Myriam Gitti}{INAF-OAB}{Italy}
+\coauthor{Brian McNamara}{University of Waterloo}{Canada}
+\coauthor{Paul Nulsen}{Harvard-Smithsonian Center for Astrophysics}{U.S.A.}
+\coauthor{David Rafferty}{Leiden Observatory}{Netherlands}
+\coauthor{Michael Wise}{University of Amsterdam}{Netherlands}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\observer{Cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\epoch{J2000.0}  % J2000 epoch coordinates preferred
+\sourcelist{RBS 797 & 09:47:12.5 & +76:23:12 & 0.354}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\frontpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--- EMIR -------- EMIR -------- EMIR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Enter up to 2 \EMIR parameters macros for each setup each macro MUST
+% have 9 parameters (pairs {} of curly brackets) :
+% setup - band - species - transition - GHz - Ta* - rms - width -backend 
+
+\EMIRparameters{1}{E0}{CO}{1-0}{85.1}{143.2}{XX}{100.0}{W}
+\EMIRparameters{1}{E1}{CO}{2-1}{170.2}{311.1}{XX}{100.0}{W}
+\EMIRparameters{2}{E2}{CO}{3-2}{255.3}{370.4}{XX}{100.0}{W}
+
+% EMIR observing parameters and telescope time requested, in hours.
+% enter one macro for each EMIR setup, if maps:
+% setup - dRA - .dDec.obsMode - switchMode - .pwv - .hours - remark
+
+\EMIRmap{1}{}{}{none}{PSw}{7}{X}{Dual-band observation with E1}
+\EMIRmap{1}{}{}{none}{PSw}{7}{X}{Dual-band observation with E0}
+\EMIRmap{2}{}{}{none}{PSw}{7}{X}{Single-band observation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The following command will produce the Technical Sheet
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\techsheetPV
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\proposalhistory{None.}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+intro:
+  cooling flows
+  agn feedback/cavs
+  smbh feeding on cool gas make natural feedback loop
+  cavities give info about mass accretion
+  use to place constraints on mass and spin of smbhs
+  accretion:
+    grav binding energy released by infall matter
+    low Edd -- matter forms disk, and is advected in or blown away
+    high Edd -- quasar
+  spin:
+    accretion powered, but more power per unit mass
+    jets launched by rotation of hole, disk, or both
+  what's the impact of these studies?
+  CO->H2 mass provides highest detectable limit of ``cold'' gas content
+  to test the two models, need gas poor systems with lots of energy coming out, e.g. ms0735
+  for example, r797
+
+case of r797:
+  deep cavs
+  not much dust
+  not much Halpha
+  lack of stars
+  weird radio
+  > 10^45 e/s
+
+what we want, deep CO obs:
+  why?
+  what will we do with it?
+  how?
+  is it possible?
+  show calculations
+  explain setup and time requests
+
+%%%%%%%%%%%%%%%%%
+{\bf{References}}
+%%%%%%%%%%%%%%%%%
+
+\begin{figure}[htp]
+  \begin{center}
+    \begin{minipage}{0.485\linewidth}    
+      \includegraphics*[width=\textwidth, trim=66mm 21mm 66mm 21mm, clip]{xray_r797}
+    \end{minipage}
+    \begin{minipage}{0.505\linewidth}
+      \includegraphics*[width=\textwidth, trim=60mm 17mm 60mm 15mm, clip]{beam_r797}
+    \end{minipage}
+    \caption{}
+    \label{fig:r797}
+    \begin{minipage}{\linewidth}
+      \includegraphics*[width=\textwidth, trim=28mm 10mm 8mm 50mm, clip]{r797_iram_mh2.eps}
+    \end{minipage}
+    \caption{EMIR CO line intensity, rms noise, and H$_2$ mass as a
+      function of position switched observing time. Solid lines are
+      $I_{\mathrm{CO}}$ $3\sigma$ upper limits; dashed-dot lines are
+      $T_{\mathrm{rms}}$ specific to elevation \&
+      $\nu_{\mathrm{obs}}$; dashed lines are M(H$_2$) $3\sigma$ upper
+      limits; downward arrows are $3\sigma$ M(H$_2$) upper limits from
+      Evans et al. 1998 (adjusted to our cosmology and
+      I$_{\mathrm{CO}}$:M(H$_2$) assumptions). The CO(1-0) and CO(2-1)
+      calculations include the 16K and 6K $T_{\mathrm{sys}}$
+      increases, respectively, from use of the E0/E1 dichroic. All
+      calculations assumed: 7 mm of precipitable water vapor, $\Delta
+      v_{\mathrm{res}} = 50$ km s$^{-1}$,
+      $v^{\mathrm{CO}}_{\mathrm{FWHM}} = 300$ km s$^{-1}$, and backend
+      efficiency of 0.87.}
+    \label{fig:feas}
+  \end{center}
+\end{figure}
+
+%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%

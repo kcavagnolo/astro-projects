@@ -1,0 +1,381 @@
+%		PUBPLOT.TEX
+%
+%	This is a summary of how to use the IDL routine PUBPLOT.PRO.
+%	
+%	This file is a plain TeX (NOT LaTeX) file--to read it, you should
+%	use the ``tex'' command to convert it to a DVI file, then use T2 to 
+%	print it out (VAX) or use ``dvi2ps'' to convert it to PostScript and 
+%	use ``lpr'' to print it out on a PostScript printer. (SUN)
+%		
+%	History:
+%		Written by Joel D. Offenberg, HSTX, 25 May 1993
+%		Last modified: Joel D. Offenberg, HSTX, 25 Aug 1993
+%
+
+\magnification=1000  % Char. size * 1.0
+\parindent=10mm      % Paragraph indentation
+\hsize=6.5truein    % Horizontal size of window on page in which to write
+\vsize=8.9truein     % Vertical size of window on page in which to write
+\lineskiplimit=2pt   % Minimum limit on space between lines
+\lineskip=3pt        % If line-space less than limit then separate by this
+% font definitions
+% roman text
+%
+\font\rmlil=cmr5
+\font\rmsm=cmr8
+\font\rm=cmr10
+\font\rmtwelve=cmr12
+\font\rmseventeen=cmr17
+%
+% bold face extended
+%
+\font\bflil=cmbx6
+\font\bfsm=cmbx8
+\font\bf=cmbx10 
+\font\bftwelve=cmbx12 
+\font\bflarge=cmbx12 scaled\magstep2
+%
+%slanted roman
+%
+\font\slsm=cmsl8
+\font\sl=cmsl10
+\font\sltwelve=cmsl12
+%
+%text italic
+%
+\font\itsm=cmti8
+\font\it=cmti10
+\font\itwelve=cmti12
+%
+% narrow bold font
+%
+\font\nb=cmb10
+%
+% slanted bold font
+%
+\font\slab=cmbxsl10 
+%
+% 1 inch bold font
+%
+\font\big=cminch
+%
+% sans serif font
+%
+\font\sansm=cmss8
+\font\san=cmss10 
+\font\santwelve=cmss12
+\font\sanseventeen=cmss17
+%
+% sans serif italic font
+%
+\font\sani=cmssi10
+\font\sanitwelve=cmssi12
+\font\saniseventeen=cmssi17
+%
+% sans serif bold extended
+%
+\font\sanb=cmssbx10
+\font\sanbtwelve=cmssbx10 scaled\magstep2
+%
+% unslanted italic
+%
+\font\usit=cmu10
+%
+% dunhill style
+%
+\font\dun=cmdunh10
+%
+% typewriter style
+%
+\font\ttsmall=cmtt8
+\font\tt=cmtt10
+\font\tttwelve=cmtt12
+%
+%Math Symbol fonts.
+%
+\font\mathitalics=cmmi10
+\font\mathsymbol=cmsy10
+\font\mathextended=cmex10
+
+\rm                                             % Def. font = roman
+%
+%			Macros
+%
+\def\double{\baselineskip=24pt \parskip=0pt}   % Double spacing def.
+\def\single{\baselineskip=12pt \parskip=6pt}    % Single spacing def.
+\single                                         % Single space the document.
+%						  C++ macro.
+\def\cpp{C\kern -.07em\raise .25ex\hbox{+}\kern -.1em\raise .25ex\hbox{+}}
+\def\bcc{{\it Borland \cpp\ 2.0}}		% Borland C++ name.
+\def\tasm{{\it Turbo Assembler 2.5}}		% Turbo Assembler name.
+\def\fpfmt#1#2{$#1\times 10^{#2}$}		% Scientific notation.
+%
+%				Multiple "item" macro.  
+%				syntax:  \nitem{2}{string}text....
+%				The first expected parameter is the number of 
+%				indents.  The second is the string placed 
+%				inside the hanging indent.  This macro requires
+%				a counter called \itemcount; this counter is
+%				defined here. 
+%
+\newcount\itemcount
+\def\nitem#1{\itemcount=#1
+\par\loop\advance\itemcount by-1 \ifnum\itemcount>0 \indent\repeat
+\hangindent#1\parindent \textindent}
+
+\rm
+\def\apj {\underbar\bf Ap. J.}
+\def\idl {\hfill\break IDL$>$}
+\def\pubplot {\bf PubPlot \rm}
+
+\centerline {\bflarge PubPlot}
+\vskip 2mm \centerline {\rmtwelve Joel D. Offenberg}
+\vskip 2mm \centerline {\rmtwelve 25 August 1993}
+
+\vskip 5mm \centerline {\rmtwelve Introduction}
+
+
+{\bf PubPlot} is now available in the MOUSSE library and the IDLASTRO library. 
+This 
+routine is intended to allow users to adjust plots for publications such as
+the \apj\ easily
+and quickly by acting as a widget based interface with many of the plotting
+keywords.  
+
+{\bf Pubplot's} major features include:
+\item{$\bullet$} Plot range settings, allowing the use of both sliders
+	and keyboard.
+\item{$\bullet$} Settings for plotting symbols and/or line styles.
+\item{$\bullet$} Capability to add, modify and remove annotation and comments
+	easily.
+\item{$\bullet$} Axis styles and types are easily set.
+\item{$\bullet$} Addition of a legend, for improved annotation.
+\item{$\bullet$} The capability for adding error bars to data.
+
+This memo is intended to give a summary of what PubPlot does and how to 
+begin to go about using it.  
+
+\vskip 3mm \centerline{\rmtwelve How to Start \bftwelve PubPlot}
+First, enter an IDL session on a workstation (Widgets must be 
+present).  Load in 
+or create your data.  Then issue the one following IDL commands:
+
+\idl\ PUBPLOT, X, Y	
+\idl\ PUBPLOT, X, Y, XERROR = XERR, YERROR = YERR 
+\idl\ PUBPLOT, X, Y, OUTPUT = F	
+\idl\ PUBPLOT, X, Y, F, OUTPUT=FF	
+
+In the first example, PubPlot will create plots using the data in X and Y.  In
+the second, PubPlot will create plots using the data in X and Y and also allow
+the user to use the data in XERR and YERR for error bars.  In the third 
+example, a record of the plot will be put into the variable F, which can then
+be used to recreate your plot.  The last example shows hot to recreate the 
+plot saved in F, with the new output being recorded into FF.
+
+In all cases, the ``Publication Plotting'' widget will appear when you start it, along with
+a separate IDL window for plots (if there isn't one already).
+
+\vskip 3mm \centerline{\rmtwelve How to Use on Different Machine Types}
+
+\pubplot was written and tested by the author on a VAX workstation running 
+DECWindows Motif, and on a Sun SPARCstation running X11R5.  The \pubplot widget
+layouts may not look pretty if run on different workstations and/or with 
+different windowing systems.  If this is the case, you 
+should modify the variables set in the routine SET\_ARCH (which is in the file
+PUBPLOT.PRO) to suit your own system.  
+
+\pubplot is written entirely in standard IDL.  Aside from the widget layout
+problem mentioned in the above paragraph, \pubplot should be completely 
+portable between systems.  
+
+\vskip 3mm \centerline{\rmtwelve More Examples}
+
+For what follows, any items surrounded by brackets [\ ] represent inputs or 
+keywords that are optional for the given task.  Items that are surrounded by
+curly brackets $\{\} $ are English sentences describing the task rather than 
+giving IDL commands.
+
+\noindent To save the results from your \pubplot session for later use:
+\idl\ PUBPLOT, X, Y, [XERROR = xerr, YERROR = yerr,] OUTPUT = F
+\idl\ SAVE, /VARIABLES, FILE = ``MyFile.sav''
+
+\noindent To recreate a plot from a previous session of \pubplot:
+\idl\ RESTORE, ``MyFile.sav''
+\idl\ MAKEPUBPLOT, X, Y, F [,XERROR = xerr, YERROR = Yerr, /POSTSCRIPT]
+
+\noindent To recreate a plot from a previous session of \pubplot and print it out on your
+default laser printer:
+\idl\ RESTORE, ``MyFile.sav''
+\idl\ MAKEPUBPLOT, X, Y, F, /POSTSCRIPT [,XERROR = xerr, Yerror = yerr]
+\idl\ PSPLOT
+
+\noindent To restore and use the results from a previous \pubplot session:
+\idl\ RESTORE, ``MyFile.sav''
+\idl\ PUBPLOT, X, Y, F [,XERROR = xerr, YERROR = yerr, OUTPUT = FF]
+
+\noindent The results from one PubPlot session may be used again with a 
+different data set entirely.
+
+\noindent To add extra data to a plot on your workstation screen:
+\idl\ $\{ $Use \pubplot to create your plot. $\} $
+\idl\ OPLOT, XNEW, YNEW
+
+\noindent To add extra data to a plot sent to a PostScript file:
+\idl\ $\{ $Use \pubplot to create your plot and copy it to a PostScript file.$\} $
+\idl\ SETPLOT,'PS'
+\idl\ OPLOT, XNEW, YNEW
+
+\noindent Please note that a PostScript file can not be changed by IDL once it 
+has 
+been sent to the printer.
+
+\vskip 3mm \centerline{\rmtwelve Using PubPlot}
+
+When you start PubPlot, a large widget will appear.  What follows is a 
+quick description of the purpose of each section:
+
+\item{---} DONE -- This button causes the program to exit
+\item{---} PLOT to PostScript -- This button causes a ``PostScript Plotting''
+ 	widget to appear.  You can use this widget to send a copy of your plot
+	to a disk PostScript file, to your default PostScript printer or both.
+\item{---} LINEAR/LOG -- These buttons will change the plotting type.  
+	Initally, your plot will be linear in both axes.
+\item{---} AXIS RANGES -- There are 4 widget sets, each one controlling the 
+	value at a given edge of the plot (e.g. ``Bottom'' controls the value
+	at the lower end of the Y-axis).  You can select a value by either
+	moving the slider or by entering a value in the text widgets. 
+
+\itemitem{$\triangleright $} SLIDERS -- Moving the sliders will cause the plot's
+	range to change and also will update the text widget when you are done.
+\itemitem{$\triangleright $} TEXT -- Your entry in the text window may be in
+	any format, decimal or scientific notation.  If you enter a number in
+	text widget that is outside of the range of the slider, the value that
+	you enter will be used.  If you enter
+	a non-numeric value in the text widget, the program should not crash 
+	(although it will give you an error message on your terminal window).
+\item{---} TITLES -- You can add titles to the top of the plot, or to the X and
+	Y axes.  The four buttons to the right will make the text of the
+	titles larger, smaller, thicker or thinner by small increments.
+\item{---} ANNOTATION -- You may add annotation text or change it with these
+	buttons (see Annotation, below).  
+\item{---} ERROR BARS -- Clicking here causes a separate widget for handling 
+	error bars to
+	appear (see Error Bars, below).
+\item{---} LEGEND -- This button creates a separate widget for creating and
+	modifying a legend (see Legend, below).
+\item{---} ADD PLOT DATE -- Puts a small date and user notice at the bottom
+	right of your plot when selected (Calls PLOTDATE.PRO).
+\item{---} AXIS STYLES -- These options correspond to IDL's plotting keywords
+	XSTYLE and YSTYLE.  The left column of buttons corresponds to the X 
+	axis, the
+	right to the Y axis.  
+\item{---} SYMBOLS \& LINES -- There is one set of lists and buttons for each
+	set of data.  The initial setting is ``none'' for the symbol and 
+	``solid'' for the lines.  You may select any combination of line 
+	and/or symbol for
+	each set.  You may also change the size and thickness of the lines and
+	symbols using the buttons provided.  If needed, there will be a 
+	scroll-bar you 
+	may use to find the proper set.
+ 
+\item{\ } If you have already created a legend for your plot, changing the 
+	symbol or line selections will also be updated in the legend.
+
+\vskip 3mm \centerline{\rmtwelve Annotation}
+
+Clicking on the ``ADD ANNOTATION'' button will cause a message widget to 
+appear,
+telling you to select a position for your text with the mouse on your plot.
+Once you have done that, another widget will appear, asking you for the text.
+The annotation text will now appear on your plot.  You may add as many
+text notations as you like.
+
+To change the annotation, click on the ``CUSTOM ANNOTATION'' button on the
+main widget.  You can change the text of the annotation, reposition it, as 
+well as change its size, thickness or rotation.  Click on ``DONE'' when you
+have finished.  
+
+To entirely remove a text notation, click on ``REMOVE ANNOTATION.''  This will
+give you a menu of annotation texts.  Click on the one you wish to remove (or 
+on ``CANCEL'' to remove none).
+
+\vskip 3mm \centerline{\rmtwelve Error Bars}
+	
+The ``Error Bars'' widget allows you to select various options for error bars.
+If you supply uncertainty values through the XERROR or YERROR keywords, those
+values will be used if you select ``USER VALUE''.  If you select ``CONSTANT,''
+``PROPORTIONAL'' or ``SQUARE RT,'' the error bars will be that type, multiplied
+by the number in the accompanying text windows.  For example, if you select
+``PROPORTIONAL'' and ``0.25'' for Y error bars, the error bars will be 
+$0.25 *$ Y.  If you do not supply a value for the error bars using the 
+XERROR and YERROR keywords, the ``USER VALUE'' option will not work, but the
+others will.
+
+To suppress the error bars, select ``OFF'' for each data set in both 
+dimensions.  Error bars may set for each data set independently of the others.
+
+If you wish to add hats to your error bars, select the ``HATS'' button for that
+data set.  You can change their length and/or thickness with the buttons.
+
+\vskip 3mm \centerline{\rmtwelve Legend}
+
+When you click on ``SET POSITION,'' a widget appears asking you to click on
+the plot where you want your legend to go.  The position you select will be the
+lower--left corner of the legend box.
+
+You can change the names of the data sets by editing the text windows.  If you
+wish to remove one set from the window, you can deactivate it by unselecting 
+the button to the left of its name.  You can turn the item back on by 
+reselecting the same button.  If you turn off all of the items, the legend
+is turned off.  
+
+The ``Delimeter'' text widget can be used to specify what character (if any) 
+you wish to place between the symbols and the text.  Only the first character
+of the delimeter text is used.  You may also make the text and symbols larger 
+or smaller, as well as turn off the box surrounding the legend.  
+
+The symbols are taken automatically from the symbol/line combinations that you
+have already selected for your plot.  If you change the symbol and/or line of 
+a data set, the change will be updated automatically in the legend.
+
+\vskip 3mm \centerline{\rmtwelve Handling Widgets}
+
+IDL's widgets essentially come in several ``flavors''.  A rough sketch of the
+flavors appearing in the PubPlot widgets, and how they work from the user's 
+end, follows (for more details, consult the IDL documentation).
+
+\item{---} TEXT -- Text widgets are small windows which display text and may 
+	receive text input (Not all text widgets are editable).  To edit a
+	text widget, the user must click on the widget (to select it), then
+	type in their changes, and then enter a Carriage Return.  IDL will not
+	recognize changes in a text widget until the $<$CR$>$ is pressed.  
+\item{\ } Please be warned that, on the VAX, the delete key does not work the
+	same in a text widget as it does elsewhere.  In a text widget
+	the delete key deletes the character to the right of the cursor, not
+	the one to the left.
+\item{---} SLIDERS -- Slider widgets may be set by pointing the mouse at the
+	widget, clicking and holding the left mouse button and dragging the 
+	slider to its new position.  The new position will not register with
+	IDL until you release the mouse button.
+\item{---} BUTTONS -- There are several flavors of buttons.  To push or release
+	any button widget, click on the button with the left mouse button.
+\itemitem{$\triangleright $} ONE POSITION -- These buttons pop up once you 
+	release the mouse button.  Clicking on it a second time will only 
+	cause IDL to perform the same task again.
+\itemitem{$\triangleright $} TWO POSITION -- These buttons stay pushed down
+	until you click on it a second time.  Clicking a second time will 
+	usually ``undo'' whatever the first click did.  Some sets of buttons 
+	will only permit you to have one button pressed down at a time, and 
+	selecting one of these will unselect the others.
+\item{---} LISTS -- Simply click on the desired item with the left mouse 
+	button.
+\item{---} LABELS -- Labels are informational text.  You may not change a label
+	widget directly.
+\item{---} FADED WIDGETS -- Sometimes, certain widgets are faded.  This means
+	that they are inactive and may not be used at that time.  Please note 
+	that some
+	widget types (namely text and list widgets) do not fade when they are
+	inactive.
+
+
+\bye

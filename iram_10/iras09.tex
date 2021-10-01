@@ -1,0 +1,456 @@
+\newcommand{\trms}{\ensuremath{T_{\mathrm{rms}}}}
+\newcommand{\htoo}{\ensuremath{\mathrm{H}_{2}}}
+\newcommand{\mht}{\ensuremath{\mathrm{M(H}_{2})}}
+\newcommand{\vco}{\ensuremath{\Delta v^{\mathrm{CO}}_{\mathrm{FWHM}}}}
+\newcommand{\cooz}{\ensuremath{\mathrm{CO} (1-0)}}
+\newcommand{\coto}{\ensuremath{\mathrm{CO} (2-1)}}
+\newcommand{\cott}{\ensuremath{\mathrm{CO} (3-2)}}
+\newcommand{\lcp}{\ensuremath{L^{\prime}_{\mathrm{CO}}}}
+\newcommand{\flux}{\ensuremath{\mathrm{erg~cm^{-2}~s^{-1}}}}
+\newcommand{\lum}{\ensuremath{\mathrm{erg~s^{-1}}}}
+\newcommand{\msol}{\ensuremath{\mathrm{M}_{\odot}}}
+\newcommand{\msolpy}{\ensuremath{\mathrm{M}_{\odot}~\mathrm{yr}^{-1}}}
+\newcommand{\lsol}{\ensuremath{\mathrm{L}_{\odot}}}
+\newcommand{\iras}{IRAS 09104+4109}
+\newcommand{\irs}{IRAS09}
+\newcommand{\rxj}{RX J0913.7+4056}
+\documentclass[11pt]{article}
+\usepackage{proposal,graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\picoveleta
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Searching for Molecular Gas in IRAS 09104+4109}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\exgalco
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\abstract{NEEDS ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS
+  ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS
+  ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS
+  ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS
+  ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS
+  ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS
+  ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS
+  ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACTNEEDS ABSTRACT All your base are
+  belong to us?}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% NOTE: telescope time includes all overheads, like in the Time
+% Estimator
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\hours{16}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Receivers (remove the '%' sign when using the receiver) argument:
+% telescope time, hours, requested for this receiver
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\emir{16}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sidereal time intervals: {start hour}{end hour}{number of intervals}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+
+%\lsta{11}{11}{10}
+%\lstb{23}{23}{10}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Special requirements 
+%%%%%%%%%%%%%%%%%%%%%%
+
+%\remoteobserving
+%\LargeProgram
+%\pooledobserving
+%\serviceobserving
+%\polarimeter
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\constraints{None}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\pifirstname{Kenneth}
+\pilastname{Cavagnolo}
+\piinstitute{University of Waterloo; Dept. of Physics \& Astronomy}
+\pistreetandnumber{200 University Avenue West}
+\pizipandcity{Waterloo, Ontario, Canada N2L 3G1}
+\picountry{Canada}
+\piphone{(+001) 519888456735074}
+\pifax{(+001) 5197468115}
+\piemail{kcavagno@uwaterloo.ca}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\coauthor{Megan Donahue}{Michigan State University}{U.S.A.}
+\coauthor{Alastair Edge}{Durham University}{U.K.}
+\coauthor{Chiara Ferrari}{Observatoire de la C\^ote d'Azur}{France}
+%\coauthor{Brian McNamara}{University of Waterloo}{Canada}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\observer{PI Cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\epoch{J2000.0}  % J2000 epoch coordinates preferred
+\sourcelist{IRAS09104 & 09:13:45.5 & +40:56:28 & 0.4418}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\frontpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--- EMIR -------- EMIR -------- EMIR
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Enter up to 2 \EMIR parameters macros for each setup each macro MUST
+% have 9 parameters (pairs {} of curly brackets) :
+% setup - band - species - transition - GHz - Ta* - rms - width -backend 
+
+\EMIRparameters{1}{E0}{CO}{1-0}{79.9}{162.7}{0.420}{100.0}{W}
+\EMIRparameters{1}{E1}{CO}{2-1}{159.9}{276.5}{0.514}{100.0}{W}
+\EMIRparameters{2}{E2}{CO}{3-2}{239.8}{488.1}{0.741}{100.0}{W}
+
+% EMIR observing parameters and telescope time requested, in hours.
+% enter one macro for each EMIR setup, if maps:
+% setup - dRA - .dDec.obsMode - switchMode - .pwv - .hours - remark
+
+\EMIRmap{1}{}{}{none}{PSw}{7}{8}{Dual-band observation with E1}
+\EMIRmap{1}{}{}{none}{PSw}{7}{8}{Dual-band observation with E0}
+\EMIRmap{2}{}{}{none}{PSw}{7}{8}{Single-band observation}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% The following command will produce the Technical Sheet
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\techsheetPV
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Scientific justification (do not neglect this part ...)  max. 2
+% pages of text (4 pages for large programs) plus 2 pages of Figs.,
+% Tables and Refs.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\proposalhistory{None.}
+
+%%%%%%%%%%%%%%%%%%%%%%
+
+{\bf{SCIENCE JUSTIFICATION:}} The object \iras\ (hereafter, \irs;
+shown in Figure \ref{fig:i09}) is an uncommon low-redshift ($z =
+0.4418$) hyperluminous infrared galaxy (HyLIRG; $L_{\mathrm{IR}} >
+10^{13} ~\lsol$). Unlike nearly all HyLIRGs, \irs\ is the brightest
+cluster galaxy (BCG) in the $\sim 10^{15} ~\msol$ galaxy cluster
+\rxj. In the core region of \rxj, the cooling time of the X-ray
+luminous intracluster medium (ICM) is $< 0.3$ Gyr, and the inferred
+ICM mass condensation rate is $> 500 ~\msolpy$. At such a prodigious
+cooling rate, in 1 Gyr the reservoir of gas which should condense out
+of the ICM onto the BCG exceeds $10^{11} ~\msol$. This is the
+well-known ``cooling flow'' scenario where hot gas cools through a
+continuum of temperatures, flows into a reservoir within the central
+dominant galaxy (cD), and is converted to molecular clouds and stars
+(see Peterson \& Fabian 2006 for a review). Equally well-known, is
+that observations of cDs in cooling flow clusters indicate the true
+mass deposition rates are much smaller, on average $< 50 ~\msol$, with
+most of the gas localized to the cD and residing in emission line
+nebulae, sparse molecular gas, and few stars (Heckman et al. 1989,
+McNamara et al. 1990, O'Dea et al. 1994, Edge 2001, Edge \& Frayer
+2003, Jaffe et al. 2005, Egami et al. 2006, Sanders et al. 2010). A
+finely-tuned feedback loop involving active galactic nuclei (AGN) has
+emerged as the favored explanation of why X-ray halo cooling is
+suppressed in systems like \irs\ (B\^irzan et al. 2004, Bower et
+al. 2008, Croton et al. 2006, Dunn et al. 2005).
+
+\irs\ seems to fit nicely within the AGN feedback regulation model:
+there is a Seyfert-2 quasar (QSO) in the galaxy which is radiating $>
+5 \times 10^{46} ~\lum$ of energy (Iwasawa et al. 2001) and depositing
+$> 5 \times 10^{44} ~\lum$ of energy into its environment via jets
+(Cavagnolo et al. 2010). But the normalcy ends there. Unlike most
+BCGs, 99\% of \irs's bolometric luminosity is emitted longward of 1
+$\mu$m due to QSO radiation being reprocessed by obscuring material
+having $N_H > 10^{24}$ cm$^{-2}$ and a covering factor near unity
+(Kleinmann, et al. 1988, Hines and Wills. 1993, Cavagnolo et
+al. 2010). While $\sim 3 \times 10^8 ~\msol$ of hot dust ($>200$ K)
+and extensive optical nebulae are detected in \irs, $< 10^8 ~\msol$ of
+cold dust ($< 100$ K) and no PAH features are detected (Deane \&
+Trentham 2001, Peeters et al. 2004, Sargaysan et al. 2008). Moreover,
+Evans et al. 1998 did not detect \coto\ or \cott\ lines, implying a
+\htoo\ mass $< 8 \times 10^{10} ~\msol$. While the \irs\ gas-to-dust
+ratio is suspiciously small ($< 270$) compared to other cooling flow
+BCGs (typically $> 500$), possibly indicating influence from the AGN,
+the cold dust and \htoo\ upper limits were derived from data of
+insufficient quality to reveal if the system is truly molecular gas
+poor. However, near-IR spectroscopy shows that \irs\ emits $> 10^{42}
+~\lum$ in H$\alpha$ (Evans et al. 1998). If \irs\ has $\sim 1-2 \times
+10^{10} ~\msol$ of molecular gas, then compared to other BCGs, the
+H$\alpha$ luminosity indicates \irs\ is certainly molecular gas poor
+(Edge 2001), exacerbating the fact that strong indicators of cold,
+dusty nuclear gas are expected for a QSO system like \irs.
+
+But, to investigate the gas content further requires pushing to lower
+mass limits with deeper observations. We have analyzed sufficiently
+deep {\it{Chandra}} X-ray data to study the large-scale cooling of the
+ICM hosting \irs, and have applied for deep {\it{HST}} near-IR and
+near-UV high-resolution imaging \& spectroscopy. Our observational
+campaign also includes a request for deep sub-mm data using
+{\it{SCUBA-2}} (instrument PI Fich at Univ. Waterloo) to probe for
+cold, dusty gas. But a key component of this effort which is missing
+is to place tighter constraints on the molecular gas mass of using CO
+observations. {\bf{Thus, we are requesting 16 hours on the IRAM 30 m
+    using the new EMIR receiver to constrain, or detect, the suspected
+    paucity of CO emission from \iras.}}  Our time request is
+specifically intended to reach a \htoo\ mass limit of $\approx 1.5
+\times 10^{10} ~\msol$ (discussed in next section), which is
+sufficient to determine if \irs\ is molecular gas poor. The EMIR
+receiver also allows us to detect high-velocity CO emission ($\vco >
+600$ km s$^{-1}$) which could have gone undetected in the previous
+IRAM 30 m observations presented in Evans et al. 1998, and might mask
+the presence of $10^{11} ~\msol$ of \htoo.
+
+From a broad perspective, it may be that \irs\ is undergoing a rare
+phase of BCG assembly where radiative and mechanical feedback are
+simultaneously conspiring to quench cooling within and around the host
+galaxy. Numerical simulations have suggested such a phase should
+exist, though no conclusive examples have been found. Cosmological
+simulations typically put radiation- and kinetic-dominated feedback
+into a distinct early-time quasar-mode ({\it{e.g.}} Springel et
+al. 2005) and a late-time radio-mode ({\it{e.g.}} Croton et al. 2006),
+respectively. The quasar-mode of feedback is expected to be brief,
+expelling large quantities of molecular gas from the host galaxy
+(Narayanan et al. 2006), while the prolonged, intermittent radio-mode
+heats the host environment, regulating cooling for the rest of the
+galaxy's life (see McNamara \& Nulsen 2007 for a review). At odds with
+the models, CO observations of high-redshift quasars reveal they
+harbor ample supplies of gas (Bertoldi et al. 2003), and the best
+evidence of AGN feedback expelling molecular gas has come from
+observations of $z < 0.1$ early-type galaxies ({\it{e.g.}} Schawinski
+et al. 2009).
+
+\irs\ may be our nearby window into how the crossover between
+quasar-mode and radio-mode feedback functions in cDs. With deeper CO
+data, we can explore the possibility that the AGN in \irs\ has
+expelled and/or heated the gas reservoir from which it is fueled. If
+deeper CO observations indicate the molecular gas mass is $< 10^{10}
+~\msol$, then in the context of the quasar/radio-mode model, the
+abundance of hot dust relative to molecular gas makes sense. As QSO
+radiation interacts with dusty gas within the host galaxy, the gas is
+heated, destroying the molecular component and boosting the IR
+luminosity (e.g. Ciotti et al. 2010). On the other hand, if a $10^{11}
+~\msol$ high-velocity component were to be detected, that may indicate
+a very powerful outflow, or the gas could be associated with a cooling
+flow.
+
+As just mentioned, our requested observations will also help address
+the {\it{origin}} of the gas reservoir in \irs, which is a bit of a
+mystery. There are six compact spheroids within 50 kpc of the BCG
+which may be the bulges of cannibalized companions (circled in Figure
+\ref{fig:i09}). However, the bright BCG nebulae are stationary
+relative to the galaxy, suggesting they were not stripped from
+companions (Crawford \& Vanderriest 1996). But, the large dust content
+of the nebulae likely rules out the hot ICM as the origin since dust
+has a short sputtering time in hot gas (Donahue \& Voit 1993). The
+velocity structure of the CO lines will enable us to constrain the
+kinematics of the molecular gas. For example, if the gas originated
+from a cooling flow, then it should have a velocity dispersion
+consistent with the galactic potential. On the other hand, if the gas
+was stripped from companions, or is flowing out at high velocities,
+then the velocity structure will be different. Very narrow lines would
+also suggest velocities consistent with the bright [O III] nebulae,
+suggesting they are dynamically related.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\bf{REQUEST FOR OBSERVATIONS:}} \irs\ was observed in June 1994 with
+the IRAM 30 m by Evans et al. 1998. However, the bandwidth and
+sensitivity of those observations, $\ll 1$ GHz \& $\approx 4$ mK,
+respectively, yields uninteresting upper limits for \mht. Installation
+of the new EMIR receiver on the IRAM 30 m allows us to reach $\trms <
+1$ mK and provides the bandwidth (4-8 GHz) necessary to detect $\vco
+\leq 800$ km s$^{-1}$ while still probing mass scales $< 10^{11}
+~\msol$. We are interested in observations of the \cooz, \coto,
+\cott\ transitions at redshifted 79.9 GHz, 159.9 GHz, and 239.8 GHz,
+respectively. The associated half power beam widths overlaid on an
+{\it{HST}} image of \irs\ is shown in Figure \ref{fig:i09}.
+
+The transitions of interest fall in the E0, E1, and E2 bands of
+EMIR. The incoming beams can be split with a dichroic to reduce the
+requested observing time. For our requested observations, the possible
+combinations of bands are E0/E2 and E0/E1. Using Table 2 of the EMIR
+Users Guide, and assuming 1\% loss of signal equals a 4 K increase of
+the receiver temperature, the E0/E2 increase is 30 K and the E0/E1
+increase is 22 K. We therefore select the dual-band mode for our E0
+and E1 observations and observe E2 on its own.
+
+Equations 1-4 were used to calculate $3\sigma$ upper limits for
+\mht. The quantities rms noise, $T_{\mathrm{rms}}$, and system
+temperature, $T_{\mathrm{sys}}$, were computed from the relations
+provided in IRAM memo 2009-1 using the telescope efficiencies and beam
+widths from the EMIR Users Manual and the EMIR Commissioning
+Report. The relations for \lcp\ and $S_{\mathrm{CO}}$ come from
+Solomon et al. 1997 and Salom\'e \& Combes 2008, respectively. We have
+assumed $\vco = 500$ km s$^{-1}$, $v_{\mathrm{res}} = 100$ km
+s$^{-1}$, and a precipitable water vapor of 7 mm for all
+calculations. The brightness temperature, $T_{\mathrm{rms}}$, and
+\mht\ upper limits are plotted as a function of exposure time in
+Figure \ref{fig:feas}. For our requested exposure times of 8 hrs, the
+\cooz, \coto, and \cott\ mass limits (in $10^{10}$ \msol) are 7.52,
+2.30, and 1.47, respectively. These limits are sufficient to achieve
+our outlined science objectives.
+
+The right panel of Figure \ref{fig:i09} shows that the six spheroids
+of what may be cannibalized companions lie within all the beams. There
+are three additional bright elliptical galaxies which fall in the
+159.9 GHz beam, and five more bright ellipticals in the 79.9 GHz
+beam. There may be two spiral galaxies in the field, one in the 159.9
+GHz beam and one in the 79.9 GHz beam. For a false detection of $\mht
+\sim 10^{10} ~\msol$, each source in the 239.8 GHz beam needs to
+contribute $1.7 \times 10^9 ~\msol$, in the 159.9 GHz beam $1.1 \times
+10^9 ~\msol$, and $0.7 \times 10^9 ~\msol$ in the 79.9 GHz beam. These
+are the gas masses of extremely gas-rich spirals, or ellipticals with
+$K$-band magnitudes $> -20$ mag, neither of which is true for any of
+the field sources. We conclude contamination from background sources
+in our observations will be insignificant.
+\begin{eqnarray}
+  \mathrm{CO ~brightness ~temperature,} ~I_{\mathrm{CO}} &<& 3
+  ~T_{\mathrm{rms}} ~\vco
+  (\vco/v_{\mathrm{res}})^{-1/2} ~\mathrm{[K ~km
+      ~s^{-1}]}\\
+  \mathrm{Integrated ~CO ~intensity,} ~S_{\mathrm{CO}} &<& 6.8
+  ~(1+z)^{-1/2} ~I_{\mathrm{CO}} ~\mathrm{[Jy ~km ~s^{-1}]}\\
+  \mathrm{CO ~line ~luminosity,} ~\lcp &<& 3.3 \times 10^7
+  ~S_{\mathrm{CO}} ~\nu_{\mathrm{obs}}^{-2} ~D_L^2 ~(1+z)^{-3}
+  ~\mathrm{[K ~km ~s^{-1} ~pc^{-2}]}\\
+  \mathrm{Molecular mass,} ~\mht &<& 4.6 ~\lcp\ ~[\msol].
+\end{eqnarray}
+
+\clearpage
+\noindent {\bf{REFERENCES}}\\
+B\^irzan, et al. ApJ, 607:800-809, 2004.\\
+Bertoldi, et al. A\&A, 409:47, 2003.\\
+Bower, et al. MNRAS, 390:1399-1410, 2008.\\
+Cavagnolo, et al. ApJ, in prep., 2010\\
+Ciotti, et al. arXiv 2010, eprint arXiv:1003.0578\\
+Crawford \& Vanderriest. MNRAS, 283:1003-1014, 1996.\\
+Croton, et al. MNRAS, 365:11-28, 2006.\\
+Deane \& Trentham. MNRAS, 326:14671474, 2001.\\
+Donahue \& Voit. ApJ, 414:L17L20, 1993.\\
+Dunn, et al. MNRAS, 364:1343-1353, 2005.\\
+Edge. MNRAS, 328:762-782, 2001.\\
+Edge \& Frayer. ApJ, 594:13-17, 2003.\\
+Egami, et al. ApJ, 647:922-933, 2006.\\
+Evans, et al. ApJ, 506:205221, 1998\\
+Heckman, et al. ApJ, 338:48-77, 1989.\\
+Hines and Wills. ApJ, 415:82+, 1993.\\
+Iwasawa, et al. MNRAS, 321:15-19, 2001.\\
+Jaffe, et al. MNRAS, 360:748-762, 2005.\\
+Kleinmann, et al. ApJ, 328:161169, 1988\\
+McNamara, et al. ApJ, 360:20-29, 1990.\\
+McNamara \& Nulsen. ARA\&A, 45:117-175, 2007.\\
+Narayanan, et al. ApJ, 642:107, 2006.\\
+O'Dea, et al. ApJ, 422:467-479, 1994.\\
+Peeters, et al. ApJ, 613:9861003, 2004.\\
+Peterson \& Fabian. Phys. Rep., 427:1-39, 2006.\\
+Salom\'e \& Combes A\&A, 489:101-104, 2008.\\
+Sanders, et al. MNRAS, 402:127-144, 2010.\\
+Sargsyan, et al. ApJ, 683:114122, 2008.\\
+Schawinski, et al. ApJ, 690:1672-1680, 2009.\\
+Solomon, et al. ApJ, 478:144 1997.\\
+Springel, et al. MNRAS, 361:776+, 2005.
+
+\begin{figure}[htp]
+  \begin{center}
+    \begin{minipage}{0.495\linewidth}    
+      \includegraphics*[width=\textwidth, trim=45mm 5mm 47mm 6mm, clip]{whiskers}
+    \end{minipage}
+    \begin{minipage}{0.495\linewidth}
+      \includegraphics*[width=\textwidth, trim=59mm 18mm 52mm 10mm, clip]{beam}
+    \end{minipage}
+    \caption{{\bf{Left:}} HST $I$-band image of the \irs\ BCG. Cyan
+      arrows highlight ``whiskers'' of possible cold gas filaments;
+      yellow circles enclose (stellar?) spheroids at the same redshift
+      of \irs; green dashed line marks on-going AGN outburst
+      axis. {\bf{Right}}: HST $V$-band image of \irs\ BCG. Black
+      circles denote IRAM 30 m half power beam widths for the proposed
+      observing frequencies; for reference, yellow circles from the
+      left panel are shown.}
+    \label{fig:i09}
+    \begin{minipage}{\linewidth}
+      \includegraphics*[width=\textwidth, trim=28mm 10mm 9mm 50mm, clip]{iram_mh2.eps}
+    \end{minipage}
+    \caption{EMIR CO brightness temperature, rms noise, and
+      \htoo\ mass as a function of position switched observing
+      time. Solid lines are $I_{\mathrm{CO}}$ $3\sigma$ upper limits;
+      dashed-dot lines are $T_{\mathrm{rms}}$ specific to elevation \&
+      $\nu_{\mathrm{obs}}$; dashed lines are \mht\ $3\sigma$ upper
+      limits; downward arrows are $3\sigma$ \mht\ upper limits from
+      Evans, et al. 1998 (adjusted to our cosmology and
+      $I_{\mathrm{CO}}$:\mht\ assumptions). The CO(1-0) and CO(2-1)
+      calculations include the 16 K and 6 K $T_{\mathrm{sys}}$
+      increases, respectively, from use of the E0/E1 dichroic. All
+      calculations assumed 7 mm of precipitable water vapor, $\Delta
+      v_{\mathrm{res}} = 100$ km s$^{-1}$, and $\vco = 500$ km
+      s$^{-1}$.}
+    \label{fig:feas}
+  \end{center}
+\end{figure}
+
+%%%%%%%%%%%%%%
+\end{document}
+%%%%%%%%%%%%%%
+
+%% Additionally, the existence of correlations between AGN outburst
+%% ages and host halo cooling times indicates the presence of a
+%% finely-tuned feedback loop [{\it{i.e.}} Cavagnolo, et al. 2008,
+%% Rafferty, et al. 2008]. But how AGN feedback energy is thermalized,
+%% specifically on scales the size of the host galaxy, and directed to
+%% gas with the shortest cooling times is still unclear [see McNamara
+%% \& Nulsen. 2007, for a review]. Sparse observational evidence
+%% suggests weak shocks, sound waves, and conduction may be
+%% responsible [Fabian, et al. 2006, Forman, et al. 2007, Voit et
+%% al. 2008].
+
+%% Comparions between Perseus and IRAS09:
+%%   -- similar Mbh (0.3e9)
+%%   -- similar mech power (5d44)
+%%   -- similar optical line emi (few d42)
+%%   -- similar Mdot (~500 Msol)
+%%   -- BUT, Perseus has 5d7 Msol dust, I09 has 2d8
+%%   -- I09 has almost 10 times the dust content, but is undetected in
+%%      CO. The big difference between I09 and Per, a QSO in I09.
+%%   -- so is the lack of mol gas a result of the QSO?
+%%   -- need a tight upper limit, or CO detection, to determine this.
+%%   -- is this perseus at z=0.4?
+
+%% J10, 115.2 GHz, red 79.9, E090
+%% J21, 230.5 GHz, red 159.9, E150
+%% J32, 345.7 GHz, red 239.8, E230
+%% J43, 461.0 GHz, red 319.7, E300
+
+%% The dichroics are needed for dual-band observations with EMIR.
+%% **** on average, increases sys temp by 10-15 K ****
+%% can combine:
+%% E090 \& E150
+%% E090 \& E230
+%% E150 \& E330
+
+%% E0/E2: 79.9+239.8, 2.5\% and 5\%
+%% E0/E1: 79.9+159.9, 4\% and 1.5\%
+%% E1/E3: 159.9+319.7, 3.5\% and 2.5\%

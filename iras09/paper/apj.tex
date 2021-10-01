@@ -1,0 +1,839 @@
+%%%%%%%%%%%%%%%%%%%
+% Custom commands %
+%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\mytitle}{AGN Heating and Gas Uplift via the Obscured Radio-Quiet
+Quasar in \iras}
+\newcommand{\mystitle}{AGN Feedback in \iras}
+\newcommand{\iras}{IRAS 09104+4109}
+\newcommand{\rxj}{RX J0913.7+4056}
+\newcommand{\radec}{R.A.(J2000) $=09^h 13^m 45^s.5$, Dec.(J2000) $=+40^{\mydeg} 56^{\arcm} 28^{\arcs}$}
+\newcommand{\ellradec}{09^h 13^m 45^s.5, +40^{\mydeg} 56^{\arcm} 28^{\arcs}}
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+\documentclass{emulateapj}
+\usepackage{apjfonts,graphicx,here,common,longtable,ifthen,amsmath,amssymb,natbib,lscape,subfigure}
+%% \usepackage[pagebackref,
+%%   pdftitle={TBD},
+%%   pdfauthor={Dr. Kenneth W. Cavagnolo},
+%%   pdfsubject={ApJ},
+%%   pdfkeywords={},
+%%   pdfproducer={LaTeX with hyperref},
+%%   pdfcreator={LaTeX}
+%%   pdfdisplaydoctitle=true,
+%%   colorlinks=true,
+%%   citecolor=blue,
+%%   linkcolor=blue,
+%%   urlcolor=blue]{hyperref}
+\bibliographystyle{apj}
+\begin{document}
+\title{\mytitle}
+\shorttitle{\mystitle}
+\author{
+  K. W. Cavagnolo\altaffilmark{1,6},
+  M. Donahue\altaffilmark{2},
+  B. R. McNamara\altaffilmark{1,3,4},\\
+  G. M. Voit\altaffilmark{2},
+  and M. Sun\altaffilmark{5},
+}
+\altaffiltext{1}{Department of Physics and Astronomy, University of
+  Waterloo, Waterloo, ON N2L 3G1, Canada.}
+\altaffiltext{2}{Michigan State University, Department of Physics and
+  Astronomy, East Lansing, MI, 48824-2320}
+\altaffiltext{3}{Perimeter Institute for Theoretical Physics, 31
+  Caroline Street N, Waterloo, ON N2L 2Y5, Canada.}
+\altaffiltext{4}{Harvard-Smithsonian Center for Astrophysics, 60
+  Garden Street, Cambridge, MA 01238, USA.}
+\altaffiltext{5}{University of Virginia, Department of Astronomy,
+  Charlottesville, VA, 22904}
+\altaffiltext{6}{kcavagno@uwaterloo.ca}
+\shortauthors{K. W. Cavagnolo et al.}
+\journalinfo{}
+\slugcomment{For submission to MNRAS}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+We report on the new \chandra\ X-ray Observations 
+\end{abstract}
+
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
+
+\keywords{cooling flows -- galaxies: clusters: general -- galaxies:
+  clusters: individual (\iras)}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%
+
+\citet{1988ApJ...328..161K}: Kleinmann, id'd as sey2 cD most ir lum
+and coind w/ rad, 99\% longwa of 1micron\\
+
+\citet{1993ApJ...415...82H}: Hines, VLA and ground-base polarimetry
+show steep radio spec in jet and lobes (old source), but young new
+beam\\
+
+\citet{1994ApJ...436L..51F}: Fabian, ASCA FeKalpha detection, thermal
+ICM\\
+
+\citet{1995MNRAS.274L..63F}: Fabian, ROSAT, suggested hole at center
+of cluster associated with massive cooling flow, hole is nothing
+(follow-up obs, see notes)\\
+
+\citet{1996MNRAS.283.1003C}: Crawfrod, Optical integral field
+spectroscopy, nebulae is static\\
+
+\citet{1996AJ....111..649S}: Soifer, near-IR, six stripped bulges in
+cD envelope at MK~ -20->-24\\
+
+\citet{1997A&A...318L...1T}: Taniguchi, mid-ir spec and torus
+properties, awesome graphic\\
+
+\citet{1998ApJ...506..205E}: Evans, radio, dust covering factor of
+>90\%, $<10^{10} h^{-2}$ \Msol H2 from CO ul\\
+
+\citet{1999Ap&SS.266..113A}: Armus, hst, image oiii filament sitting
+in uv cone, whiskers on cD in red-light\\
+
+\citet{1999ApJ...512..145H}: Hines, HST, polarimetry proves new
+beaming direction of AGN\\
+
+\citet{2000A&A...353..910F}: Franceschini, Beppo-Sax, buried type-2
+QSO, 1000 msol cf\\
+
+\citet{2000MNRAS.315..269A}: Allen, ASCA, global properties of \iras\\
+
+\citet{2000AJ....120..562T}: Tran, inclination angle of disk, extended
+emission from shredded members, not cf or expelled by qso, no shocks
+in nucleus\\
+
+\citet{2001MNRAS.321L..15I}: Iwasawa, Chandra, cold matter model
+pexrav\\
+
+\citet{2001MNRAS.326.1467D}: Deane, cold dust contrib <3\% of bolo
+lum\\
+
+``The absence of cold dust in a powerful AGN like this is certainly
+unusual. High-redshift optical quasars often have cold dust (McMahon
+et al. 1999), so one might expect an infrared quasar like IRAS
+P0910414109 to have some too, particularly since the X-ray
+measurements (Iwasawa et al. 2001) tell us that plenty of cold gas is
+present. The solution to this apparent paradox is presumably tied up
+in the way that gas condenses out of the hot X-ray phase in a cooling
+flow. If gas condenses in such a way that there is no new star
+formation, dust generation will be inefficient -- carbon atoms
+associated with this cooling gas are more likely to interact with four
+hydrogen atoms and become methane rather than with numerous other
+carbon atoms and become dust grains. This could explain the presence
+of large amounts of cold X-ray absorbing gas (Iwasawa et al. 2001) and
+no cold dust. If the cooling flow is also responsible for fuelling the
+AGN, any star formation that happens along the way must be confined to
+regions very close to the AGN. Red giants and supernovae associated
+with this star formation could generate the hot dust seen by IRAS.''
+
+\citet{2004ApJ...613..986P}: Peeters, no PAHs detection\\
+
+\citet{2007A&A...473...85P}: Piconcelli, XMM, changing-look, confirm
+reflectio domination of iwasawa\\
+
+\citet{2008ApJ...683..114S}: Sargsyan, spitzer, no PAHs\\
+
+The paper is structured as follows: \WMAP\ For the cluster redshift of
+$z=0.4418$, the age of the Universe was $\approx 9.1$ Gyr and the
+corresponding angular diameter distance is $\approx 5.72$ kpc
+arcsec$^{-1}$. All errors are quoted at the 68\% level unless stated
+otherwise.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observations and Data Analysis}
+\label{sec:obs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%
+\subsection{X-ray}
+\label{sec:xray}
+%%%%%%%%%%%%%%%%%%
+
+A 77.2 ksec observation of \iras\ was taken on January 9\th, 2009 with
+the Advanced CCD Imaging Spectrometer I-array (ACIS-I) ($\approx
+0.492\arcs$ pix$^{-1}$) on-board the \cxo\ (ObsID 10445; PI
+Cavagnolo). The archival \chandra\ observation of \iras\ from November
+3\rd, 1999 taken with the ACIS-S array was included in our X-ray
+analysis (ObsID 509; PI Fabian). Both datasets were reprocessed and
+reduced using the newest \chandra\ Interactive Analysis of
+Observations software (\ciao) version 4.1 and Calibration Database
+(\caldb) version 4.1.1. Events were selected based on \asca\ grades
+and corrections for the ACIS gain change, charge transfer
+inefficiency, and degraded quantum efficicency were applied. The new
+dataset did not require removal of the ACIS cosmic-ray induced
+afterglow nor creation of a new bad pixel file. However, these two
+additional reduction steps were applied to the 1999
+observation. Lightcurves from a source free region of each observation
+were created for a front-illuminated (FI) and back-illuminated (BI)
+CCD. The lightcurves were used to determine if any time intervals
+during the observations were contaminated by background flares. Six
+time intervals in the new observation fell outside $20\%$ of the mean
+background count rate and were excluded, yielding a final exposure
+time of 76.2 ksec. Comparison of the FI and BI lightcurves for the
+archival observation revealed significant contamination from a
+hard-flare, and a soft-flare, which reduced the usable exposure time
+from $\approx 9$ ksec to $\approx 6$ ksec.
+
+To take advantage of both observations for imaging analysis, the
+level-2, flare-clean events files were reprojected to a common tangent
+point and summed. A similar step was taken for the individual exposure
+maps except that the exposure maps were averaged. The combined events
+file was then normalized by the average exposure map. After merging
+the datasets, it was apparent that the known aspect offset found in
+some data from earlier than 2004 was present in ObsID 509. To improve
+the astrometry of the ObsID 509 dataset, a new aspect solution was
+created using the \ciao\ tool {\textsc{reproject\_aspect}} and the
+positions of several field sources. To minimize the positional
+uncertainty introduced by the strong angle dependance of the off-axis
+\chandra\ PSF, non-target X-ray sources closest to the aimpoint were
+selected for creation of the new aspect solution. After correction of
+the astrometry, the positional accuracy between both observations was
+$\approx 0.7\arcs$, \ie\ uncertainties comparable to the resolution
+limit of the ACIS detectors.
+
+%%%%%%%%%%%%%%%%%%
+\subsection{Radio}
+\label{sec:radio}
+%%%%%%%%%%%%%%%%%%
+
+From 1986 to 2000, \iras\ has been observed at multiple frequencies at
+varying resolutions using the Very Large Array (VLA) radio
+observatory. Using archival VLA data, resolved radio emission is
+detected at 1.4 GHz, 5 GHz, and 8.4 GHz, while a
+$3-\sigma_{mathrm{RMS}}$ upper limit of $0.84$ mJy is established at
+14.9 GHz. Fluxes for unresolved emission at 151 and 325 MHz were
+retrieved from \citet{1999MNRAS.306...31R} and
+\citet{1997A&AS..124..259R}, respectively. The combined 1.4 GHz data
+reveals the most extended structure, and thus we focus discussion
+regarding radio morphology using this frequency only. An analysis of
+1.4 and 5 GHz VLA data is also presented in
+\citet{1993ApJ...415...82H}.
+
+Continuum mode observations were taken from the VLA archive and
+reduced using the new Common Astronomy Software Applications package
+(\casa\footnote{\url{http://casa.nrao.edu/}}) developed and supported
+by the National Radio Astronomy Observatory. The data reduction steps
+in \casa\ are similar to those using \aips: the data was Fourier
+transformed, cleaned, self-calibrated, and restored. Flux density
+calibration was performed using the radio source 3C 286, while phase
+calibration was performed with 3C 147. The additional step of phase
+and amplitude self-calibration increases the dynamic range and
+sensitivity of the radio maps, yielding greater detail of low
+significance emission. All significant sources ($\ga 3\sigma_{RMS}$)
+within the primary beam and first sidelobe were imaged to further
+maximize the sensitivity of the radio map.
+
+The angular resolution of the combined 1.4 GHz dataset is $0.37\arcs$
+pixel$^{-1}$ with an average beam shape of $1.26\arcs \times
+1.15\arcs$ with $\theta = 37.16\mydeg$. Using the \casa\ tool
+{\textsc{viewer}} we measure an off-source RMS noise of $\approx
+27.3~\mu$Jy beam$^{-1}$. The deconvolved, integrated 1.4 GHz flux of
+the continuous extended structure coincident with \iras, and having
+$S_{\nu} \ga 3\sigma_{RMS}$, is $14.0 \pm 0.51$ mJy. These values are
+consistent with the results presented in
+\citet{1993ApJ...415...82H}. Contours of the radio emission
+surrounding \iras\ were generated beginning at 3 times the RMS noise
+and moving up in 6 log-space steps to the peak intensity of 4.7 mJy
+beam$^{-1}$. These are the contours which will be referenced in all
+following discussion of the radio source morphology and its
+interaction with the X-ray gas. The radio contours are shown in Figure
+\ref{fig:resid}.
+
+We fit the radio spectrum between 178 MHz and 8.4 GHz for the full
+radio source (jets+core) with the well-known synchrotron models of
+Kardashev \& Pacholczyk \citep[KP][]{1962SvA.....6..317K, pach},
+\citet[JP][]{1973A&A....26..423J}, and
+\citet[CI][]{1987MNRAS.225..335H}. The models vary by assumption of
+pitch-angle distribution and number of electron injections. These
+three synchrotron models were fitted to the radio spectrum using the
+code of \citet{2005ApJ...624..656W}, which is based on the method and
+code of \citet{1991ApJ...383..554C}. The JP model (single electron
+injection, randomized but isotropic pitch-angle distribution) yields
+the best fit with $\chisq = 0.491$ for 2 degrees of freedom, a break
+frequency of $\nu_B = 12.9 \pm 1.2$ GHz, and low-frequency spectral
+index of $\alpha_{\mathrm{JP}} = -1.00 \pm 0.49$. The radio spectrum
+and best-fit models are shown in Figure \ref{fig:radiospec}. The
+bolometric radio luminosity was calculated by integrating under the JP
+curve between 10 MHz and $10,000$ MHz, giving $\lrad =
+1.50\times10^{42}~\lum$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results and Discussion}
+\label{sec:rd}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Global ICM Properties}
+\label{sec:global}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We define the mean cluster temperature, $T_{\mathrm{cluster}}$, to be
+the ICM temperature within the core-excised aperture of $R_{500}$
+(defined below). $T_{\mathrm{cluster}}$ and $R_{500}$ are linked in
+the adopted calculation, and so they were determined recursively. We
+used the convention of \citet{2007ApJ...668..772M} and set the core
+radius to $0.15 R_{500}$. $R_{\Delta_c}$ is defined as the radius at
+which the average cluster density is $\Delta_c$ times the critical
+density for a spatially flat Universe, $\rho_c=3H(z)^2/8\pi G$. To
+calculate $R_{\Delta_c}$, we used the relation from
+\cite{2002A&A...389....1A}:
+\begin{eqnarray}
+  R_{\Delta_c} &=& 2.71~\beta_T^{1/2} \Delta_z^{-1/2} (1+z)^{-3/2} \left(\frac{kT_{\mathrm{cluster}}}{10 \keV}\right)^{1/2} \Mpc~h_{70}^{-1} \nonumber \\
+  \Delta_z &=& \frac{\Delta_c \Omega_M}{18\pi^2\Omega_z} \nonumber \\
+  \Omega_z &=& \frac{\Omega_M (1+z)^3}{[\Omega_M (1+z)^3]+[(1-\Omega_M-\Omega_{\Lambda})(1+z)^2]+\Omega_{\Lambda}} \nonumber
+\end{eqnarray}
+where $kT_{\mathrm{cluster}}$ is the mean cluster temperature in keV,
+$\Delta_c$ is the assumed density contrast of the cluster at
+$R_{\Delta_c}$, and $\beta_T$ is a numerically determined,
+cosmology-independent ($\lesssim \pm 20\%$) normalization for the
+virial relation $GM/2R = \beta_TkT_{\mathrm{cluster}}$. We use
+$\beta_T = 1.05$ taken from \cite{1996ApJ...469..494E}.
+
+A spectrum was extracted within the region $0.15~R_{500} < R <
+R_{500}$ using a first guess temperature of 7 keV. The spectrum was
+fitted with a single-component thermal plasma model (\mekal) keeping
+the Galactic column density in the direction of \iras\ fixed at the
+weighted-mean value from the LAB survey \citep[$\nhi =
+  1.58\times10^{20}~\pcmsq$;][]{lab}. Gas metal abundance was left as
+a free parameter using the solar standard abundance distribution of
+\citet{grsa}. The new best-fit temperature was used to recalculate
+$R_{500}$ and the process was repeated until three consecutive
+iterations produced \tx\ values which differed by $\leq 1\sigma$.
+
+With this method, we measure a cluster temperature of
+$9.98^{+3.13}_{-2.02}$ keV, which corresponds to $R_{500} =
+1.34^{+0.47}_{-0.19}~\Mpc~h_{70}^{-1}$, and a cluster metallicity of
+$0.38^{+0.31}_{-0.24}~\Zsol$. The bolometric luminosity in this
+aperture was determined using a diagonalized response function over
+the energy range 0.01-100.0 keV with 3000 linearly spaced energy
+channels, yielding $L_{\mathrm{bol}} =
+6.25^{+1.08}_{-0.94}\times10^{44}~\lum h_{70}^{-1}$. Additional
+spectral fits for a variety of apertures are summaraized in Table
+\ref{tab:specfits}.
+
+Integrating the gas mass profile presented in the next section, we
+measure $M_{\mathrm{gas}} =
+X.XX^{+X.XX}_{-X.XX}\times10^{XX}~\Msol$. To derive a total
+gravitating mass for \rxj, hydrostatic equilibrium was assumed:
+\begin{equation}
+  M_{\mathrm{grav}}(< r) = -\frac{k T(r) r}{G \mu m_p}\left[\frac{d\ln
+      T(r)}{d\ln r} - \frac{d\ln \nelec(r)}{d\ln r}\right]
+\end{equation}
+where $k$ is the Boltzmann constant, $G$ is the gravitational
+constant, $m_{\mathrm{p}}$ is proton mass, ICM mean molecular weight
+$\mu = 0.597$, $T(r)$ and $\nelec(r)$ are radial temperature and
+electron gas density profiles presented in the next section. We derive
+$M_{\mathrm{grav}} = X.XX^{+X.XX}_{-X.XX}\times10^{XX}~\Msol$
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Radial ICM Profiles}
+\label{sec:rad}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+An azimuthally averaged ICM temperature profile was created using
+circular annuli centered on the cluster X-ray peak and containing a
+minimum of $5,000$ source counts per annulus. Spectra were binned to
+contain a minimum of 25 counts per energy channel.  Blank-sky
+backgrounds within the \caldb\ were reprocessed and reprojected to
+match each observation, and then normalized for variations of the
+hard-particle background using the ratio of blank-sky and observation
+9.5-12 keV count rates. Using the method outlined in
+\citet{2005ApJ...628..655V}, we included a fixed background component
+in our spectral analysis to account for the spatially-varying soft
+Galactic background \citep[see also][for more
+  detail]{xrayband}. Spectra were fitted with \xspec\ 12.4.0
+\citep{xspec} using an absorbed, single-temperature \mekal\ model
+\citep{mekal1, mekal2} over the energy range 0.7-7.0 \keV. The
+Galactic \nhi\ from the LAB survey was used and kept fixed (see
+Section \ref{sec:global}). \citet{ag89} abundance normalizations were
+also used. The fit statistic was $\chi^2$. The temperature profile and
+associated abundance profile are shown shown in the top row of Figure
+\ref{fig:gallery}.
+
+A radial surface brightness profile was extracted from the point
+source clean, flare clean, exposure corrected events files with the
+90\% enclosed energy fraction (EEF) region of the nuclear point source
+excluded ($r_{exclude} = 1.16\arcs$). Concentric circular annuli with
+a width of 2 ACIS pixels ($\approx 1\arcs$) and centered on the cD
+X-ray point source were used. Using the surface brightness and
+temperature profiles, a deprojected radial electron density was
+derived using the technique outlined in \citet{kriss83}. Errors for
+the density profile were estimated using $5,000$ Monte Carlo bootstrap
+resamplings of the original surface brightness profile. The surface
+brightness and density profiles are shown in the second row of Figure
+\ref{fig:gallery}. Gas pressure ($p = \tx \nelec$), entropy ($K =
+\tx\nelec^{-2/3}$), cooling time ($\tcool = 3n\tx~[2\nelec \nH
+  \Lambda(T,Z)]^{-1}$), and gas mass ($M_{\mathrm{gas}} =
+\int_{r=0}^{r=R_{200}} 4 \pi r^3 \nelec dr/3$) profiles were then
+calculated. These profiles are shown in the bottom two rows of Figure
+\ref{fig:gallery}.
+
+There are no resolved discontinuities in the radial temperature
+structure to suggest the presence of a shock or cold front. But, the
+density (and hence entropy) and pressure profiles do show significant
+discontinuities at the leading edge of the cavity system. This likely
+results from the surface brightness enhancement caused by cool, dense
+gas associated with the northern cavity (see Section
+\ref{sec:uplift}). If there is an unresolved shock, the
+Rankine-Hugoniot pressure and density jump conditions imply a Mach
+number between 1.2-1.5.
+
+The ICM in \rxj, and surrounding \iras, is consistent with the cool
+core class of galaxy clusters.  We fit the radial entropy model $K(r)
+= \kna +\khun (r/100\kpc)^{\alpha}$ to the entropy profile and found
+best-fit values of $\kna = 22.5 \pm 1.7~\ent$, $\khun = 123 \pm 6
+~\ent$, and $\alpha = 1.94 \pm 0.12$. These values are consistent with
+the cool core population as a whole \citep{accept}, and, in
+particular, a $\kna < 30 ~\ent$ places \rxj\ with the population of
+``active'' clusters that typically have radio-loud AGN and star
+formation in the BCG \citep{haradent, 2008ApJ...687..899R}. The $\kna
+< 30 ~\ent$ regime is also interesting because this is the entropy
+level at which cluster cores become conducive to the formation of
+thermal instabilities \citep{conduction}, \eg\ in low-entropy gas
+clouds compressed and uplifted by AGN activity.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ICM Substructure and Cavity System}
+\label{sec:cavs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To aid investigation of substructure in the X-ray emission, a residual
+image for \iras\ was created. Utilizing the flare-clean,
+exposure-corrected, combined \chandra\ X-ray image, we fit the surface
+brightness isophotes with ellipses. Initially, the geometric
+parameters ellipticity, centroid, and position angle were varied, but
+the best-fit values for each isophote converged to mean values of
+$\epsilon = 0.52 \pm 0.02$, $\phi = 72.5\mydeg \pm 2.7\mydeg,$ and
+$(X_0,Y_0) = \ellradec$. These values were then given to the fitting
+routine as fixed parameters to eliminate isophotal twisting which
+results from the statistical variation of best-fit values at each step
+of the fitting. A surface brightness model normalized to match the
+parent image was then constructed from the best-fit isophote
+ellipses. The surface brightness model was subtracted from the parent
+image resulting in a residual image. Shown in the left pane of Figure
+\ref{fig:resid} is the parent X-ray image, and in the right pane is
+the residual image. Overlaid on the residual image are the 1.4 GHz
+contours discussed in Section \ref{sec:radio}.
+
+In the exposure-corrected X-ray image (left panel in Figure
+\ref{fig:resid}), subtle depressions in the X-ray surface brightness
+are present northeast and southwest of the central point source. The
+residual X-ray image (right panel in Figure \ref{fig:resid}) further
+reveals the structure of these depressions, and with the 1.4 GHz radio
+emission overlaid, the connection between the depressions and the AGN
+outflow is obvious. Excavation of cavities via AGN outflows is an oft
+observed process \citep[\eg][]{perseus1, schindler01,
+  2003ApJ...596..190M, ms0735, hydraa, 2007ApJ...665.1129K,
+  2009ApJ...697L..95B}, but to-date, \iras\ is the highest redshift
+object where cavities have been imaged, in addition to being the only
+QSO system with an unambiguous cavity detection. Though a cavity
+detection has been suggested in the QSO H1821+643
+\citep{2009arXiv0911.2339R}. Unlike typical cavity systems where the
+X-ray gas is preferentially displaced around a radio lobe, usually
+creating an approximately spherical bubble-like shape, the voids in
+\iras\ are located along the base of the radio jets with no obvious
+bubble-like structure around the lobes. In fact, the lobes have
+uplifted cool, enriched gas from the nuclear region (see Section
+\ref{sec:uplift}). Because of the void morphologies, we assume the
+cavities are cylindrical rather than ellipsoidal.
+
+%%
+across the board 10\% assumed for uncertainty in geometric parameters
+pV is measured by integrating over cavity surface
+tcs includes 10\% sys uncert because of assuming $\Delta T_X = 0$ over the cavity length
+%%
+
+The energetics of the AGN outburst were investigated by following the
+standard procedure of calculating cavity enthalpy under the assumption
+that the voids and environment are in pressure equilibrium
+\citep[][for a review]{rafferty06, mcnamrev}. Properties of the
+individual cavities are listed in Table \ref{tab:cylcavities}. The
+cavity volumes were calculated using a by-eye measurement of the
+projected cross-section. The $pV$ work to create the cavities was then
+calculated using a high-resolution, interpolated pressure profile and
+integrating this profile over the surface of each cylinder. Cavity
+enthalpy, $H_{\mathrm{cav}} = pV[\gamma/(\gamma-1)]$, was then calculated
+assuming the cavity contents are a relativistic plasma with $\gamma =
+4/3$. We have assumed the cavities were excavated over a timescale
+determined by the sound speed of the gas,
+\begin{equation}
+  t_{\mathrm{sonic}} = D \left(\frac{\gamma \tx}{\mu \mH}\right)^{-1/2} \nonumber
+\end{equation}
+where $D$ is the distance to the leading edge of the cavity,
+$\gamma=5/3$ for the ICM, $\mu=0.62$ is the mean molecular weight of
+the ICM, and \mH\ is the mass of hydrogen. Under these assumptions, we
+calculate a total cavity power $\pcav = 3.35(\pm0.80)\times10^{44}
+~\lum$. Compared with other systems with cavities, for example
+Centaurus A ($\pcav \sim 7.4\times10^{42} ~\lum$), Hydra A ($\pcav
+\sim 4\times10^{44} ~\lum$), or MS 0735.6+7421 ($\pcav \sim
+7\times10^{45} ~\lum$), \iras\ resides between the middle and
+upper-end of the cavity power distribution.
+
+How does the cavity power compare with the cooling luminosity of the
+X-ray halo which the AGN is interacting with? Setting the cooling
+radius to $r_{\mathrm{cool}} = 116$ kpc, the radius at which the
+azimuthally averaged radial gas cooling time is less than the age of
+the Universe at the redshift of \iras, we measure a bolometric
+(0.01-100.0 keV) cooling luminosity of $L_{\mathrm{bol}}(<
+r_{\mathrm{cool}}) = 1.54(\pm 0.XX)\times10^{45} ~\lum$. Correcting
+for differences in cosmology, our value of $L_{\mathrm{bol}}(<
+r_{\mathrm{cool}})$ is in general agreement with previous measurements
+\citep{1994ApJ...436L..51F, 1995MNRAS.274L..63F,
+1998MNRAS.297L..57A}. If all of the cavity power is thermalized over
+$4\pi$ steradians as heat, then our numbers indicate $\approx 50\%$ of
+the energy radiated away by the X-ray atmosphere is offset by the heat
+returned in the ongoing AGN outburst. This highly optimistic scenario
+then requires only two such AGN outbursts to shut-off cooling of the
+gaseous halo surrounding
+\iras.
+
+Implications?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Uplifted Gas}
+\label{sec:uplift}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In the middle panel of Figure \ref{fig:resid} three white ellipses
+highlight regions of excess X-ray emission relative to the best-fit
+surface brightness model. The ellipses are for illustrative purpose
+and approximate the contours of constant surface brightness used to
+define the regions. For clarity, we reference each region by its
+relative cardinal location to the core: western cloud (WC), northern
+cloud (NC), and eastern cloud (EC).
+
+For each region, a source spectrum and weighted responses were
+extracted. Local background spectra were extracted from neighboring
+regions which did not show enhanced emission in the subtracted
+image. The local backgrounds were scaled to correct for differences in
+sky area. For each region, the ungrouped source and background spectra
+were loaded into \xspec\ and the residual source spectrum was fit with
+a \mekal\ model using the modified Cash statistic
+\citep{1979ApJ...228..939C}, the appropriate statistic for low count
+data to avoid systematically cooler temperatures
+\citep{1989ApJ...342.1207N, 2007A&A...462..429B}. The low
+signal-to-noise (SN) ratio of each spectrum precluded leaving metal
+abundance as a free parameter, \eg\ no L-shell or K-shell features are
+resolved. Since the NC and WC regions coincide with the second annulus
+of the global radial temperature profile, while the EC is coincident
+with the first annulus, we fixed the metal abundance at the
+weighted-mean value for these two regions: $0.61~\Zsol$. Increasing or
+decreasing the fixed abundance changes the best-fit temperatures and
+normalizations within the statistical uncertainties. A fixed
+background thermal model representing the best-fit global spectrum
+from the coincident annulus (scaled to sky area) was also included in
+the fitting.
+
+A summary of the best-fit models are presented in Table
+\ref{tab:specfits}. The best-fit NC thermal temperature was $\sim 6$
+keV, but it was unconstrained. We then fit the NC spectrum with an
+absorbed power-law which had best-fit parameters $\Gamma = 1.74 (\pm
+0.2$ and $\eta = 4.40\times10^{-6}$ photons keV$^{-1}$ cm$^{-2}$
+s$^{-1}$. However, comparison of fit statistics and goodness of fits
+determined from $10,000$ Monte Carlo simulations of the best-fit
+spectra did not suggest if one model was preferrable to the other. The
+low SN prevented determination of important spectral features which
+can distinguish between a hot ($E \ga 5$ keV) thermal plasma and a
+power law, \eg\ the high-energy cut-off and presence of Fe K$\alpha$
+and Fe L-shell lines. Hence we could not distinguish a second
+component power-law and a second thermal component.
+
+However, the EC and WC residual spectra were consistent with a thermal
+model. Comparison of the best-fit models for the EC and WC regions
+with the ambient medium shows that both regions are cooler and denser
+(\ie\ lower entropy) than their surroundings. One possible explanation
+is that the gas in these two regions has been displaced from deeper
+within the core where lower entropy gas resides.
+
+-- are E and W blobs different?\\
+
+-- lifetime of cold blobs\\
+
+The EC and WC reside in ambient mediums which are hotter and of
+comparable density. Along with the relatively large surface areas of
+the clouds, if conduction is not too heavily supressed, then the
+clouds will evaporate. Assuming the heat flux across the cloud-ICM
+interface is saturated \citep{1977ApJ...211..135C}, then the heat flux
+is
+\begin{equation}
+  q_{\mathrm{sat}} = f_{\mathrm{C}} \left(\frac{2 \tx}{\pi \melec}\right)^{1/2} \nelec \tx
+  \label{eqn:q}
+\end{equation}
+where $q_{\mathrm{sat}}$ has units keV \cmsq\ \ps, $f_{\mathrm{C}}$ is
+a conduction suppresion factor due to magnetic fields, \melec\ is the
+electron mass in keV $c^{-2}$, \tx\ is ambient temperature in keV, and
+\nelec\ is ambient density in \pcc. Typical values of $f_{\mathrm{C}}$
+for the ICM are 0.2-0.4 \citep{2001ApJ...554..561M,
+  2001ApJ...562L.129N}, and we use $f_{\mathrm{C}}=0.4$. The total
+heat transfer across the cloud-ICM interface is then
+\begin{equation}
+  Q = 4 \pi r^2 q_{\mathrm{sat}}
+  \label{eqn:Q}
+\end{equation}
+where $Q$ has units erg \ps, and $r$ is the radius of the cloud in
+cm. The enthalpy of the gas cloud which must be replaced is
+\begin{equation}
+  H = \frac{\gamma p V}{\gamma-1}
+  \label{eqn:H}
+\end{equation}
+where $H$ has units of erg, $p$ is cloud pressure in erg \pcc, $V$ is
+cloud volume in \cc, and we assume $\gamma = 5/3$ for the ratio of
+specific heat capacities. In terms of Equations \ref{eqn:Q} and
+\ref{eqn:H}, the evaporation time scale of the clouds is
+\begin{equation}
+  t_{\mathrm{evap}} = \frac{H}{3.16\times10^{13}~Q}
+\end{equation}
+where $t_{\mathrm{evap}}$ has units Myr.
+
+Assuming conduction will completely erase the low entropy clouds, the
+remaining EC lifetime is $t_{\mathrm{evap}} \la 1.4$ Myr, and the WC
+lifetime is $t_{\mathrm{evap}} \la 0.5$ Myr. These are the time scales
+required to evaporate the observed clouds, which says nothing of gas
+which may have previously been heated and then mixed with the ambient
+medium. Assume that: (1) the EC is young and composed of gas dredged
+up by the new jet; (2) the WC is older and composed of gas dredged up
+and moved aside by the old jet. Further assuming that the initial
+state of the gas in the EC and WC was the same, then as a result of
+the WC having been conductively heated for longer, the comparable gas
+entropies but differing evaporation time scales make sense as only the
+lowest entropy gas in the WC should be present and observeable.
+
+-- star formation in WC?\\
+SFR from radio obs: \citep{1992ARA&A..30..575C}
+\citet{2009MNRAS.397.1101G} show the radio SFR relation in
+\citet{2003ApJ...586..794B} applies to $L > L_{\star}$ galaxies
+
+relating radio synchrotron luminosity to massive ($M \ga 5 \Msol$)
+star formation rate, $\Psi$, can be written in terms of observed flux
+density as
+\begin{equation}
+  \frac{\Psi}{\Msolpy} =
+  \frac{0.066}{(1+z)}~\left(\frac{D_L}{\Mpc}\right)^2~\left[\frac{(1+z)\nu_0}{1.4
+      \GHz}\right]^{\alpha}~\left(\frac{S_{\nu}}{\jy}\right) \nonumber
+\end{equation}
+where $z$ is source redshift, $S_{\nu}$ is the radio flux density due
+to synchrotron emission, $\nu_0$ is the observing frequency in GHz,
+$D_L$ is the source luminosity distance in Mpc, and $\alpha$ is the
+radio spectral index. We assume $S_{\nu} \propto \nu^{-\alpha}$ with
+$\alpha = 1.4$ taken from \citet{1993ApJ...415...82H}.
+
+-- uv filament?\\
+-- no enhancement to south, why?\\
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Central Source}
+\label{sec:centsrc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Iwa01: ``The soft X-ray emission seen in the nuclear spectrum is
+%% probably caused by photoionized gas in the inner nucleus. The highly
+%% polarized biconical reflection nebula imaged by the Hubble Space
+%% Telescope (HST) (Hines et al. 1999) is, however, not a likely source,
+%% as scattering by dust rather than electrons appears to be a dominant
+%% mechanism to induce the high polarization (Tran et al.  2000). The
+%% inner wall of the obscuring torus is exposed to the intense radiation
+%% from the primary source and thus expected to be highly
+%% ionized. Provided the optical depth of the ionized gas is small, the
+%% Fe L emission bump can be very strong (e.g. Band et al.  1990). A
+%% sub-pc scale ionized disc has indeed been imaged with the Very Large
+%% Baseline Array (VLBA) in the nucleus of the nearby Compton-thick
+%% Seyfert 2 galaxy NGC 1068 (Gallimore, Baum & O'Dea 1997), and they
+%% predicted strong soft X-ray emission lines based on a photoionization
+%% computation. In this case, the luminosity of the emission from the
+%% photoionized gas should be larger than observed ($~3x10^42 h^-2 erg
+%% s^-1$ in the 0.5-2 keV band), as significant absorption is likely to
+%% occur during the escape from the nuclear region.''
+
+The cD envelope and nuclear region of \iras\ is an extremely active
+location. In the central $\sim10$ kpc, there is a bright extended
+region with an associated point source. Previous work has suggested
+the nuclear quasar is ``changing-look'' \citep{2003MNRAS.342..422M}.
+
+The location of the nuclear point source was determined using a
+hardness ratio map, $HR = f(2.0-8.0~\keV)/f(0.3-2.0~\keV)$, shown in
+Figure \ref{fig:hardness}. For both \chandra\ observations, an image
+of the normalized point-spread function (PSF) for the median photon
+energy ($E \approx 1.25$ kev) and location ($\theta_{off-axis} =
+2.27\arcm$) of the hard point source was created following standard
+\ciao\ procedures. An elliptical region enclosing 90\% of the PSF
+energy fraction was then generated. The resultant region had an
+effective radius of $1.16\arcs$. A partially elliptical annular
+background region with the same central coordinates, ellipticity, and
+position angle as the 90\% EEF region, but having 5 times the area,
+was created. The background annulus is broken into segments to avoid
+the regions of uplifted gas. Source and background spectra were then
+extracted using the \ciao\ tool {\tt psextract}. The source spectrum
+was grouped to have 15 counts per energy channel. Approximately XX\%
+of the 2009 spectrum is from the source, background subtracted source
+count rate of $X.XX\times10^{XX} \pm X.XX\times10^{XX}$ ct \ps,
+yielding $\approx XXX$ source counts. For the 1999 spectrum, XX\% is
+source, with a background-subtracted count rate of $X.XX\times10^{XX}
+\pm X.XX\times10^{XX}$ ct \ps, resulting in $\approx XXX$ source
+counts. For both spectra, the number of source counts exceeds the low
+count regime, thus grouped spectra and the \chisq\ statistic were used
+during fitting.
+
+In addition to the \chandra\ data, we retrieved and re-analyzed the
+\bepposax\ PDS X-ray data (15-220 keV) taken April 18\ths, 1998
+(ObsCode 50273002; PI Franceschini). The hard X-ray data from PDS
+provides an important constraint on the behavior of the power-law
+spectral component. The data was reduced and analyzed with
+\saxdas\ v2.3.1 using the calibration data and cookbook available via
+HEASARC\footnote{\url{http://heasarc.nasa.gov/docs/sax/shp\_software.html}}. Our
+measured PDS 15-80 keV count rate, $0.106 \pm 0.055$ ct \ps, is
+consistent with published values \citep{2000A&A...353..910F}.
+
+The nuclear spectrum is complex and varying with time. Shown in Figure
+\ref{fig:nucspec} are the 1999 and 2009 background-subtracted
+\chandra\ spectra extracted from the regions shown in Figure
+\ref{fig:hardness}. The spectra have been corrected for both soft
+Galactic emission and azimuthally averaged ICM emission from the
+central annulus of the temperature profile. A soft-excess is evident
+at $E < 1$ keV, and there may be evolution of the hard component at $E
+> 5$ keV. Because of these complexities, our discussion is divided
+into two following sections.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Hard X-ray Componenet}
+\label{sec:hard}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Soft X-ray Excess}
+\label{sec:soft}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The best-fit parameters are listed in Table \ref{tab:nucspec}. The
+spectrum and best-fit model are shown in Figure \ref{fig:nucspec}.
+
+\absori\ model for an ionized absorber \citep{1992ApJ...395..275D,
+  1995ApJ...438L..63Z}
+
+\mekal\ model for thermal emission \citep{mekal1, mekal2}
+
+\pexrav\ model for reflected emission from cold matter \citep{pexrav}
+
+\warmabs\ model, which is an implementation of the photoionization
+code provided in \xstar\ \citep{xstar1, xstar2}.
+
+background region:
+2009 data:
+see reflected emission and k-alpha in bgd region
+based on this, expand extraction region
+
+models considered
+2009 data:
+
+- wabs(pexrav+gaussian)
+- good fit at kalpha line (4.46 keV, EW 446 eV) and E > 4 keV with
+gamma=2.0, nh at galactic, fe fixed at 2.0 sol,
+- not enough emission at < 2 kev, systematic underestimate at Fe-L
+hump, specifically at 1.25 keV
+- needs Nh lower than galactic
+- too much flux at 2-4 keV 
+- poor fit (chisq 1.31/57 dof)
+- thawing Fe gives better agreement, but with > 40 sol (chisq 1.23/56 dof)
+
+- wabs(plcabs+gaussian)
+- powerlaw observed through dense, cold matter
+- absorber density goes to zero
+- poor fit
+
+- wabs(pexrav+gaussian+zwabs(powerlaw))
+- absorber density goes to zero
+- same problems as just pexrav model
+
+
+1999 data
+- wabs(pexrav+gauss+apec)
+- frozen to be bf model from 2009 data
+- left zwabs free and kalpha eqw
+- poor fit chisq 1.63/8 dof
+- kalpha eqw 719 eV (1.06 keV eqw red-corr)
+
+soft excess:
+L-shell emission
+\citet{1990ApJ...362...90B}
+
+
+
+-- discuss best-fit model\\
+-- interpretation of best-fit params\\
+-- nature of central region\\
+-- changing-look AGN?\\
+-- Very strong OIII lines typical of high-ionization suggest an AGN
+does not power the emission line spectrum.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{New Epoch of AGN Outburst, Star Formation?}
+\label{sec:centsrc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TBD
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary \& Conclusions}
+\label{sec:summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+TBD
+
+%%%%%%%%%%%%%%%%%
+\acknowledgements
+%%%%%%%%%%%%%%%%%
+
+This work was supported by CXO grant A00-0000A. The \cxo\ Center is
+operated by the Smithsonian Astrophysical Observatory for and on
+behalf of NASA under contract NAS8-03060. The VLA (Very Large Array)
+is a facility of the National Radio Astronomy Observatory (NRAO). The
+NRAO is a facility of the National Science Foundation operated under
+cooperative agreement by Associated Universities, Inc. This research
+has made use of software provided by the Chandra X-ray Center in the
+application packages \ciao, \chips, and \sherpa. This research has
+made use of the NASA/IPAC Extragalactic Database which is operated by
+the Jet Propulsion Laboratory, California Institute of Technology,
+under contract with NASA. This research has also made use of NASA's
+Astrophysics Data System. Some software was obtained from the High
+Energy Astrophysics Science Archive Research Center, provided by
+NASA's Goddard Space Flight Center.
+
+%%%%%%%%%%%%%%
+% Facilities %
+%%%%%%%%%%%%%%
+
+{\it Facilities:} \facility{Beppo-SAX}, \facility{CXO}, \facility{VLA}
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Figures  and Tables %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{specfits.tex}
+%\input{cylcavities.tex}
+%\input{nucspec.tex}
+%\input{figs.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+% End the document %
+%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

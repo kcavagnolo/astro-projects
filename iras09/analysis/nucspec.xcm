@@ -1,0 +1,276 @@
+steppar 16 4.4 4.51 50 17 0.0 0.13 50
+plot contour 92 3 1.0 2.706 5.074
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Sigma [keV]
+la x Line Energy [keV]
+r x 4.4 4.51
+r y 0.0 0.13
+plot
+h feka_conf.ps/cps
+exit
+plot ldata
+
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [ct s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.5 6.0
+r y 5e-4 0.05
+ma 17 on 1 3 5
+ma size 1.5 17 on 1 3 5
+co 1 on 1 2
+co 2 on 3 4
+co 4 on 5 6
+lw 2 on 2 4 6
+plot
+h nucspec_refl.ps/cps
+exit
+plot ldata
+
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [ct s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.3 200.0
+r y 1e-5 0.055
+ma 17 on 1 3 5
+ma size 1.5 17 on 1 3 5
+co 1 on 1 2
+co 2 on 3 4
+co 4 on 5 6
+lw 2 on 2 4 6
+plot
+h nucspec.ps/cps
+exit
+plot ldata
+
+#################
+# FOR 2009 spec #
+#################
+
+cd /mnt/DROBO/10445/reprocessed
+xspec11
+data IRAS_09104+4109_10445_1arc.pi
+ignore bad
+@09_nucbf.xcm
+cpd /xw
+setplot energy
+setplot rebin 2,2
+plot ldata resid
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [ct s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.1 10.0
+r y 1e-4 0.01
+ma 17 on 1
+ma 17 on 3
+ma size 1.5 17 on 1
+ma size 1.5 17 on 3
+co 1 on 1
+co 2 on 2
+co 1 on 3
+lw 2 on 2
+plot
+h 2009_nucspec.ps/cps
+exit
+
+dummyrsp 0.1 100.0 10000
+plot model
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [photons cm\u-2\d s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.1 100.0
+r y 1e-7 1e-4
+co 1 on 1
+co 2 on 2
+co 3 on 3
+co 4 on 4
+lw 2 on 1
+lw 2 on 2
+lw 2 on 3
+lw 2 on 4
+ls 1 on 1
+ls 1 on 2
+ls 1 on 3
+ls 1 on 4
+plot
+h 2009_nucmodel.ps/cps
+exit
+exit
+y
+gv 2009_nucspec.ps &
+gv 2009_nucmodel.ps &
+
+#################
+# FOR 1999 spec #
+#################
+
+cd /mnt/DROBO/509/reprocessed
+xspec11
+data IRAS_09104+4109_509_1arc.pi
+ignore bad
+backgrnd none
+@99_nucbf.xcm
+cpd /xw
+setplot energy
+setplot rebin 2,2
+plot ldata resid
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [ct s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.1 10.0
+r y 1e-3 0.04
+ma 17 on 1
+ma 17 on 3
+ma size 1.5 17 on 1
+ma size 1.5 17 on 3
+co 1 on 1
+co 2 on 2
+co 1 on 3
+lw 2 on 2
+plot
+h 1999_nucspec.ps/cps
+exit
+
+dummyrsp 0.1 100.0 10000
+plot model
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [photons cm\u-2\d s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.1 100.0
+r y 1e-7 2e-4
+co 1 on 1
+co 2 on 2
+co 3 on 3
+co 4 on 4
+lw 2 on 1
+lw 2 on 2
+lw 2 on 3
+lw 2 on 4
+ls 1 on 1
+ls 1 on 2
+ls 1 on 3
+ls 1 on 4
+plot
+h 1999_nucmodel.ps/cps
+exit
+exit
+y
+gv 1999_nucspec.ps &
+gv 1999_nucmodel.ps &
+
+#####################
+# FOR both datasets #
+#####################
+
+cd /tmp/
+cp -f /mnt/DROBO/10445/reprocessed/*1arc* .
+cp -f /mnt/DROBO/509/reprocessed/*1arc* .
+xspec11
+data IRAS_09104+4109_10445_1arc.pi IRAS_09104+4109_509_1arc.pi
+cpd /xw
+setplot energy
+setplot rebin 1,1
+ignore bad
+plot ldata
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [ct s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.1 10.0
+r y 1e-4 0.02
+ma 17 on 1
+ma 17 on 2
+ma size 1.5 17 on 1
+ma size 1.5 17 on 2
+co 1 on 1
+co 2 on 2
+plot
+h nucspec.ps/cps
+exit
+exit
+y
+gv nucspec.ps &
+
+####################
+# For all datasets #
+####################
+
+setplot energy
+setplot rebin 3
+plot ldata resid
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [ct s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.1 100.0
+r y 1e-4 0.02
+ma 17 on 1 4 7 3 6 9
+co 4 on 1 2 3
+co 2 on 4 5 6
+co 3 on 7 8 9
+plot
+h all_nucspec.ps/cps
+exit
+
+dummyrsp 0.1 100.0 10000
+plot model
+iplot
+cs 1.0
+font roman
+time off
+la file
+la top
+la y Flux [photons cm\u-2\d s\u-1\d keV\u-1\d]
+la x Energy [keV]
+r x 0.1 100.0
+r y 1e-7 3e-4
+co 1 on 1 5 9
+co 4 on 2 6 10
+co 2 on 3 7 11
+co 3 on 4 8 12
+lw 2 on 1 2 3 4 5 6 7 8 9 10 11 12
+ls 1 on 1 2 3 4 5 6 7 8 9 10 11 12
+plot
+h all_nucmodel.ps/cps

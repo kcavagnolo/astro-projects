@@ -1,0 +1,106 @@
+   Notes on image display widgets --  R. S. Hill.
+
+                                                 11 Dec 2001
+
+   Pan window attempts to preserve aspect ratio.  !DUMP variable
+   eliminated.  Retain=2 default added, which is useful if you are
+   on a remote workstation used as an X terminal.  For multiple-windows
+   widgets, the color-changing events weren't being propagated from]
+   image to image, so changes to gangexamine had to be made.
+
+                                                 20 Jan 2001
+
+   Little future work is expected on these widgets (too much time
+   was spent on them already!).
+
+   Some of the features noted earlier as desirable have now been added.
+   The earlier notes below now have annotations marked *STATUS*
+   to explain what has and has not been done.
+
+   The main limitation of these widgets is that they are general, for
+   quick and dirty work on the fly.  The other main limitation is that
+   they were written from one person's perspective.
+
+
+
+                                                 11 Oct 2000
+
+   The underlying __define files get minor polishing fairly frequently
+   to make all the objects work better together.
+
+   The following are limitations I am not yet entirely happy with and
+   would like to improve if I get time someday, but not soon:
+
+        (1)  The EXAMINE popup.
+
+             (a)  The popup itself is awkward.  In widgets
+                  with multiple displays, you could have two EXAMINE popups
+                  existing at once and not know which is which.  
+                  
+                  *STATUS*  There should now be more clarity here.
+                  Subwidgets are labeled with the number of the
+                  associated main display window.
+
+             (b)  The logfile manipulation is kludgy. 
+
+                  *STATUS*  This has been much improved.  Log files
+                  are gone, and the user can either write to the
+                  command-line window, using "journal" to take care
+                  of logging, or pop a text display window that
+                  isn't saved.
+
+             (c)  The aperture growth photometry does not compute a 
+                  real error but borrows it from an overall APER 
+                  computation done at the end after you have settled
+                  on a sky annulus to use (although the flux itself
+                  always comes from the growth curve photometry).
+
+                  *STATUS*  Still the same.
+
+             (d)  Might be nice to have statistics and listings on
+                  different-sized image areas, not corresponding to 
+                  zoom box.
+
+                  *STATUS*  Still the same.
+
+             (e)  The outlier (Tukey) statistics are hard to format
+                  in a clear way, in part because they are not as
+                  familiar as the usual mean and std dev.
+
+                  *STATUS*  Somewhat improved, perhaps.
+
+             (f)  You can't send the cursor to specific coordinates
+                  that you type in.
+
+                  *STATUS*  Still the same.
+
+        (2)  The DISPLAY popup.
+
+             (a)  Turning the zoom window crosshair on and off doesn't
+                  propagate to the other display in XCTV2.
+
+                  *STATUS*  Fixed.
+
+             (b)  Similarly to the EXAMINE popup, in multiple-display widgets
+                  you could have two DISPLAY popups and not know which 
+                  one belongs to which image.
+                   
+                  *STATUS*  Improved.
+
+             (c)  Graphics color is always 255; it would be nice to
+                  be able to choose.
+
+                  *STATUS*  Still the same.
+
+    However, coming soon:
+        (1)  In XCTV2, "Same Scaling" and "Blink" together in a
+             button menu called "MULTI" (less crowded menu area)
+        (2)  DISPLAY CONTROL shortened to DISPLAY (ditto).
+        (3)  Ability to move cross-hair around within zoom window.
+        (4)  Fixing of some initialization bugs when the objects are
+             used with options not in XCTV and XCTV2.
+        (5)  24-bit graphics color fixed for decomposed=1.
+        (6)  Zoom factor will propagate from one window to the
+             other in XCTV2.
+
+    *STATUS*  All of these are now implemented.

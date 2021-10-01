@@ -1,0 +1,1138 @@
+%%%%%%%%%%%%%%%%%%%
+% Custom commands %
+%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\mykeywords}{cooling flows -- galaxies: clusters:
+  galaxies: individual (\inine): clusters: individual (\rxj)}
+\newcommand{\mytitle}{Direct Evidence of Quasar Radiative and
+  Mechanical Feedback in \inine}
+\newcommand{\mystitle}{Feedback in \inine}
+\newcommand{\inine}{IRAS 09104+4109}
+\newcommand{\irs}{I09}
+\newcommand{\rxj}{RX J0913.7+4056}
+\newcommand{\tsync}{\ensuremath{t_{\mathrm{sync}}}}
+\newcommand{\refl}{\ensuremath{r_{\mathrm{refl}}}}
+\newcommand{\fekaew}{\ensuremath{\mathrm{EW}_{\mathrm{K}\alpha}}}
+\newcommand{\cltx}{\ensuremath{T_{\mathrm{cl}}}}
+\newcommand{\leff}{\ensuremath{\lambda_{\mathrm{Edd}}}}
+\newcommand{\lqso}{\ensuremath{\lbol^{\mathrm{QSO}}}}
+\newcommand{\esens}{\ensuremath{E_{\rm{sens}}}}
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+\documentclass[useAMS,usenatbib]{mn2e}
+\usepackage{graphicx, here, common, longtable, ifthen, amsmath,
+amssymb, natbib, lscape, subfigure, mathptmx, url, times, array}
+\usepackage[abs]{overpic}
+\usepackage[pagebackref,
+  pdftitle={\mytitle},
+  pdfauthor={Dr. Kenneth W. Cavagnolo},
+  pdfsubject={ApJ},
+  pdfkeywords={},
+  pdfproducer={LaTeX with hyperref},
+  pdfcreator={LaTeX with hyperref}
+  pdfdisplaydoctitle=true,
+  colorlinks=true,
+  citecolor=blue,
+  linkcolor=blue,
+  urlcolor=blue]{hyperref}
+
+\title[\mystitle]{\mytitle}
+
+\author[Cavagnolo et al.]{K. W. Cavagnolo$^{1,2,3}$\thanks{Email:
+    kcavagno@uwaterloo.ca}, M. Donahue$^{2}$, G. M. Voit$^{2}$,
+  B. R. McNamara$^{1,4,5}$, and M. Sun$^{6}$\\
+  $^{1}$University of Waterloo, Waterloo, ON, Canada.\\
+  $^{2}$Michigan State University, East Lansing, MI, USA.\\
+  $^{3}$Observatoire de la C\^ote d'Azur, Nice, PACA, France.\\
+  $^{4}$Perimeter Institute for Theoretical Physics, Waterloo, ON, Canada.\\
+  $^{5}$Harvard-Smithsonian Center for Astrophysics, Cambridge, MA, USA.\\
+  $^{6}$University of Virginia, Charlottesville, VA, USA.}
+
+\begin{document}
+
+\date{Accepted (2010 Month Day). Received (2010 Month Day); in
+  original form (2010 Month Day)}
+
+\pagerange{\pageref{firstpage}--\pageref{lastpage}} \pubyear{2010}
+
+\maketitle
+
+\label{firstpage}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+  Using a deep observation acquired with the \chandra\ X-ray
+  Observatory (\cxo), we present a detailed study of the ultraluminous
+  infrared brightest cluster galaxy (BCG) \inine\ (\irs, hereafter),
+  and the surrounding intracluster medium (ICM) of the galaxy cluster
+  \rxj. The X-ray data reveals ICM cavities formed by $\sim 10^{44}
+  ~\lum$ jets from the buried quasar (QSO) in \irs, and excess X-ray
+  emission near the core which is well-modeled as illumination of the
+  ICM and a galactic nebula by $\sim 10^{47}$ erg QSO
+  radiation. Consistent with previous studies, we show that the X-ray
+  properties of the \irs\ nucleus are dominated by reflected emission
+  from a QSO embedded in a moderately Compton-thick medium. From these
+  results, and those of prior studies, we suggest \irs\ may be a local
+  example of how higher-redshift galaxies transition from a
+  radiatively-dominated to a mechanically-dominated mode of feedback,
+  and speculate that it may be related to evolution of black hole
+  spin.
+\end{abstract}
+
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
+
+\begin{keywords}
+  \mykeywords
+\end{keywords}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%
+
+The discovery of tight correlations between properties of a galaxy and
+the mass of its centrally located supermassive black hole (SMBH)
+strongly indicate that the two co-evolve
+\citep[\eg][]{1995ARA&A..33..581K, magorrian}. It has been suggested
+that galaxy mergers and interactions, along with feedback from an
+active galactic nucleus (AGN), form the foundation for SMBH-host
+galaxy co-evolution \citep[\eg][]{2000MNRAS.311..576K}. Galaxy
+formation models typically segregate AGN feedback into a distinct
+early-time, radiatively-dominated quasar mode
+\citep[\eg][]{2005Natur.435..629S} and a late-time,
+mechanically-dominated radio mode \citep[\eg][]{croton06}. Early in
+the galaxy formation process, characterized by the merger of gas-rich
+galaxies and SMBH accretion rates of order Eddington, it is believed
+that QSO radiation couples to gas fueling the AGN activity and drives
+strong winds which deprive the SMBH of additional fuel
+\citep[\eg][]{1998A&A...331L...1S}. This phase is expected to be
+short-lived, resulting in the expulsion of large quantities of cold
+gas from the host galaxy and temporarily quenching star formation
+\citep[\eg][]{2006ApJ...642L.107N}. At later times, when the AGN
+enters a phase of sub-Eddington accretion, prolonged and intermittent
+mechanical heating of ambient gas by SMBH launched jets takes over the
+regulation of galaxy growth \citep[see][for reviews]{cfreview,
+  mcnamrev}.
+
+Direct evidence of mechanical AGN feedback is seen in the form of
+cavities and shocks found in the X-ray halos surrounding many massive
+galaxies, particularly in the relatively dense ICM of galaxy clusters
+\citep[\eg][]{perseus1, 2000ApJ...534L.135M}.  Encouragingly, these
+cavities and shocks have been shown to contain enough energy to offset
+much of the halo cooling \citep{perseus2, birzan04, dunn06,
+  rafferty06, 2007ApJ...665.1057F}. Direct evidence of radiative AGN
+feedback has been more elusive \citep[see][for a
+  review]{2005ARA&A..43..769V}, with Mrk 231
+\citep{2010arXiv1006.1655F} and low-redshift ellipticals
+\citep{2009ApJ...690.1672S} providing the strongest evidence to date
+that radiation pressure can drive gas out of the host galaxy. In a
+unified feedback model, there may be a convergence of these modes
+where an AGN cycles from radiative to mechanical dominance, however no
+such examples have been found. This paper presents evidence that the
+buried QSO in \irs\ is producing both mechanical and radiative
+feedback, perhaps implying that it is a transition system and a local
+example of how massive galaxies at higher redshifts evolve from
+quasar-mode into radio-mode.
+
+\irs\ is an uncommon, low-redshift ($z = 0.4418$) ultraluminous
+infrared galaxy (ULIRG; $L_{\mathrm{IR}} > 10^{12} ~\lsol$). Unlike
+most ULIRGs, \irs\ is the BCG in a rich galaxy cluster, but unlike
+most BCGs, the spectral energy distribution of \irs\ is dominated by a
+heavily obscured QSO: it has the optical spectrum of a Seyfert-2 with
+99\% of the bolometric luminosity ($\sim 10^{47} ~\lum$) emerging
+longward of 1 $\mu$m \citep[][see also Section
+  \ref{sec:centsrc}]{1988ApJ...328..161K, 1993ApJ...415...82H,
+  1994ApJ...436L..51F, 1998ApJ...506..205E, 2000A&A...353..910F,
+  2001MNRAS.321L..15I}. Another interesting feature of \irs\ is the
+nearly orthogonal misalignment between the beaming directions of the
+radio jets and nuclear radiation \citep{1999ApJ...512..145H}. Using
+X-ray data from the \cxo, we present the discovery of jet induced
+cavities in the X-ray halo surrounding \irs, and an unambiguous
+detection of QSO radiation interacting with cold gas in the galaxy
+halo. The analysis and discussion that follows focuses primarily on
+placing \irs\ into the quasar-mode/radio-mode AGN feedback paradigm,
+and specifically on interpreting the misalignment between the
+radiative and mechanical outflows using existing feedback models.
+
+Data reduction is discussed in Section \ref{sec:obs}. Properties of
+the ICM are analyzed in Sections \ref{sec:global} and
+\ref{sec:rad}. Analysis of the ICM cavities, SMBH fueling, and QSO
+irradiation of the ICM are given in Sections \ref{sec:cavs},
+\ref{sec:fuel}, and \ref{sec:excess}, respectively. The complex
+nuclear source is discussed in Section
+\ref{sec:centsrc}. Interpretation of the results is given in Section
+\ref{sec:evo}, with a brief summary in Section \ref{sec:summ}. \LCDM,
+for which a redshift of $z = 0.4418$ corresponds to $\approx 9.1$ Gyr
+for the age of the Universe, $\da \approx 5.72$ kpc arcsec$^{-1}$, and
+$\dl \approx 2.45~\Gpc$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observations and Data Reduction}
+\label{sec:obs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%
+\subsection{X-ray}
+\label{sec:xray}
+%%%%%%%%%%%%%%%%%%
+
+Unless stated otherwise, all X-ray spectral analysis was performed
+over the energy range 0.7--7.0 keV with the \chisq\ statistic in
+\xspec\ 12.4 \citep{xspec} using an absorbed, single-temperature
+\mekal\ model \citep{mekal1} with gas metal abundance as a free
+parameter (\citealt{ag89} distribution) and quoted uncertainties of
+90\% confidence. All spectral models had the Galactic absorbing column
+density fixed at $\nhgal = 1.58 \times 10^{20} ~\pcmsq$
+\citep{lab}. For the ICM, the assumed mean molecular weight is $\mu =
+0.597$, with an adiabatic index $\gamma = 5/3$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\cxo}
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+A 77.2 ks observation of \irs\ was taken in January 2009 with the
+ACIS-I instrument (\dataset [ADS/Sa.CXO#Obs/10445] {ObsID 10445}; PI
+Cavagnolo). The 9 ks archival ACIS-S \cxo\ observation from
+November 1999 was included in the analysis (\dataset
+[ADS/Sa.CXO#Obs/00509] {ObsID 509}; PI Fabian). Both datasets were
+reprocessed and reduced using \ciao\ and \caldb\ versions 4.2. X-ray
+events were selected using \asca\ grades, and corrections for the ACIS
+gain change, charge transfer inefficiency, and degraded quantum
+efficiency were applied. Point sources were located and excluded using
+{\textsc{wavdetect}} and verified by visual inspection. Light curves
+were extracted from a source-free region of each observation to look
+for flares, and time intervals with $> 20\%$ of the mean background
+count rate were excluded. After flare exclusion, the final combined
+exposure time is 83 ks.
+
+For imaging analysis, the flare-free events files were reprojected to
+a common tangent point and summed. The astrometry of the ObsID 509
+dataset was improved using a new aspect solution created with the
+\ciao\ tool {\textsc{reproject\_aspect}} and the positions of several
+field sources. After astrometry correction, the positional accuracy
+between both observations improved by $\approx 0.4\arcs$ and was
+comparable to the resolution limit of the ACIS detectors ($\approx
+0.492\arcs$ pix$^{-1}$). We refer to the final point source free,
+flare-free, exposure-corrected images as the ``clean'' images. The BCG
+nucleus emits strong \feka\ emission which affects spectral fitting,
+and for analysis of the ICM, the nucleus was excluded using a region
+twice the size of the \cxo\ PSF 90\% EEF (see Section
+\ref{sec:centsrc}). In Figure \ref{fig:imgs} are the 0.5--10.0 keV
+mosaiced clean image of \rxj, a zoom-in of the core region harboring
+\irs, and photons in the energy range 4.35--4.50 keV associated with
+the \feka\ fluorescence line from the nucleus (discussed in Section
+\ref{sec:centsrc}). Unless stated otherwise, the X-ray analysis in
+this paper relates to \cxo\ data only.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\bepposax}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Conclusions reached in previous studies regarding the nature of the
+\irs\ nuclear absorber have relied on the \bepposax\ hard X-ray
+detection discussed by \citet{2000A&A...353..910F}. Here, we repeat
+and confirm that analysis in order to compare our results in Section
+\ref{sec:centsrc} against \citet{2000A&A...353..910F}. We retrieved
+and re-analyzed the \bepposax\ data taken April 1998 (ObsCode
+50273002; PI Franceschini). The data was reduced and analyzed with
+\saxdas\ version 2.3.1 using the calibration data, cookbook, and epoch
+appropriate response functions available from
+HEASARC\footnote{http://heasarc.nasa.gov/docs/sax}.
+
+Data from the PDS instrument (\esens\ = 15--300 keV) was accumulated,
+screened for good time intervals, and then a light curve was
+extracted. No significant variations of the light curve were
+detected. A PDS total spectrum was extracted from the on-axis data,
+and background subtraction was performed using the variable rise time
+threshold. We measure a PDS 15--80 keV count rate of $0.106 \pm 0.055$
+ct \ps. Fitting the PDS spectrum over the energy range 20--200 keV
+with an absorbed power-law having fixed spectral index of $\Gamma =
+1.7$ yielded fluxes of $f_{10 \dash 200} = 2.09^{+1.95}_{-1.95} \times
+10^{-11} ~\flux$ and $f_{20 \dash 100} = 1.10^{+1.57}_{-1.63} \times
+10^{-11} ~\flux$. The count rate and fluxes are consistent with the
+results presented in \citet{2000A&A...353..910F}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\integral\ and \swift}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\irs\ was not detected in the \integral\ IBIS Extragalactic AGN Survey
+\citep[][\esens\ = 20--100 keV]{2006ApJ...636L..65B}. Our re-analysis
+of archival \integral\ ISGRI and JEM-X data resulted in $3\sigma$
+upper limits between 10--35 keV and 20--100 keV of $f_{10 \dash 35} =
+1.28 \times 10^{-12} ~\flux$ and $f_{20 \dash 100} = 5.70 \times
+10^{-11} ~\flux$, narrowly higher than the \bepposax\ 20--100 keV PDS
+measured flux, and consistent with the IBIS Survey non-detection for a
+$z = 0.44$ source. \irs\ was also not detected in the 22 month
+\swift-BAT Survey \citep[][\esens\ = 15--150
+  keV]{2010ApJS..186..378T}. The \swift-BAT Survey has a 14--195 keV
+$4.8\sigma$ detection limit of $2.2 \times 10^{-11} ~\flux$, 14\%
+higher than the 14--195 keV \irs\ flux expected based on the
+\bepposax\ detection, and consistent with the \integral\ upper
+limits. Assuming the upper limits are representative of an $\approx
+1\mydeg$ region around \irs\ (\ie\ the full-width half maximum PDS
+field of view), the lack of detected hard X-ray sources near
+\irs\ suggests that the PDS detection did not originate from a
+brighter off-axis source, assuming the source is not transient or was
+a one-time event.
+
+%%%%%%%%%%%%%%%%%%
+\subsection{Radio}
+\label{sec:radio}
+%%%%%%%%%%%%%%%%%%
+
+Between 1986 and 2000, \irs\ was observed with VLA at multiple radio
+frequencies and resolutions \citep[see also][for 1.4 and 5 GHz
+  analysis; hereafter H93]{1993ApJ...415...82H}. Continuum mode
+observations were taken from the VLA archive and reduced using version
+3.0 of the Common Astronomy Software Applications (\casa). Flagging of
+bad data was performed using a combination of \casa's
+{\textsc{flagdata}} tool in {\textsc{rfi}} mode and manual
+inspection. Radio images were generated by Fourier transforming,
+cleaning, self-calibrating, and restoring individual radio
+observations. The additional steps of phase and amplitude
+self-calibration were included to increase the dynamic range and
+sensitivity of the radio maps. All sources within the primary beam and
+first side-lobe detected with fluxes $> 5\sigma_{\mathrm{rms}}$ were
+imaged to further maximize the sensitivity of the radio maps.
+
+Resolved radio emission associated with \irs\ is detected at 1.4 GHz,
+5.0 GHz, and 8.4 GHz, while a $3\sigma$ upper limit of $0.84$ mJy is
+established at 14.9 GHz. Fluxes for unresolved emission at 74 MHz, 151
+MHz, and 325 MHz were retrieved from VLSS \citep{vlss}, 7C Survey
+\citep{1999MNRAS.306...31R}, and WENSS \citep{1997A&AS..124..259R},
+respectively. No formal detection is found in VLSS, however, an
+overdensity of emission at the location of \irs\ is evident. For
+completeness, we measured a flux for the potential source, but
+excluded the value during fitting of the radio spectrum.
+
+The combined 1.4 GHz image is the deepest and reveals the most
+extended structure, thus our discussion regarding radio morphology is
+guided using this frequency. The deconvolved, integrated 1.4 GHz flux
+of the continuous extended structure coincident with \irs, and having
+$S_{\nu} \ga 3\sigma_{\mathrm{rms}}$, is $14.0 \pm 0.51$ mJy. A
+significant spur of radio emission extending northeast from the
+nucleus is detected with flux $0.21 \pm 0.07$ mJy. Radio contours were
+generated beginning at 3 times the rms noise and moving up in 6
+log-space steps to the peak intensity of 4.7 mJy beam$^{-1}$. These
+are the contours referenced in all following discussion of the radio
+source morphology and its interaction with the X-ray gas.
+
+Below we determine properties of the radio source for the purpose of
+constraining properties of the jets which created cavities in the
+\rxj\ X-ray halo (see Section \ref{sec:cavs}). The radio spectrum was
+fitted between 151 MHz and 8.4 GHz for the full radio source (lobes,
+jets, and core) with the well-known KP \citep{1962SvA.....6..317K,
+  pach}, JP \citep{1973A&A....26..423J}, and CI
+\citep{1987MNRAS.225..335H} synchrotron models. The models primarily
+vary in their assumptions regarding the electron pitch-angle
+distribution and number of injections. The models were fitted to the
+radio spectrum using the code of \citet{2005ApJ...624..656W}, which is
+based on the method of \citet{1991ApJ...383..554C}. The JP model
+(single electron injection, randomized but isotropic pitch-angle
+distribution) yields the best fit with \chisq(DOF)$ = 4.91(3)$, a
+break frequency of $\nu_B = 12.9 \pm 1.0$ GHz, and a low-frequency
+($\nu < 2$ GHz) spectral index of $\alpha = -1.10 \pm 0.09$. The
+bolometric radio luminosity was approximated by integrating under the
+JP curve between $\nu_1 = 10$ MHz and $\nu_2 =$ 10,000 MHz, giving
+$\lrad = 1.09 \times 10^{42}~\lum$. The radio spectrum and best-fit
+models are shown in Figure \ref{fig:radio}.
+
+Assuming inverse-Compton (IC) scattering and synchrotron emission are
+the dominant radiative mechanisms of the radio source, the time since
+acceleration for an isotropic particle population is given by
+\citet{2001AJ....122.1172S} as
+\begin{equation}
+  \tsync = 1590 \left(\frac{B^{1/2}}{B^2 + B_{\mathrm{CMB}}^2}\right)~
+  \left[\nu_{\mathrm{B}} (1+z)\right]^{-1/2} ~\Myr
+\end{equation}
+where $B$ [\mg] is magnetic field strength, $B_{\mathrm{CMB}} =
+3.25(1+z)^2$ [\mg] is a correction for IC losses to the cosmic
+microwave background, $\nu_{\mathrm{B}}$ [GHz] is the radio spectrum
+break frequency, and $z$ is the dimensionless source redshift. Note
+that this form for \tsync\ neglects energy lost to adiabatic expansion
+of the radio plasma \citep{1968ARA&A...6..321S}. We assume that $B$ is
+not significantly different from the equipartition magnetic field
+strength, $B_{\mathrm{eq}}$ \citep[see][for thorough discussion of the
+  validity and shortcomings of this assumption]{birzan08}, which is
+derived from the minimum energy density condition as
+\citep{1980ARA&A..18..165M}
+\begin{equation}
+  B_{\mathrm{eq}} = \left[\frac{6 \pi ~c_{12}(\alpha,\nu_1, \nu_2)
+      ~\lrad ~(1+k)}{V \Phi}\right]^{2/7} ~\mathrm{\mg}
+\end{equation}
+where $c_{12}(\alpha,\nu_1,\nu_2)$ is a dimensionless constant
+\citep{pach}, \lrad\ [$\lum$] is the integrated radio luminosity from
+$\nu_1$ to $\nu_2$, $k$ is the dimensionless ratio of lobe energy in
+non-radiating particles to that in relativistic electrons, $V$ [\cc]
+is the radio source volume, and $\Phi$ is a dimensionless radiating
+population volume filling factor. Synchrotron age as a function of $k$
+and $\Phi$ for the full radio source is shown in Figure
+\ref{fig:radio}. For various combinations of $k$ and $\Phi$,
+$B_{\mathrm{eq}} \approx 4 \dash 57 ~\mg$, with associated synchrotron
+ages in the range $\approx 1 \dash 12$ Myr, typical of other BCG radio
+sources \citep[\eg][]{birzan08}. Repeating the above analysis using
+only radio lobe emission at 1.4 GHz, 5.0 GHz, and an 8.4 GHz upper
+limit, reveals \tsync\ could be as high as $30$ Myr as a result of a
+significantly steeper spectral index and lower break frequency.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Global ICM Properties}
+\label{sec:global}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Our analysis begins at the cluster scale with the integrated
+properties of the \rxj\ ICM hosting \irs. We define the mean cluster
+temperature, \cltx, as the ICM temperature within a core-excised
+aperture extending to $R_{\Delta_c}$, the radius at which the average
+cluster density is $\Delta_c$ times the critical density for a
+spatially flat Universe. We chose $\Delta_c = 500$ and used the
+relations from \cite{2002A&A...389....1A} to calculate
+$R_{\Delta_c}$. \rxj\ has a luminous, cool core and complex nucleus
+which are not representative of \cltx, thus, the convention of
+\citet{2007ApJ...668..772M} was followed and emission inside $0.15
+~\rf$ was excised. Source spectra were extracted from the region $0.15
+\dash 1.0~\rf$ and background spectra were extracted from reprocessed
+\caldb\ blank-sky backgrounds (see Section \ref{sec:rad}). Because
+\cltx\ and $R_{\Delta_c}$ are correlated in the adopted definitions,
+they were recursively determined until three consecutive iterations
+produced \cltx\ values which agreed within the 68\% confidence
+intervals. We measure $\cltx = 7.54^{+1.76}_{-1.15}$ keV corresponding
+to $\rf = 1.16^{+0.27}_{-0.19}~\Mpc$. Measurements for other
+$R_{\Delta_c}$ apertures are given in Table \ref{tab:specfits}.
+
+The cluster gas and gravitational masses were derived using the
+deprojected radial electron density and temperature profiles presented
+in Section \ref{sec:rad}. Electron gas density, $\nelec$, was
+converted to total gas density as $n_g = 1.92 \nelec \mu \mH$ where
+\mH\ [g] is the mass of hydrogen. The gas density profile was fitted
+with a $\beta$-model \citep{betamodel}, and the temperature profile
+was fitted with the 3D-$T(r)$ model of \citet{2006ApJ...640..691V} to
+ensure continuity and smoothness of the radial log-space derivatives
+when solving the hydrostatic equilibrium equation. Total gas mass was
+calculated by assuming spherical symmetry and integrating the best-fit
+$\beta$-model out to \rt, giving $\mgas(r<\rt) = 7.99 ~(\pm 0.65)
+\times 10^{13} ~\msol$. The gravitating mass was derived by solving
+the hydrostatic equilibrium equation using the analytic density and
+temperature profiles. We calculate $\mgrav(r<\rt) = 7.22 ~(\pm 1.44)
+\times 10^{14} ~\msol$, giving a ratio of gas mass to gravitating mass
+of $0.11 \pm 0.02$. The gas and gravitating mass errors were estimated
+from 10,000 Monte Carlo realizations of the measured density and
+temperature profiles and their associated uncertainties. Because the
+radial temperature and density profiles extend to $\approx 0.2 \rt$,
+the mass calculations include significant extrapolation, and thus may
+be upper limits, though the ratios should not be affected.
+
+\rxj\ is a hot, massive cluster with a temperature, luminosity, and
+gas fraction consistent with flux-limited and representative cluster
+samples \citep{hiflugcs2, 2009A&A...498..361P}. With the exception of
+the strange BCG at its heart, \rxj\ appears to be a typical massive,
+relaxed galaxy cluster. The integrated X-ray cluster properties, and
+the lack of a detected radio halo, suggest the system has not
+undergone a recent major merger or cluster-scale AGN outburst which
+may have dramatically disrupted the ICM. Adjusted for differences in
+assumed cosmology, our global measurements agree with prior studies of
+\irs\ \citep[\eg][]{2000MNRAS.315..269A}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Radial ICM Properties}
+\label{sec:rad}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Now we discuss the finer global structure of \rxj\ via radial ICM
+properties. Consistent with the analysis of Section \ref{sec:global},
+the BCG nucleus was excluded from all radial analysis. Temperature
+(\tx) and abundance ($Z$) profiles were created using circular annuli
+centered on the cluster X-ray peak and containing 2500 and 5000 source
+counts per annulus, respectively. A deprojected temperature profile
+was generated using the \textsc{deproj} method in \xspec. We use the
+projected profile in all analysis as it does not significantly differ
+from the deprojected profile. Spectra were grouped to 25 source counts
+per energy channel. \caldb\ blank-sky backgrounds were reprocessed and
+reprojected to match each observation, and then normalized for
+variations of the hard-particle background using the ratio of
+blank-sky and observation 9.5--12 keV count rates. Following the
+method outlined in \citet{2005ApJ...628..655V}, a fixed background
+component was included during spectral analysis to account for the
+spatially-varying Galactic foreground \citep[see][for more
+  detail]{xrayband}. The temperature and abundance profiles are shown
+in the top row of Figure \ref{fig:gallery}. After masking out all
+X-ray substructure (see Section \ref{sec:excess}) and the central
+$2\arcs$, a grouped spectrum for the central 20 kpc was fitted with a
+thermal model plus a cooling flow component. The best-fit model had a
+mass deposition rate of $\mdot = 206^{+87}_{-65} ~\msol$ for upper and
+lower temperatures of 5.43 keV and 0.65 keV, respectively, with
+abundance $0.5 ~\Zsol$. The factor of 3 temperature difference implies
+there may be interesting soft X-ray ionization lines, but currently
+there is no grating X-ray spectroscopy of \irs.
+
+A surface brightness (SB) profile was extracted using concentric
+$1\arcs$ wide circular annuli centered on the cluster X-ray peak. From
+the SB and temperature profiles, a deprojected electron density
+(\nelec) profile was derived using the \citet{kriss83} technique
+\citep[see][for more detail]{accept}. Errors for the density profile
+were estimated from 10,000 Monte Carlo bootstrap resamplings of the SB
+profile. The SB and electron gas density profiles are shown in the
+second row of Figure \ref{fig:gallery}.
+
+Total gas pressure ($P = n \tx$), entropy ($K = \tx\nelec^{-2/3}$),
+cooling time ($\tcool = 3n\tx~[2\nelec \nH \Lambda(T,Z)]^{-1}$), and
+enclosed X-ray luminosity (\lx) profiles were also created, where $n =
+2.3 \nH$ and $\nH \approx \nelec/1.2$. These profiles are presented in
+the bottom two rows of Figure \ref{fig:gallery}. Uncertainties for
+each profile were calculated by propagating the individual parameter
+errors and then summing in quadrature. The cooling functions,
+$\Lambda(T,Z)$, used to calculate cooling times were derived from the
+best-fit spectral model for each annulus of the temperature profile
+and linearly interpolated onto the grid of the higher resolution
+density profile. The function $K(r) = \kna +\khun (r/100
+~\kpc)^{\alpha}$ was fitted to the entropy profile, giving best-fit
+values of $\kna = 12.6 \pm 2.9 ~\ent$, $\khun = 139 \pm 8 ~\ent$, and
+$\alpha = 1.71 \pm 0.10$.
+
+The \rxj\ ICM structure is typical of the cool core class of galaxy
+clusters, with a temperature profile that rises with increasing radius
+and an entropy profile with a relatively small, flattened core. There
+are no resolved discontinuities in the \tx, \nelec, or $P$ profiles to
+suggest the presence of a shock or cold front. Additional 2D analysis
+using the weighted Voronoi tessellation and contour binning methods of
+\citet{wvt} and \citet{2006MNRAS.371..829S}, respectively, also did
+not reveal any significant temperature or abundance substructure. The
+entropy profile is similar to other cool core clusters \citep{accept},
+and with the population of $\kna < 30 ~\ent$ clusters that have
+radio-loud AGN and star formation in the BCG \citep{haradent,
+  rafferty08}. The $\kna \la 30 ~\ent$ scale defines an entropy regime
+in which thermal electron conduction in cluster cores is too
+inefficient to suppress widespread environmental cooling
+\citep{conduction}. Therefore, cooling subsystems, like gas ram
+pressure stripped from cluster members or ICM thermal instabilities,
+should be long-lived. There is an abundance of cool, gaseous
+substructure surrounding \irs, and in Section \ref{sec:excess} we
+discuss the relation of this structure to the AGN.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{ICM Cavity System}
+\label{sec:cavs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To aid investigation of ICM substructure, a residual X-ray image was
+created by subtracting a SB model for the ICM from the \cxo\ clean
+image. The \cxo\ clean image was binned by a factor of 2 and the
+SB isophotes were fitted using the \iraf\ tool \textsc{ellipse}. The
+geometric parameters ellipticity ($\epsilon$), position angle
+($\phi$), and centroid ($C$) were initially free to vary, but the
+best-fit values for each isophote converged to mean values of
+$\epsilon = 0.14$, $\phi = -76\mydeg$, and $C$ [J2000] = (09:13:45.5;
++40:56:28.4). These values were fixed in the fitting routine to
+eliminate the isophotal twisting resulting from statistical variation
+of the best-fit values for each radial step. The SB model was
+subtracted from the clean image, resulting in the residual image shown
+in Figure \ref{fig:resid}.
+
+The faint SB decrements NW and SE of the nucleus in the clean image
+are resolved into cylindrical voids in the residual image. The void
+and radio jet morphologies closely trace each other, confirming they
+share a common origin in the AGN outburst. Cavities are a well-known
+phenomenon, but currently, \irs\ is the highest redshift object where
+cavities have been directly imaged. In addition, \irs\ is thus far the
+only example of a QSO-dominated system with an unambiguous cavity
+detection. Using a 1994 \rosat\ HRI observation,
+\citet{1995MNRAS.274L..63F} found a ``hole'' in the core of
+\rxj\ which they attributed to absorption by a $> 1000 ~\msolpy$
+cooling flow. Neither the cavities nor the hole are seen in a longer
+1995 HRI follow-up observation, and when juxtaposed with the
+\cxo\ residual image, the hole is not associated with the
+cavities.
+
+The AGN outburst energetics were investigated using properties of the
+cavities \citep[see][for a review]{mcnamrev}. Cavity volumes, $V$,
+were calculated by approximating each void in the X-ray image with a
+right circular cylinder projected onto the plane of the sky along the
+cylinder radial axis. The lengthwise axis of the cylinders were
+assumed to lie in a plane perpendicular to the line of sight that
+passes through the central AGN. The energy in each cavity, $\ecav =
+\gamma PV/(\gamma-1)$, was estimated by assuming the contents are a
+relativistic plasma ($\gamma = 4/3$), and then integrating the total
+gas pressure, $P$, over the surface of each cylinder. The radio source
+morphology, spectrum, and age suggest the jets were recently being fed
+by the central AGN. Thus, we assumed the cavities were created on a
+timescale dictated by the ambient gas sound speed,
+\tsonic\ \citep[see][]{birzan04}, and the distance the AGN outflow has
+traveled to create each cavity was set to the cylinder length, not the
+midpoints, as is common. The power of each cavity is thus $\pcav =
+\ecav/\tsonic$. Cavity power is often assumed to be a good estimate of
+the physical quantity jet power, \pjet, but note that neither accounts
+for energy which may be imparted to shocks. Properties of the
+individual cavities are listed in Table \ref{tab:cylcavities}.
+
+The total cavity energy and power are estimated at $\ecav = 5.11 ~(\pm
+1.33) \times 10^{59}$ erg and $\pcav = 3.05 ~(\pm 1.03) \times 10^{44}
+~\lum$, respectively. Radio power has been shown to be a reasonable
+surrogate for estimating mean jet power \citep{birzan08}. Thus, we
+checked the \pcav\ calculation using the \citet{pjet} \pjet-\prad\ 1.4
+GHz and 200--400 MHz scaling relations. The relations give $\pjet
+\approx 2 \dash 6 \times 10^{44} ~\lum$, in agreement with the X-ray
+measurements. Compared with other systems hosting cavities,
+\irs\ resides between the middle and upper-end of the cavity power
+distribution. The AGN outburst is powerful, but there is nothing
+unusual about the energetics or the radiative efficiency (\prad/\pjet)
+given the cluster mass and ICM properties.
+
+Of interest is how the AGN energetics compare to the cooling rate of
+the host X-ray halo. The cooling radius was set at the radius where
+the ICM cooling time is equal to $H_0^{-1}$ at the redshift of
+\irs. We calculate $R_{\mathrm{cool}} = 128$ kpc, and measure an
+unabsorbed bolometric luminosity within this radius of
+$L_{\mathrm{cool}} = 1.61^{+0.25}_{-0.20} \times 10^{45} ~\lum$. If
+all of the cavity energy is thermalized over $4\pi$ sr, then $\approx
+20\%$ of the energy radiated away by gas within $R_{\mathrm{cool}}$ is
+replaced by energy in the observed AGN outflow. Assuming the mean ICM
+cooling rate does not vary significantly on a timescale of $\sim 1$
+Gyr, this highly optimistic scenario implies that 5 similar power AGN
+outbursts will significantly suppress cooling of the cluster halo.
+
+The \pcav\ estimates neglect the influence of shocks, but the
+synchrotron age and cavity age are useful in addressing this issue. If
+\tsync\ is an accurate measure of the radio source age, then the age
+discrepency $\tsonic \ga 42$ Myr versus $\tsync \la 30$ Myr implies
+the AGN outflow is supersonic, otherwise the radio-loud plasma will
+radiate away all its energy and be radio-silent prior to reaching the
+end of the observed jet. The implication being that some amount of
+energy may have gone into gas shocking. Recall, however, that no
+shocks are detected in the X-ray analysis, and note that the
+properties of \irs\ optical emission-line nebulae are inconsistent
+with excitation due to shocks \citep{1996MNRAS.283.1003C,
+  2000AJ....120..562T}. But, the nebular regions studied are $\ga 20$
+kpc from the jet axis, and may not be indicative of gas dynamics close
+to the outflow. Regardless, the energy in possible shocks was crudely
+estimated by setting $t_{\mathrm{sonic}} = 30$ Myr and adjusting
+\pcav\ by the Mach number: $\Delta \pcav = \Delta P / \Delta t$ and
+$\Delta P \propto M^3$. Relative to the ICM sound speed, the velocity
+needed to reach the end of the radio jet in 30 Myrs requires a Mach
+number of $\approx 1.7$, which brings the outburst power up to
+$\approx 3 \times 10^{45} ~\lum$ ($\ecav \approx 2 \times 10^{60}$ erg
+for a 30 Myr duration). Within the formal uncertainties, the AGN
+outburst power is on the order of a few times $10^{44} ~\lum$, with
+the possibility of being as large as $10^{45} ~\lum$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Fueling the AGN Outburst}
+\label{sec:fuel}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Some of the gravitational binding energy of the material accreting
+onto the SMBH is transported outward via relativistic jets. Assuming
+this conversion has an efficiency $\epsilon$, the energy deposited in
+cavities by the jets implies an accretion mass expressed as $\macc =
+\ecav/(\epsilon c^2)$ with a time-averaged mass accretion rate of
+$\dmacc = \macc/t_{\mathrm{sonic}}$. Setting $\epsilon = 0.1$, the AGN
+outburst resulted from the accretion of $2.86 ~(\pm 0.75) \times
+10^{6} ~\msol$ of matter at a rate of $0.054 \pm 0.004 ~\msolpy$. If
+the accretion flow feeding the SMBH is spherically symmetric, it can
+be characterized in terms of the Eddington (Eqn. \ref{eqn:edd}) and
+Bondi (Eqn. \ref{eqn:bon}) accretion rates,
+\begin{eqnarray}
+  \dmedd &=& \frac{2.2}{\epsilon} \left(\frac{\mbh}{10^9~\msol}\right)
+  ~\msolpy  \label{eqn:edd}\\
+  \dmbon &=& 0.013 ~K_{\mathrm{Bon}}^{-3/2} \left(\frac{\mbh}{10^9
+    ~\msol}\right)^{2} ~\msolpy \label{eqn:bon}
+\end{eqnarray}
+where $K_{\mathrm{Bon}}$ [\ent] is the mean entropy of gas within the
+Bondi radius and \mbh\ [\msol] is black hole mass. The Eddington rate
+defines the maximal inflow rate of gas not expelled by radiation
+pressure, as where the Bondi rate represents the idealized spherical
+accretion of gas onto a compact object at the ambient sound speed. The
+\citet{2007MNRAS.379..711G} relations relating absolute $[B,R,K]$-band
+magnitudes to \mbh\ predict $\mbh = 0.5 \dash 5.0 \times 10^9 ~\msol$,
+and we adopt a weighted mean value $1.05 ~(\pm 0.17) \times 10^9
+~\msol$ ($[B,R,K]$-band magnitudes were taken from HyperLeda, SDSS,
+and 2MASS, respectively). Assuming $K_{\mathrm{Bon}} = \kna$, then
+$\dmedd \approx 23 ~\msolpy$ and $\dmbon \approx 3.2 \times 10^{-4}
+~\msolpy$. Thus, the Eddington and Bondi ratios for the accretion
+event which powered the AGN outburst are $\dmacc/\dmedd \approx 0.002$
+and $\dmacc/\dmbon \approx 300$. Since the nucleus hosts a QSO, the
+highly sub-Eddington \dmacc\ places no additional strain on the
+accretion process, but the Bondi ratio is atypically large, implying
+highly efficient accretion of hot gas.
+
+The Bondi radius for \irs\ is unresolved ($\rbon = 9$ pc), and
+$K_{\mathrm{Bon}}$ is likely less than \kna. But, for a Bondi ratio of
+at least unity, $K_{\mathrm{Bon}}$ must be $\la 0.4 ~\ent$, lower than
+is measured for even galactic coronae \citep{coronae}. In terms of
+entropy, $\tcool \propto K^{3/2} ~\tx^{-1}$ \citep{d06}. Assuming gas
+close to \rbon\ is no cooler than 0.65 keV, the accreting material
+will have $\tcool \la 6$ Myr, a factor of $\sim 100$ below the
+shortest ICM cooling time and 1/5 the free-fall (ff) time in the
+core. But this creates the problem that the gas should fragment and
+form stars (since $\tcool < t_{\rm{ff}}$), and that gas close to
+\rbon\ is disconnected from cooling at larger radii, breaking the
+feedback loop \citep{2006NewA...12...38S}. If instead cold-mode
+accretion dominates, then the gas which becomes fuel for the AGN is
+distributed in the BCG halo and falls into the BCG as a result of
+cooling \citep{pizzolato05, 2010arXiv1003.4181P}. Indeed, radial
+filaments and gaseous substructure within 30 kpc of \irs\ are seen
+down to the resolution-limit of
+\hst\ \citep{1999Ap&SS.266..113A}. This may indicate the presence of
+cooling, overdense regions similar to the cold blobs expected in
+cold-mode accretion. Though Bondi accretion cannot be ruled out, it
+does not seem viable, and the process of cold-mode accretion appears
+to be more consistent with the nature of \irs.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{QSO Irradiation of the ICM}
+\label{sec:excess}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In Figure \ref{fig:resid}, three regions of X-ray emission in excess
+of the best-fit SB model are highlighted. The regions are illustrative
+and approximate the constant SB contours used to define the spectral
+extraction regions. Each region is denoted by its location relative to
+the nucleus: northern excess (NEx), eastern excess (EEx), and western
+excess (WEx). The NEx and WEx appear to be part of a tenuous, arc-like
+filament which may be gas displaced by the NW radio jet. In other
+clusters, structures similar to the NEx-WEx are found to be cool rims
+of gas \citep[\eg][]{2009ApJ...697L..95B}, but the \cxo\ data are
+insufficient to determine if these structures form a continuous
+filament in \irs, hence we treat the NEx and WEx as separate.
+
+Spectral analysis was performed on each region. A background spectrum
+was extracted from regions neighboring the excesses which did not show
+enhanced emission in the residual image. The backgrounds were scaled
+to correct for differences in sky area. For each region, the ungrouped
+source and background spectra were differenced within \xspec\ and fit
+with \xspec's modified Cash statistic \citep{1979ApJ...228..939C},
+appropriate for low-count \citep{1989ApJ...342.1207N,
+  2007A&A...462..429B}, background-subtracted spectra \citep[see
+  \xspec\ Manual Appendix B and][]{2004A&A...423...75V,
+  2007ApJ...666..835B, 2009A&A...503...35E}. The low signal-to-noise
+ratio (SN) of each spectrum precluded setting metal abundance as a
+free parameter when fitting a thermal model. Since the three excesses
+reside within the two central annuli of the abundance profile, the
+abundance was fixed at $0.5 ~\Zsol$. The best-fit values for the
+spectral models are given in Table \ref{tab:excess}.
+
+The analysis of the NEx spectrum was inconclusive due to low signal to
+noise: unconstrained thermal and power-law models had best-fit $\tx
+\sim 7$ keV and $\Gamma \sim 1.9$, respectively. The northern radio
+jet terminates in the NEx region, and the hardness ratio map (see
+Section \ref{sec:centsrc} and Figure \ref{fig:resid}) shows a possible
+hot spot in this same area. The NEx may result from non-thermal
+emission in the hot spot, but we cannot confirm this hypothesis
+spectroscopically.
+
+The WEx has a residual spectrum consistent with thermal emission, but
+the EEx spectrum has prominent features at $E < 2$ keV which were
+poorly fit by a single-component thermal model. The EEx thermal
+\feka\ complex was also poorly fit because of an obvious asymmetry
+toward lower energies. To reconcile the poor fit, three Gaussians were
+added to the EEx model. Comparison of goodness of fits determined from
+10,000 Monte Carlo simulations of the best-fit spectra suggest the
+model with the Gaussians is preferred. The strength of the features
+relative to the continuum suggest a thermal origin is unlikely, and
+that the features may be emission line blends. Below we discuss the
+EEx exclusively.
+
+H93 and \citet[][hereafter H99]{1999ApJ...512..145H} suggest the AGN
+which produced the large-scale jets has been reoriented within the
+last few Myrs, resulting in a new beaming direction close to the line
+of sight and at roughly a right angle to the previous beaming
+axis. Interestingly, the new AGN axis suggested by H99 is coincident
+with the EEx, the radio spur northeast of the radio core, a cone of UV
+ionization, an ionized optical nebula, and highly polarized diffuse
+optical emission. These respective features are outlined in Figure
+\ref{fig:resid}. \citet{2010MNRAS.402.1561R} demonstrate that the QSO
+in H1821+643, which is 2 times more luminous than \irs, is capable of
+photoionizing gas up to 30 kpc from the nucleus, and we suspect a
+similar process may be occurring in \irs.
+
+To test this hypothesis, reflection and diffuse spectra were simulated
+for the nebula and ICM coincident with the EEx using
+\cloudy\ \citep{cloudy}. The nebular gas density and ionization state
+were taken from \citet{2000AJ....120..562T}, while the initial ICM
+temperature, density, and abundance were set at 3 keV, 0.04 \pcc, and
+0.5 \Zsol, respectively. No Ca or Fe lines are detected from the
+nebula coincident with the EEx, possibly as a result of metal
+depletion onto dust grains \citep[\eg][]{1993ApJ...414L..17D}, while
+strong Mg, Ne, and O lines are \citep{2000AJ....120..562T}. Thus, a
+metal depleted, grain-rich, 12 kpc thick nebular slab was placed 15
+kpc from an attenuated $\Gamma = 1.7$ power law source with power $1
+\times 10^{47} ~\lum$. Likewise, a $17 ~\kpc \times 16 ~\kpc$ ICM slab
+was placed 19 kpc from the same source. The QSO radiation was
+attenuated using a 15 kpc column of density 0.06 \pcc, abundance 0.5
+\Zsol, and temperature 3 keV. The output models were summed, folded
+through the \cxo\ responses using \xspec, and fitted to the observed
+EEx spectrum (shown in Figure \ref{fig:qso}).
+
+In the energy range 0.1--10.0 keV, the nebula emission lines which
+exceed the thermal line emission originate from Si, Cl, O, F, K, Ne,
+Co, Na, and Fe and occur as blends around redshifted 0.4, 0.6, 0.9,
+and 1.6 keV. The energies and strengths of these blends are in good
+agreement with the EEx spectrum. Further, the \feka\ emission from the
+nebula is 100 times fainter than that from the ICM, and the observed
+asymmetry of the EEx \feka\ emission results from the 6.4 keV
+\feka\ photoionized line of the ICM. It is clear that beamed QSO
+radiation is responsible for the nature of the EEx, but if the
+photoionization equates to heating of the gas is unclear.
+
+One alternative explanation for the EEx is that it is low entropy gas
+uplifted from deeper within the core along the new AGN beaming
+axis. Scattered UV emission 32 kpc from the core places a minimum
+lifetime of 73 kyr for the new beaming direction (H93), and, assuming
+saturated heat flux across the EEx surface, the evaporation time is
+exceedingly short, $< 1$ Myr. These short timescales suggest the EEx
+was transported to the present location at $> 20$ times the ambient
+sound speed, or $v \sim 0.06 \dash 0.1c$, well below typical jet bulk
+flow velocities. The radio spur has a 1.4 GHz luminosity of $\approx 3
+\times 10^{39} ~\lum$, suggesting an associated 1 Myr old jet would
+have $\sim 10^{57}$ erg of kinetic energy, which is sufficient to lift
+$\sim 10^{9} ~\msol$ to a distance of 19 kpc. It appears uplift is
+feasible, particularly if the gas is magnetically-shielded and
+conduction is staved-off.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Nucleus X-ray Emission}
+\label{sec:centsrc}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The centroid and extent of the nuclear X-ray source were determined
+using the \ciao\ tool {\tt wavdetect} and the \cxo\ PSF. Each was
+confirmed with a hardness ratio map calculated as $HR = f(2.0 \dash
+9.0 ~\keV) / f(0.5 \dash 2.0 ~\keV)$, where $f$ is the flux in the
+denoted energy band. A source extraction region was defined using the
+90\% enclosed energy fraction (EEF) of the normalized \cxo\ PSF
+specific to the nuclear source median photon energy and off-axis
+position. The elliptical source region had an effective radius of
+$1.16\arcs$. A segmented elliptical annulus with the same central
+coordinates, ellipticity, and position angle as the source region, but
+having 5 times the area, was used for the background region. The
+background annulus was broken into segments to avoid the regions of
+excess X-ray emission discussed in Section \ref{sec:excess}. The $HR$
+map and extraction regions are shown in Figure \ref{fig:nucleus}.
+
+Source and background spectra were created using the \ciao\ tool {\tt
+  psextract}. The source spectrum was grouped to have 20 counts per
+energy channel. The background-subtracted \cxo\ spectra and best-fit
+models are presented in Figure \ref{fig:nucleus}. The significant flux
+difference below 1.3 keV is a result of the greater effective area of
+the ACIS-S3 CCD in 1999 versus ACIS-I3 in 2009. Approximately 72\% of
+the 2009 spectrum (hereafter, SP09) is from the source, with a count
+rate of $1.63 ~(\pm 0.06) \times 10^{-2}$ ct \ps\ in the 0.5-9.0 keV
+band. For the 1999 spectrum (hereafter, SP99), 67\% is source flux,
+with a 0.5--9.0 keV count rate of $2.71 ~(\pm 0.26) \times 10^{-2}$ ct
+\ps. We confirm the findings of \citet{2001MNRAS.321L..15I} that the
+ICM thermal \feka\ contribution to the nuclear spectrum is negligible,
+and that prominent, line-like features around 0.8 keV and 1.3 keV are
+superposed on the continuum.
+
+Previous studies have shown the nuclear spectrum is best modeled as
+Compton reflection from cold matter with a strong \feka\ fluorescence
+line ($E_{\rm{rest}} = 6.4$ keV). The SP99 and SP09 were fitted
+separately in \xspec\ over the energy range 0.5--7.0 keV with an
+absorbed \pexrav\ model \citep{pexrav} plus three Gaussians. The
+disk-reflection geometry employed in the \pexrav\ model is not ideal
+for fitting reflection from a Compton-thick torus
+\citep{2009MNRAS.397.1549M}, but no other suitable \xspec\ model is
+currently available. Hence, only the \pexrav\ reflection component was
+fitted and no high energy cut-off for the power law was used. Fitting
+separate SP99 and SP09 models allowed for source variation in the
+decade between observations, however $\Gamma$ was poorly constrained
+for SP99 and thus fixed at the SP09 value. Using constraints from
+\citet{2000AJ....120..562T}, the model parameters for reflector
+abundance and source inclination were fixed at $1.0 ~\Zsol$ and $i =
+50\mydeg$, respectively. Setting abundance as a free parameter did not
+statistically improve the fits. The best-fit model parameters are
+presented in Table \ref{tab:nucspec}.
+
+Using a solar abundance thermal component in place of the two
+low-energy Gaussians yielded a statistically worse fit. The model
+systematically underestimated the 1--1.5 keV flux and overestimated
+the 2--4 keV flux. Leaving the thermal component abundance as a free
+parameter resulted in $0.1 ~\Zsol$, \ie\ the thermal component tended
+toward a featureless skewed-Gaussian. Strong Mg, Ne, S, and Si
+K$\alpha$ fluorescence lines at $E < 3.0$ keV can be present in
+reflection spectra \citep{1991MNRAS.249..352G}, as can Fe L-shell
+lines from photoionized gas \citep{1990ApJ...362...90B}. We conclude
+that the soft X-ray emission modeled using the Gaussians is likely a
+combination of emission line blends and low-level thermal continuum.
+
+The unabsorbed 2--10 keV {\it{reflected}} flux is
+$4.24^{+0.57}_{-0.55} \times 10^{-13} ~\flux$ corresponding to a
+rest-frame $L_{2-10} = 1.57^{+0.19}_{-0.19} \times 10^{44}
+~\lum$. Adjusted for cosmology, this agrees with the measurement from
+\citet{2001MNRAS.321L..15I}. Since we have used a pure reflection
+model, the intrinsic QSO luminosity can only be estimated as
+$(\kappa/\eta) L_{2-10}$ where $\kappa = 40$ is a bolometric
+correction factor \citep{2007MNRAS.381.1235V} and $\eta = 0.06$ is the
+reflector albedo \citep{2009MNRAS.397.1549M}. This gives $\lqso = 1.05
+~(\pm 0.13) \times 10^{47} ~\lum$. In regards to the process of
+radiative feedback, the model of \citet{2005ApJ...619...60L} predicts
+a QSO driven gas outflow will have a kinetic power of $L_{\rm{kin}}
+\approx 0.05 \lqso$, with a total energy $E_{\rm{kin}} < L_{\rm{kin}}
+\tsonic$, where we assume the QSO lifetime is less than the age of the
+cavities. Thus, for \irs, $L_{\rm{kin}} \sim 10^{45} ~\lum$ and
+$E_{\rm{kin}} < 10^{60}$ erg, ten times the mechanical output of the
+AGN. If this energy exceeds the thermal energy of the intergalactic
+medium, then it is possible a highly supersonic ($M > 20$),
+small-scale shock is being driven through the galaxy, coupling the
+radiative output with the ambient gas.
+
+Our measurement of the \feka\ equivalent width (\fekaew), which is a
+valuable diagnostic for probing the environment of an AGN
+\citep[see][for a review]{2000PASP..112.1145F}, agrees with previous
+studies which found $\fekaew \la 1$ keV \citep{2000A&A...353..910F,
+  2001MNRAS.321L..15I, 2007A&A...473...85P}. The large uncertainties
+associated with these previous studies prevents us from determining if
+\fekaew\ has varied since 1998. Our results are also consistent with
+models and observations which show that $\fekaew \ga 0.5$ keV is
+correlated with $\Gamma \ga 1.7$ and reflecting column densities
+$\nhref \sim 10^{24} ~\pcmsq$ \citep{1996MNRAS.280..823M,
+  1997ApJ...477..602N, 1999MNRAS.303L..11Z, 2005A&A...444..119G}.
+
+Previous studies suggested the \bepposax\ PDS detection resulted
+primarily from transmission of hard X-rays through an obscuring screen
+with $\nhobs > 10^{24} ~\pcmsq$. Extrapolating our best-fit model out
+to 10--80 keV reveals statistically acceptable agreement with the PDS
+data (see Figure \ref{fig:resid}). The 10--200 keV model flux is
+$f_{10 \dash 200} = 8.15^{+0.21}_{-0.19} \times 10^{-12} ~\flux$,
+which is not significantly different from the $f_{10 \dash 200}$
+measured with \bepposax. Addition of a second power-law component
+($\Gamma = 1.7$) absorbed by a $\nhobs = 3 \times 10^{24} ~\pcmsq$
+screen at the \irs\ redshift to the model lowered \chisq\ but with no
+statistical improvement to the fit. If transmitted hard X-ray emission
+falls within the passband used for spectral analysis, $\Gamma$ would
+be artificially lowered, and the extrapolated hard X-ray flux thus
+increases. However, for $\Gamma \ge 1.7$, column densities $> 3 \times
+10^{24} ~\pcmsq$ are sufficient to suppress significant transmitted
+emission below the 7 keV spectral analysis cut-off, indicating the
+best-fit model should not have an artificially low $\Gamma$.
+
+That we find no need for an additional hard X-ray component does not
+contradict the well-founded conclusion that \irs\ harbors a
+Compton-thick QSO. On the contrary, the measured \fekaew\ suggests
+reflecting column densities of $\nhref \sim 1 \dash 5 \times 10^{24}
+~\pcmsq$ \citep{1993MNRAS.263..314L, 2005A&A...444..119G,
+  2010arXiv1005.3253C}. Assuming the density of material surrounding
+the QSO is mostly homogeneous, \ie\ $\nhref \approx \nhobs$, our
+results are consistent with the presence of a moderately Compton-thick
+screen.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Evolution of the feedback mode?}
+\label{sec:evo}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We have shown that \irs\ has the typical characteristics of other
+galaxies undergoing radiative and mechanical AGN feedback, and in this
+section we consider their common origin and what affect they may be
+having on the evolution of the galaxy.
+
+The cold H$_2$ mass of \irs\ is $< 10^{10} ~\msol$
+\citep{1998ApJ...506..205E}, there is $< 10^8 ~\msol$ of cold dust
+\citep{2001MNRAS.326.1467D}, the hot dust mass is $\sim 10^9 ~\msol$
+\citep{1997A&A...318L...1T}, and no polycyclic aromatic hydrocarbon or
+silicate absorption features are detected in the galaxy's IR spectrum
+\citep{2004ApJ...613..986P, 2008ApJ...683..114S}. Given that the
+\irs\ \halpha\ luminosity exceeds $10^{42} ~\lum$
+\citep{1996MNRAS.283.1003C, 1998ApJ...506..205E}, compared with other
+BCGs \citep[\eg][]{edge01}, \irs\ appears to be gas-poor with a low
+gas-to-dust ratio. One possible explanation for the apparently low
+molecular gas content is that it is being driven out by
+non-relativistic winds \citep[\eg][]{2010MNRAS.401....7H}, and/or is
+locked-up in stars. Indeed, integral field spectroscopy indicates the
+presence of a $> 1000 ~\kmps$ emission line outflow coincident with
+the nucleus \citep{1996MNRAS.283.1003C}. Further, the CO upper limits
+found by \citet{1998ApJ...506..205E} do not exclude the existence of
+low-mass, high-velocity molecular gas expelled by QSO winds. Given
+that rapid and extensive dust formation is also expected in such QSO
+winds \citep{2002ApJ...567L.107E}, this may further explain the
+extreme dust richness of \irs. Gas consumption by star formation also
+cannot be neglected: the \irs\ near-UV flux measured by \galex\ is
+$\approx 47 ~\mu$Jy, which the relations of \citet{kennicutt2} predict
+may be associated with $\approx 45 ~\msolpy$ of star formation.
+
+\citet[][hereafter F09]{2009MNRAS.394L..89F} show that QSO radiation
+pressure may have a significant influence on dusty material in the
+host galaxy. F09 define the effective Eddington ratio to be $\leff =
+\lqso (1.38 \times 10^{38} ~\mbh)^{-1} ~\erg^{-1} ~\s ~\msol$, and for
+\irs, this has a value of $\approx 0.72$. In the \nhobs-\leff\ plane
+presented by F09, which they divide into regions where obscuring
+clouds are either long-lived or expelled, \irs\ resides near the
+boundary of the two regions. It is then reasonable to suspect that gas
+with a sight line to the QSO is being accelerated away from the QSO by
+radiation pressure, and possibly being heated as well. These
+conclusions are, however, at the mercy of our choice for \mbh, \ie\ if
+$\mbh \ge 5 \times 10^9 ~\msol$, then $\leff < 0.2$, as where $\mbh <
+1 \times 10^9 ~\msol$ implies $\leff > 1$.
+
+All three of the primary channels which an AGN can exploit to
+influence its environment (jets, winds, radiation) are plausibly
+active in \irs, and it may be that these processes are simultaneously
+conspiring to quench cooling within and around the host galaxy. The
+mass accretion rate required to power the QSO is $\dmacc = \lqso/(0.1
+c^2) \approx 20 ~\msolpy$, 300 times larger than the mass accretion
+rate needed to power the jets. At this rate, the black hole mass would
+double in $\approx 50$ Myr, and for the Magorrian relation to hold, $>
+10^{11} ~\msol$ of stars would need to form, $> 10\%$ of the current
+bulge mass. This seems unlikely, and thus the current period of QSO
+activity is probably fleeting, and will soon give way to a sustained
+period of sub-Eddington accretion that can still power mechanical
+feedback via jets, the emergence of which may have signaled this
+change. Further, H93 and H99 discuss in detail that the misalignment
+between the large-scale radio jets and beamed nuclear radiation may be
+correlated with evolution of the radio source from a \frii\ to \fri,
+and that the jet axis realignment must have transpired in less than a
+few Myrs. This bears discussion, as it may be related to the evolution
+of the feedback cycle.
+
+One simple explanation is that there are multiple SMBHs in the
+nucleus, each with its own accretion system and beaming axis. We could
+be seeing emission from two separate systems: one in quasar-mode,
+another in radio-mode. Alternatively, a single SMBH may have undergone
+a ``spin-flip'' \citep{2002Sci...297.1310M} when a smaller black hole
+merged with it, thus reorienting the spin axis, which is believed to
+be synonymous with the beaming axis. BCGs are known for cannibalism,
+and 6 suspected companion galaxies reside within a projected 80 kpc of
+the BCG \citep{1996AJ....111..649S, 1999Ap&SS.266..113A}, so it is not
+out of the question that one or more mergers have taken place in the
+last few Myrs. However, black hole mergers are lengthy (few Gyrs) and
+difficult processes, and the spin axes of merging black holes may
+naturally align when in a gas-rich environment
+\citep{2007ApJ...661L.147B}. And if mergers are responsible for the
+change of the spin axis direction, it is odd that the jets are very
+linear and highly-structured. Merger induced ICM bulk motions and
+turbulence are known to disrupt the flow of radio plasma such that the
+observed synchrotron sources take on peculiar morphologies
+\citep[\eg][]{2009A&A...495..721S, 2010arXiv1002.0395S}. It appears
+then that if the misalignment arose via a merger, the orbit of infall
+must have avoided the axis of the jets and been gentle (\ie\ subsonic)
+so as not to stir the ICM.
+
+Based on the spin evolution framework of \citet{gesspin}, there is yet
+another intriguing explanation which does not specifically require
+mergers to alter the SMBH spin axis. \citet{gesspin} suggest that
+evolution of a black hole spin state from retrograde to prograde
+relative to accreting matter is specifically correlated with a
+transition of the radio source from a powerful \frii\ to a low-power
+\fri. During the process of retrograde spin-down, the black hole must
+pass through a state where the spin is $\approx 0$. At this point, if
+there is an asymmetric accretion flow exceeding a \mbh-dependent
+critical \dmacc, the spin axis can be dramatically reoriented on
+timescales of a few Myrs (Cavagnolo et al., in preparation), possibly
+giving rise to the type of jet-beamed radiation misalignment observed
+in \irs. This process may also accompany quenching of the cold gas
+reservoir in the host galaxy, hastening the transition from
+quasar-dominated to radio-dominated feedback.
+
+%%%%%%%%%%%%%%%%%
+\section{Summary}
+\label{sec:summ}
+%%%%%%%%%%%%%%%%%
+
+In this paper we have shown, through a new \cxo\ X-ray observation,
+that the AGN in \inine\ is interacting with the ICM of \rxj\ through
+both the mechanical and radiative feedback channels. The results
+presented in this paper are as follows:
+\begin{itemize}
+\item The \rxj\ ICM global and radial properties reveal no signs of
+  major cluster disturbance such as shocks or cold fronts. \rxj\ is an
+  unremarkable, massive, cool-core galaxy cluster with a 12 \ent\ core
+  entropy, a typical mass to temperature ratio, and a mean cluster gas
+  fraction of 0.11.
+\item We have discovered cavities in the X-ray halo of \irs\ which
+  indicate an AGN outburst with total mechanical power of at least $3
+  \times 10^{44} ~\lum$ and total energy output of $6 \times 10^{59}$
+  erg. Comparison of the cavity sound speed ages and radio source ages
+  indicate the outflow may be supersonic, and if significant gas
+  shocking has occurred, the total kinetic power of the AGN may be
+  $\sim 10^{45} ~\lum$.
+\item Core ICM properties and the mass accretion rate required to
+  power the AGN outburst suggest that fuel for the AGN was likely not
+  accreted directly from the hot ICM, \ie\ via the Bondi mechanism,
+  but rather attained through cold-mode accretion. This conclusion is
+  consistent with the sub-kpc structure of the BCG halo and the X-ray
+  properties of the nucleus.
+\item Detection of an X-ray excess 13--26 kpc NE of the nucleus
+  indicates beamed radiation from the $\sim 10^{47} ~\lum$ QSO is
+  escaping the nucleus and interacting with the ICM in the same region
+  as a strongly photoionized nebulae. The X-ray emission properties of
+  this region are well-fit by a model where the nebula and ICM are
+  being irradiated by the QSO.
+\item The nuclear X-ray source is well-fit by a reflection-dominated
+  model where the power law source is obscured by moderately
+  Compton-thick material. The width of the nuclear \feka\ fluorescence
+  emission line indicates a reflecting column density, and presumably
+  obscuring column density, of $> 10^{24} ~\pcmsq$. We also show that
+  the \bepposax\ PDS detection of hard X-ray emission can be explained
+  by reflected emission.
+\item Based on the obvious QSO nuclear activity, interaction of the
+  X-ray halo and jets, ostensible \irs\ gas-poorness, nuclear emission
+  line outflow, high effective Eddington QSO luminosity, and
+  misalignment of the large-scale radio jets and beamed radiation from
+  the nucleus, we suggest that \irs\ is evolving from a
+  radiation-dominated mode of feedback to a kinetic-dominated
+  mode. Among other possible explanations, we speculate that the
+  observed properties of \irs\ may be related to the process of SMBH
+  spin evolution, and further suggest that \irs\ is a local example of
+  how massive galaxies at higher redshifts evolve from quasar-mode
+  into radio-mode.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Acknowledgements}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+KWC and MD were supported by SAO grant GO9-0143X, and MD and GMV
+acknowledges support through NASA LTSA grant NASA NNG-05GD82G. KWC and
+BRM thank the Natural Sciences and Engineering Research Council of
+Canada for support. KWC thanks Alastair Edge and Niayesh Afshordi for
+helpful insight, and Guillaume Belanger and Roland Walter for advice
+regarding \integral\ data analysis.
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliographystyle{mn2e}
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Figures  and Tables %
+%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\onecolumn
+\input{specfits.tex}
+\input{cylcavities.tex}
+\input{excess.tex}
+\input{nucspec.tex}
+\clearpage
+\input{figs.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+% End the document %
+%%%%%%%%%%%%%%%%%%%%
+
+\label{lastpage}
+\end{document}
+
+%% The Magorrian relation suggests that for every unit of mass
+%% accreted by a SMBH, roughly 500 units go into host galaxy bulge
+%% stars \citep{magorrian}. Using the method of \citep{rafferty06},
+%% which relates $R$-band luminosity and bulge mass, we estimate the
+%% \irs\ bulge mass at $\sim 10^{12} \msol$. If the \irs\ SMBH mass
+%% grows as $(1-\epsilon) \dmaccqso$, it will double in $\approx 80$
+%% Myr, requiring more than $10^{11} ~\msol$ of stars to form in the
+%% same period -- more than 10\% of the current bulge mass. Such
+%% prodigious star formation seems unlikely, so the current period of
+%% quasar activity is likely fleeting. It appears then that, in
+%% agreement with models of quasar-mode and radio-mode feedback, on a
+%% time scale less than 100 Myr, the quasar might fade while the jets
+%% may persist on a lingering sub-Eddington accretion flow.

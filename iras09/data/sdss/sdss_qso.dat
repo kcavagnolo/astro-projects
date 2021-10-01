@@ -1,0 +1,151 @@
+Title: The Sloan Digital Sky Survey Quasar Catalog IV. Fifth Data Release  
+Authors: Schneider D.P., Hall P.B., Richards G.T., Strauss M.A., 
+         Vanden Berk D.E., Anderson S.F., Brandt W.N., Fan X., Jester S., 
+         Gray J., Gunn J.E., SubbaRao M.U., Thakar A.R., Stoughton C., 
+         Szalay A.S., Yanny B., York D.G., Bahcall N.A., Barentine J., 
+         Blanton M.R., Brewington H., Brinkmann J., Brunner R.J., 
+         Castander F.J., Csabai I., Frieman J.A., Fukugita M., Harvanek M., 
+         Hogg D.W., Ivezic Z., Kent S.M., Kleinman S.J., Knapp G.R., Kron R.G.,
+         Krzesinski J., Long D.C., Lupton R.H., Nitta A., Pier J.R., Saxe D.H., 
+         Shen Y., Snedden S.A., Weinberg D.H., Wu J. 
+Table: The SDSS Quasar Catalog IV
+================================================================================
+Byte-by-byte Description of file: datafile2.txt
+--------------------------------------------------------------------------------
+   Bytes Format Units   Label    Explanations
+--------------------------------------------------------------------------------
+   1- 18 A18    ---     SDSS     SDSS DR5 Object Designation (1) 
+  20- 29 F10.6  deg     RAdeg    Right Ascension in decimal degrees (J2000)
+  31- 40 F10.6  deg     DEdeg    Declination in decimal degrees (J2000) 
+  42- 47 F6.4   ---     z        Redshift
+  49- 54 F6.3   mag     B-umag   SDSS BEST u band PSF magnitude (2) 
+  56- 60 F5.3   mag   e_B-umag   Error in B-umag     
+  62- 67 F6.3   mag     B-gmag   SDSS BEST g band PSF magnitude (2)
+  69- 73 F5.3   mag   e_B-gmag   Error in B-gmag
+  75- 80 F6.3   mag     B-rmag   SDSS BEST r band PSF magnitude (2)
+  82- 86 F5.3   mag   e_B-rmag   Error in B-rmag
+  88- 93 F6.3   mag     B-imag   SDSS BEST i band PSF magnitude (2)
+  95- 99 F5.3   mag   e_B-imag   Error in B-imag
+ 101-106 F6.3   mag     B-zmag   SDSS BEST z band PSF magnitude (2)
+ 108-112 F5.3   mag   e_B-zmag   Error in B-zmag
+ 114-119 F6.3   mag     Au       Galactic absorption in u band (3) 
+ 121-126 F6.3   [cm-2]  logHI    Log of Galactic HI column density
+ 128-133 F6.3   mag     20mag    FIRST Peak flux density (AB mag) at 20 cm (4)
+ 135-141 F7.3   ---     F-S/N    The S/N ratio for FIRST flux
+ 143-148 F6.3   arcsec  S-FSep   SDSS/FIRST separation
+ 150-151 I2     ---     F1Flag   FIRST flux at optical position but no FIRST
+                                  source flag (5) 
+ 153-154 I2     ---     F2Flag   FIRST source 2-30" from optical 
+                                 position flag (6) 
+ 156-162 F7.3   [ct/s]  logX     log of RASS BSC/FSC full band count rate (7) 
+ 164-169 F6.3   ---     X-S/N    The S/N ratio for RASS count rate
+ 171-176 F6.3   arcsec  S-XSep   SDSS/RASS separation 
+ 178-183 F6.3   mag     Jmag     2MASS J band magnitude (8) 
+ 185-189 F5.3   mag   e_Jmag     Error in Jmag 
+ 191-196 F6.3   mag     Hmag     2MASS H band magnitude (8)
+ 198-202 F5.3   mag   e_Hmag     Error in Hmag           
+ 204-209 F6.3   mag     Kmag     2MASS K band magnitude (8)
+ 211-215 F5.3   mag   e_Kmag     Error in Kmag 
+ 217-222 F6.3   arcsec  S-2Sep   SDSS/2MASS separation
+ 224-230 F7.3   mag     iMag     Absolute i band magnitude (9)
+ 232-237 F6.3   mag      D(g-i)  Offset of quasar (g-i) from 
+                                  distribution (g-i) mode (10)
+ 239-240 I2     ---     Morph    Morphology flag (11) 
+ 242-243 I2     ---     SPFlag   SCIENCEPRIMARY flag (12)
+ 245-246 I2     ---     SMFlag   SDSS MODE (blends, overlapping scans) flag (13)
+ 248-249 I2     ---     UTSFlag  Uniform target selection flag (14) 
+ 251-261 I11    ---     B-TSFlag BEST target selection flag 
+ 263-264 I2     ---     B-lowz   Low-z Quasar (color selection only) target
+                                  flag (15) 
+ 266-267 I2     ---     B-hiz    High-z Quasar (color selection only) target
+                                   flag (15)
+ 269-270 I2     ---     B-FFlag  FIRST target flag (16) 
+ 272-273 I2     ---     B-RFlag  ROSAT target flag (16)
+ 275-276 I2     ---     B-SFlag  Serendipity target flag (16)
+ 278-279 I2     ---     B-*Flag  Star target flag (16)
+ 281-282 I2     ---     B-GFlag  Galaxy target flag (16)
+ 284-288 I5     ---     RNum     SDSS Imaging Run Number for photometric
+                                  measurements
+ 290-294 I5     d       P-MJD    Modified Julian Date of imaging observation
+ 296-300 I5     d       S-MJD    Modified Julian Date of spectroscopic observation
+ 302-305 I4     ---     SPNum    Spectroscopic Plate Number
+ 307-310 I4     ---     SFNum    Spectroscopic Fiber Number
+ 312-314 I3     ---     Rerun    SDSS Photometric Processing Rerun Number
+ 316-317 I2     ---     CCol     SDSS Camera Column Number
+ 319-322 I4     ---     Frame    SDSS Frame Number
+ 324-327 I4     ---     ONum     SDSS Object Number
+ 329-339 I11    ---     T-TSFlag TARGET target selection flag
+ 341-342 I2     ---     T-lowz   Low-z Quasar (color selection only) target
+                                  flag (15)
+ 344-345 I2     ---     T-hiz    High-z Quasar (color selection only) target
+                                  flag (15)
+ 347-348 I2     ---     T-FFlag  FIRST target flag (16) 
+ 350-351 I2     ---     T-RFlag  ROSAT target flag (16)
+ 353-354 I2     ---     T-SFlag  Serendipity target flag (16)
+ 356-357 I2     ---     T-*Flag  Star target flag (16)  
+ 359-360 I2     ---     T-GFlag  Galaxy target flag (16)
+ 362-367 F6.3   mag     T-umag   SDSS TARGET u band PSF magnitude (2) 
+ 369-373 F5.3   mag   e_T-umag   Error in T-umag
+ 375-380 F6.3   mag     T-gmag   SDSS TARGET g band PSF magnitude (2)
+ 382-386 F5.3   mag   e_T-gmag   Error in T-gmag
+ 388-393 F6.3   mag     T-rmag   SDSS TARGET r band PSF magnitude (2)
+ 395-399 F5.3   mag   e_T-rmag   Error in T-rmag
+ 401-406 F6.3   mag     T-imag   SDSS TARGET i band PSF magnitude (2)
+ 408-412 F5.3   mag   e_T-imag   Error in T-imag
+ 414-419 F6.3   mag     T-zmag   SDSS TARGET z band PSF magnitude (2)
+ 421-425 F5.3   mag   e_T-zmag   Error in T-zmag
+ 427-446 I20    ---     SpOID    The 64-bit integer Spectroscopic
+                                  Identification flag
+ 448-472 A25    ---     OName    Object Name if previously published (17) 
+--------------------------------------------------------------------------------
+Note (1): In the hhmmss.ss+ddmmss.s  (J2000; truncated coordinates) format.
+Note (2): SDSS photometric measurements are asinh magnitudes (Lupton, Gunn, 
+          and Szalay 1999, AJ, 118, 1406) and are normalized (to ~3% accuracy) 
+          to the AB-magnitude system (Oke and Gunn 1983, ApJ, 266, 713). Note 
+          that the ugriz magnitudes are not corrected for Galactic absorption.
+          A "0.000" indicates that the value couldn't be retrieved from 
+          the SDSS database.
+Note (3): Where A_g_, A_r_, A_i_, A_z_ = 0.736, 0.534, 0.405, 0.287 x A_u_.
+Note (4): Where AB mag = -2.5 log_10 [f_nu / 3631 Jy]. Values of "0.000" 
+          or "-1.000" indicate no detection and not in FIRST survey 
+          area, respectively.
+Note (5): 
+    0 = no detectable flux;
+    1 = detectable flux.
+Note (6): 
+    0 = no such source;
+    1 = source exists.
+Note (7): From ROSAT All Sky Survey Bright and Faint source catalogs. 
+          A "-9.000" indicates no detection.
+Note (8): All 2MASS data are from the 2MASS All-Sky Data Release Point Source 
+          Catalog (PSC) 2003 March 25. Note that 2MASS measurements are 
+          Vega-based, not AB, magnitudes.  A "0.000" value indicates 
+          no detection.
+Note (9): For H_o_ = 70.0, {Omega}_M_ = 0.300, {Omega}_L_ = 0.700, 
+          {alpha}_Q_ = -0.50.
+Note (10): Of quasars at this redshift.  A value of -9.0 indicates too few 
+           quasars at redshift to form mean relation. All colors corrected 
+           for Galactic extinction.
+Note (11):
+    0 = point source;
+    1 = extended.
+Note (12):
+    0 = Object is not SCIENCEPRIMARY;
+    1 = Object is SCIENCEPRIMARY.
+Note (13):
+    1 = Primary object;
+    2 = Secondary observation;
+    3 = Family observation.
+Note (14):
+    0 = not selected with final algorithm;
+    1 = selected with final algorithm.
+Note (15):
+    0 = not targeted as low/high-z quasar; 
+    1 = targeted as low/high-z quasar.
+Note (16):
+    0 = not targeted; 
+    1 = targeted.
+Note (17): An "SDSS" in this column indicates that the object is a previously 
+           published SDSS discovery.
+--------------------------------------------------------------------------------
+091345.48+405628.2 138.439538  40.941174 0.4418 19.779 0.038 19.350 0.019 19.082 0.018 17.575 0.014 18.168 0.026  0.102 20.215 14.306  52.519  0.345  0  1  -0.916  5.151  9.650 16.826 0.169 15.871 0.145 14.774 0.112  0.341 -24.208  1.593  1  1  1  1        5634  1  0  0  1  0  0  0  2830 52263 52668 1200   73  41  2  198   23        5634  1  0  0  1  0  0  0 19.721 0.033 19.334 0.019 19.100 0.015 17.578 0.011 18.176 0.026   337996179696517120 2MASSI J0913454+405628

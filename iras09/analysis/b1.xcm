@@ -1,0 +1,55 @@
+xspec11
+data IRAS_09104+4109_10445_b1_src1.pi
+backgrnd none
+ignore **-0.3 10.0-**
+mo wabs(powerlaw)+mekal/b & 0.0158,0 & 1.8 & & 4.77,0 & 1.58e20 & 0.77 & 0.4418 & & &
+statis cstat
+fit 10000 0.001
+cpd /xw
+setplot energy
+setplot rebin 10,20,,sqrt
+plot ldata
+iplot
+cs 1.0
+time off
+r y 1e-5 3e-3
+r x 0.3 10.0
+la file
+la top Absorbed power-law model with background thermal component
+la y Flux [ct s\u-1\d keV\u-1\d]
+la x Energy [keV]
+plot
+h b1_plaw.ps/ps
+exit
+exit
+y
+gv b1_plaw.ps
+
+
+
+xspec11
+data IRAS_09104+4109_10445_b1_src1.pi
+backgrnd none
+ignore **-0.3 10.0-**
+mo wabs(apec)+mekal/b & 0.0158,0 & 6 & 0.7 & 0.4418 & & 4.77,0 & 1.58e20 & 0.77 & 0.4418 & & &
+statis cstat
+fit 10000 0.001
+cpd /xw
+setplot energy
+setplot rebin 10,20,,sqrt
+plot ldata
+iplot
+cs 1.0
+time off
+r y 1e-5 3e-3
+r x 0.3 10.0
+la file
+la top Absorbed thermal model with background thermal component
+la y Flux [ct s\u-1\d keV\u-1\d]
+la x Energy [keV]
+plot
+h b1_apec.ps/ps
+exit
+exit
+y
+gv b1_apec.ps

@@ -1,0 +1,115 @@
+                                                         December 2001
+
+The /contrib directory contain self-contained user-contributed packages
+that are *not* part of the standard IDL Astronomy library distribution.
+
+If a .tar file is present in a directory, then it contains all the necessary
+procedures and README file, i.e. one can download either the .tar file *or* the
+remaining ASCII files.
+
+The file allcontrib.tar.gz in this directory contains the ASCII contents of all
+the /contrib  directories (except varosi).
+
+/beck -  Contains the neural network classifier procedure nnet.pro and
+       training program train_nnet.pro and supporting procedures (Terry Beck,
+       Sigma Research, Goddard)
+
+/bhill - An object-oriented display widget for roaming, zooming, scaling and
+         examining pixel values in an image.   XCTV is for a single image,
+         XCTV2 is for examining 2 images simultaneously, and XCTVN is for 
+         examining a series of images.    XINSPECT and XINSPECT2 are for
+         browsing a huge FITS files without having to read the entire image 
+         into memory   Requires V5.1 or later.    Last updated 11 December 2001.
+         (Robert Hill, SSAI/Goddard)
+
+/freudenreich -  Contains ROBLIB, a set of mathematical and statistical 
+    procedures for robust data analysis originally developed for the COBE 
+    project by Henry Freudenreich (Hughes STX).    Includes procedures for
+    LOWESS smoothing, bootstrap error analysis, robust regression, polynomial
+    and quadratic surface fitting.   (Henry Freudenreich, Goddard)
+
+
+/knight - Contains the single (large) widget image display program LOOK.PRO
+          Last Modified: 12-Jul-2000:  (Fred Knight, Lincoln Labs)
+          
+          o You roam in a grid of 2x2 windows with menus on three sides.
+          o The plots are dynamic: horizontal and vertical cuts are updated
+            as you move the mouse over the full and zoom images.
+          o Zoom by dragging the left mouse over the full image.
+          o Select numerous options in the Options menu,
+            - blink compare (between 2 or more images)
+            - movies (all or selected images)
+            - catalogs (all or selected images)
+            - enlargements (to window and to entire screen)
+            - plots (surface, shade_surf, show3, etc.)
+            - regions of interest
+            - spatial filters, and ...
+          o Look is extensible: you can define
+            - one loading function, and
+            - procedures and functions for display and image processing, e.g.,
+                look_fourier - to filter square images
+                lego, image_cont, threed, etc. - any IDL pro using 2-D param
+                roberts, sin, alog10, etc. - any IDL function using 2-D arg
+
+
+/landsman - Contains the following two subdirectories. (Wayne Landsman,
+SSAI)
+
+   /help  Contains the procedure MAN.PRO and supporting procedures
+           MAN.PRO will emulate the old IDL online help facility available
+           prior to IDL version 4.0.   For example,
+
+    IDL> man,'rebin      ;Display help on intrinisic IDL REBIN function
+    IDL> man,'hrebin     ;Display help on Astronomy Library HREBIN procedure
+    IDL> man,'astron     ;Display all astronomy library procedures
+
+    /mousse This is an old (1995) package designed for analyzing data from the
+           Ultraviolet Imaging Telescope (UIT).     The full MOUSSE package is 
+           available from http://archive.stsci.edu/uit/analysis.html.    The
+           procedures here include only the subset of non-instrument specific
+           software.
+
+    /v5    Contains the procedure idlv4_to_v5 and associated procedures to
+    change subscripts in a procedure from parentheses to square brackets for
+    compatibility with IDL V5.    Also, contains the procedure idl5to4.pro for
+    converting the parentheses in a V5 procedure to V4 compatibility.
+
+/malumuth - Contains the procedure TCTOOL and supporting procedures.  This is
+    a Widget Tool which is useful in creating a "True Color" image, given a red,
+    green, and blue image of the same field.    User has the ability to 
+    interactively scale, rotate, shift, trim, and edit the three images to
+    optimize the true-color image.    Requires a 24 bit graphics display.
+    (Eliot Malumuth, SSAI)    Last updated 7 December 2001.
+
+/markwardt - 
+    Contains enhancements to the FX* procedures for FITS I/O available in the
+    /fits_bintable directory of the IDL Astro Library.   These enhancements
+    link the FX* software with C. Markwardt's "seekable pipe" package at 
+    http://cow.physics.wisc.edu/~craigm/idl/io.html#FXGPKG)
+    which allow one to read gzip'ed FITS files transparently under Unix. 
+
+/maskinterp -
+    A package written by Joe Harrington (Cornell) and his students providing
+    a variety of 2-d interpolation methods for images with bad pixel masks. 
+
+/offenberg - 
+       Contains the single (long) program PUBPLOT written by Joel 
+       Offenberg (SSAI/Goddard).     This is an interactive widget 
+       plotting program.   It is similar to PWIDGET but has additional 
+       features such as allowing error bars.    A TeX file PUBPLOT.TEX
+       is available describing all the features.   Last updated in February 96.
+ 
+/varosi - a set of procedures  written by Frank Varosi (Raytheon) dealing with
+       mathematics, deconvolution and  mosaicing, and originally developed for
+       processing images from infrared arrays.   ***Note that, unlike the other
+       contrib directories, these routines are developed locally and
+       independently by F. Varosi (varosi@idlastro.gsfc.nasa.gov) ****
+
+*********************************************************
+
+The /thompson directory is no longer available. 
+    Prior to 3-Sep-1997, this directory contained four self-contained
+    packages  originally developed by Bill Thompson (Applied Research
+    Corporation) for the Solar EUV Rocket  Telescope and Spectrograph
+    (SERTS).   
+

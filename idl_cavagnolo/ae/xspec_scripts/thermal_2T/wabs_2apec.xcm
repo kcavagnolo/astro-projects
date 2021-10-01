@@ -1,0 +1,739 @@
+# XSPEC script to fit a two-temperature thermal plasma
+set version "\$Id: wabs_2apec.xcm,v 1.1 2008-03-06 17:16:17 cavagnolo Exp $"
+set date_value [ exec date ]
+puts "[ exec hostname ] $date_value $version"
+
+# ACIS Extract is expected to prepend statments like the following:
+# set spectrum_filename       "104357.47-593251.3.pi"
+# set extra_spectrum_filename "104357.47-593251.3_grp5.0.pi"
+# set ignore_spec             "1-34,549-**"
+# set extra_ignore_param      "1,98"
+# set model_name              "nogrp_wabs_apec_3free"
+# set c_stat_flag             1
+# set src_cnts                4752
+# set cplinear_energies       {0.5 1.0 1.5 2.0 3.0 4.0 5.0 6.0 7.0 8.0}
+# set model_directory         "/users/research/patb/TARA/code/ae/xspec_scripts"
+# set interactive_flag        0
+
+# THIS SCRIPT REQUIRES XSPEC 12!
+
+set xs_return_result 1
+set tcl_precision 12
+autosave off
+
+# IMPORTANT NOTE:
+# "OTHER MODEL" will mark sections
+# (separated by blank lines) that
+# must be changed if you rewrite 
+# this script with your own model
+
+# USER may change command echoing,
+# it is a boolean value, can be 0 or 1  
+# useful for debugging
+set Echo_Mode 0 
+set xs_echo_script $Echo_Mode
+
+# USER may change the chatter level,
+# ranges from 0 to 25
+# useful for debugging 
+set Chatter_Level 10
+chatter $Chatter_Level
+
+# To omit execution of "error" commands (which sometimes hang xspec):
+#set skip_errors 1
+# OR, to compute parameter errors:
+set skip_errors 0
+
+# "OTHER MODEL"
+# USER may change initial parameters
+set Abundance 0.3
+set kT0_min   0.05
+set kT0       0.5
+set kT0_max  15.0
+
+set kT20_min  0.4
+set kT20      2.0
+set kT20_max 15.0
+
+set Nh0_min   0.01
+set Nh0       0.5
+set Nh0_max 100.
+
+
+# USER may change the confidence intervals used in calculating
+# errors on fit parameters and errors on fluxes.
+# Beware that you must express the desired parameter confidence intervals
+# in units of "sigma" and you must express the desired flux
+# confidence intervals in units of percent probability.
+# For 2-sided confidence intervals on a Gaussian distribution the 
+# relationship between these two representations is given in a table
+# in the ahelp page for the Sherpa "projection" command, and in 
+# Section 2.2 of the manual for XSPEC12.
+# That table is shown below for convenience:
+#   1.0 -sigma = 68%
+#   1.65-sigma = 90%
+#   2.0 -sigma = 95.5%
+#   2.57-sigma = 99.0%
+#   3.0 -sigma = 99.7%
+
+# confidence intervals for fit parameters (in units of sigma)
+# Always use a decimal point!
+set Conf_Level_Par 1.65
+
+# confidence intervals for flux estimates (in units of %)
+set Conf_Level_Flux 90
+
+# USER may change EbandLo, EbandHi, FluxName and Number_Runs
+# for calculating fluxes and their errors over interested
+# energy bands. Right now 3 bands are used: (0.5-2),(2-8),(0.5-8).
+set EbandLo {0.5 2 0.5}
+set EbandHi {2 8 8}
+# Notice two types of flux will be calculated, the second
+# one (marked with c) is corrected for column density.
+# To write spectral results into fits file properly
+# flux names should not have more than 8 characters.
+set FluxName {F0p5_2 F2_8 F0p5_8 Fc0p5_2 Fc2_8 Fc0p5_8}
+set Number_Runs 100
+
+# AE CUSTOMIZATIONS
+
+# set some other vars
+set model_savfl  "model.xspecsav"
+set model_fitsfl "model.fits"
+set temp_headfl "z_head.txt"
+setplot energy
+
+
+# "OTHER MODEL"
+# Create an "object" model attached to "XSPEC source #1".
+#
+# We use the observer's parameter ranges as "soft" limits in the model, 
+# leaving the "hard" limits at their wider default values.  
+# This allows poorly constrained fits to exceed the soft limits; we can
+# detect that during analysis of the fit results and identify such fits
+# as bad.
+#
+# A reasonable initial value for the "norm" parameter helps prevents fits from
+# running off into the weeds.
+model 1:obj wabs(apec+apec) & $Nh0 0.001 ,, $Nh0_min $Nh0_max & $kT0 0.01 ,, $kT0_min $kT0_max & $Abundance & 0 & 1E-6 & $kT20 0.01 ,, $kT20_min $kT20_max & $Abundance & 0 & 1E-6 & /*
+
+
+# Load the "object" (obj) spectrum as spectrum #1 in data group #1.
+data 1:1 $spectrum_filename
+
+# Ignore some channels.
+ignore 1:$ignore_spec
+ 
+# Save the names of the background, RMF, and ARF.
+set bkgfile [string trim [tcloutr backgrnd 1]]
+if { $bkgfile eq "" } { set bkgfile "none" }  
+
+set respfile [string trim [tcloutr response 1]]
+if { $respfile eq "" } { set respfile "none" }  
+
+set arffile [string trim [tcloutr arf 1]]
+if { $arffile eq "" } { set arffile "none" }  
+
+
+if {$c_stat_flag} {
+  statistic cstat
+  
+  # We will eventually be working with two "XSPEC sources".
+  # Source #1 will be our stellar model, wabs(apec), passed through the ACIS response.
+  # Source #2 will be our observed background model, cplinear, passed through a flat response.
+  # Our target spectrum will be modeled by Source #1 + Source #2, and
+  # our background spectrum will be modeled by only Source #2.
+   
+  # Load background (bkg) spectrum as spectrum #2 in data group #2.
+  data 2:2 $bkgfile
+  
+  # Ignore some channels.
+  ignore 2:$ignore_spec
+
+  # Make sure XSPEC's background algorithm is disabled. 
+  backgrnd 1 none
+  backgrnd 2 none
+  
+  # Detach the background spectrum (spectrum #2) from the stellar model (source #1).
+  response 1:2 none
+
+  # Create a "source #2", which is going to be our cplinear background model.
+  # Tie it to the background spectrum (#2) through an RMF.
+  # We're modeling the observed spectrum, not an astrophysical one, so no ARF is used.  
+  response 2:2 $respfile
+    
+  #Run diagrsp here?
+
+  # Load and create a continuous piecewise-linear background model.
+  # We used "load" instead of "lmod" because the latter requires that the 
+  # user have write permission to the model directory.
+  set platform "[exec uname -s]_[exec uname -p]"
+  switch $platform {
+    Darwin_i386    {load $model_directory/Darwin_i386/libacis_extract.dylib}
+    Darwin_powerpc {load $model_directory/Darwin_powerpc/libacis_extract.dylib}
+    Linux_unknown  {load $model_directory/Linux_unknown/libacis_extract.so}
+    SunOS_sparc    {load $model_directory/SunOS_sparc/libacis_extract.so}
+    default {tclexit 97}
+  }
+  set bkg_norm_parnum 21
+  
+  model 2:bkg cplinear & /*
+
+  for {set ipar 1} {$ipar <= 10} {incr ipar} {
+    newpar bkg:$ipar [lindex $cplinear_energies [expr $ipar-1]]
+  }
+
+  
+  # In order to get reasonable starting parameter values for our cplinear model
+  # later when we simultaneously fit source and background spectra, 
+  # we need to fit the background spectrum alone.
+  # First we temporarily ignore the target spectrum.
+  response 1:1 none
+  
+  # Note that the rate* and "norm" parameters are degenerate.  
+  # For this initial fit we then find a rough normalization so the rate* parameters
+  # will tend towards values near 1 (for human readability).
+  # Then we freeze the normalization and fit for the rate* parameters.
+  renorm
+  freeze bkg:$bkg_norm_parnum
+  thaw   bkg:11-20
+  
+  query yes
+  chatter 9
+  set numpar [tcloutr modpar bkg]
+  for {set i 1} {$i <= 1} {incr i} { 
+  
+    # We set "delta" component of the free parameters to be small compared to the 
+    # parameter values.
+    # Use abs() to ensure that the "delta" values are positive.
+    for {set ipar 1} {$ipar <= $numpar} {incr ipar} {
+      # Skip "scale" parameters, which do not have "delta" values.
+      if {[scan [tcloutr param bkg:$ipar] "%f %f" par_value par_delta] == 1} {continue}
+      if {$par_delta > 0} {newpar bkg:$ipar , , [expr abs($par_value) / 100]}
+    }
+  
+    fit 1000
+  }
+  chatter $Chatter_Level 
+
+  # We assume that XSPEC's fitting engine would like the "norm" parameter free during
+  # the main fit below that uses both target and background data.
+  # Thus, we will thaw "norm" and freeze the largest of the "rate" parameters.
+  set largest_parnum 1
+  set largest_parval 0
+  for {set ipar 1} {$ipar <= $numpar} {incr ipar} {
+    # Skip "scale" parameters, which do not have "delta" values.
+    if {[scan [tcloutr param bkg:$ipar] "%f %f" par_value par_delta] == 1} {continue}
+    if {$par_value > $largest_parval} {
+      set largest_parnum $ipar
+      set largest_parval $par_value
+    }
+  }
+  freeze bkg:$largest_parnum
+  thaw   bkg:$bkg_norm_parnum
+ 
+
+  # Now, we can restore the connection between the target spectrum (#1) and the
+  # stellar model (Source #1) by specifying both an RMF and an ARF.
+  response 1:1 $respfile
+  arf      1:1 $arffile
+  
+  # And we can establish a connection between the target spectrum (#1) and the
+  # cplinear background model (Source #2), again WITHOUT an ARF.
+  response 2:1 $respfile
+  
+  #Run diagrsp here?
+  
+ 
+  # Finally, we have to link the parameters between the two instances of cplinear.
+  # Discussions with Craig Gordon did not reveal any other way to do this in v12.3.1.
+  newpar bkg:32 = bkg:11
+  newpar bkg:33 = bkg:12
+  newpar bkg:34 = bkg:13
+  newpar bkg:35 = bkg:14
+  newpar bkg:36 = bkg:15
+  newpar bkg:37 = bkg:16
+  newpar bkg:38 = bkg:17
+  newpar bkg:39 = bkg:18
+  newpar bkg:40 = bkg:19
+  newpar bkg:41 = bkg:20
+  newpar bkg:[expr 2*$bkg_norm_parnum] = bkg:$bkg_norm_parnum
+
+  show data
+  
+  # As of v12.3.1 XSPEC's renorm command, run automatically when "fit" is run,   
+  # will mess up the normalization of the bkg model we just established.
+  # Thus we need to do some work to establish a good initial normalization for
+  # the stellar model, and then disable these automatic renorms.
+  freeze bkg:11-21
+  freeze obj:1 obj:2
+  fit  100
+  renorm none
+  thaw   bkg:11-21
+  thaw   obj:1 obj:2
+  freeze bkg:$largest_parnum
+  show model
+  
+} else {
+  # USER may change the weighting of chi statistics as
+  # an alternative approach when there are few counts per group.
+  # Available methods are:
+  # "standard", "gehrels", "churazov", "model" 
+  #
+  # Note: if you change weighting method then do not forget to change
+  # the name of this xspec script to make it unique,
+  # then later you can compare spectral fit results
+  # of different statistics and/or different weight methods.
+  set Weighting_Method "standard"
+  weight $Weighting_Method
+}
+
+
+# "OTHER MODEL" (change number of thawed parameters)
+set Nh_frozen [expr $Nh0_min == $Nh0_max]
+set kT_frozen [expr $kT0_min == $kT0_max]
+set kT2_frozen [expr $kT20_min == $kT20_max]
+if $Nh_frozen {
+  freeze obj:1
+}
+if $kT_frozen {
+  freeze obj:2
+}
+if $kT2_frozen {
+  freeze obj:6
+}
+
+# get & check D.O.F.
+scan [tcloutr dof] "%d" dof_value
+if {$dof_value < 1} {
+  puts "DOF < 1; fit aborted"
+  tclexit 98
+} 
+
+
+ignore bad
+
+
+
+
+# Fit multiple times to be sure ...
+query yes
+for {set i 1} {$i <= 3} {incr i} { 
+    # "OTHER MODEL"
+    # We set "delta" component of the free parameters to be small compared to the 
+    # parameter values because large "delta" components seem to cause more failures
+    # of the "error" commands below.
+    # Use abs() to ensure that the "delta" values are positive.
+    scan [tcloutr param obj:1] "%f" Nh_result
+    scan [tcloutr param obj:2] "%f" kT_result
+    scan [tcloutr param obj:5] "%f" norm_result
+    scan [tcloutr param obj:6] "%f" kT2_result
+    scan [tcloutr param obj:9] "%f" norm2_result
+                     
+    # Be careful here because the newpar command will thaw a frozen parameter
+    # and setting the delta to zero will freeze a thawed parameter!
+    if {! $Nh_frozen} {
+      newpar obj:1 , , [expr abs($Nh_result)   / 100]
+    }
+    if {! $kT_frozen} {
+      newpar obj:2 , , [expr abs($kT_result)   / 100]
+    }
+    if {$norm_result != 0} {
+      newpar obj:5 , , [expr abs($norm_result) / 100] 
+    }
+    if {! $kT2_frozen} {
+      newpar obj:6 , , [expr abs($kT2_result)  / 100]
+    }
+    if {$norm2_result != 0} {
+      newpar obj:9 , , [expr abs($norm2_result) / 100] 
+    }
+
+    fit 1000
+}
+
+
+# Interact with obserer if desired.
+if {$interactive_flag} {interact}
+
+# create a save file for the model only for use if the error calculation below is aborted.
+set flag_exists [file exists $model_savfl]
+if {$flag_exists == 1} {
+  file delete $model_savfl  
+}
+save model $model_savfl
+
+# Show the evolution of the best fit parameters in the log so we can see how
+# the fit wandered during the error commands.
+chatter 10
+show par
+show fit
+chatter $Chatter_Level 
+
+puts "Step 3:  Error Calculations"
+# "OTHER MODEL"
+# If any of the parameters are out of range, then do not attempt error estimation.
+if { $Nh_result  < $Nh0_min  || $Nh_result  > $Nh0_max || \
+     $kT_result  < $kT0_min  || $kT_result  > $kT0_max || \
+     $kT2_result < $kT20_min || $kT2_result > $kT20_max} {
+  puts "Parameter limits violated after fit; skipping error estimation."
+  set skip_errors 1
+}
+
+
+if {! $skip_errors} {
+  # "OTHER MODEL"
+  # calculate parameter errors
+  #
+  # The square relationship between confidence level sigma desired and the 
+  # corresponding change in chi^2 is described in Section 2.1.1 of the 
+  # XSPEC version 11 manual
+  # and in ahelp page for the Sherpa "projection" command.
+  set delta_chi [expr $Conf_Level_Par * $Conf_Level_Par]
+
+  # We seem to recall that a single error command for all three pars led to some
+  # trouble, but we can't recall the details.. 
+  # Let's gamble that this is now fixed so we can avoid writing a loop here.
+  #
+  # You really want "query yes" mode when "error" is executed so that it will
+  # restart the search for errors after new best fits are found.
+  query yes
+  if [catch {error $delta_chi obj:1 obj:2 obj:5 obj:6 obj:9}] {
+    puts "Error command failed to execute; reverting to original fit"
+    set skip_errors 1
+  } else {
+    # Error calculation sucessful; get parameters, errors, flags, and statistics
+    scan [tcloutr param obj:1] "%f" Nh_result
+    scan [tcloutr param obj:2] "%f" kT_result
+    scan [tcloutr param obj:5] "%f" norm_result
+    scan [tcloutr param obj:6] "%f" kT2_result
+    scan [tcloutr param obj:9] "%f" norm2_result
+
+    scan [tcloutr stat] "%f" stat_value
+
+    scan [tcloutr error obj:1] "%f %f %s" p1_err_low p1_err_high p1_err_stat
+    scan [tcloutr error obj:2] "%f %f %s" p2_err_low p2_err_high p2_err_stat
+    scan [tcloutr error obj:5] "%f %f %s" p5_err_low p5_err_high p5_err_stat
+    scan [tcloutr error obj:6] "%f %f %s" p6_err_low p6_err_high p6_err_stat
+    scan [tcloutr error obj:9] "%f %f %s" p9_err_low p9_err_high p9_err_stat
+  }
+
+  # If any of the parameters are out of range, then back out of the error estimation
+  # since there is a good chance the parameters were fine after the original fit.
+  if { $Nh_result  < $Nh0_min  || $Nh_result  > $Nh0_max || \
+       $kT_result  < $kT0_min  || $kT_result  > $kT0_max || \
+       $kT2_result < $kT20_min || $kT2_result > $kT20_max} {
+    puts "Parameter limits violated after error search; reverting to original fit."
+    set skip_errors 1
+  }
+
+  if {$skip_errors} {
+    # If we're abandoning the error calculation then revert to the saved model.
+    eval @$model_savfl
+
+    # A "fit" command is required here so that a valid fit exists to support lots of
+    # other work below, e.g. flux commands.
+    # And I think loading the save file might turn off the "query yes" we had set up.
+    fit
+    query yes
+
+    scan [tcloutr param obj:1] "%f" Nh_result
+    scan [tcloutr param obj:2] "%f" kT_result
+    scan [tcloutr param obj:5] "%f" norm_result
+    scan [tcloutr param obj:6] "%f" kT2_result
+    scan [tcloutr param obj:9] "%f" norm2_result
+
+    scan [tcloutr stat] "%f" stat_value
+  };
+
+  chatter 10
+  show par
+  show fit
+  chatter $Chatter_Level   
+};  # calculate parameter errors
+
+if {$skip_errors} {
+  set p1_err_stat 'skipped'
+  set p2_err_stat 'skipped'
+  set p5_err_stat 'skipped'
+  set p6_err_stat 'skipped'
+  set p9_err_stat 'skipped'
+  set p1_err_high 0.
+  set p2_err_high 0.
+  set p5_err_high 0.
+  set p6_err_high 0.
+  set p9_err_high 0.
+  set p1_err_low  0.
+  set p2_err_low  0.
+  set p5_err_low  0.
+  set p6_err_low  0.
+  set p9_err_low  0.
+}
+
+
+
+# create a complete save file for the final fit
+set flag_exists [file exists $model_savfl]
+if {$flag_exists == 1} {
+  file delete $model_savfl  
+}
+save all $model_savfl
+
+
+
+if {$c_stat_flag} {
+  set       ps_filename "icounts.ps"
+  set extra_ps_filename "ldata.ps"
+  scan [tcloutr stat] "%f" cstat_result
+  set stat_print [format "Cstat=%.0f" $cstat_result]
+  setplot command LAbel  Y  normalized integrated counts
+  plot icounts residual
+
+  # We think the cumulative spectrum is a more informative plot for weak
+  # sources than the "setplot rebin" approach.  The old commands
+  # remain below for reference:
+
+  # see help info for rebin
+  # We'll set Max_Nbins to just over half the typical number of "noticed" channels
+  # (514) so that in the dim case we get two ~even sized bins.
+  # And I guess we'll show Gehrels errors (option "poiss-1").
+  # We can't tune Min_Signif to get a specific number of counts per bin
+  # because the error term in Min_Signif includes background errors.
+# set Max_Nbins 260
+# set Min_Signif 2.0
+# setplot rebin $Min_Signif $Max_Nbins -1 poiss-1
+# plot ldata residual
+} else {
+  set       ps_filename "ldata.ps"
+  set extra_ps_filename "icounts.ps"
+  scan [tcloutr stat] "%f" chi_squared
+  set red_chi_squared [expr $chi_squared/$dof_value]
+  set stat_print [format "\\gx\\d\\gn\\u\\u2\\d=%.2f" $red_chi_squared]
+  setplot command LAbel  Y  Counts sec\\\u-1 \\\d keV\\\u-1\\\d
+  plot ldata delchi
+}
+
+# "OTHER MODEL"
+# make a postscript image of spectra 
+if $Nh_frozen {
+  set Nh_print [format "N\\dH\\u={%.3g}" $Nh_result]
+} else {
+  set Nh_print [format "N\\dH\\u=%.3g" $Nh_result]
+}
+
+if $kT_frozen {
+  set kT_print [format "kT={%.3g}" $kT_result]
+} else {
+  set kT_print [format "kT=%.3g" $kT_result]
+}
+
+if $kT2_frozen {
+  set kT2_print [format "kT={%.3g}" $kT2_result]
+} else {
+  set kT2_print [format "kT=%.3g" $kT2_result]
+}
+
+if [info exists src_cnts] {
+  set src_cnts_print [format ", SRC_CNTS=%d" $src_cnts]
+} else {
+  set src_cnts_print ""
+}
+
+setplot command FONT Roman
+setplot command TIME OFF
+setplot command WIN      1
+setplot command viewport 0.12 0.1 0.99 0.9
+setplot command LAbel Top $Nh_print, $kT_print, $kT2_print, ${stat_print}${src_cnts_print}
+setplot command LAbel File [file tail [tcloutr filename 1]]
+#setplot command Rescale Y1 7.E-6 4.E-2
+setplot add
+
+setplot command WIN      2
+setplot command viewport 0.12 0.1 0.99 0.8
+#setplot command Yaxis  3
+#if {$c_stat_flag == 0} {
+#  setplot command Rescale    Y2 -3 3
+#}
+setplot command LAbel  X  Energy (keV)
+
+setplot command WIN  ALL
+# A CSize of 1.5 causes the title to be cut off.
+# Shrinking the viewport in the X direction is needed to prevent the Y axis
+# label from being cut off.
+setplot command CSize 1.4
+setplot command Rescale x 0.5 8
+setplot command LWidth 3
+plot
+cpd /cps
+plot
+cpd none
+exec "mv" pgplot.ps $ps_filename
+
+# output info to xspec.log
+# log none does not actually close the pipe
+# so use copy
+log z_temp_xspec.log
+show all
+log none
+file copy -force z_temp_xspec.log xspec.log
+file delete z_temp_xspec.log
+
+# "OTHER MODEL" (for example add newpar if want to correct for second NH, otherwise do not edit)
+# calculate interested fluxes and errors
+
+if {$c_stat_flag} {
+  # Disable background model during flux calculcations.
+  scan [tcloutr param bkg:$bkg_norm_parnum] %f bkg_norm_result
+  newpar              bkg:$bkg_norm_parnum 0
+}
+
+set BandNum [llength $EbandLo]
+# retrieve flux info and log. flux error info to temp file
+for {set ii 0} {$ii <= [expr $BandNum*2-1]} {incr ii} {
+  if {$ii == $BandNum} {
+    # USER may add more newpar commands here.  
+    # Correct for (NH) column density
+    newpar obj:1 0. 0.001 0. 0. $Nh0_max $Nh0_max 
+  }
+  
+  if {$ii < $BandNum} {
+    flux [lindex $EbandLo $ii] [lindex $EbandHi $ii] err $Number_Runs $Conf_Level_Flux
+  } else {
+    set iiii [expr $ii-$BandNum]
+    flux [lindex $EbandLo $iiii] [lindex $EbandHi $iiii] err $Number_Runs $Conf_Level_Flux
+  }
+  scan [tcloutr flux 1] "%f %f %f" flux flux_low flux_high
+  eval set [lindex $FluxName $ii]  $flux
+  eval set [lindex $FluxName $ii]L $flux_low
+  eval set [lindex $FluxName $ii]U $flux_high
+}
+
+
+
+# "OTHER MODEL" (only change the last puts line)
+# add flux and error info to xspec.log
+set fileid [open xspec.log a]
+for {set ii 0} {$ii <=[expr $BandNum*2-1]} {incr ii} {
+  if {$ii < $BandNum} {
+    set cmd "puts \$fileid \"Flux([lindex $EbandLo $ii]-[lindex $EbandHi $ii]):"  
+  } else {
+    set iii [expr $ii-$BandNum]
+    set cmd "puts \$fileid \"Flux_corr([lindex $EbandLo $iii]-[lindex $EbandHi $iii]):"
+  }
+  set cmd "$cmd \$[lindex $FluxName $ii]  ${Conf_Level_Flux}% conf_range: (\$[lindex $FluxName $ii]L -"
+  set cmd "$cmd \$[lindex $FluxName $ii]U)\""
+  eval $cmd  
+}
+puts $fileid "$Conf_Level_Par sigma conf_ranges for Nh|kT|kT2:($p1_err_low - $p1_err_high)|($p2_err_low - $p2_err_high)|($p6_err_low - $p6_err_high)"
+close $fileid
+
+# "OTHER MODEL"
+# prepare output for fits file
+scan [tcloutr noticed 1] "%d-%d" chnl_low chnl_high
+
+set fileid [open $temp_headfl w]
+  puts $fileid "XTENSION=BINTABLE   /binary table extension"
+  puts $fileid "EXTNAME=$model_name /name of this binary table"
+  puts $fileid "DATE='$date_value'  / Date of model"
+  puts $fileid "VERSION='$version'  / Script version"
+  puts $fileid "NH0=$Nh0            / \[1.e22 cm-2\] Initial parameter of column density"
+  puts $fileid "NH0_MIN=$Nh0_min    / \[1.e22 cm-2\] Minimum value for column density"
+  puts $fileid "NH0_MAX=$Nh0_max    / \[1.e22 cm-2\] Maximum value for column density"
+  puts $fileid "KT0=$kT0            / \[keV\] Initial parameter of energy"
+  puts $fileid "KT0_MIN=$kT0_min    / \[keV\] Minimum value for energy"
+  puts $fileid "KT0_MAX=$kT0_max    / \[keV\] Maximum value for energy"
+  puts $fileid "kT20=$kT20          / \[keV\] Initial parameter of energy"
+  puts $fileid "kT20_MIN=$kT20_min  / \[keV\] Minimum value for energy"
+  puts $fileid "kT20_MAX=$kT20_max  / \[keV\] Maximum value for energy"
+  puts $fileid "ABUNDANC=$Abundance / Abundance"
+  puts $fileid "CHNL_LOW=$chnl_low  / Low channel used"
+  puts $fileid "CHNL_HI=$chnl_high  / High channel used"
+  puts $fileid "DOF=$dof_value      / Degree of freedom"
+  if {$c_stat_flag} {
+    puts $fileid "CSTAT=$cstat_result / C-statistic"
+  } else {
+    puts $fileid "CHI_SQR=$red_chi_squared / Reduced chi-squared"
+  } 
+  puts $fileid "NH=$Nh_result          / \[1.e22 cm-2\] Derived column density"
+  puts $fileid "NH_ERRU=$p1_err_high   / \[1.e22 cm-2\] Column $Conf_Level_Par sigma upper limit"
+  puts $fileid "NH_ERRL=$p1_err_low    / \[1.e22 cm-2\] Column $Conf_Level_Par sigma lower limit"
+  puts $fileid "NH_ERRST=$p1_err_stat  / Flag indicating problems with error calculation"
+  puts $fileid "KT=$kT_result          / \[keV\] Derived energy"
+  puts $fileid "KT_ERRU=$p2_err_high   / \[keV\] Energy $Conf_Level_Par sigma upper limit"
+  puts $fileid "KT_ERRL=$p2_err_low    / \[keV\] Energy $Conf_Level_Par sigma lower limit"
+  puts $fileid "KT_ERRST=$p2_err_stat  / Flag indicating problems with error calculation"
+  puts $fileid "KT2=$kT2_result        / \[keV\] Derived energy"
+  puts $fileid "KT2_ERRU=$p6_err_high  / \[keV\] Energy $Conf_Level_Par sigma upper limit"
+  puts $fileid "KT2_ERRL=$p6_err_low   / \[keV\] Energy $Conf_Level_Par sigma lower limit"
+  puts $fileid "KT2_ERRST=$p6_err_stat / Flag indicating problems with error calculation"
+  puts $fileid "NORM=$norm_result      / Derived normalization"
+  puts $fileid "NORMERRU=$p5_err_high  / Normalization $Conf_Level_Par sigma upper limit"
+  puts $fileid "NORMERRL=$p5_err_low   / Normalization $Conf_Level_Par sigma lower limit"
+  puts $fileid "NORMERRS=$p5_err_stat  / Flag indicating problems with error calculation"
+  puts $fileid "NORM2=$norm2_result    / Derived normalization"
+  puts $fileid "NOR2ERRU=$p9_err_high  / Normalization $Conf_Level_Par sigma upper limit"
+  puts $fileid "NOR2ERRL=$p9_err_low   / Normalization $Conf_Level_Par sigma lower limit"
+  puts $fileid "NOR2ERRS=$p9_err_stat  / Flag indicating problems with error calculation"
+
+  set units "/ \\\[ergs cm-2 s-1\\\]"
+  for {set ii 0} {$ii <=[expr $BandNum*2-1]} {incr ii} {
+    if {$ii < $BandNum} {
+      set iii $ii
+      set comm "Flux"   
+    } else {
+      set iii [expr $ii-$BandNum]
+      set comm "Corr. flux"
+    }
+      set cmd "puts \$fileid \"[lindex $FluxName $ii]=\$[lindex $FluxName $ii] $units $comm"
+      set cmd "$cmd ([lindex $EbandLo $iii]-[lindex $EbandHi $iii]) keV band\""
+      eval $cmd
+      set cmd "puts \$fileid \"[lindex $FluxName $ii]U=\$[lindex $FluxName $ii]U $units $comm"
+      set cmd "$cmd ([lindex $EbandLo $iii]-[lindex $EbandHi $iii]) ${Conf_Level_Flux}% 2-sided limit\""
+      eval $cmd
+      set cmd "puts \$fileid \"[lindex $FluxName $ii]L=\$[lindex $FluxName $ii]L $units $comm"
+      set cmd "$cmd ([lindex $EbandLo $iii]-[lindex $EbandHi $iii]) ${Conf_Level_Flux}% 2-sided limit\""
+      eval $cmd  
+    } 
+close $fileid
+
+# write model to a FITS file
+file delete $model_fitsfl   
+exec ftemplate template=$temp_headfl outfile=$model_fitsfl
+file delete $temp_headfl
+
+# Create a contour plot depicting joint uncertainties between two parameters.
+# Someday ....
+
+
+# If the fit was Cstat make a second plot showing a grouped spectrum.
+# If the fit was with grouped data make a second plot showing the ungrouped spectrum.
+# We can NOT move this plot code earlier in the script because the "data" command below
+# destroys elements of the current fit (covariance matrix) that are used by 
+# the flux error calculations above.
+if [info exists extra_spectrum_filename] {
+  # Restore Nh which was set to zero during flux calculcations.
+  newpar obj:1 $Nh_result
+                
+  # Load the extra spectrum, configure for the specified statistic, and make the appropriate plot.
+  data   1:1 $extra_spectrum_filename
+  ignore 1:$extra_ignore_param
+  cpd /cps
+
+  if {$c_stat_flag} {
+    # Restore background model which was set to zero during flux calculcations.
+    newpar bkg:$bkg_norm_parnum $bkg_norm_result
+    
+    statistic chi; weight gehrels; 
+    setplot command LAbel File [file tail [tcloutr filename 1]]
+    setplot command LAbel  Y  Counts sec\\\u-1 \\\d keV\\\u-1\\\d
+    plot ldata residual
+  } else {
+    statistic cstat
+    setplot command LAbel  Y  normalized integrated counts
+    plot icounts residual
+  }
+
+cpd none
+exec "mv" pgplot.ps $extra_ps_filename
+}
+exit
+

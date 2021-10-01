@@ -1,0 +1,1 @@
+reproject_aspect infile=509_aspectsrcs.fits refsrcfile=10445_aspectsrcs.fits updfile=pcadf057983350N002_asol1.fits outfile=new_pcadf057983350N002_asol1.fits wcsfile=10445_img.fits verbose=2

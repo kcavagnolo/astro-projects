@@ -1,0 +1,304 @@
+% $Id: hmsfr_tables.tex,v 1.2 2008-10-15 19:37:03 cavagnolo Exp $
+\documentclass[preprint]{aastex}
+
+
+
+\begin{document}
+Prototype tables for HMSFR point sources:
+
+
+%\begin{deluxetable}{ccrccccc}
+%\centering 
+%%\rotate
+%\tabletypesize{\tiny} \tablewidth{0pt}
+%\tablecolumns{8}
+%
+%
+%\tablecaption{ Log of {\em Chandra} Observations 
+% \label{tbl:obslog}}
+%
+%\tablehead{
+%\colhead{Target} & 
+%\colhead{Obs ID} & 
+%\colhead{Start Time} & 
+%\colhead{Exposure Time} & 
+%\multicolumn{2}{c}{Aimpoint} & 
+%\colhead{Roll Angle} & 
+%\colhead{Mode\tablenotemark{a}} \\
+%\cline{5-6}
+%
+%\colhead{} & 
+%\colhead{} & 
+%\colhead{(UT)} & 
+%\colhead{(s)} & 
+%\colhead{$\alpha_{\rm J2000}$} & 
+%\colhead{$\delta_{\rm J2000}$} & 
+%\colhead{(deg)} & 
+%\colhead{} 
+%}
+%
+%\startdata
+%Field 1 & 4395 & 2003 Jan 08 20:58 & 39440 & 18 20 30.39 & +04 55 42.0 & 311 & VF \\
+%
+%\enddata
+%
+%\tablenotetext{a}{ The observing mode:  (F) Faint, (VF) Very Faint.}
+%
+%\tablecomments{  Exposure times are the net usable times after various
+%filtering steps are applied in the data reduction process. The
+%aimpoints and roll angles are obtained from the satellite aspect
+%solution before astrometric correction is applied.  Units of right
+%ascension are hours, minutes, and seconds; units of declination are
+%degrees, arcminutes, and arcseconds.}
+%
+%\end{deluxetable}
+%
+
+%-----------------------------------------------------------------------------
+%\clearpage
+
+TEMPLATE src_properties
+\begin{deluxetable}{rcrrrrrrrrrrrccrr}
+\centering \rotate \tabletypesize{\tiny} \tablewidth{0pt}
+\tablecolumns{17}
+
+\tablecaption{Primary {\em Chandra} Catalog:  Basic Source Properties \label{tbl:src_properties_main}}
+
+\tablehead{
+\multicolumn{2}{c}{Source} &
+\multicolumn{4}{c}{Position} &
+\multicolumn{5}{c}{Extraction} &
+\multicolumn{6}{c}{Characteristics} \\
+                                
+\multicolumn{2}{c}{\hrulefill} &  
+\multicolumn{4}{c}{\hrulefill} &
+\multicolumn{5}{c}{\hrulefill} &
+\multicolumn{6}{c}{\hrulefill} \\
+
+\colhead{Seq. No.} & \colhead{CXOU J} &
+\colhead{$\alpha$ (J2000.0)} & \colhead{$\delta$ (J2000.0)} & \colhead{Error} & \colhead{$\theta$} &
+\colhead{$C_{t,net}$} & \colhead{$\sigma_{t,net}$} & \colhead{$B_{t}$} & \colhead{$C_{h,net}$} & \colhead{PSF Frac.} &   
+\colhead{Signif.} & \colhead{$\log P_B$} & \colhead{Anom.} & \colhead{Var.} &\colhead{Eff. Exp.} & \colhead{$E_{median}$}  \\
+
+
+
+\colhead{} & \colhead{} &
+\colhead{(deg)} & \colhead{(deg)} & \colhead{(arcsec)} & \colhead{(arcmin)} &
+\colhead{(counts)} & \colhead{(counts)} & \colhead{(counts)} & \colhead{(counts)} & \colhead{} &
+\colhead{} & \colhead{} & \colhead{} & \colhead{} & \colhead{(ks)} & \colhead{(keV)}
+ \\
+
+
+\colhead{(1)} & \colhead{(2)} &
+\colhead{(3)} & \colhead{(4)} & \colhead{(5)} & \colhead{(6)} &
+\colhead{(7)} & \colhead{(8)} & \colhead{(9)} & \colhead{(10)} & \colhead{(11)} &
+\colhead{(12)} & \colhead{(13)} & \colhead{(14)} & \colhead{(15)} & \colhead{(16)} & \colhead{(17)}  }
+
+
+\startdata
+(%"%4d & %s &
+%10.6f & %10.6f & %4.1f & %4.1f &
+%7.1f & %5.1f & %5.1f & %7.1f & %4.2f &
+%5.1f & %s & %s & %s & %6.1f & %3.1f \\\\")
+
+\enddata
+
+\tablecomments{Table~\ref{tbl:src_properties_main} is available in its entirety in the electronic edition of the \apjs.  
+Interesting sources mentioned in the text are shown here for guidance regarding its form and content. 
+\\Col.\ (1): X-ray catalog sequence number, sorted by RA.
+\\Col.\ (2): IAU designation.
+\\Cols.\ (3) and (4): Right ascension and declination for epoch (J2000.0).
+\\Col.\ (5): Estimated standard deviation of the random component of the position error, $\sqrt{\sigma_x^2 + \sigma_y^2}$.  The single-axis position errors, $\sigma_x$ and $\sigma_y$, are estimated from the single-axis standard deviations of the PSF inside the extraction region and the number of counts extracted.
+\\Col.\ (6): Off-axis angle.
+\\Cols.\ (7) and (8): Net counts extracted in the total energy band (0.5--8~keV); average of the upper and lower $1\sigma$ errors on col.\ (7).
+\\Col.\ (9): Background counts expected in the source extraction region (total band).
+\\Col.\ (10): Net counts extracted in the hard energy band (2--8~keV).
+\\Col.\ (11): Fraction of the PSF (at 1.497 keV) enclosed within the extraction region. A reduced PSF fraction (significantly below 90\%) may indicate that the source is in a crowded region. 
+\\Col.\ (12): Photometric significance computed as net counts divided by the upper error on net counts. 
+\\Col.\ (13): Logarithmic probability that extracted counts (total band) are solely from background.  Some sources have $P_B$ values above the 1\% threshold that defines the catalog because local background estimates can rise during the final extraction iteration after sources are removed from the catalog.
+\\Col.\ (14):  Source anomalies: (g) fractional time that source was on a detector (FRACEXPO from {\em mkarf}) is $<$0.9.
+%; (e) source on field edge; (p) source piled up; (s) source on readout streak.
+\\Col.\ (15): Variability characterization based on K-S statistic (total band): (a) no evidence for variability ($0.05<P_{KS}$); (b) possibly variable ($0.005<P_{KS}<0.05$); (c) definitely variable ($P_{KS}<0.005$).  No value is reported for sources with fewer than four counts or for sources in chip gaps or on field edges.
+\\Col.\ (16): Effective exposure time: approximate time the source would have to be observed on-axis (no telescope vignetting) on a nominal region of the detector (no dithering over insensitive regions of the detector) to obtain the reported number of counts. 
+\\Col.\ (17): Background-corrected median photon energy (total band).}
+
+\end{deluxetable}
+END
+
+%-----------------------------------------------------------------------------
+%\clearpage
+
+TEMPLATE thermal_spectroscopy
+\begin{deluxetable}{rcrrlllrrrrrc}
+\centering \rotate \tabletypesize{\scriptsize} \tablewidth{0pt}
+\tablecolumns{13}
+
+\tablecaption{X-ray Spectroscopy for Photometrically Selected Sources:  Thermal Plasma Fits
+\label{tbl:thermal_spectroscopy}}
+
+
+\tablehead{
+\multicolumn{4}{c}{Source\tablenotemark{a}} &
+\multicolumn{3}{c}{Spectral Fit\tablenotemark{b}} &
+\multicolumn{5}{c}{X-ray Luminosities\tablenotemark{c}} &
+\colhead{Notes\tablenotemark{d}} \\ 
+
+\multicolumn{4}{c}{\hrulefill} &
+\multicolumn{3}{c}{\hrulefill} &
+\multicolumn{5}{c}{\hrulefill} \\
+
+\colhead{Seq. No.} & \colhead{CXOU J} & \colhead{$C_{t,net}$} & \colhead{Signif.} &
+\colhead{$\log N_H$} & \colhead{$kT$} & \colhead{$\log EM$} &  
+\colhead{$\log L_s$} & \colhead{$\log L_h$} & \colhead{$\log L_{h,c}$} & \colhead{$\log L_t$} & \colhead{$\log L_{t,c}$} &
+\colhead{}  \\
+
+
+\colhead{} & \colhead{} & \colhead{} & \colhead{} &
+\colhead{(cm$^{-2}$)} & \colhead{(keV)} & \colhead{(cm$^{-3}$)} & 
+\multicolumn{5}{c}{(ergs s$^{-1}$)} &
+\colhead{} \\
+
+
+\colhead{(1)} & \colhead{(2)} & \colhead{(3)} & \colhead{(4)} &
+\colhead{(5)} & \colhead{(6)} & \colhead{(7)} &
+\colhead{(8)} & \colhead{(9)} & \colhead{(10)} &\colhead{(11)} & \colhead{(12)} &
+\colhead{(13)}
+}
+
+% NOTE:  the \phantom calls in this table are used to make the numbers line
+% up properly.
+
+% You can NOT simply put pairs of '$' characters around each field in the format string below to get math mode for all the columns because, unfortunately, the AASTEX /nodata command fails in math mode.
+% The table generator will substitute (via a 'sed' process) /nodata for each NaN printed by the format string below.
+% We COULD carefully craft these format strings to produce '$/nodata$' in such cases and then have the table generator's sed look for that exact string.
+
+\startdata
+(%"%4d & %s & %7.1f & %5.1f &
+%s & %s & %s &
+%5.2f & %5.2f & %5.2f & %5.2f & %5.2f &
+%s \\\\")
+
+\enddata
+
+\tablecomments{Table~\ref{tbl:thermal_spectroscopy} is available in its entirety in the electronic edition of the \apjs.  
+Interesting sources mentioned in the text are shown here for guidance regarding its form and content. }
+
+\tablenotetext{a}{ 
+For convenience, cols.\ (1)--(4) reproduce the source identification, net counts, and photometric significance data from Table~\ref{tbl:src_properties_main}.
+}
+
+\tablenotetext{b}{
+All fits used the ``wabs(apec)'' model in XSPEC and assumed 0.3$Z_{\odot}$ abundances \citep{Imanishi01,Feigelson02}.  
+Cols.\ (5) and (6) present the best-fit values for the extinction column density and plasma temperature parameters.
+Col.\ (7) presents the emission measure derived from the model spectrum, assuming a distance of XXXX.xxxx~kpc. 
+Quantities marked with an asterisk (*) were frozen in the fit.  
+Uncertainties represent 90\% confidence intervals.
+More significant digits are used for uncertainties $<$0.1 in order to avoid large rounding errors; for consistency, the same number of significant digits is used for both lower and upper uncertainties.
+Uncertainties are missing when XSPEC was unable to compute them or when their values were so large that the parameter is effectively unconstrained.  
+Fits lacking uncertainties, fits with large uncertainties, and fits with frozen parameters should be viewed merely as splines to the data to obtain rough estimates of luminosities; the listed parameter values are unreliable.  
+}
+
+\tablenotetext{c}{ X-ray luminosities derived from the model spectrum are presented in cols.\ (8)--(12): (s) soft band (0.5--2 keV); (h) hard band (2--8 keV); (t) total band (0.5--8 keV).  
+Absorption-corrected luminosities are subscripted with a $c$.
+Cols. (8) and (12) are omitted when $\log N_H > 22.5$~cm$^{-2}$ since the soft band emission is essentially unmeasurable.  
+}
+
+\tablenotetext{d}{``2T'' means a two-temperature model was used; 
+the second temperature is shown in parentheses.   
+ } 
+
+
+
+\end{deluxetable}
+END
+
+
+%-----------------------------------------------------------------------------
+%\clearpage
+
+TEMPLATE powerlaw_spectroscopy
+\begin{deluxetable}{rcrrlllrrrrrc}
+\centering \rotate \tabletypesize{\scriptsize} \tablewidth{0pt}
+\tablecolumns{13}
+
+\tablecaption{X-ray Spectroscopy for Photometrically Selected Sources:  Power Law Fits
+\label{tbl:powerlaw_spectroscopy}}
+
+
+\tablehead{
+\multicolumn{4}{c}{Source\tablenotemark{a}} &
+\multicolumn{3}{c}{Spectral Fit\tablenotemark{b}} &
+\multicolumn{5}{c}{X-ray Luminosities\tablenotemark{c}} &
+\colhead{Notes\tablenotemark{d}} \\ 
+
+\multicolumn{4}{c}{\hrulefill} &
+\multicolumn{3}{c}{\hrulefill} &
+\multicolumn{5}{c}{\hrulefill} \\
+
+\colhead{Seq. No.} & \colhead{CXOU J} & \colhead{$C_{t,net}$} & \colhead{Signif.} &
+\colhead{$\log N_H$} & \colhead{$\Gamma$} & \colhead{$\log N_{\Gamma}$} &  
+\colhead{$\log L_s$} & \colhead{$\log L_h$} & \colhead{$\log L_{h,c}$} & \colhead{$\log L_t$} & \colhead{$\log L_{t,c}$} &
+\colhead{}  \\
+
+
+\colhead{} & \colhead{} & \colhead{} & \colhead{} &
+\colhead{(cm$^{-2}$)} & \colhead{} & \colhead{} & 
+\multicolumn{5}{c}{(ergs s$^{-1}$)} &
+\colhead{} \\
+
+
+\colhead{(1)} & \colhead{(2)} & \colhead{(3)} & \colhead{(4)} &
+\colhead{(5)} & \colhead{(6)} & \colhead{(7)} & 
+\colhead{(8)} & \colhead{(9)} &\colhead{(10)} & \colhead{(11)} & \colhead{(12)} &
+\colhead{(13)}
+}
+
+% NOTE:  the \phantom calls in this table are used to make the numbers line
+% up properly.
+
+% You can NOT simply put pairs of '$' characters around each field in the format string below to get math mode for all the columns because, unfortunately, the AASTEX /nodata command fails in math mode.
+% The table generator will substitute (via a 'sed' process) /nodata for each NaN printed by the format string below.
+% We COULD carefully craft these format strings to produce '$/nodata$' in such cases and then have the table generator's sed look for that exact string.
+
+\startdata
+(%"%4d & %s & %7.1f & %5.1f &
+%s & %s & %s &
+%6.2f & %6.2f & %6.2f & %6.2f & %6.2f &
+%s \\\\")
+
+\enddata
+
+\tablecomments{Table~\ref{tbl:powerlaw_spectroscopy} is available in its entirety in the electronic edition of the \apjs.  
+Interesting sources mentioned in the text are shown here for guidance regarding its form and content. }
+
+\tablenotetext{a}{ 
+For convenience, cols.\ (1)--(4) reproduce the source identification, net counts, and photometric significance data from Table~\ref{tbl:src_properties_main}.
+}
+
+\tablenotetext{b}{
+All fits used the ``wabs(powerlaw)'' model in XSPEC.  
+Cols.\ (5) and (6) present the best-fit values for the extinction column density and power law photon index parameters.
+Col.\ (7) presents the power law normalization for the model spectrum. 
+Quantities marked with an asterisk (*) were frozen in the fit.  
+Uncertainties represent 90\% confidence intervals.
+More significant digits are used for uncertainties $<$0.1 in order to avoid large rounding errors; for consistency, the same number of significant digits is used for both lower and upper uncertainties.
+Uncertainties are missing when XSPEC was unable to compute them or when their values were so large that the parameter is effectively unconstrained.  
+Fits lacking uncertainties, fits with large uncertainties, and fits with frozen parameters should be viewed merely as splines to the data to obtain rough estimates of luminosities; the listed parameter values are unreliable.  
+}
+
+\tablenotetext{c}{ X-ray luminosities derived from the model spectrum, assuming a distance of XXXX.xxxx~kpc, are presented in cols.\ (8)--(12): (s) = soft band (0.5--2 keV); (h) hard band (2--8 keV); (t) total band (0.5--8 keV).  
+Absorption-corrected luminosities are subscripted with a $c$.
+Cols. (8) and (12) are omitted when $\log N_H > 22.5$~cm$^{-2}$ since the soft band emission is essentially unmeasurable.  
+}
+
+\tablenotetext{d}{} 
+
+
+\end{deluxetable}
+END
+
+
+%=============================================================================
+\end{document}
+%=============================================================================
+

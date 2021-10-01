@@ -1,0 +1,50 @@
+                                                        11 Dec 2001
+                                                        
+This directory contains the procedures XCTV, XCTV2, XCTVN,
+XINSPECT, XINSPECT2, and supporting procedures.  These are
+object-oriented display widgets for roaming, zooming, scaling and
+examining pixel values in an image.  XCTV is used for a single
+image, while XCTV2 is for examining two images simultaneously.
+XCTVN is used for examining two or more images simultaneously (the
+images are overlaid -- mapped and unmapped in widgetspeak --
+rather than displayed side by side).  XINSPECT and XINSPECT2 are
+for examining huge FITS images on disk, and work without reading
+the whole thing in.
+
+These have been tested, but not systematically, under various
+versions of IDL 5, the latest being 5.5.
+
+Several IDL Astronomy Library routines are called.
+
+These routines use the non-standard system variables !TEXTUNIT and
+!TEXTOUT in the IDL Astronomy Library.  These can be defined using
+the IDL Astronomy Library procedure astrolib.pro.
+
+The non-standard system variable !DUMP is no longer required.
+
+Updates:
+
+11-Dec-2001:  Aspect ratio of input image preserved in pan window
+              for XCTV, XCTV2, XCTVN.  Propagation of XCOLORS
+              events fixed.
+
+30-Jan-2001:  New widgets XCTVN, XINSPECT, XINSPECT2.  Small changes
+              intended to decrease user irritation.
+
+29-Dec-2000:  Use xdispstr instead of xdisplayfile, better logfile manipulation
+              New "Multi" button in XCTV2, various minor fixes
+
+29-Sep-2000: Added aperture photometry, statistics on entire image
+
+01-Sep-2000: Added Blinking and 24bit color awareness.   (Now uses XCOLOR 
+             from David Fanning's Library).
+
+03-Jul-2000:  Converted to square bracket notation, somewhat better doc headers,
+	     especially on the topic of object orientation, and cleaner error
+	     handling in a few places
+
+30-Jun-2000: Force pan window to have same scaling as main window.   Added
+             logging of output data
+
+12-Oct-1999: Allowed headers to be positional parameters:
+             Eliminated some unused code

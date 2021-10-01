@@ -1,0 +1,475 @@
+%%%%%%%%%%%%%%%%%%%
+% Custom commands %
+%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\inine}{IRAS 09104+4109}
+\newcommand{\irs}{I09}
+\newcommand{\rxj}{RX J0913.7+4056}
+\newcommand{\tsync}{\ensuremath{t_{\rm{sync}}}}
+\newcommand{\mykeywords}{galaxies: active -- cooling flows --
+  galaxies: clusters: galaxies: individual (\inine) -- techniques:
+  interferometric}
+\newcommand{\mytitle}{A New Beaming Axis of the Quasar in \inine}
+\newcommand{\mystitle}{New \inine\ QSO Beaming Axis}
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+\documentclass[11pt, preprint]{aastex}
+\usepackage{common,graphicx,longtable,overpic}
+%\documentclass[iop]{emulateapj-rtx4}
+%\usepackage{apjfonts,common,graphicx,longtable,overpic}
+\usepackage[pagebackref,
+  pdftitle={\mytitle},
+  pdfauthor={K. W. Cavagnolo},
+  pdfkeywords={\mykeywords},
+  pdfsubject={Astrophysical Journal},
+  pdfproducer={ps2pdf},
+  pdfcreator={LaTeX with hyperref}
+  pdfdisplaydoctitle=true,
+  colorlinks=true,
+  citecolor=blue,
+  linkcolor=blue,
+  urlcolor=blue]{hyperref}
+\bibliographystyle{apj}
+
+\slugcomment{Submitted to ApJ}
+\shorttitle{\mystitle}
+\shortauthors{Cavagnolo \etal}
+
+\begin{document}
+\title{\mytitle}
+\author{
+K. Cavagnolo\altaffilmark{1},
+C. Ferrari\altaffilmark{1},
+E. Momjian\altaffilmark{2},
+J. Wrobel\altaffilmark{2},\\
+A. Edge\altaffilmark{3},
+and D. Hines\altaffilmark{4}}
+\altaffiltext{1}{UNS, CNRS UMR 6202 Cassiop\'{e}e, Observatoire de la
+  C\^{o}te d'Azur, B.P. 4229, F-06304 Nice CEDEX 4,
+  France.}
+\altaffiltext{2}{National Radio Astronomy Observatory, P.O. Box O,
+  1003 Lopezville Road, Socorro, NM 87801-0387, USA.}
+\altaffiltext{3}{Institute for Computational Cosmology, Department of
+  Physics, Durham University, South Road, Durham DH1 3LE, UK.}
+\altaffiltext{4}{Space Telescope Science Institute, 3700 San Martin
+  Drive, Baltimore, MD 21218, USA.}
+\email{cavagnolo@oca.edu}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+  We present analysis of the sub-kiloparsec structure of the nuclear
+  region around the obscured quasar in \inine\ using phase-referenced
+  21 cm and 6 cm Very Long Baseline Array radio observations. The
+  observations reveal the nucleus is dominated by an unresolved ($<
+  100$ pc) core and a clumpy, one-sided jet system with a projected
+  size of $\approx 4$ kpc. The jet properties can be reproduced if the
+  quasar beaming axis is inclined $< 40\mydeg$ from our line-of-sight
+  and the mean jet velocities are $\approx 0.3c$. \inine\ also hosts a
+  highly-linear set of $\approx 60$ kpc large-scale jets which our
+  analysis indicates cannot be continuous extensions, either through
+  precession or bending by an ambient medium, of the nuclear jets. We
+  conclude that the hypothesis presented in
+  \citet{1999ApJ...512..145H} that the large-scale jets are no longer
+  being fed by the nucleus and a new beaming axis has been established
+  between 0.07--0.5 kyr ago is the scenario most consistent with the
+  data. XXX: What's the prestige? Say something about BCG assembly.
+\end{abstract}
+
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
+
+\keywords{\mykeywords}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%
+
+-- introduce i09
+
+\object{\inine} (hereafter \irs; $z = 0.4418$) is the peculiar
+brightest cluster galaxy (BCG) residing in the cool core galaxy
+cluster \object{\rxj}.
+
+enigmatic galaxy: hosts obscured qso, large-scale jets, misaligned
+beaming/jet axes
+
+highly-linear, $\approx 60$ kpc long jets misaligned from the beaming
+direction of the quasar \citep[][hereafter H93 and H99,
+  respectively]{1993ApJ...415...82H, 1999ApJ...512..145H}.
+
+A detailed analysis of \irs\ is presented in \citep{iras09} suggesting
+it's a radio-mode/quasar-mode crossover object
+
+Using data from the Chandra\ X-ray Observatory (\cxo)...
+   X-ray halo cavities associated with the \irs\ jets,
+   irradiated icm/nebula in along misaligned quasar beaming axis
+   we suggest \irs\ may be cycling between the dominant mode of feedback
+   local example of high-z galaxies evolve
+
+-- explain why important
+   close-up look at bcg assembly which occurs at much higher redshifts
+   need to learn about processes in details to aide modeling and further
+   understanding
+
+-- explain why nuclear props are salient
+   first, verify misalignment (e.g. confirm interp)
+   study qso feedback
+   constrain accretion fueling?
+
+-- what did we find and how
+   Very Long Baseline Array (\vlba)
+   indeed misaligned
+   one-sided jet consistent with h93/99 analysis
+   no signs of multinucleation
+   accretion?
+
+-- what do we conclude
+   not sure right now...
+
+Reduction of the \vlba\ radio data is discussed in Section
+\ref{sec:obs}, observational findings are presented in Section
+\ref{sec:res}, and our interpretation concludes the paper in Section
+\ref{sec:dis}. \LCDM, for which $z = 0.4418$ corresponds to $\da
+\approx 5.72$ kpc arcsec$^{-1}$ and $\dl \approx 2.45~\Gpc$. All
+errors are quoted at 68\% confidence. The unit [mas] indicates
+milliarcseconds, and flux density measurements for a particular radio
+band are denoted using the band's approximate frequency.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Observations and Data Reduction}
+\label{sec:obs}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vlba\ \dataset[ADS/NRAO.VLBA\#BH0110]{L-band} (21 cm; 1.4 GHz) and
+\dataset[ADS/NRAO.VLBA\#BC0195]{C-band} (6 cm; 5.0 GHz) observations
+of \irs\ were obtained in March 2003 and January 2011,
+respectively. Both datasets were taken in 2-bit, dual circular
+polarization using recording modes of $2\times8$ MHz sub-bands (IFs)
+per polarization (128 Mbps) for L-band, and $4\times16$ MHz IFs per
+polarization (512 Mbps) for C-band. Correlation was performed at NRAO
+in Socorro, New Mexico using 2.1 s integrations. For both
+observations, the fringe calibrator was 4C39.25 ($3.18\mydeg$ offset;
+$S_{1.4} = 2$ Jy; $S_{5.0} = 000$ Jy). Nodded referencing to calibrate
+the phases, rates, and delays was performed in L-band with the source
+J0908+4150 ($1.32\mydeg$ offset; $S_{1.4} = 0.2$ Jy) and J0923+4125
+($1.90\mydeg$ offset; $S_{5.0} = 000$ Jy) in C-band.
+
+The data was reduced using the Astronomical Image Processing System
+\vlba\ data calibration pipeline
+\citep[\aips\ v31DEC11;][]{2005ASPC..340..613S} and the Common
+Astronomy Software Applications (\casa\ v3.1). Flagging of bad data
+was performed via manual inspection of the $uv$ measurements and using
+automated tasks within \casa's {\textsc{flagdata}} tool. Ionospheric
+and Earth orientation corrections were applied using, respectively,
+the total electron content models from
+JPL\footnote{\url{http://cddis.nasa.gov}} and geodetic solutions from
+USNO\footnote{\url{http://gemini.gsfc.nasa.gov}}. The amplitude scale
+was set using {\it{a priori}} corrections based on the measured system
+temperatures and gains. \vlba\ sampler errors were removed, and phases
+and delays were refined, by correcting for instrument-induced shifts
+and accounting for antenna parallactic angle effects. Residual fringe
+rates and delays were removed using antenna-based global fringe
+fitting. Self-calibration of amplitudes and phases was performed for
+the calibrators, and the solutions were applied to \irs.
+
+As a check of the \vlba\ results, and to make comparisons of the
+large- and small-scale \irs\ radio structure, archival Very Large
+Array (\vla) \dataset[ADS/NRAO.VLA\#AH0388]{L-band},
+\dataset[ADS/NRAO.VLA\#AT0211]{C-band},
+\dataset[ADS/NRAO.VLA\#AH0388]{X-band} (3.6 cm; 8.3 GHz), and
+\dataset[ADS/NRAO.VLA\#AH0244]{U-band} (2 cm; 15.0 GHz) observations
+were also reduced and analyzed. Data editing and calibration were
+performed using standard methods outlined in the
+\aips\ Cookbook\footnote{\url{http://www.aips.nrao.edu/cook.html}}. Radio
+images were generated by Fourier transforming, cleaning,
+self-calibrating (amplitude and phase), and restoring the individual
+radio observations. A summary of the radio observations are given in
+Table \ref{tab:obs}.
+
+%%%%%%%%%%%%%%%%%
+\section{Results}
+\label{sec:res}
+%%%%%%%%%%%%%%%%%
+
+Presented in Figure \ref{fig:high} are the highest resolution
+\vlba\ 1.4 GHz and 5.0 GHz images of the \irs\ nucleus. The images
+were generated by averaging down to one frequency channel and
+deconvolving an area twice the size of the primary beam using uniform
+weights and cells one-fifth the size of the synthesized beam. The
+\irs\ nuclear region is composed of a resolved arm emerging from the
+north side of an unresolved core. The extension is $\approx 140$ pc
+long and may be a small-scale jet with no apparent southern
+counterpart. The \irs\ nucleus is $\approx 220$ pc north-south and
+$\approx 70$ pc east-west. A source is formally detected 180 pc east
+of the core in the 1.4 GHz image, but it has no 5.0 GHz counterpart,
+and may be an imaging artifact. Approximately 2--4 kpc north of the
+nucleus in the direction of the extension, a cluster of clean
+components appeared in the analysis, suggesting additional radio
+structure.
+
+To probe for faint, extended emission, lower resolution \vlba\ images
+were made from the averaged data by weighting-down long baselines with
+a 30\% Gaussian taper beginning at 10 M$\lambda$ in the $uv$ plane and
+then cleaning with natural weights and cells 20 times the maximum
+resolution. Shown in Figure \ref{fig:comp} are intensity contours from
+the low resolution \vlba\ images overlaid on the \vla\ 4.8 GHz radio
+image. The low resolution \vlba\ images reveal a chain of unresolved
+knots (labeled 1--4) which are coincident with the elongation in the
+\vla\ image and lie precisely along the direction defined by the
+nucleus' northern extension. The fluxes and spectral indices of the
+core, extension, and knots are given in Table \ref{tab:fluxes}. The
+total knot+nucleus fluxes ($> 3\srms$) measured with the \vlba\ are
+$S_{1.4} = 5.48 \pm 0.15$ mJy and $S_{5.0} = 000 \pm 000$ mJy, not
+significantly different from the \vla\ measurements of the same
+region: $S_{1.4} = 5.75 \pm 0.84$ mJy and $S_{5.0} = 000 \pm 000$
+mJy. Neglecting emission on angular scales larger than the restoring
+beams or fainter than the rms noise, it appears the dominant emitting
+structures detected with the \vla\ are resolved with the \vlba. In
+none of the images where the central 000 kpc are resolved is emission
+detected south of the nucleus or in the direction of the large-scale
+radio jets.
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Discussion}
+\label{sec:dis}
+%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Jet Spectral Properties and Age}
+\label{sec:age}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Before the age of the jet can be estimated, the properties of the
+nuclear radio spectrum need to be known. The spectrum was modeled with
+the well-known KP \citep{1962SvA.....6..317K, pach}, JP
+\citep{1973A&A....26..423J}, and CI \citep{1987MNRAS.225..335H}
+synchrotron models by fitting between 1.4--14.9 GHz with the
+{\textsc{radiospec}} code of \citet{2009arXiv0912.2317N} which
+determines the Bayesian posterior distribution and evidence for each
+model. The fits for each model showed little variation, thus only the
+results for the CI model, which assumes XXX electron injections and a
+XXX pitch-angle distribution, are shown in Figure \ref{fig:radio}. The
+maximum likelihood parameter set has a break frequency $\log \nu_B =
+10.4 \pm 0.84$, spectral index of $\alpha = 1.03 \pm 0.19$, and a
+likelihood ratio test statistic of $\ln \mathcal{L} =
+-29.28$. Integrating under the CI curve between $\nu_1 = 0.01$ GHz and
+$\nu_2 = 100$ GHz yields a luminosity of $\lrad = 5.8 \times 10^{41}
+~\lum$.
+
+The jet synchrotron age was estimated using the maximum-likelihood
+parameters. Assuming inverse-Compton scattering and synchrotron
+emission are the dominant radiative mechanisms, and that
+re-acceleration is negligible, the age of an isotropic particle
+population is \citep{2001AJ....122.1172S}:
+\begin{equation}
+  \tsync = 1590 \left(\frac{B^{1/2}}{B^2 + B_{\rm{CMB}}^2}\right)~
+  \left[\nu_{\rm{B}} (1+z)\right]^{-1/2} ~\Myr
+\end{equation}
+where $B$ [\mg] is magnetic field strength, $B_{\rm{CMB}} =
+3.25(1+z)^2$ [\mg] is a correction for inverse-Compton losses to the
+cosmic microwave background, $\nu_{\rm{B}}$ [GHz] is the radio
+spectrum break frequency, and $z$ is the dimensionless source
+redshift. The magnetic field is assumed to not significantly differ
+from the equipartition magnetic field strength
+\citep{1980ARA&A..18..165M}:
+\begin{equation}
+  B_{\rm{eq}} = \left[\frac{6 \pi ~c_{12}(\alpha,\nu_1, \nu_2)
+      ~\lrad ~(1+k)}{V \Phi}\right]^{2/7} ~\rm{\mg}
+\end{equation}
+where $c_{12}(\alpha,\nu_1,\nu_2)$ is a dimensionless constant
+\citep{pach}, \lrad\ [$\lum$] is the integrated radio luminosity from
+$\nu_1$ to $\nu_2$, $k$ is the dimensionless ratio of energy in
+non-radiating particles to that in relativistic electrons, $V$ [\cc]
+is the radio source volume, and $\Phi$ is a dimensionless radiating
+population volume filling factor. Synchrotron age as a function of $k$
+and $\Phi$ is shown in Figure \ref{fig:tsync}. We find an upper limit
+to \tsync\ of $\approx 0.5$ Myr.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Relativistic Beaming}
+\label{sec:beam}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The nuclear radio morphology strongly indicates a one-sided jet system
+resulting from Doppler boosting in a modestly relativistic jet
+(\ie\ $v/c \equiv \beta \ga 0.1$) oriented close to the line-of-sight
+\citep[see][for a review]{1995PASP..107..803U}. The flux density ratio
+of the approaching ($S_a$) and receding ($S_r$) jets are useful for
+constraining the jet velocity and beaming angle
+\citep{1999ARA&A..37..409M}:
+\begin{equation}
+  \frac{S_a}{S_r} = \left(\frac{1+\beta \cos \theta}{1-\beta \cos
+    \theta}\right)^{k+\alpha}
+  \label{eqn:bar}
+\end{equation}
+where $\theta$ is the angle formed by the jet axis with the
+line-of-sight, $\alpha$ is the radio spectral index ($d\log
+S_{\nu}/d\log \nu$) for an assumed $S \propto \nu^{-\alpha}$, and $k$
+is believed to vary between 2--3 depending upon the clumpiness of the
+jet plasma \citep[\eg][]{1979Natur.277..182S}. We calculate a lower
+limit for the $\beta \cos \theta$ term by assuming the receding jet
+has a peak flux less than $3\srms$, making Equation \ref{eqn:bar} read
+\begin{equation}
+  \beta \cos \theta >
+  \frac{(S_a/3\srms)^{1/(k+\alpha)}-1}{(S_a/3\srms)^{1/(k+\alpha)}+1}
+  \label{eqn:beam}
+\end{equation}
+for which $\alpha = 1.0$ and $k = 3$ yields $\beta \cos \theta > 000$,
+regardless of whether $S_a^{1.4} = 0.70 ~\mrms$ or $S_a^{5.0} = 000
+~\mrms$ is used.
+
+The $\beta$-$\theta$ degeneracy in Equation \ref{eqn:beam} can be
+broken by applying constraints presented in published studies of the
+\irs\ circumnuclear material's angle of inclination and assuming the
+jet axis is orthogonal to the plane of this material. The analyses
+presented in \citet{1996ApJ...460L..11G}, \citet{1997A&A...318L...1T},
+and \citet{2000AJ....120..562T} of the \irs\ nuclear infrared emission
+believed to originate from an extended dusty torus determined that
+$\theta$ may be between $45 \dash 60\mydeg$, while the study of
+nuclear UV emission and extended polarized UV emission by
+\citet{1999ApJ...512..145H} found $\theta \approx 34 \dash
+41\mydeg$. A plot of jet velocity as a function of $\theta$ over this
+range of values is shown in Figure \ref{fig:beam}. For any given
+$\theta$ value, there is a minimum value of $\beta$ which will
+reproduce the observed radio emission properties, and this limit is
+shown as a solid black curve in Figure \ref{fig:beam}. At face value,
+Figure \ref{fig:beam} indicates the jet velocity must be $\ga 0.23c$
+for $\theta > 34\mydeg$.
+
+\citet{1999ApJ...512..145H} argue that in order to reproduce the
+radial extent of scattered nuclear UV emission, the beaming direction
+of the nucleus must have persisted for longer than 70 kyr. The
+one-sided jet is consistent with the beaming direction proposed by
+\citet{1999ApJ...512..145H}, and thus the UV timescale and jet length
+can be used to derive an upper limit to the jet velocity. The radio
+observations indicate the full-extent of the jet has been detected, in
+which case the location of knot 4 relative to the nucleus is
+approximately equal to the projected jet length, $d_{\rm{proj}} =
+3.64$ kpc, and is related to the deprojected jet length as
+$l_{\rm{jet}} = d_{\rm{proj}} \csc \theta$. The velocity needed to
+reach knot 4 in some time $t$ is then simply $\beta =
+l_{\rm{jet}}/t$. Assuming $t$ is greater than 70 kyr produces a region
+of excluded velocities shown in Figure \ref{fig:beam} as a light-grey
+band.
+
+
+
+As $\theta$ increases, $l_{\rm{jet}}$ approaches the projected value
+and hence the velocity needed to reach that distance also
+decreases. But the velocity cannot arbitrarily drop because then the
+effect of Doppler beaming diminishes and the observed jet would fade
+into the noise. Thus, where the set of curves cross each other (shown
+with filled circles) defines a minimum and maximum $\theta$ which can
+reproduce the observed beaming and jet length. Note that 70 kyr is a
+lower limit for the beaming age, and higher age values demand lower
+jet velocities at any given $\theta$ further restricting $\theta$ to
+values less $30\mydeg$. Assuming knot 4 defines the extent of the jet,
+from this argument we can conclude that the viewing angle must be less
+than $40\mydeg$.
+
+%%%%%%%%%%%%%%%%%%
+\subsection{Stuff}
+\label{sec:stuff}
+%%%%%%%%%%%%%%%%%%
+
+The southern large-scale jet has the appearance of fading-out, or in,
+depending on interpretation. If the velocity of the jet drops at that
+point, for example if it impinges on a high density region (which it
+appears to from the X-ray) that's where beaming would cease. This
+would be consistent with our beaming analysis were it not for the
+significantly different spectral indices between the radio core and
+the large-scale jets. The flat core and steep jets/lobes suggest the
+two are disconnected. Further, the highly linear large-scale jet
+structure is inconsistent with the interpretation that the outflow is
+no longer relativistic so close to the launch point: the jets have the
+morphology of a fast flow driven through the ICM (like a firehose),
+not a slow flow following the pressure anisotropies of the ICM.
+
+-- minimum age set by equating v=1.0c and traversing ljet, what is it?
+-- so, what does all this mean?
+-- are the angle of inclination for the large-scale jets and the
+beaming of the nucleus significantly different?
+-- do our results demand a dramatic change in beaming axis?
+-- can I restrict the timescale any further?
+-- multiple sources?
+-- coincidence with other large-scale struc
+-- definitely new beaming?
+-- the jets aren't bent indicating little interaction with an
+   ambient medium... which weird because it's a friggin' cool core
+   cluster
+-- could all this be explained via jet precession
+   \citep{1982ApJ...262..478G}
+-- does radio core lum and optical nuc lum fit with other low-z qso's
+   \citep{1984AJ.....89.1658G}?
+-- nice pc to kpc analysis of 3C 120 \citep{1987ApJ...316..546W}
+-- how fast are jets into the ICM, and how far do they go at these speeds?
+-- is this a slow wide jet or fast narrow jet?
+-- also, what does upper limits to k say about entrainment?
+-- lrad suggests XXX kinetic energy from \citet{pjet} pjet-prad
+   scaling relation.
+
+XXX: How do I know that the nucleus and large-scale jets are not part
+of one beaming system? Jets bend and change direction? Nuclei stop and
+restart.
+
+-- for theta less than 40deg, ljet > 6 kpc
+
+%%%%%%%%%%%%%%%%%
+\acknowledgements
+%%%%%%%%%%%%%%%%%
+
+K.W.C. and C.F. acknowledge financial support from L'Agence Nationale
+de la Recherche through grant ANR-09-JCJC-0001-01. The National Radio
+Astronomy Observatory is a facility of the National Science Foundation
+operated under cooperative agreement by Associated Universities,
+Inc. This research has made use of NASA's Astrophysics Data System
+Bibliographic Services, and the NASA/IPAC Extragalactic Database (NED)
+which is operated by the Jet Propulsion Laboratory, California
+Institute of Technology, under contract with the National Aeronautics
+and Space Administration.
+
+{\it Facilities:} \facility{VLA}, \facility{VLBA}
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Figures and Tables %
+%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{obs.tex}
+\input{fluxes.tex}
+%\input{figs.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+% End the document %
+%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+
+Due to the lack of self-calibration, there are imaging artifacts
+present in the final images, but the most significant sources are all
+associated with \irs\ radio emission seen in lower resolution Very
+Large Array (\vla) images.
+
+\dataset[ADS/NRAO.VLA\#AK0454]{4-band} (400 cm; 75 MHz),
+\dataset[ADS/NRAO.VLA\#AK0454]{P-band} (90 cm; 333 MHz),
+NRL Observing Guide\footnote{\url{http://lwa.nrl.navy.mil/tutorial/}}
+
+For each \vla\ image, the region enclosing the nucleus seen in the
+\vlba\ images was identified and fluxes were measured.
+vla observations at 4.8, 8.4, 14.9:
+14.9 GHz $0.61 \pm 0.21$
+8.4 GHz $0.76 \pm 0.12$

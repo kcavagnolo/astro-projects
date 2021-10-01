@@ -1,0 +1,1 @@
+cat r200-core_nhfro_fefree_7-7.dat r500-core_nhfro_fefree_7-7.dat r1000-core_nhfro_fefree_7-7.dat r2500-core_nhfro_fefree_7-7.dat r5000-core_nhfro_fefree_7-7.dat r7500-core_nhfro_fefree_7-7.dat r200_nhfro_fefree_7-7.dat r500_nhfro_fefree_7-7.dat r1000_nhfro_fefree_7-7.dat r2500_nhfro_fefree_7-7.dat r5000_nhfro_fefree_7-7.dat r7500_nhfro_fefree_7-7.dat > global_nhfro.dat

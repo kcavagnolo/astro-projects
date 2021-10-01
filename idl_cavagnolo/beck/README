@@ -1,0 +1,74 @@
+                                                           September 2000
+
+This directory contains the neural network classifier procedure nnet.pro and
+training program train_nnet.pro and supporting procedures.    It is based on
+the unpublished MS Thesis "Stellar Spectral Classification Through Neural
+Networks" by T. Beck (ACC, Inc.)
+
+nnet                 -neural network classifier
+train_nnet           -neural network training program
+nnet_write_weights   -Writes trained neural network weights to a FITS file
+nnet_read_weights   - Reads trained neural network weights from a FITS file
+
+Procedure:
+
+1) Collect training data.   At least one good example of each type
+2) Training data must be fit into a vector and normalized
+3) Run train_nnet.pro.
+4) Use trained weights to classify other data
+
+_____________________
+The example is taken from the prologue of train_nnet.pro
+
+;*EXAMPLE:
+;	This example uses the neural network as a stellar spectral classifier.
+;	It could be used to classify any type of data, if the data could
+;	be input as a normalized vector.
+;	--------------------------------------------------------------------
+;	You have a set of 10 flux & wavelength calibrated spectra. If 
+;	necessary, resample the spectra to the same dispersion (eg. nm/pixel). 
+;	Extract the same wavelength region from all spectra. Normalize. Make 
+;	sure all pixel values are between 0 and 1.0. Stack all spectra into 
+;	a single 2-D array. This is the training set (see input variable 
+;	"train_set" above). If each spectrum has 200 pixels, then the size of
+;	train_set will be (200,10). n_pat = 10 and n_in = 200 also.
+;
+;	Create a integer vector ("classes", above) of 10 elements, each 
+;	element is a number that designates the spectral type of the 
+;	corresponding spectra in the training set, by subscript:
+;
+;		classes(0) <====> train_set(*,0)
+;
+;	It is help to generate a lookup table:
+;
+;		class		SP type
+;		-----		-------
+;		  0		  M0V
+;		  1		  M1V
+;		  2		  M1.5V
+;		  3		  M2V
+;		  4		  M3V
+;		  5		  M4V
+;		  6		  M5V
+;
+;	Example of classes vector:
+;
+;		IDL> classes = [0,1,2,2,3,4,4,5,6,6]
+;
+;	Note that in this case some spectral types have more than one example.
+;	It is a good idea to have a many examples of each spectral type as
+;	possible, this will allow the neural net to generalize better and be
+;	able to ignore noise. 
+;
+;	CAUTION: Two examples of the same spectal type that very different
+;	in appearance due to noise, poor calibraion, etc. may cause the
+;	network not to converge to a solution. 
+;
+;	In this example the number of output neurons (n_out) is equal to 7.
+;	Set n_hid to some number between n_in and n_out, in this example,
+;	100 would be a good choice.
+;
+;	Ready to run:
+;		IDL> train_nnet, 10, 200, 100, 7, train_set, classes, $
+;			bias_hid, w_hid, bias_out, w_out
+;

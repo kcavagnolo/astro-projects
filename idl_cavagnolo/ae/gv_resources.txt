@@ -1,0 +1,81 @@
+GV.pageMedia:		letter
+GV.orientation:		landscape
+GV.fallbackOrientation:	landscape
+GV.swapLandscape:	False
+GV.autoCenter:		True
+GV.antialias:		True
+
+!# In version 3.6.1 (and others) there's a strange bug. If respectDSC is True then
+!# the --watch feature breaks -- when the file is updated the gv display alternates 
+!# between a blank page and the updated file contents.  
+!# See bug report http://lists.gnu.org/archive/html/bug-gv/2005-03/msg00001.html
+!#
+!# The main reason you'd want to set respectDSC to True would be to get the Postscript
+!# %%Title line displayed as the window title, instead of the filename.
+GV.respectDSC:		False
+
+GV.ignoreEOF:		True
+GV.confirmPrint:	True
+GV.reverseScrolling:	False
+GV.autoResize:		True
+GV.minimumHeight:      200
+GV.minimumWidth:       200
+GV.confirmQuit:		1
+GV.watchFile:		True
+GV.watchFileFrequency:	500
+GV.showTitle:		True
+GV.scale:		-3
+GV.scaleBase:		1
+
+
+!########################################
+!##### Layouts (from /sw/lib/gv/gv_spartan.dat) 
+!########################################
+
+!#GV.control.MButton.font:		-*-Helvetica-Medium-R-Normal--*-120-*-*-P-*-ISO8859-1
+GV.control.MButton.font: -*-helvetica-medium-r-normal-*-*-80-*-*-p-*-iso8859-1
+GV*orientationButton*forcedWidth:	40
+GV*upsidedown.Label:			Up-Down
+GV.?.processButton.label:		\ working
+
+!##### Main Layout
+
+GV*control.layout:			\
+|v{					\
+  f=4					\
+  sss=2					\
+  pbh=(100*(|height processButton))	\
+  pbs1=($pbh/($pbh+1))			\
+  $f					\
+  |h{					\
+    $f					\
+    |v{ 				\
+      titleButton<+200-[1]*-100%>	\
+      1					\
+      fileButton<+50*-100%>		\
+      1					\
+      stateButton<+50*-100%>		\
+      1					\
+      pageButton<+50*-100%>		\
+      1					\
+      orientationButton<+50-100*-100%>	\
+      1					\
+      scaleButton<+50*-100%>		\
+      1					\
+      pagemediaButton<+50-[1]*-100%>	\
+      (4*$pbs1)				\
+      |h{				\
+        0<+[1]>				\
+        processButton<+50*-100%>	\
+        0<+[1]>				\
+      }					\
+    }					\
+    $f					\
+    |v{					\
+      viewFrame<+[2]-100%*+9999-100%>	\
+    }					\
+    $f					\
+  }					\
+  $f					\
+}
+

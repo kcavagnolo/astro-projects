@@ -1,0 +1,221 @@
+                          True Color WIDGET Tool (tctool)
+
+Purpose:
+          A Widget Tool which is useful in creating a "True Color" image,
+          given a red, green, and blue image of the same field.
+
+Layout:
+          The Widget Tool you see before you has 3 basic areas.
+          1) several buttons (including this Help button) across the
+             top of the Widget.
+          2) a series of 3 control panels with a 200x200 display window
+             next to each.  These control the display of each color image.
+          3) a large (600x600) window for the combined "true color" image.
+
+Use:
+          1) Enter 24bit mode in a XTERM window by typing 24bit.
+     
+          NOTE: YOU MUST BE IN 24BIT MODE FOR TCTOOL TO BE OF ANY REAL USE
+
+          2) Enter IDL
+
+          3) type tctool.
+
+Input:
+          There are 2 ways that images can be input to TCTOOL.
+
+          1) FITS images can be read into TCTOOL using the "Read Red Image", 
+             "Read Green Image" and "Read Blue Image" buttons in the red, green,
+             and blue control panel.  Note, these buttons will only read in
+             FITS images.
+
+          2) You may also enter one or more of the images on the command line
+             by using the keywords RED1, GREEN1, and/or BLUE1.
+
+             RED1:   If set equal to the red image there is no need to
+                     read the red image in.  This is useful if the red image
+                     isn't a fits image or if you need to process the red image
+                     before using as part of a true color image.
+
+             GREEN1: If set equal to the green image there is no need to
+                     read the green image in.  This is useful if the green image
+                     isn't a fits image or if you need to process the green 
+                     image before using as part of a true color image.
+
+             BLUE1:  If set equal to the blue image there is no need to
+                     read the blue image in.  This is useful if the blue image
+                     isn't a fits image or if you need to process the blue image
+                     before using as part of a true color image.
+        
+             You may also enter a header for each color on the command line
+             using the keywords RHEAD1, GHEAD1, and/or BHEAD1.  To use the 
+             ARROWS feature a header with CD matrix must be entered into
+             RHEAD1 either on the command line or with the FITS read.
+ 
+             RHEAD1: Set equal to the red image's header when using RED1.
+                     This is useful for placing N and E arrows on the image
+                     using the ARROWS procedure.  Note the header must have a
+                     correct CD matrix to get arrows.
+
+             GHEAD1: Same as RHEAD1, except not used at present.
+
+             BHEAD1: Same as RHEAD1, except not used at present.
+
+
+          NOTE: THE IMAGES NEED NOT BE THE SAME RESOLUTION, ORIENTATIONS,
+                SIZES, OR FIELD OF VIEW.  
+
+Display:
+          When each image is loaded it will be displayed in it's own small
+          window (200x200) with a linear stretch.   You can change the stretch
+          by entering the new MIN or MAX value in the appropriate field and
+          hitting a <CR>.  YOU MUST DO THE <CR> TO GET THE NEW VALUE.
+
+          You may also change the kind of stretch to logarithmic (base 10),
+          square root, or histogram equalization.  Each image works independent
+          of the others.  
+
+          NOTE: THE AUTOMATIC DISPLAY OF THE LINEAR STRETCH WORKS ONLY WITH
+                IMAGES READ IN USING THE BUTTONS.  FOR IMAGES INPUT ON THE 
+                COMMAND LINE YOU MUST PUSH THE "CHOOSE SCALING" BUTTONS. 
+          
+True Color:
+          Once all 3 images are loaded and displayed the "Make True Color",
+          "Edit Pixels", "Edit Images", "Rotate", "Zoom", "Arrows", 
+          "Annotate" buttons and "WRITE IMAGE" menu will become unghosted.
+
+          Push the "Make True Color" button to see the true color image
+          displayed in the large window (600x600).
+
+          NOTE: THE NATURE OF A 24BIT IDL SESSION IS THAT TO SEE THE CORRECT
+                COLOR OF DISPLAYED IMAGES THE CURSOR MUST BE IN ONE OF THE 
+                DISPLAY WINDOWS.  THIS MAKES SEEING THE BUTTONS DIFFICULT.  
+                YOU GET ONE OR THE OTHER.
+          
+Alignment:          
+
+          In cases where the data has previously been reduced the 3 images 
+          may all be the same size, orientation and alignment, however in 
+          general this may not be the case.  The True Color image makes any 
+          misalignments, differences in scale or roll easy to see.
+
+
+                                         Shifts
+
+          You can shift any of the images using the "Shift" size field and 
+          direction buttons  in each colors control panel.  Enter the size of 
+          the shift that you want and then press the direction.  DO NOT FORGET 
+          TO PRESS THE <CR> OR THE NEW SIZE WILL NOT REGISTER. 
+ 
+         
+                                Rotation & Magnification          
+          
+          You can rotate any image and magnify or demagnify that image
+          Using the "Rotate" button.  This pops up a new widget which will
+          ask for the input values for a call to the IDL library procedure 
+          ROT.   Click on the button of the image that you want to rotate
+          or magnify (THE RED WILL DEFAULT IF YOU DO NOT PUSH A BUTTON).
+          You may either enter numbers in the X-CENTER and Y-CENTER fields
+          or use the cursor to click on the pixel to rotate about.
+         
+          
+                                  Trimming the images         
+          
+          You can trim any image to any size using the "EDIT IMAGES"
+          button.  This pop up widget will also let you subtract a sky 
+          background.
+
+                           Deleting hot pixels or Cosmic Rays
+
+          The "EDIT PIXELS" button will pop up a widget that lets you replace
+          the values in a box of the size you specify with the median value
+          of the surrounding pixels.  You click on the True Color image on the
+          pixel at the center of the box that you want to replace or click on 
+          the pixel in the Zoom window.
+          
+          
+          NOTE: SOME OF THESE ACTION WILL AUTOMATICALLY REFRESH THE TRUE COLOR
+                IMAGE WHILE OTHERS WILL NOT.  PRESSING THE "MAKE TRUE COLOR" 
+                BUTTON WILL ALWAYS REFRESH THE TRUE COLOR IMAGE.
+
+
+                                         Zoom
+
+          The zoom button will pop up a scrollable zoom window.  Drag the slider
+          to the Zoom size that you want (a factor of 1-4) and click on the 
+          Display button.  This will allow for more careful registration and 
+          Editing of pixels.
+
+
+                             Annotating the True Color Image
+
+          The "ARROWS" button pop up a widget that lets you choose the location
+          of the vertex of a North & East set of arrows (a basic call to the
+          ARROWS procedure).  As of now the arrows and lables will be white
+          and of a default size and style.  You may place the arrows in as many
+          places on the screen as you like, but only the last location is 
+          remembered for the purpose of placing the arrows on a postscript 
+          output of the final image.
+
+          The "ANNOTATE" button will pop up a widget which is a scaled down 
+          version of the IDL library routine ANNOTATE.  This version allows
+          only text, lines and arrows to be drawn.  
+
+          Enter the text you want into the Text field then click in the true 
+          color image display window where you want the text to appear.  The 
+          text may then be resized, rotated, repositioned, font changed, 
+          thickness changed,
+          etc. using the mouse or ANNOTATE widget sliders and menus.  Once the
+          text is how you want it press the save button.  Then if you want this
+          annotation on a postscript output go to the File pulldown menu and 
+          select save (yes that is 2 saves) The first saves the characteristics
+          of the annotation on the display, the second saves the description of 
+          the annotation in 2 files.  One file (annotate.dat) is the regular 
+          annotate format save, the other (annotate.fits) is a fits table where 
+          the information in a structure is saved as the first entry in the 
+          table.
+          
+          Each sucessive annotation must also end with pressing the save button 
+          and selecting save from the File pull down menu.  A new annotate.dat 
+          is created for each, but the new anntation is added as another line
+          in the fits table.
+          
+          Lines and arrows are added in a similar manner.  When the line or 
+          arrow is where you want it press the save button and select the save 
+          item in the File pull down menu.  
+
+          When you have all of the annotation as you want them select exit from
+          the File pull down mwnu.  TCTOOL will read in the contents of 
+          annotate.fits when a postscript output is generated.  It is designed 
+          to give you as close as possible a what you see is what you get 
+          annotations, thus vector fonts (not postscript fonts) are used.  The 
+          size, placement, orientation, etc. should be preserved on the 
+          postscript output.
+
+          Note, the file annotate.fits will be renamed as annotate_old.fits 
+          after the postscript file is generated.  Any old file 
+          annotate_old.fits will be overwitten so rename it if you want to keep 
+          it.
+ 
+
+Output:
+          You may write a postscript, a TIFF or a JPEG file of the True Color 
+          image,  or write out the processed red, green or blue image using 
+          the "WRITE IMAGE" pull down menu.
+
+          A widget asking for the name of the output file will pop up.  Note
+          the extension will be automatically appended so don't put .ps, .tiff,
+          .jpeg, or .fits.
+
+          Note any annotation in the file annotate.fits will be included on the
+          postscript file only (not tiff or jpeg).  This will only happen if
+          annotations were generated during this session (however previously
+          generated annotations will be used if they are in the file 
+          annotate.fits.  Also arrows will be place at the last location that 
+          they were placed on the image (note this may be confused if you trim, 
+          rotate, or edit the images or pixels after the arrows are displayed 
+          on the screen).
+ 
+          
+          NOTE: THE FITS IMAGES HAVE A MINIMAL FITS HEADER WHICH DOES NOT
+                CONTAIN THE INFORMATION THAT WAS IN THE ORIGINAL HEADER.

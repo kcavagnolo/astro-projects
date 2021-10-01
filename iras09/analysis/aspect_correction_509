@@ -1,0 +1,31 @@
+Check for aspect offset and fix: Results for obsid 509
+
+Observation parameters are:
+ Obsid    = 509
+ Source   = IRAS 09104
+ ASCDSVER = R4CU5UPD9
+ RA_NOM   = 138.44791840
+ DEC_NOM  = 40.95333809
+
+The aspect offset for this obsid is DY =  0.58 and DZ =  0.13 arcsec
+For roll =   71.98 degrees, the offset is D_RA =  0.05 and D_Dec =  0.59 arcsec
+
+Cut and paste the following commands to modify the event file header and remove the offset
+
+punlearn dmhedit
+dmhedit infile=aspcorr_evt2.fits filelist=none operation=add unit=degrees key=TCRVL11 value=138.447938391223
+dmhedit infile=aspcorr_evt2.fits filelist=none operation=add unit=degrees key=TCRVL12 value=40.9535026430771
+dmhedit infile=aspcorr_evt2.fits filelist=none operation=add unit=degrees key=RA_NOM value=138.447938391223
+dmhedit infile=aspcorr_evt2.fits filelist=none operation=add unit=degrees key=DEC_NOM value=40.9535026430771
+
+Alternatively, copy the following into a file for input to dmhedit using the filelist parameter:
+
+#add
+TCRVL11=138.447938391223
+TCRVL12=40.9535026430771
+RA_NOM=138.447938391223
+DEC_NOM=40.9535026430771
+
+
+
+COMMENTS, QUESTIONS, ERRORS: Please send mail to Aspect Help

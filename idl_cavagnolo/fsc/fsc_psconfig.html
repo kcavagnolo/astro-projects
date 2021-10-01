@@ -1,0 +1,1194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<html>
+
+<!-- ************** HEADER INFORMATION ************-->
+
+<head>
+<META name="Description" content="FSC_PSConfig Program for Configuring the IDL PostScript Device">
+<META name="Author" content="David W. Fanning, Ph.D.">
+<META name="Keywords" content="IDL, PostScript, configure, configuring, PostScript Device">
+<title>Configuring the IDL PostScript Device</title>
+</head>
+
+
+
+<!-- ************** CONSULTING BANNER ************-->
+
+<BODY VLINK="#FF0000" BACKGROUND="http://www.dfanning.com/images/graymarble.gif">
+<CENTER><IMG SRC="http://www.dfanning.com/images/banner.gif" WIDTH=443
+HEIGHT=111 ALT="Fanning Consulting Services (25K)"></CENTER>
+
+
+
+<!-- ************** BODY ************-->
+
+<CENTER><h1>Configuring the PostScript Device</h1></CENTER>
+
+<p>The <B>FSC_PSConfig</B> program is a 
+program for configuring the IDL PostScript device. The
+program is similar to (but much more powerful than) <B>PS_Form</B>, an older program offered 
+by Fanning Software Consulting. The <B>FSC_PSConfig</B> program is written as an object. 
+
+<p>In addition to configuring
+the PostScript device, the <B>FSC_PSConfig</B> program 
+allows you to keep track of the current state of the PostScript device at all times. 
+European users will be pleased to know that support for the A4 page and
+centimeter units are built into the program and can easily be set as program defaults.
+One of the most useful features of the <B>FSC_PSConfig</B> program 
+is its ability to collect user input via a graphical user interface, which--on a Windows
+machine with a 24-bit graphics display--looks similar to the illustration below. 
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic1.jpg" 
+ALT="The FSC_PSConfig graphical user interface for gathering user input."></CENTER>
+
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+<H2><A NAME="TOC">Table of Contents</A></H2>
+<UL>
+<LI><A HREF="#OVERVIEW">Program Overview</A>
+<LI><A HREF="#METHODS">Using the Program</A>
+	<UL>
+	<LI><A HREF="#INIT">Initializing the Program</A>
+      <LI><A HREF="#GUI">Description of the Graphical User Interface</A>
+      <LI><A HREF="#SETPROPERTY">Setting Program Properties</A>
+      <LI><A HREF="#KEYWORDS">Setting PostScript Configuration Keywords</A>
+      <LI><A HREF="#CLEANUP">Cleaning Up the Program</A>
+	</UL>
+<LI><A HREF="#EXAMPLE">Example Program Using <b>FSC_PSConfig</B></A>
+<LI><A HREF="#WRAPPER">A Wrapper Function for <b>FSC_PSConfig</B></A>
+<LI><A HREF="#CUSTOMIZING">Customizing Your Source Code</A>
+<LI><A HREF="#OTHERCODE">Other FSC Programs Needed to Run this Program</A>
+<LI><A HREF="#ORDERING">Disclaimer and Licensing Information</A>
+</UL>
+
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+
+<H2><A NAME="OVERVIEW">Program Overview</A></H2>
+
+<p>How you use the <B>FSC_PSConfig</B> program is completely up to you.
+It has been designed to accommodate  different programming styles. For example, it can be
+called from the IDL command line or from within other IDL programs. Typically,
+the program is used by initializing the object (you can have as many of the objects as you
+like, so each program can have its own PostScript configuration setup), 
+gathering user input via the built-in Graphical User Interface (GUI), configuring the PostScript device, 
+and drawing your PostScript plot.
+Here is a typical sequence of commands. Each step will be explained in detail below,
+but this is a short overview of a typical session. (Users uninterested in the power
+of the <B>FSC_PSConfig</B> object can access most of the functionality through the
+<A HREF="#WRAPPER"><b>PSConfig</b></A> wrapper function described below.)
+
+<H3>Initializing the Object</H3>
+
+<P>The first step is to initialize the object. There are a number of keywords
+that can be used to set properties of the <B>FSC_PSConfig</B> object, but suppose you are going
+to leave it up to the user to determine exactly how the PostScript device should
+be configured. Then you might simply initialize the object like this:
+
+<PRE>
+   psObject = Obj_New("FSC_PSConfig")
+</PRE>
+
+<P>If you typically display PostScript output on an A4 page and prefer
+size and offset units to be displayed in centimeters rather than inches,
+then you can initialize the object with the <B>European</B> keyword set, like
+this. 
+<PRE>
+   psObject = Obj_New("FSC_PSConfig", /European)
+</PRE>
+
+<P>The A4 page and centimeter units are now the default for this object.
+Selecting a European style can also be selected via a check box
+on the graphical user interface.
+
+<H3>Gathering User Input</H3>
+
+<P>Next, you might gather the user's input into how he or she would
+like the PostScript device to be configured. You can do this
+with a graphical user interface in either modal (blocking) or 
+non-modal mode. Suppose you wish the program to wait for the user's input.
+You would invoke the graphical user interface in blocking mode with this command:
+
+<PRE>
+   psObject->GUI
+</PRE>
+
+<H3>Configuring the PostScript Device</H3>
+
+<P>The real purpose of the <B>FSC_PSConfig</B> object is to return
+keywords that are appropriate for the PostScript device. The way the
+PostScript device is configured is to make the PostScript device the
+current graphics device, and then pass these keywords to the PostScript
+device via the <B>Device</B> command using the "keyword inheritance"
+mechanism and the <B>_Extra</B> keyword. The keywords are obtained from the
+object by calling the <b>GetKeywords</b> method. A typical sequence of
+commands looks like this:
+
+<PRE>
+   thisDevice = !D.Name
+   Set_Plot, "PS"
+   Device, _Extra=psObject->GetKeywords()
+</PRE>
+
+<H3>Drawing the PostScript Graphics</H3>
+
+<p>The PostScript graphics are now written to the PostScript file in
+the normal way. (Here a simple <b>Plot</b> command is used, but the graphics command
+or commands can be as elaborate as you like.)
+
+<PRE>
+   Plot, data
+</PRE>
+
+<H3>Cleaning Up</H3>
+
+<P>The final step is to clean up. Note that you do not have to
+destroy the object, as shown here. In fact, you may want to keep
+the object around for the entire IDL session, so you always know
+the current configuration of the PostScript device. Repeated calls
+to invoke the graphical user interface will show the current
+state of the PostScript device. Typical clean-up commands will be
+similar to these:
+
+<PRE>
+   Device, /Close_File
+   Set_Plot, thisDevice
+   Obj_Destroy, psObject
+</PRE>
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+<H2><A NAME="METHODS">Using the Program</A></H2>
+
+<p>The <B>FSC_PSConfig</B> program is used by calling the program's object methods. This section
+provides a detailed description of the object methods available to the user. (There are
+a number of other methods in the object that are used internally to run the program and 
+should not normally be accessed by the user of the program. These are not described here,
+although they are extensively documented in the source code.)
+
+<H3><A NAME="INIT">Initializing the Program</A></H3>
+
+<P>The object is initialized by creating an object of the <B>FSC_PSCONFIG</B> object class:
+
+<PRE>
+   psObject = Obj_New("FSC_PSConfig")
+</PRE>
+
+<p>At the time the object is initialized, various keywords can be used to set
+properties of the object. These keywords are typically (but not exclusively) the same keywords that
+can be used to configure the PostScript device (i.e., the keywords appropriate
+for the <B>Device</B> command when the PostScript device is the current graphics
+device). Here is a complete description of the <B>INIT</B> method keywords you can use.
+
+<UL>
+<LI><B>AvantGarde</B> - Set this keyword to select the AvantGarde font. Turned off by default.
+<LI><B>Bits_per_Pixel</B> - The number of image bits saved for each image pixel: 2, 4, or 8. The default is 8.
+<LI><B>Bold</B> - Set this keyword to select the Bold font style. Turned off by default.
+<LI><B>BookStyle</B> - Set this keyword to select the Book font style. Turned off by default.
+<LI><B>Bookman</B> - Set this keyword to select the Bookman font. Turned off by default.
+<LI><B>Color</B> - Set this keyword to select Color PostScript output. Turned off by default.
+<LI><B>Courier</B> - Set this keyword to select the Courier font. Turned off by default.
+<LI><B>Debug</B> - Set this keyword to turn traceback information on for error messages. 
+This is useful for debugging program code. Turned off by default.
+<LI><B>DefaultSetup</B> - Set this keyword to the "name" of a default style. Current styles (you
+can easily create and add your own to the source code) are the following:
+	<UL>
+      <LI><B>"System (Portrait)"</B> - The normal "default" system set-up. Also, <B>"System"</B>.
+      <LI><B>"System (Landcape)"</B> - The normal "default" landscape system set-up. 
+      <LI><B>"Centered (Portrait)"</B> - The window centered on the page. Also, <B>"Center"</B> or "Centered".
+      <LI><B>"Centered (Landscape)"</B> - The window centered on the landscape page. Also, <B>"Landscape"</B>.
+      <LI><B>"Square (Portrait)"</B> - A square plot, centered on the page. 
+      <LI><B>"Square (Landscape)"</B> - A square plot, centered on the landscape page. 
+      <LI><B>"Figure (Small)"</B> - A small encapsulated figure size, centered on page. Also, <B>"Encapsulated"</B> or <B>"Encapsulate"</B>.
+      <LI><B>"Figure (Large)"</B> - A larger encapsulated figure size, centered on page. Also, <B>"Figure"</B>.
+      <LI><B>"Color (Portrait)"</B> - A "centered" plot, with color turned on. Also, <B>"Color"</B>.
+     <LI><B>"Color (Landscape)"</B> - A "centered" landscape plot, with color turned on.
+	</UL>
+<LI><B>Demi</B> - Set this keyword to select the Demi font style. Turned off by default.
+<LI><B>Directory</B> - Set thie keyword to the name of the starting directory. The current directory is used by default.
+<LI><B>Encapsulate</B> - Set this keyword to select Encapsulated PostScript output. Turned off by default.
+<LI><B>European</B> - Set this keyword to indicate "european" mode (i.e., A4 page and centimeter units). Turned off by default.
+<LI><B>Filename</B> - Set thie keyword to the name of the PostScript file. In the source code version the default is "idl.ps", but
+in the shareware version this keyword cannot be set and is always "coyote.ps". 
+<LI><B>FontSize</B> - ; Set this keyword to the font size. Between 6 and 36. Default is 12.
+<LI><B>FontType</B> - ; Set this keyword to indicate the type of fon
+you want selected. Hershey Fonts: -1, Hardward Fonts: 0, and True-Type Fonts: 1.<LI><B>Helvetica</B> - Set this keyword to select the Helvetica font. This is the default selection.
+<LI><B>Inches</B> - Set this keyword to indicate sizes and offsets are in inches as opposed to centimeters.  
+Set by <B>European</B> keyword by default.
+<LI><B>Italic</B> - Set this keyword to select the Italic font style. Turned off by default.
+<LI><B>Isolatin</B> - Set this keyword to select ISOlatin1 encoding. Turned off by default.
+<LI><B>Landscape</B> - Set this keyword to select Landscape page output. Portrait page output is the default.
+<LI><B>Light</B> - Set this keyword to select the Light font style. Turned off by default.
+<LI><B>Medium</B> - Set this keyword to select the Medium font style. Turned off by default.
+<LI><B>Name</B> - Set this keyword to the "name" of the object. This can be anything you like. 
+Objects that have different names can display their graphical user interfaces simultaneously. The
+object name appears on the title of the graphical user interface.
+<LI><B>Narrow</B> - Set this keyword to select the Narrow font style. Turned off by default.
+<LI><B>Oblique</B> - Set this keyword to select the Oblique font style. Turned off by default.
+<LI><B>PageType</B> - Set this keyword to the "type" of page. Possible values are:
+	<UL>
+	<LI><B>"Letter"</B> - 8.5 by 11 inches. (Default, unless the <B>European</B> keyword is set.)
+	<LI><B>"Legal"</B> - 8.5 by 14 inches.
+	<LI><B>"Ledger"</B> - 11 by 17 inches.
+	<LI><B>"A4"</B> - 21.0 by 29.7 centimeters. (Default, if the <B>European</B> keyword is set.)
+	</UL>
+<LI><B>Palatino</B> - Set this keyword to select the Palatino font.  Turned off by default.
+<LI><B>Preview</B> - Set this keyword to select Preview mode: 0 is "none", 1 is "EPSI", or 2 is "EPSF".
+<LI><B>Schoolbook</B> - Set this keyword to select the Schoolbook font. Turned off by default.
+<LI><B>Set_Font</B> - Set this keyword to the name of a font passed to PostScript with Set_Plot keyword.
+<LI><B>Symbol</B> - Set this keyword to select the Symbol font. Turned off by default.
+<LI><B>Times</B> - Set this keyword to select the Times font. Turned off by default.
+<LI><B>TrueType</B> - Set this keyword to select True-Type fonts. Turned off by default.
+<LI><B>XOffset</B> - Set this keyword to the X Offset.  Uses "System (Portrait)" defaults. (Note: offset calculated from lower-left corner of page.)
+<LI><B>XSize</B> - Set this keyword to the X size of the PostScript "window". Uses "System (Portrait)" defaults.
+<LI><B>YOffset</B> - Set this keyword to the Y Offset.  Uses "System (Portrait)" defaults. (Note: offset calculated from lower-left corner of page.)
+<LI><B>YSize</B> - Set this keyword to the Y size of the PostScript "window". Uses "System (Portrait)" defaults.
+<LI><B>ZapfChancery</B> - Set this keyword to select the ZapfChancery font. Turned off by default.
+<LI><B>ZapfDingbats</B> - Set this keyword to select the ZapfDingbats font. Turned off by default.
+</UL>
+
+<p>For example, to select a centered, color, encapsulated PostScript file, using the Times Bold PostScript
+font, and named <em>myplot.eps</em>, you can initialize the object like this:
+
+<PRE>
+   psObject = Obj_New("FSC_PSConfig", /Color, /Encapsulate, /Times, /Bold, Filename="myplot.eps")
+</PRE>
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+
+<H3><A NAME="GUI">Description of the Graphical User Interface</A></H3>
+
+<P>The program's graphical user interface is invoked by calling the object's <B>GUI</B>
+method, like this:
+
+<PRE>
+   psObject->GUI
+</PRE>
+
+<p>Keywords are available with this method that control how the
+graphical user interfaces appears and what properties it has. Called as above,
+the interface is a blocking widget. This means the IDL command line will block
+and user will be unable to enter IDL commands at the command line until the widget
+is dismissed by clicking either the <em>Cancel</em> or the <em>Accept</em> button.
+Valid keywords for this method are these:
+
+<UL>
+<LI><B>Cancel</B> - Set this output keyword to a named variable that will be set to 1 if the user
+selected the <em>Cancel</em> button, and to 0 if the user selected the <em>Accept</Em> button. Note that
+this value only has meaning when the widget is is blocking (or modal) mode. In non-modal mode, the value
+is always set to 0.
+
+<PRE>
+      psObject->GUI, Group_Leader=event.top, Cancel=cancelled
+</PRE>
+
+<LI><B>FontInfo</B> - This keyword is set if you want the user to be able to
+configure the PostScript device with font information as well. Please see the
+description of how to use font information below, but the graphical interface will
+look similar to this.
+
+<PRE>
+      psObject->GUI, FontInfo=1
+</PRE>
+
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic3.jpg" 
+ALT="The FSC_PSConfig graphical user interface with the font information displayed."></CENTER>
+
+<p>Users have the ability to select Hershey, Hardware, or True-Type fonts, as well as many
+font "properties".
+
+
+<LI><B>Group_Leader</B> - Set this keyword to the identifier of a widget which is the group leader for
+the graphical user interface. This keyword <em>must</em> be set if you want modal (as opposed to just 
+blocking) behavior from the program. In other words, you will probably <em>always</em> set this keyword
+if you are calling the GUI from within another widget program. For example, from within a widget program,
+the graphical user interface should be invoked like this:
+
+<PRE>
+      psObject->GUI, Group_Leader=event.top
+</PRE>
+
+
+<LI><B>NoBlock</B> - This keyword is set if you want non-modal, and non-blocking
+behavior from the program. This is the mode you would use, for example, if you want
+the graphical user interface to stay on the display so you can change the PostScript
+set-up at will. Notice that in this mode the <em>Cancel</em> button is named <em>Dismiss</em>
+and the <em>Accept</em> button is named <em>Apply</em>.
+
+<PRE>
+      psObject->GUI, /NoBlock
+</PRE>
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic2.jpg" 
+ALT="The FSC_PSConfig graphical user interface in non-modal and non-saved mode."></CENTER>
+
+
+<p>In non-modal mode, selecting the <em>Apply</em> button will save the current PostScript
+configuration. Note that the PostScript graphics window changes background color if the
+current configuration shown on the form is not currently saved. (The program is shown in its
+ unsaved condition in the illustration
+above.) Upon saving the configuration,
+the background color will change back to its default color. The <em>Revert</em> button will
+revert to the last saved configuration.
+</UL>
+
+<H4>The Left Panel</H4>
+
+<p>The left panel of the graphical user interface contains eight droplist widgets
+and looks like this. A description of each droplist follows the illustration.
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic4.jpg" 
+ALT="The left panel of the FSC_PSConfig graphical user interface."></CENTER>
+
+
+
+<UL>
+<LI><B>Page Size</B> - This droplist controls the page size. It should be set to the type of output
+you intend to print, since offsets and sizes will be based on the page size selected. This will be
+set to "Letter" by default, unless the <b>European</b> keyword has been set, in which case 
+the "A4" option is the default.
+<LI><B>Orientation</B> - This droplist controls whether the page will be in portrait or landscape
+oreintation. The <b>Portrait</b> and <b>Landscape</b> Device keywords are set from this droplist.
+<LI><B>Units</B> - This droplist controls whether the size and offsets are measured in inches or centimeters.
+The <b>Inches</b> Device keyword is set from this droplist.
+<LI><B>Encapsulation</B> - This droplist controls whether <b>Encapsulated</b> Device keyword is set. If
+encapsulation is turned <em>Off</em>, then the <b>Preview Mode</b> droplist is insensitive.
+
+<LI><B>Preview Mode</B> - This droplist selects the value of the <b>Preview</b> Device keyword. 
+It is sensitive to user input only if the <em>Encapsulation</em> droplist is turned <em>On</em>
+"None" sets the keyword to 0, "ESPI" sets the keyword to 1, and "ESPF" sets the
+keyword to 2. If you wish IDL to create a preview image for Macintoshs or PCs, then you should choose
+the "ESPF" option.
+
+<LI><B>Color Output</B> - This droplist controls whether <b>Color</b> Device keyword is set. 
+<LI><B>Bits Per Image Pixel</B> - This droplist controls the value of the <b>Bits_Per_Pixel</b> 
+Device keyword. 
+<LI><B>Default Setups</B> - This droplist selects the various default set-ups, which 
+change multiple program settings at once. The choices in this droplist are easily modified by
+the user in the source code. Typically they would be choices in use at your facility.
+<LI><B>European Style</B> - This checkbox controls the Page Size and Units keywords. If checked,
+an A4 page size is used, and centimeters are used for Units. 
+</UL>
+
+<H4>The Center Panel</H4>
+
+<P>The center panel of the graphical user interface contains the size and offset
+information, directions for operating the PostScript "plot", and fields to
+indicate the output directory and file names. It looks similar to the
+illustration below. An explanation of each item follows the illustration.
+
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic5.jpg" 
+ALT="The center panel of the FSC_PSConfig graphical user interface."></CENTER>
+
+<UL>
+<LI><B>X Size</B> - This text field contains the X size of the PostScript "window". Its value is
+used to set the <B>XSize</B> Device keyword. After entering a value in this field you <em>must</em>
+enter a carriage return in the field for the new information to be transmitted to the plot window
+in the right panel.
+
+<LI><B>Y Size</B> - This text field contains the Y size of the PostScript "window". Its value is
+used to set the <B>YSize</B> Device keyword. After entering a value in this field you <em>must</em>
+enter a carriage return in the field for the new information to be transmitted to the plot window
+in the right panel.
+
+<LI><B>X Offset</B> - This text field contains the X offset of the PostScript "window". Its value is
+used to set the <B>XOffset</B> Device keyword. After entering a value in this field you <em>must</em>
+enter a carriage return in the field for the new information to be transmitted to the plot window
+in the right panel. Offsets are always calculated from the lower-left corner of the page regardless of
+the orientation, unlike the way you configure the PostScript device. The complexities of PostScript
+are handled behind the scenes and are not passed along to unsuspecting end-users. 
+
+<LI><B>Y Offset</B> - This text field contains the Y offset of the PostScript "window". Its value is
+used to set the <B>YOffset</B> Device keyword. After entering a value in this field you <em>must</em>
+enter a carriage return in the field for the new information to be transmitted to the plot window
+in the right panel. Offsets are always calculated from the lower-left corner of the page regardless of
+the orientation, unlike the way you configure the PostScript device. The complexities of PostScript
+are handled behind the scenes and are not passed along to unsuspecting end-users. 
+
+<LI><B>Directory</B> - The name of the directory where the PostScript file is to be
+written. The <em>Browse</em> button following the text field calls the IDL <b>Dialog_Pickfile</b>
+command with the <b>Directory</B> keyword set for directory selection.
+
+<LI><B>Filename</B> - The name of the output PostScript file. The <em>Browse</em> button 
+following the text field calls the IDL <b>Dialog_Pickfile</b>
+command for file selection. The <em>Directory</em> and
+<em>Filename</em> values are put together to constuct the value of the Device <B>Filename</B>
+keyword. 
+
+</UL>
+
+<p>If the <b>FontInfo</b> keyword is set when the graphical user interface is invoked, the
+center panel may also contain graphical elements allowing user input into font selections.
+These additional fields are described below the illustration.
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic6.jpg" 
+ALT="The center panel of the FSC_PSConfig graphical user interface with font information turned on."></CENTER>
+
+<UL>
+<LI><B>Font Type</B> - This droplist sets the font type. The other font options 
+are available only if the <em>Font Type</Em> droplist
+selection is set to something other than the "Vector (Hershey)".
+Note that the <em>Font Type</Em> droplist default selection depends upon the
+value of the <B>!P.Font</B> system variable when the graphical user interface
+is invoked, although it can be also be set via a <b>FontType</b> keyword when the grahical
+user interface is invoked. For example, the illustration above was produced with
+this syntax:
+<PRE>
+   IDL> psObject->GUI, /FontInfo, FontType=1
+</PRE>
+
+<LI><B>Font</B> - This droplist allows selection of one of the 10 font families
+available on most PostScript printers. A selection here sets the corresponding
+Device keyword.
+
+<LI><B>Font Style Box</B> - This non-exclusive base allows you to set the eight
+font styles that can be set for the PostScript device. These font styles are applied
+to the font selection described above to modify it with the selected style. 
+Note that which font styles are available for
+which font family is not controlled by IDL, but is a function of the fonts installed
+on your computer or printer. Thus, you must use this information carefully. The corresponding
+Device keyword is set according to each style selection.
+
+<LI><B>Clear Font Styles</B> - This button clears all the font style attributes
+selections described above.
+
+<LI><B>Font Size</B> - This droplist allows you to select the font size in point
+sizes from 6 to 36. The default size is 12. The <b>FontSize</B> Device keyword is
+set to this value.
+
+<LI><B>True-Type</B> - This droplist sets the Device <b>True_Type</B> keyword. If it is
+turned on true-type fonts are used for output if they are available.
+
+<LI><B>ISOlatin1</B> - This droplist sets the Device <b>ISOlatin1</B> keyword. If it is
+turned on isolatin encoding is used for output. This allows output in many languages other
+than English.
+
+</UL>
+
+<H4>The Right Panel</H4>
+
+<P>The right panel of the graphical user interface contains the representation of
+the PostScript page. This window will change shape and size as different page sizes and orientations
+are selected. It looks similar to the illustration below. (Note that the colors you see here will only
+appear on 24-bit displays. On 8-bit displays the colors are less exciting.)
+
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic7.jpg" 
+ALT="The righ panel of the FSC_PSConfig graphical user interface."></CENTER>
+
+<p>The "plot" in the window can be moved and resized by the user. It represents
+the "window" on the PostScript page where graphics will be drawn. As such, it controls
+the <B>XSize</B>, <B>YSize</B>, <B>XOffset</B>, and <B>YOffset</B> Device keywords.
+The plot window can be moved by clicking somewhere inside it and dragging. If you locate
+the cursor near an edge of the plot, you can click and drag to resize the window. Cursor changes
+will occur to indicate whether you are in drag or resize mode. Notice
+as you do that the size and offset fields in the right panel are updated with the new
+window sizes and offsets. Notice that the background color of the window changes if
+the current configuration shown on the form hasn't been saved and the program is in non-blocking
+mode. It will look similar to
+the illustration below. The backgound color does not change if the graphical user interface
+is in blocking mode. (Non-blocking mode is selected with the <b>NoBlock</B> keyword when the
+graphical user interface is invoked.)
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic11.jpg" 
+ALT="The righ panel of the FSC_PSConfig graphical user interface."></CENTER>
+
+
+
+<p>The plot window can be centered in the page by clicking the middle mouse button
+anywhere inside the PostScript page representation. Note that the middle mouse button
+can be simulated if you don't have a three-button mouse. For example, on PCs a <em>Ctrl-Click</em>
+is interpreted as a middle mouse click. <em>Option-Click</em> on a Macintosh will do the same.
+
+<p>If the <em>Color Output</em> droplist is turned <em>On</em>, then the plot
+is shown in color as a visual clue to the color property. 
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic8.jpg" 
+ALT="The center panel of the FSC_PSConfig graphical user interface in color."></CENTER>
+
+<H4>The Action Button Panel</H4>
+
+<p>The action button panel looks different, depending upon whether the graphical user
+interface is is blocking (modal) mode or in  non-blocking mode. Here is what it looks
+like in non-blocking mode.
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic9.jpg" 
+ALT="The button panel of the FSC_PSConfig graphical user interface in non-blocking mode."></CENTER>
+
+<P>Here is how it appears in blocking mode. 
+
+<!-- ************** GRAPHIC EXAMPLE ************-->
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic10.jpg" 
+ALT="The button panel of the FSC_PSConfig graphical user interface in blocking mode."></CENTER>
+
+<p>Notice that in blocking mode the <em>Dismiss</em> button is named <em>Cancel</em> and
+the <em>Apply</em> button is named <em>Accept</em>, but they have similar functions. The only
+real difference is that the <em>Accept</em> button destroys the widget (as do the <em>Dismiss</em>
+and <em>Cancel</em> buttons), while the <em>Apply</em> button does not. 
+
+<UL>
+<LI><B>Dismiss</B> or <B>Cancel</B> - This button destroys the graphical user interface.
+The last saved configuration of the graphical user interface is in effect.
+
+<LI><B>Revert</B> - This button restores the last saved configuration of the graphical
+user interface. A configuration is saved when the <em>Apply</em> or <em>Accept</em>
+button is selected.
+
+<LI><B>Help</B> - This button provides a Help message to the user and points the
+user to the program documentation. This action may have been customized for your facility.
+
+<LI><B>Apply</B> or <B>Accept</B> - This button saves the current configuration of the 
+graphical user interface. If the button is the <em>Accept</em> button, the graphical user
+interface is also destroyed and the block released.
+
+<P> Note that the name of this button can be changed by using the <B>Accept_Button_Name</B>
+keyword when the graphical user interface is invoked. For example, you might want to name
+the button "Print". You would do it like this:
+
+<PRE>
+   IDL> psObject->GUI, Accept_Button_Name='Print'
+</PRE>
+</UL>
+
+<p>The buttons would now look like this:
+
+<P><CENTER><IMG SRC="http://www.dfanning.com/programs/docs/fsc_psconfig_pic12.jpg" 
+ALT="The button panel of the FSC_PSConfig graphical user interface in blocking mode."></CENTER>
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+
+<H2><A NAME="SETPROPERTY">Setting Program Properties</A></H2>
+
+<p>The current configuration of the <b>FSC_PSConfig</B> object can be set at any time by
+using the <b>SetProperty</B> method of the object. The keywords that can be used to set
+properties are nearly identical to the keywords avaiable for the <b>INIT</b> method. Here is 
+a list of the keywords and thier meaning.
+
+<UL>
+<LI><B>AvantGarde</B> - Set this keyword to select the AvantGarde font.
+<LI><B>Bits_per_Pixel</B> - The number of image bits saved for each image pixel: 2, 4, or 8.
+<LI><B>Bold</B> - Set this keyword to select the Bold font style. 
+<LI><B>BookStyle</B> - Set this keyword to select the Book font style. 
+<LI><B>Bookman</B> - Set this keyword to select the Bookman font. T
+<LI><B>Color</B> - Set this keyword to select Color PostScript output. 
+<LI><B>Courier</B> - Set this keyword to select the Courier font. 
+<LI><B>DefaultSetup</B> - Set this keyword to the "name" of a default style. Factory styles (you
+can easily create and add your own to the source code) are the following:
+	<UL>
+      <LI><B>"System (Portrait)"</B> - The normal "default" system set-up. Also, <B>"System"</B>.
+      <LI><B>"System (Landcape)"</B> - The normal "default" landscape system set-up. 
+      <LI><B>"Centered (Portrait)"</B> - The window centered on the page. Also, <B>"Center"</B> or "Centered".
+      <LI><B>"Centered (Landscape)"</B> - The window centered on the landscape page. Also, <B>"Landscape"</B>.
+      <LI><B>"Square (Portrait)"</B> - A square plot, centered on the page. 
+      <LI><B>"Square (Landscape)"</B> - A square plot, centered on the landscape page. 
+      <LI><B>"Figure (Small)"</B> - A small encapsulated figure size, centered on page. Also, <B>"Encapsulated"</B> or <B>"Encapsulate"</B>.
+      <LI><B>"Figure (Large)"</B> - A larger encapsulated figure size, centered on page. Also, <B>"Figure"</B>.
+      <LI><B>"Color (Portrait)"</B> - A "centered" plot, with color turned on. Also, <B>"Color"</B>.
+     <LI><B>"Color (Landscape)"</B> - A "centered" landscape plot, with color turned on.
+	</UL>
+<LI><B>Demi</B> - Set this keyword to select the Demi font style. 
+<LI><B>Directory</B> - Set thie keyword to the name of the starting directory. 
+<LI><B>Encapsulate</B> - Set this keyword to select Encapsulated PostScript output.
+<LI><B>European</B> - Set this keyword to indicate "european" mode (i.e., A4 page and centimeter units). 
+<LI><B>Filename</B> - Set thie keyword to the name of the PostScript file. In the source code version the default is "idl.ps", but
+in the shareware version this keyword cannot be set and is always "coyote.ps". 
+<LI><B>FontSize</B> - ; Set this keyword to the font size. Between 6 and 36. 
+<LI><B>FontType</B> - ; Set this keyword to indicate the type of fon
+you want selected. Hershey Fonts: -1, Hardward Fonts: 0, and True-Type Fonts: 1.<LI><B>Helvetica</B> - Set this keyword to select the Helvetica font. This is the default selection.
+<LI><B>Helvetica</B> - Set this keyword to select the Helvetica font. 
+<LI><B>Inches</B> - Set this keyword to indicate sizes and offsets are in inches as opposed to centimeters.  
+<LI><B>Italic</B> - Set this keyword to select the Italic font style. 
+<LI><B>Isolatin</B> - Set this keyword to select ISOlatin1 encoding. 
+<LI><B>Landscape</B> - Set this keyword to select Landscape page output. 
+<LI><B>Light</B> - Set this keyword to select the Light font style. 
+<LI><B>Medium</B> - Set this keyword to select the Medium font style. 
+<LI><B>Name</B> - Set this keyword to the "name" of the object. This can be anything you like. 
+Objects that have different names can display their graphical user interfaces simultaneously. The
+object name appears on the title of the graphical user interface.
+<LI><B>Narrow</B> - Set this keyword to select the Narrow font style. 
+<LI><B>Oblique</B> - Set this keyword to select the Oblique font style. 
+<LI><B>PageType</B> - Set this keyword to the "type" of page. Possible values are:
+	<UL>
+	<LI><B>"Letter"</B> - 8.5 by 11 inches. (Default, unless the <B>European</B> keyword is set.)
+	<LI><B>"Legal"</B> - 8.5 by 14 inches.
+	<LI><B>"Ledger"</B> - 11 by 17 inches.
+	<LI><B>"A4"</B> - 21.0 by 29.7 centimeters. (Default, if the <B>European</B> keyword is set.)
+	</UL>
+<LI><B>Palatino</B> - Set this keyword to select the Palatino font.  
+<LI><B>Preview</B> - Set this keyword to select Preview mode: 0 is "none", 1 is "EPSI", or 2 is "EPSF".
+<LI><B>Schoolbook</B> - Set this keyword to select the Schoolbook font. 
+<LI><B>Set_Font</B> - Set this keyword to the name of a font passed to PostScript with Set_Plot keyword.
+<LI><B>Symbol</B> - Set this keyword to select the Symbol font. 
+<LI><B>Times</B> - Set this keyword to select the Times font. 
+<LI><B>TrueType</B> - Set this keyword to select True-Type fonts. 
+<LI><B>Update</B> - Set this keyword if you wish to immediately update the graphical user
+interface after setting a property. The default is to set the property without updating the
+display.
+<LI><B>XOffset</B> - Set this keyword to the X Offset. 
+<LI><B>XSize</B> - Set this keyword to the X size of the PostScript "window".
+<LI><B>YOffset</B> - Set this keyword to the Y Offset.  Uses "System (Portrait)" defaults. 
+<LI><B>YSize</B> - Set this keyword to the Y size of the PostScript "window". 
+<LI><B>ZapfChancery</B> - Set this keyword to select the ZapfChancery font. 
+<LI><B>ZapfDingbats</B> - Set this keyword to select the ZapfDingbats font.
+</UL>
+
+<p>For example, to create a 7 x 5 inch window on a PostScript 
+landscape page, with color output turned on, and immediately update the display, you can type this:
+
+<PRE>
+  psObject->SetProperty, /Landscape, /Color, /Update, XSize=7, YSize=5, /Inches, XOffset=1, YOffset=1
+</PRE>
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+<H3><A NAME="KEYWORDS">Setting PostScript Configuration Keywords</A></H3>
+
+<P>The whole purpose of the <B>FSC_PSConfig</B> program is to configure the PostScript device
+by setting the appropriate <b>Device</B> command keywords. This is done by obtaining a structure in which
+the fields of the structure are the names of the appropriate keywords, and the values of the fields are
+appropriate for configuring the device the way you want it configured. You pass this structure to the 
+<b>Device</B> command  by means of <em>keyword inheritance</em>. In other words, you use the <b>_Extra</b>
+keyword to accept the structure. 
+
+<p>The keyword structure is obtained from the object by calling the <b>GetKeywords</b> method, like
+this:
+
+<PRE>
+   keywordStructure = psObject->GetKeywords()
+</PRE>
+
+<p>To verify what this structure looks like, type this:
+
+<PRE>
+   IDL> Help, keywordStructure, /Structure
+</PRE>
+
+<P>Depending upon how your object is configured, you should see something like this:
+
+<PRE>
+   ** Structure <15037f8>, 24 tags, length=68, refs=1:
+      BITS_PER_PIXEL  INT              8
+      COLOR           INT              0
+      ENCAPSULATED    INT              0
+      FILENAME        STRING    'D:\RSI\IDL53\DAVID\coyote.ps'
+      FONT_SIZE       INT             12
+      INCHES          INT              1
+      ISOLATIN1       INT              0
+      PREVIEW         INT              0
+      TT_FONT         INT              0
+      XOFFSET         FLOAT           1.75000
+      XSIZE           FLOAT           5.00000
+      YOFFSET         FLOAT           3.50000
+      YSIZE           FLOAT           4.00000
+      PORTRAIT        INT              1
+      LANDSCAPE       INT              0
+      HELVETICA       INT              1
+      BOLD            INT              1
+      BOOK            INT              0
+      DEMI            INT              0
+      ITALIC          INT              1
+      LIGHT           INT              0
+      MEDIUM          INT              0
+      NARROW          INT              0
+      OBLIQUE         INT              0
+</PRE>
+
+<p>Note that your structure may have other keywords defined, depending upon
+how your object is configured. This is typical.
+
+<p>These keywords are passed to the PostScript device via the <b>_Extra</b> keyword
+to the <b>Device</B> command. Be sure to select the PostScript device first. The code
+will typically look something like this:
+
+<PRE>
+   thisDevice = !D.Name
+   Set_Plot, "PS"
+   Device, _Extra=psObject->GetKeywords()
+</PRE>
+
+<P>Once the PostScript device is configured, you issue your graphics
+command or commands as normal. They will go into the PostScript "window" you
+have described on the PostScript page. Then, be sure to close the file. The code might look
+something like this:
+
+<PRE>
+   Plot, data, Title='Experiment 5A'
+   Device, /Close_File
+   Set_Plot, thisDevice
+</PRE>
+
+<H4>A Note About Fonts</H4> 
+
+<p>Although the PostScript device allows you to set information about PostScript fonts 
+(if you set the <b>FontInfo</B> keyword when you invoked the GUI),
+there is no guarantee that your graphics commands will be rendered in PostScript fonts.
+In fact, this is a function of the <b>!P.Font</b> system variable or the <b>Font</B> keyword
+on a graphics command, and has nothing to do with how the PostScript device
+is configured <em>per se</em>. This makes it a bit tricky to put font property widgets on a graphical
+user interface, since the unaware user may be surprised that the output doesn't look like
+the configuration he or she selected.
+
+<p>I've attempted to get around this problem by letting you know of the
+user's wishes for font type. But this information doesn't come back in the
+device keyword structure. Rather, it is returned in a <b>FontType</B> output keyword
+from the <b>GetKeywords</b> method. In fact, I recommend you always call the method
+like this when you have asked the user to specify font information in the GUI:
+
+<PRE>
+   thisDevice = !D.Name
+   Set_Plot, "PS"
+   Device, _Extra=psObject->GetKeywords(<B>FontType=fonttype</B>)
+</PRE>
+
+<p>This allows you to set the font type correctly on your graphics commands. For example,
+you could write code like this:
+
+<PRE>
+   currentFontType = !P.Font
+   <b>!P.Font = fonttype</b>
+   Plot, data, Title='Experiment 5A'
+   Device, /Close_File
+   Set_Plot, thisDevice
+   !P.Font = currentFontType
+</PRE>
+
+<p>Or, even more simply, you could write code like this:
+
+<PRE>
+   Plot, data, Title='Experiment 5A', <b>Font=fonttype</B>
+   Device, /Close_File
+   Set_Plot, thisDevice
+</PRE>
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+<H3><A NAME="CLEANUP">Cleaning Up the Program</A></H3>
+
+<P>Since the <b>FSC_PSConfig</B> program is an object, it is persistent in
+the IDL session. This is one of the huge advantages of objects. For example,
+you can create an PostScript configuration object in a start-up file and
+always have it available in your IDL session. You will always have access
+to the current configuration of the PostScript device.
+
+<p>But as a persistent entity, you must destroy it when you are done with
+it or you will have heap memory leaking in your IDL session. This is especially
+true if you create these objects in other program modules. This is no different for
+other memory-leaking entities: pointers, pixmaps, etc. The way you clean up an object
+is to destroy it with the <b>Obj_Destroy</b> command, like this:
+
+<PRE>
+   Obj_Destroy, psObject
+</PRE>
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+
+<H2><A NAME="EXAMPLE">Example Program using <b>FSC_PSConfig</B></A></H2>
+
+<P>Sometimes the best way to see how to use a new program is to see an example.
+Here is an example program, named <A HREF="http://www.dfanning.com/tip_examples/ps_plotter.pro">PS_Plotter</A>,
+that uses the <b>FSC_PSConfig</B> object to create a window on the PostScript page 
+for two plots: an image plot
+and a histogram plot of the image data. You will need another useful program from
+my library to run the program: <A HREF="http://www.dfanning.com/programs/tvimage.pro">TVImage</A>. 
+(<B>TVImage</b> is needed because the normal IDL <b>TV</B> command doesn't honor
+the <b>!P.Multi</b> system variable. Nor is the <b>TV</B> command written in the
+device-independent way required here.) Here is the compete code for the <b>PS_Plotter</b>
+program.
+
+<PRE>
+   PRO PS_Plotter, image, $
+      European=european, $   ; Set this keyword if you want European measurements.
+      Object=object          ; Output variable to return FSC_PSConfig object.
+
+      ; Get an image if one is not passed in.
+
+   IF N_Elements(image) EQ 0 THEN BEGIN
+      image = BytArr(360, 360)
+      file = Filepath(SubDirectory=['examples', 'data'], 'worldelv.dat')
+      OpenR, lun, file, /Get_Lun
+      ReadU, lun, image
+      Free_Lun, lun
+   ENDIF 
+
+      ; Create the PostScript configuration object.
+
+   object = Obj_New('FSC_PSConfig', European=Keyword_Set(european))
+
+      ; We want hardware fonts.
+
+   thisFontType = !P.Font
+   !P.Font = 1
+
+      ; Get user input to PostScript configuration.
+
+   object->GUI
+
+      ; Configure the PostScript Device.
+
+   thisDevice = !D.Name
+   Set_Plot, 'PS'
+   keywords = object->GetKeywords(FontType=fonttype)
+   Device, _Extra=keywords
+
+      ; Draw the example plots.
+
+   !P.Multi = [ 0, 1, 2]
+   TVImage, image
+   Plot, Histogram(image), Title='Example Histogram Plot', XTitle='Pixel Value', $
+      YTitle='Number of Pixels', XStyle=1, Max_Value=5000
+
+      ; Clean up.
+
+   !P.Multi = 0
+   Device, /Close_File
+   Set_Plot, thisDevice
+   !P.Font = thisfontType
+
+      ; Return the PS_Configuration object or destroy it.
+
+   IF Arg_Present(object) EQ 0 THEN Obj_Destroy, object
+   END
+</PRE>
+
+<p>If you will be printing on letter-size paper, you want to run the program
+like this. You will see the graphical user interface of the object in the
+middle of your display. Fill out the form the way you would like the output
+file to be configured and click the <em>Accept</em> button.
+
+<PRE>
+   IDL> PS_Plotter
+</PRE>
+
+<P>If you are in a country that uses A4 paper, you might want to
+call the program like this:
+
+<PRE>
+   IDL> PS_Plotter, /European
+</PRE>
+
+<p>A PostScript file will be created in the specified directory. You 
+can print it or use a PostScript file viewer (e.g., Ghostview) to view
+the file.
+
+<p>Called as above, the <b>FSC_PSConfig</b> object is created and destroyed
+when the program exits. However, you may wish to play around with some of the
+object's properties. You can return the object from the <b>PS_Plotter</b> program by
+using the optional <b>Object</b> keyword, like this:
+
+<PRE>
+   IDL> PS_Plotter, Object=psObject
+</PRE>
+
+<p>If you want to see how the PostScript file
+was just configured, you can examine the PostScript Device keywords
+that were used to create the file:
+
+<PRE>
+   IDL> Help, psObject->GetKeywords(), /Structure
+</PRE>
+
+<P>Be sure to destroy the object when you are finished with it.
+
+<PRE>
+   IDL> Obj_Destroy, psObject
+</PRE>
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+
+<H2><A NAME="WRAPPER">A Wrapper Function for <b>FSC_PSConfig</b></A></H2>
+
+<P>A number of people are still uncomfortable using objects. So for those
+people, I have written a function named <A HREF="http://www.dfanning.com/programs/psconfig.pro">PSConfig</A>,
+which acts very much like (in fact, can probably be used as a replacement for)
+the old PostScript configuration program, <b>PS_Form</B>.
+
+<p>The <B>PSConfig</b> program creates the <b>FSC_PSConfig</b> object, calls
+the graphical user interface in blocking mode, and then returns the device
+keywords necessary to configure the PostScript device. The program can be used
+with commands similar to these:
+
+<PRE>
+   keywords = PSConfig(Cancel=cancelled)
+   IF NOT cancelled THEN BEGIN
+      thisDevice = !D.Name
+      Set_Plot, "PS"
+      Device, _Extra=keywords
+      Plot, Findgen(11)
+      Device, /Close_File
+      Set_Plot, thisDevice
+   ENDIF
+</PRE>
+
+<p> You can use the same keywords with <b>PSConfig</B> that 
+you use for the <b>FSC_PSConfig</B> object.
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+<H2><A NAME="CUSTOMIZING">Customizing Your Source Code</A></H2>
+
+<P>I've tried to write the <B>FSC_PSConfig</B> program in such a way that it can be
+easily customized and extended by you at your site. In particular, it will be easy to
+add new default set-ups and other page types to the program. The
+code itself is extensively documented to indicate how this can
+be done. But, to give you an example, here is how you would add another
+default set-up, named <em>Company Viewgraph</em> to the code.
+
+<h3>Step 1: Add the Name to the Set-Up List</H3>
+
+<P>Open the <em>fsc_psconfig__define.pro</em> file and find the
+<em>DefaultList</em> method. (For example, search for "::DefaultList".)
+Add your new default name to the list shown there. For example, you would find this code:
+
+<PRE>
+defaultlist = [ 'System (Portrait)', $
+                'System (Landscape)', $
+                'Centered (Portrait)', $
+                'Centered (Landscape)', $
+                'Square (Portrait)', $
+                'Square (Landscape)', $
+                'Figure (Small)', $
+                'Figure (Large)', $
+                'Color (Portrait)', $
+                'Color (Landscape)' ]
+</PRE>
+
+<p>and change it to this:
+
+<PRE>
+defaultlist = [ 'System (Portrait)', $
+                'System (Landscape)', $
+                'Centered (Portrait)', $
+                'Centered (Landscape)', $
+                'Square (Portrait)', $
+                'Square (Landscape)', $
+                'Figure (Small)', $
+                'Figure (Large)', $
+                'Color (Portrait)', $
+                'Color (Landscape)' <b>, $
+                'Company Viewgraph'</b>]
+</PRE>
+
+<H3>Step 2: Create the New Set-Up</H3>
+
+<p>Next, find the <em>SetDefault</em> method (it will be just below the
+<em>DefaultList</em> method you just found) and copy one of the defualt
+setups you find in the CASE statement in that code. For example, here
+is the <em>System (Portrait)</em> method found there:
+
+<PRE>
+CASE thisDefault OF
+
+   'System (Portrait)': BEGIN
+         self.bitsSet = '8'
+         self.colorSet = 0
+         self.directorySet = directoryName
+         self.encapsulationSet = 0
+         self.filenameSet = defaultFilename + ".ps"
+         self.fonttypeSet = !P.Font
+         self.fontsizeSet = 12
+         self.fontStyleSet = Replicate(0, 8)
+         self.fontnameSet = "Helvetica"
+         self.inchesSet = units
+         self.landscapeSet = 0
+         self.isolatinSet = 0
+         self.pagetypeSet = pagetype
+         self.previewSet = 0
+         self.truetypeSet = 0
+         IF self.european THEN self.xoffsetSet = 1.61 ELSE self.xoffsetSet = 0.75
+         IF self.european THEN self.yoffsetSet = 14.65 ELSE self.yoffsetSet = 5.0
+         IF self.european THEN self.xsizeSet = 17.80 ELSE self.xsizeSet = 7.0
+         IF self.european THEN self.ysizeSet = 12.70 ELSE self.ysizeSet = 5.0
+         self.defaultsSet = 'System (Portrait)'
+      ENDCASE
+</PRE>
+
+<p>Modify each of the fields you want to change there, and add your changed
+values to the CASE statement. For example, your
+<em>Company Viewgraph</em> set-up might be defined like this. Note that you
+will have to provide both inches and centimeter units for the sizes and offsets.
+
+<PRE>
+   'Company Viewgraph': BEGIN
+         self.bitsSet = '8'
+         self.colorSet = 1
+         self.directorySet = "C:\Company\Viewgraphs"
+         self.encapsulationSet = 0
+         self.filenameSet = "viewgraph_1.view"
+         self.fonttypeSet = 1
+         self.fontsizeSet = 18
+         self.fontStyleSet = Replicate(0, 8)
+         self.fontnameSet = "Helvetica"
+         self.inchesSet = units
+         self.landscapeSet = 0
+         self.isolatinSet = 0
+         self.pagetypeSet = pagetype
+         self.previewSet = 0
+         self.truetypeSet = 0
+         IF self.european THEN self.xoffsetSet = 0.75 * 2.54 ELSE self.xoffsetSet = 0.75
+         IF self.european THEN self.yoffsetSet = 0.75 * 2.54ELSE self.yoffsetSet = 0.75
+         IF self.european THEN self.xsizeSet = 7.0 * 2.54 ELSE self.xsizeSet = 7.0
+         IF self.european THEN self.ysizeSet = 9.5 *2.54 ELSE self.ysizeSet = 9.5
+         self.defaultsSet = 'Company Viewgraph'
+      ENDCASE
+</PRE>
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+<H2><A NAME="OTHERCODE">Other FSC Programs Needed to Run this Program</A></H2>
+
+<P>This <B>FSC_PSConfig</B> program uses a number of other programs from the Coyote library. 
+Here are the programs you will need.
+
+<UL>
+<LI><A HREF="http://www.dfanning.com/programs/fsc_psconfig__define.pro">fsc_psconfig__define.pro</A> - The 
+main PostScript configuration object program. (What I call <b>FSC_PSConfig</B>.)
+<LI><A HREF="http://www.dfanning.com/programs/fsc_field.pro">fsc_field.pro</A> - A CW_Field replacement compound widget, written as an object.
+<LI><A HREF="http://www.dfanning.com/programs/fsc_fileselect.pro">fsc_fileselect.pro</A> - A file selection compound widget, written as an object.
+<LI><A HREF="http://www.dfanning.com/programs/fsc_droplist.pro">fsc_droplist.pro</A> - A droplist compound widget, written as an object.
+<LI><A HREF="http://www.dfanning.com/programs/fsc_plotwindow.pro">fsc_plotwindw.pro</A> - A 
+utility object program required by <b>FSC_PSConfig</B>.
+</UL>
+
+<p>In addition, you may want the following wrapper and example programs, respectively:
+
+<UL>
+<LI><A HREF="http://www.dfanning.com/programs/psconfig.pro">psconfig.pro</A> - A wrapper function for the
+<B>FSC_PSConfig</B> object.
+<LI><A HREF="http://www.dfanning.com/tip_examples/ps_plotter.pro">ps_plotter.pro</A> - An example
+program that uses the <B>FSC_PSConfig</B> object.
+<LI><A HREF="http://www.dfanning.com/programs/tvimage.pro">tvimage.pro</A> - A device-independent image display program, which
+honors the !P.Multi system variable.</UL>
+
+<p>If you would like to download all these programs at once,
+you can download this <A HREF="../fsc_psconfig.zip">zip file</A> (56KB).
+
+<P><CENTER>[<A HREF="#TOC">Return to Contents</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+<H2><A NAME="ORDERING">Disclaimer and Licensing Information</A></H2>
+
+<H3>Warranties</H3>
+
+<P>Fanning Software Consulting makes no warranties, either express or implied, as
+to the condition of the software described here or its fitness for any particular purpose. All software
+code is provided as is. IDL is a registered trademark of <A HREF="http://www.rsinc.com/">Research Systems, Inc.</A>
+for the computer software used to created these programs. A licensed version of IDL is required to 
+run these programs.
+
+<H3>Licensing the Software</H3>
+
+<p>All programs written by Fanning Software Consulting and described
+in this article are issued under a license certified and approved by the 
+Open Source Initiative. The following license is attached to the header of
+each program. Please do not removed the license information if you distribute
+this source code in any form.
+
+<PRE>
+;###########################################################################
+;
+; LICENSE
+;
+; This software is OSI Certified Open Source Software.
+; OSI Certified is a certification mark of the Open Source Initiative.
+;
+; Copyright © 2000 Fanning Software Consulting
+;
+; This software is provided "as-is", without any express or
+; implied warranty. In no event will the authors be held liable
+; for any damages arising from the use of this software.
+;
+; Permission is granted to anyone to use this software for any
+; purpose, including commercial applications, and to alter it and
+; redistribute it freely, subject to the following restrictions:
+;
+; 1. The origin of this software must not be misrepresented; you must
+;    not claim you wrote the original software. If you use this software
+;    in a product, an acknowledgment in the product documentation
+;    would be appreciated, but is not required.
+;
+; 2. Altered source versions must be plainly marked as such, and must
+;    not be misrepresented as being the original software.
+;
+; 3. This notice may not be removed or altered from any source distribution.
+;
+; For more information on Open Source Software, visit the Open Source
+; web site: http://www.opensource.org.
+;
+;###########################################################################
+</PRE>
+
+<H3>Reporting Program Bugs</H3>
+
+<P>Every attempt is made to keep these programs accurate and bug
+free. If you find a bug, I will be happy to attempt to fix it. Please
+report any bugs or feature requests to:
+
+<P>David Fanning<br>
+Fanning Software Consulting <br>
+1645 Sheely Drive <br>
+Fort Collins, CO 80526 USA <br>
+Phone: 970-221-0438<br>
+Fax: 970-221-4762<br>
+E-Mail: david@dfanning.com
+
+<P><CENTER>[<A HREF="http://www.dfanning.com/documents/programs.html">Return to Programs Page</A>]</CENTER>
+<!-- ************** HORIZONTAL RULE IMAGE ************-->
+<P ALIGN=CENTER><IMG SRC="http://www.dfanning.com/images/hruler.gif" WIDTH=782 HEIGHT=3
+   ALT="-------"></P>
+
+
+<!-- ************** UPDATE NOTICE ************-->
+
+<P><CENTER>
+Copyright &copy; 1997-2002 David W. Fanning<BR>
+Last Updated 30 October 2002</CENTER>
+
+</body>
+</html>

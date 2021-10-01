@@ -1,0 +1,27 @@
+# Name      : In hhmm.s+ddmm format, A,B,C,D refer to the components of the 
+#             multi-component source immediatly preseding these component entries.
+# Position  : Listed are both the B1950 and J2000 postion 
+#             In hour,minutes,sec (Right Ascencion), deg,arcmin,arcsec (Declination)
+# Flags     : First flag is source type (S,M,E,C).
+#             S-Single component source.
+#             M-Multicomponent source.
+#             C-Component of a multicomponent source.
+#             E-Extende source (more than four components). 
+#             The second flag is a warning flag ('*'), iindicating problems in fitting 
+#             the source. Source parameters were obtained using 'aperture' integration.
+# S         : The peak flux density in mJy/beam.
+# SI        : The integrated flux density in mJy.       
+# b-M      |  The major (b-M), and minor axis and position angle for sources that are 
+# b-m      |- probably resolved. This indicates that SI/S exceeds a signal-to-noise dependent
+# PA       |  treshold. This treshold is the fluxratio SI/S that is exceeded by less than 5%
+#             of the unresolved sources.
+#             b-M,b-m are in units of arcsec, PA in degrees from North, These parameters have 
+#             not been deconvolved
+# Nse       : The local rms-noise level in mJy/beam.
+# Frame     : The frame from which the source was obtained
+# The table was written using the following format:
+# format='("WNB",A12,1X,2(2(I2,1X),F5.2,2X,2(I2,1X),F4.1,2X),2(A1,1X), 2(I7,1X),I4,1X,I3,1X,I3,1X,F4.1,1X,A9)',
+#          name,rhB,rmB,rsB,ddB,dmB,dsB,rhJ,rmJ,rsS,ddJ,dmJ,dsJ,type,flag,S,SI,b_maj,b_min,PA,noise,frame
+# Name            Position (B1950)        Position (J2000)         Fl   S       SI      b-M  b-m PA  nse  frame
+# ---------------+-----------------------+------------------------+----+-------+-------+----+---+---+----+---------
+WNB0910.5+4108   9 10 32.40  41  8 55.7   9 13 45.04  40 56 30.6  S        60      54    0   0   0  4.0 WNH40_136
