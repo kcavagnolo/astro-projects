@@ -1,0 +1,110 @@
+#!/bin/tcsh
+
+# before using this script be sure to look at this thread:
+# http://cxc.harvard.edu/ciao/threads/diffuse_emission/
+# and follow along.
+
+punlearn dmcopy
+dmcopy "merged.fits[energy=300:1500][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" diff_image_3-15.fits
+
+punlearn dmcopy
+dmcopy "merged.fits[energy=1500:5000][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" diff_image_15-50.fits
+
+punlearn dmcopy
+dmcopy "merged.fits[energy=5000:7500][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" diff_image_50-75.fits
+
+punlearn wavdetect
+wavdetect infile=diff_image_3-15.fits outfile=sources_3-15.fits scellfile=sources_scell_3-15.fits imagefile=sources_image_3-15.fits defnbkgfile=sources_bkg_3-15.fits regfile=sources_3-15.reg scales="1 2 4" ellsigma=4
+
+punlearn wavdetect
+wavdetect infile=diff_image_15-50.fits outfile=sources_15-50.fits scellfile=sources_scell_15-50.fits imagefile=sources_image_15-50.fits defnbkgfile=sources_bkg_15-50.fits regfile=sources_15-50.reg scales="1 2 4" ellsigma=4
+
+punlearn wavdetect
+wavdetect infile=diff_image_50-75.fits outfile=sources_50-75.fits scellfile=sources_scell_50-75.fits imagefile=sources_image_50-75.fits defnbkgfile=sources_bkg_50-75.fits regfile=sources_50-75.reg scales="1 2 4" ellsigma=4
+
+mkBgReg.pl
+#ASCII region file (CIAO format):
+sources_3-15_mod.reg
+#Multiply source radius by:
+2
+#Output filename:
+bkg_3-15.reg
+
+mkBgReg.pl
+#ASCII region file (CIAO format):
+sources_15-50_mod.reg
+#Multiply source radius by:
+2
+#Output filename:
+bkg_15-50.reg
+
+mkBgReg.pl
+#ASCII region file (CIAO format):
+sources_50-75_mod.reg
+#Multiply source radius by:
+2
+#Output filename:
+bkg_50-75.reg
+
+mkSubBgReg.pl
+#ASCII source region file (CIAO format):
+sources_3-15_mod.reg
+#ASCII background region file (CIAO format):
+bkg_3-15.reg
+#Output filename:
+bkg_3-15_sub.reg
+
+mkSubBgReg.pl
+#ASCII source region file (CIAO format):
+sources_15-50_mod.reg
+#ASCII background region file (CIAO format):
+bkg_15-50.reg
+#Output filename:
+bkg_15-50_sub.reg
+
+mkSubBgReg.pl
+#ASCII source region file (CIAO format):
+sources_50-75_mod.reg
+#ASCII background region file (CIAO format):
+bkg_50-75.reg
+#Output filename:
+bkg_50-75_sub.reg
+
+punlearn dmfilth
+dmfilth infile=diff_image_3-15.fits outfile=diff_image_3-15_filled.fits method=POISSON srclist=@sources_3-15_mod.reg bkglist=@bkg_3-15_sub.reg randseed=123
+
+punlearn dmfilth
+dmfilth infile=diff_image_15-50.fits outfile=diff_image_15-50_filled.fits method=POISSON srclist=@sources_15-50_mod.reg bkglist=@bkg_15-50_sub.reg randseed=123
+
+punlearn dmfilth
+dmfilth infile=diff_image_50-75.fits outfile=diff_image_50-75_filled.fits method=POISSON srclist=@sources_50-75_mod.reg bkglist=@bkg_50-75_sub.reg randseed=123
+
+punlearn csmooth
+csmooth infile=diff_image_3-15_filled.fits outfile=smoothed_3-15_fill.fits outsigfile=smoothed_3-15_fill_sig.fits outsclfile=smoothed_3-15_fill_scl.fits sigmin=3
+
+punlearn csmooth
+csmooth infile=diff_image_15-50_filled.fits outfile=smoothed_15-50_fill.fits outsigfile=smoothed_15-50_fill_sig.fits outsclfile=smoothed_15-50_fill_scl.fits sigmin=3
+
+punlearn csmooth
+csmooth infile=diff_image_50-75_filled.fits outfile=smoothed_50-75_fill.fits outsigfile=smoothed_50-75_fill_sig.fits outsclfile=smoothed_50-75_fill_scl.fits sigmin=3
+
+# in addition, take the exposure corrected image from merge_all
+# and use the scl map to smooth
+
+punlearn dmcopy
+dmcopy "merged_expcorr_img.fits[energy=300:1500][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" merged_expcorr_img_3-15.fits
+
+punlearn dmcopy
+dmcopy "merged_expcorr_img.fits[energy=1500:5000][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" merged_expcorr_img_15-50.fits
+
+punlearn dmcopy
+dmcopy "merged_expcorr_img.fits[energy=5000:7500][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" merged_expcorr_img_50-75.fits
+
+punlearn csmooth
+csmooth infile=merged_expcorr_img_3-15.fits sclmap=smoothed_3-15_fill_scl.fits outfile=merged_expcorr_3-15_smooth.fits outsigfile=merged_expcorr_3-15_smooth_sig.fits outsclfile=merged_expcorr_3-15_smooth_scl.fits
+
+punlearn csmooth
+csmooth infile=merged_expcorr_img_15-50.fits sclmap=smoothed_15-50_fill_scl.fits outfile=merged_expcorr_15-50_smooth.fits outsigfile=merged_expcorr_15-50_smooth_sig.fits outsclfile=merged_expcorr_15-50_smooth_scl.fits
+
+punlearn csmooth
+csmooth infile=merged_expcorr_img_50-75.fits sclmap=smoothed_50-75_fill_scl.fits outfile=merged_expcorr_50-75_smooth.fits outsigfile=merged_expcorr_50-75_smooth_sig.fits outsclfile=merged_expcorr_50-75_smooth_scl.fits

@@ -1,0 +1,14 @@
+#!/bin/tcsh
+
+# this is the script to merge all the data
+
+punlearn merge_all
+pset merge_all evtfile="../3666/reprocessed/evt2_cluster_clean.fits,../493/reprocessed/evt2_cluster_clean.fits,../494/reprocessed/evt2_cluster_clean.fits,../5286/reprocessed/evt2_cluster_clean.fits,../5287/reprocessed/evt2_cluster_clean.fits,../5288/reprocessed/evt2_cluster_clean.fits"
+pset merge_all refcoord=../493/reprocessed/evt2_cluster_clean.fits
+pset merge_all chip=7
+pset merge_all asol="../3666/primary/pcadf140113581N001_asol1.fits,../493/primary/pcadf070013394N002_asol1.fits,../494/primary/pcadf062055183N002_asol1.fits,../5286/primary/pcadf190469164N001_asol1.fits,../5287/primary/pcadf190484355N001_asol1.fits,../5288/primary/pcadf190621881N001_asol1.fits"
+pset merge_all energy=1
+pset merge_all merged=merged.fits
+pset merge_all expmap=merged_expmap.fits
+pset merge_all expcorr=merged_expcorr.fits
+pset merge_all xygrid=3189.3:4637.3:#1448,3145.9:4593.9:#1448

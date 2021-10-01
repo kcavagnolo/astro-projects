@@ -1,0 +1,569 @@
+#!/bin/tcsh
+
+# A new level 2 event file needs to be made
+
+dmkeypar evt1.fits READMODE echo+
+#TIMED
+
+dmkeypar evt1.fits DATAMODE echo+
+#VFAINT
+
+cp "acisf03666_000N001_evt1.fits" evt1.fits
+
+punlearn acis_process_events
+
+pset acis_process_events infile=evt1.fits
+
+pset acis_process_events outfile=new_evt1.fits
+
+pset acis_process_events acaofffile=../primary/pcadf140113581N001_asol1.fits
+
+pset acis_process_events eventdef=")stdlev1"
+
+pset acis_process_events check_vf_pha=yes
+
+pset acis_process_events clobber=yes
+
+acis_process_events
+#Input event file or stack (evt1.fits):
+#Output event file name (new_evt1.fits):
+
+punlearn dmcopy
+
+dmcopy "new_evt1.fits[EVENTS][grade=0,2,3,4,6,status=0]" flt_evt1.fits
+
+dmcopy "flt_evt1.fits[EVENTS][@acisf03666_000N001_flt1.fits][cols -phas]" evt2.fits
+
+# Check the version of CALDB on my machine
+
+dmlist "$CALDB/docs/chandra/caldb_version/caldb_version.fits[cols caldb_ver,ciao_ver]" data
+
+# Update the header in the new event file, because none of the procs do it automatically
+
+dmhedit infile="evt2.fits" filelist="" operation="add" key="CALDBVER" value="2.26" datatype="indef" unit="" comment="CALDB version"
+
+
+
+**********************************************************
+
+
+*** The cluster resides on chip S3 (ccd_id=7) and the blank field used is on chip S1 (ccd_id=5) ***
+
+
+**********************************************************
+
+
+# Set the bad pix file:
+
+pwd
+#/home/cavagnolo/research/a1795/3666/primary
+
+punlearn ardlib
+
+acis_set_ardlib
+#Searching for bad pixel file in current directory:
+#Found bad pixel file /home/cavagnolo/research/a1795/3666/primary/acisf03666_000N001_bpix1.fits
+#Taking parameter file from directory /home/cavagnolo/cxcds_param
+#CCDs found in bad pixel file:
+#CCD 2
+#CCD 3
+#CCD 5
+#CCD 6
+#CCD 7
+
+#Updated parameter values:
+#AXAF_ACIS0_BADPIX_FILE = CALDB            Enter ACIS-0 Bad Pixel File
+#AXAF_ACIS1_BADPIX_FILE = CALDB            Enter ACIS-1 Bad Pixel File
+#AXAF_ACIS2_BADPIX_FILE = /home/cavagnolo/research/a1795/3666/primary/acisf03666_
+#AXAF_ACIS3_BADPIX_FILE = /home/cavagnolo/research/a1795/3666/primary/acisf03666_
+#AXAF_ACIS4_BADPIX_FILE = CALDB            Enter ACIS-4 Bad Pixel File
+#AXAF_ACIS5_BADPIX_FILE = /home/cavagnolo/research/a1795/3666/primary/acisf03666_
+#AXAF_ACIS6_BADPIX_FILE = /home/cavagnolo/research/a1795/3666/primary/acisf03666_
+#AXAF_ACIS7_BADPIX_FILE = /home/cavagnolo/research/a1795/3666/primary/acisf03666_
+#AXAF_ACIS8_BADPIX_FILE = CALDB            Enter ACIS-8 Bad Pixel File
+#AXAF_ACIS9_BADPIX_FILE = CALDB            Enter ACIS-9 Bad Pixel File
+#AXAF_HRC-I_BADPIX_FILE = NONE             Enter HRC-I Badpix file
+#AXAF_HRC-S_BADPIX_FILE = NONE             Enter HRC-S Badpix file
+
+#New ardlib.par parameter file is in directory /home/cavagnolo/cxcds_param
+
+
+*********************************************************
+
+
+# Set-up files to work with
+
+pset dmcopy clobber=yes
+
+dmcopy "evt2.fits[energy=300:10000,ccd_id=5]" evt2_blank_0310.fits
+
+dmcopy "evt2.fits[energy=300:10000,ccd_id=7]" evt2_cluster_0310.fits
+
+dmcopy "evt2.fits[ccd_id=5]" evt2_blank.fits
+
+dmcopy "evt2.fits[ccd_id=7]" evt2_cluster.fits
+
+# Check the deep background files to be used for redux
+# Since the ObsID for this dataset was taken at:
+
+#DATE-OBS= '2002-06-10T16:21:19' / Date and time of observation start            
+#DATE-END= '2002-06-10T20:59:00' / Date and time of observation stop 
+
+# The background file chosen for the blank
+
+acis_bkgrnd_lookup
+#Event file for which you want background files (evt2_cluster_0310.fits): evt2_blank_0310.fits
+#/home/cavagnolo/software/ciao/CALDB/data/chandra/acis/bcf/bkgrnd/acis57sD2000-12-01bkgrndN0002.fits
+
+cp /home/cavagnolo/software/ciao/CALDB/data/chandra/acis/bcf/bkgrnd/acis57sD2000-12-01bkgrndN0002.fits bgevt2_blank.fits
+
+# As for the cluster
+
+acis_bkgrnd_lookup
+#Event file for which you want background files (evt2_cluster_0310.fits):
+# caldb (CIAO3.0): WARNING:  2 CALDB files found. Using the first
+
+#/home/cavagnolo/software/ciao/CALDB/data/chandra/acis/bcf/bkgrnd/acis7sD2000-12-01bkgrndN0002.fits
+
+cp /home/cavagnolo/software/ciao/CALDB/data/chandra/acis/bcf/bkgrnd/acis7sD2000-12-01bkgrndN0002.fits bgevt2_cluster.fits
+
+*********************************************************
+
+
+# Check that the gain maps for both deep backgrounds and the level 2 event file match:
+
+dmkeypar /home/cavagnolo/software/ciao/CALDB/data/chandra/acis/bcf/bkgrnd/acis7sD2000-12-01bkgrndN0002.fits GAINFILE echo+
+#/data/CALDB/test_2/data/chandra/acis/bcf/gain/acisD2000-01-29gain_ctiN0001.fits
+
+dmkeypar evt2.fits GAINFILE echo+
+#/home/cavagnolo/ciao_3.0.1/CALDB/data/chandra/acis/bcf/gain/acisD2000-01-29gain_ctiN0001.fits
+
+# The gain file for both deep backgrounds and level 2 event file are:
+
+acisD2000-01-29gain_ctiN0001.fits
+
+# So everything is a go.
+
+
+**********************************************************
+
+
+# Create a light curve and filter for flares on the blank field
+
+# No point sources to remove from blank field
+
+dmcopy "evt2_blank_0310.fits" evt2_blank_0310_bg.fits
+
+# Create the light curve
+
+punlearn dmextract
+
+pset dmextract clobber=yes
+
+pset dmextract infile="evt2_blank_0310_bg.fits[bin time=::259.28]"
+
+pset dmextract outfile=evt2_blank_0310_bg.lc
+
+pset dmextract opt=ltc1
+
+dmextract
+#Input event file  (evt2_blank_0310_bg.fits[bin time=::259.28]):
+#Enter output file name (evt2_blank_0310_bg.lc):
+
+chips> () = evalfile( "lc_clean.sl" )
+
+chips> lc->verbose=1
+
+chips> lc_clean( "evt2_blank_0310_bg.lc" )
+#Version of code: 1.9
+#Parameters used to clean the lightcurve are:
+#  mean      = NULL
+#  clip      = 3
+#  max_scale = 1.2
+#  max_sigma = NULL
+#  minfrac   = 0.1
+#  outfile   = NULL
+#  verbose   = 1
+
+#Total number of bins in lightcurve   = 65
+#Max length of one bin                = 255.892 s
+#Num. bins with a smaller exp. time   = 41
+#Number of bins with a rate of 0 ct/s = 8
+
+#Calculated an initial mean (sigma-clipped) rate of 1.25834 ct/s
+#Lightcurve limits use a scale factor of 1.2 about this mean
+#Filtering lightcurve between rates of 1.04862 and 1.51001 ct/s
+#Number of good time bins (drawn in green) = 55
+#Mean level of filtered lightcurve = 1.25834 ct/s
+
+chips> print postfile evt2_blank_0310_bg.eps
+
+# Create the new GTI file
+
+chips> lc->verbose=0
+
+chips> lc->outfile="evt2_blank_0310_bg.gti"
+
+chips> lc_clean( "evt2_blank_0310_bg.lc" )
+#Total number of bins in lightcurve   = 65
+#Max length of one bin                = 255.892 s
+#Num. bins with a smaller exp. time   = 41
+#Number of bins with a rate of 0 ct/s = 8
+
+#Calculated an initial mean (sigma-clipped) rate of 1.25834 ct/s
+#Lightcurve limits use a scale factor of 1.2 about this mean
+#Filtering lightcurve between rates of 1.04862 and 1.51001 ct/s
+#Number of good time bins (drawn in green) = 55
+#Mean level of filtered lightcurve = 1.25834 ct/s
+
+#Creating GTI file
+#Created: evt2_blank_0310_bg.gti
+
+chips> exit
+
+gv evt2_blank_0310_bg.eps
+
+
+***************************************************
+
+
+# Filter the un-energy filtered files using the new GTI file
+
+dmcopy "evt2_cluster.fits[@evt2_blank_0310_bg.gti]" evt2_cluster_clean.fits
+
+dmcopy "evt2_blank.fits[@evt2_blank_0310_bg.gti]" evt2_blank_clean.fits
+
+dmkeypar evt2_cluster_clean.fits EXPOSURE echo+
+#13806.618159923
+
+dmkeypar evt2_cluster.fits EXPOSURE echo+
+#14416.346150617
+
+dmkeypar evt2_blank_clean.fits EXPOSURE echo+
+#13806.618159923
+
+dmkeypar evt2_blank.fits EXPOSURE echo+
+#14416.346150617
+
+
+****************************************************
+
+
+# Reprojection
+
+punlearn reproject_events
+
+pset reproject_events clobber=yes
+
+pset reproject_events infile="bgevt2_blank.fits[cols -time]"
+
+pset reproject_events outfile=bgevt2_blank_reproj.fits
+
+pset reproject_events aspect=../primary/pcadf140113581N001_asol1.fits
+
+pset reproject_events match=evt2_blank_clean.fits
+
+pset reproject_events random=0
+
+reproject_events
+#Input dataset/block specification (bgevt2_blank.fits[cols -time]):
+#Output dataset/block specification (bgevt2_blank_reproj.fits):
+#Match file (evt2_blank_clean.fits):
+
+# Do the same for the cluster set
+
+punlearn reproject_events
+
+pset reproject_events clobber=yes
+
+pset reproject_events infile="bgevt2_cluster.fits[cols -time]"
+
+pset reproject_events outfile=bgevt2_cluster_reproj.fits
+
+pset reproject_events aspect=../primary/pcadf140113581N001_asol1.fits
+
+pset reproject_events match=evt2_cluster_clean.fits
+
+pset reproject_events random=0
+
+reproject_events
+
+
+******************************************************
+
+
+#Put the time column back into the dataset
+
+dmlist "bgevt2_blank.fits[#row=1][cols time]" data,clean
+#  time
+#           95160001.0
+
+punlearn dmtcalc
+
+dmtcalc infile=bgevt2_blank_reproj.fits outfile=bgevt2_blank_time.fits expr="TIME=95160001.0"
+
+dmtcalc infile=bgevt2_cluster_reproj.fits outfile=bgevt2_cluster_time.fits expr="TIME=95160001.0"
+
+
+*******************************************************
+
+
+# FILTER header correction to prevent CALDB look-up errors in mkwarf
+
+dmkeypar bgevt2_blank_time.fits filter echo+
+#NONE
+
+punlearn dmhedit
+
+dmhedit bgevt2_blank_time.fits none add FILTER -
+
+dmkeypar bgevt2_blank_time.fits filter echo+
+#-
+
+
+*******************************************************
+
+
+# First find the center of the cluster, and input the values x=4210, y=4000 into make_cum_annulireg.pro. Open IDL,
+# compile make_cum_annulireg.pro., and run it. Output is cumann.reg.
+
+# Complete these steps first:
+# Energy filter the needed files
+
+dmcopy infile="evt2_cluster.fits[energy=300:7000]" outfile=evt2_cluster_0370.fits
+
+dmcopy infile="bgevt2_cluster_reproj.fits[energy=300:7000]" outfile=bgevt2_cluster_reproj_0370.fits
+
+# Define the contaminating point sources and exclude them
+
+dmcopy infile="evt2_cluster_0370.fits[exclude sky=region(ptsrcs.reg)]" outfile=evt2_cluster_0370_exclude.fits
+
+# Make a radial profile
+
+dmextract infile="evt2_cluster_0370_exclude.fits[bin sky=@cumann.reg]" outfile=cumrprofile.fits bkg="bgevt2_cluster_reproj_0370.fits[bin sky=@cumann.reg]"
+
+dmtcalc infile="cumrprofile.fits" outfile="cumprofile_a1795_exclude.fits" express="rmid=(R[0])" clobber=yes
+
+dmlist "cumprofile_a1795_exclude.fits[cols rmid,net_counts,net_err]" opt=array > cumrprofile_a1795.dat
+
+# Open IDL, edit input params, compile run make_annuli_reg.pro, and run.
+
+# Remove point sources from each annuli by ammending the *.reg files. Annuli 3 and 9.
+
+cat A1795_annuli_3.reg
+#annulus(4210.00,4000.00,71.0000,89.0000)-circle(4279,4037,3)
+
+cat A1795_annuli_9.reg
+#annulus(4210.00,4000.00,212.000,248.000)-circle(4305,4195,3)
+
+# Regions 12 and 13 need to be made into pandas
+
+# Measure the size of each annulus in pixels and convert using 0.0082*pixels.
+
+
+*********************************************************
+
+
+# ran extract_spectra.script
+
+
+*********************************************************
+
+
+# open XSpec and fit the data
+
+xspec
+
+data A1795_ann*_grp25_sou.pi
+# Net count rate (cts/s) for file   1   1.404    +/-  1.0199E-02( 98.2% total)
+#   using response (RMF) file...       A1795_ann*_sou.wrmf
+#   using auxiliary (ARF) file...      A1795_ann*_sou.warf
+#   using background file...           A1795_ann*_bgd.pi
+#   1 data set is in use
+
+# check that the majority of the counts (>90%) are source counts
+# define a model to use
+
+model wabs*mekal
+
+# or
+
+model wabs*ray
+
+# preferable to use mekal
+# go to the cxc tool COLDEN and look up the nH value for the cluster
+# the value is 0.017 x 10^22 cm^-2 for Abell 1795
+# ************ WATCH THE UNITS ********************
+
+# kT has a value near 5 keV for a cluster
+
+# second nH is of no use to us, leave it at 1.0
+
+# Abund is around 0.30 solar
+
+# go to NED and look up the redshift
+# the value is 0.062229 for Abell 1795
+
+# leave switch and norm at their default values
+
+# now thaw param 4
+
+thaw 4
+
+# restrict the energy window to 0.6-7.0 keV
+
+ignore **-0.6,7.0-**
+
+renorm
+
+fit
+
+# make the output a post script
+
+cpd /ps
+
+# print, read-out, and record chi^2, chi^2 redux, degrees of freedom (dof)
+
+gv pgplot.ps
+
+
+
+****************************************************
+
+
+# perform the spectral extarction for the filament using the deep bgd and two local bgds.
+# for processes running on another machine make sure to do this:
+
+ciao
+
+source junk*
+
+setenv
+
+# check that the PFILES path is now set to the temp* directory
+# also make sure that the header keyword FILTER in the bgevt2* file
+# is set to "-" instead "NONE" otherwise this extraction MAY not proceed
+
+dmkeypar bgevt2_cluster_reproj.fits filter echo+
+#NONE
+punlearn dmhedit
+dmhedit bgevt2_cluster_reproj.fits none add FILTER -
+
+
+# set-up the ardlib in the while in the dir primary/
+
+punlearn ardlib
+acis_set_ardlib
+
+
+# go back to the reprocessed/ dir and extract the source
+
+punlearn acisspec 
+pset acisspec soufile1="evt2_cluster_clean.fits[sky=region(filament.reg)]"
+pset acisspec root=A1795_fil
+pset acisspec clobber=yes verbose=2
+acisspec
+
+
+# make replicas of the filament source region extracted, but make the name unique
+# for bookkeeping purposes
+
+dmcopy A1795_fil_sou.pi A1795_fil1_sou.pi
+dmcopy A1795_fil_sou.pi A1795_fil2_sou.pi
+
+
+# extract the deep bgd
+# extract the local1 and local2 bgds from the event file
+# edit the source headers
+
+punlearn dmextract
+pset dmextract clobber=yes
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(filament.reg)][bin pi]" outfile=A1795_deep_bgd.pi
+dmhedit infile=A1795_fil_sou.pi operation=add key=BACKFILE value=A1795_deep_bgd.pi filelist=""
+
+
+punlearn dmextract
+pset dmextract clobber=yes
+dmextract infile="evt2_cluster_clean.fits[sky=region(local1.reg)][bin pi]" outfile=A1795_local1_bgd.pi
+dmhedit infile=A1795_fil1_sou.pi operation=add key=BACKFILE value=A1795_local1_bgd.pi filelist=""
+
+
+punlearn dmextract
+pset dmextract clobber=yes
+dmextract infile="evt2_cluster_clean.fits[sky=region(local2.reg)][bin pi]" outfile=A1795_local2_bgd.pi
+dmhedit infile=A1795_fil2_sou.pi operation=add key=BACKFILE value=A1795_local2_bgd.pi filelist=""
+
+
+# add channel grouping so that xspec can better fit the data
+# edit headers to prevent xspec from choking- not sure why, but do it anyway
+
+punlearn dmgroup
+pset dmgroup clobber=yes
+dmgroup infile=A1795_fil_sou.pi outfile=A1795_fil_grp35_sou.pi grouptype=NUM_CTS grouptypeval=35 ycolumn=counts binspec="" xcolumn=channel
+dmhedit infile=A1795_fil_grp35_sou.pi operation=del key=GROUPING file=""
+dmhedit infile=A1795_fil_grp35_sou.pi operation=del key=QUALITY file=""
+
+
+punlearn dmgroup
+pset dmgroup clobber=yes
+dmgroup infile=A1795_fil1_sou.pi outfile=A1795_fil1_grp35_sou.pi grouptype=NUM_CTS grouptypeval=35 ycolumn=counts binspec="" xcolumn=channel
+dmhedit infile=A1795_fil1_grp35_sou.pi operation=del key=GROUPING file=""
+dmhedit infile=A1795_fil1_grp35_sou.pi operation=del key=QUALITY file=""
+
+
+punlearn dmgroup
+pset dmgroup clobber=yes
+dmgroup infile=A1795_fil2_sou.pi outfile=A1795_fil2_grp35_sou.pi grouptype=NUM_CTS grouptypeval=35 ycolumn=counts binspec="" xcolumn=channel
+dmhedit infile=A1795_fil2_grp35_sou.pi operation=del key=GROUPING file=""
+dmhedit infile=A1795_fil2_grp35_sou.pi operation=del key=QUALITY file=""
+
+
+*************************************************
+
+
+# treat the local bgds as sources and extract the regions
+
+punlearn acisspec 
+pset acisspec soufile1="evt2_cluster_clean.fits[sky=region(local1.reg)]"
+pset acisspec root=A1795_local1
+pset acisspec clobber=yes verbose=2
+acisspec
+
+
+punlearn acisspec 
+pset acisspec soufile1="evt2_cluster_clean.fits[sky=region(local2.reg)]"
+pset acisspec root=A1795_local2
+pset acisspec clobber=yes verbose=2
+acisspec
+
+
+# extract the local1 and local2 bgds from the deep bgd file
+# and edit the source headers
+
+punlearn dmextract
+pset dmextract clobber=yes
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(local1.reg)][bin pi]" outfile=A1795_deeplocal1_bgd.pi
+dmhedit infile=A1795_local1_sou.pi operation=add key=BACKFILE value=A1795_deeplocal1_bgd.pi filelist=""
+
+
+punlearn dmextract
+pset dmextract clobber=yes
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(local2.reg)][bin pi]" outfile=A1795_deeplocal2_bgd.pi
+dmhedit infile=A1795_local2_sou.pi operation=add key=BACKFILE value=A1795_deeplocal2_bgd.pi filelist=""
+
+
+# add channel grouping so that xspec can better fit the data
+# edit headers to prevent xspec from choking- not sure why, but do it anyway
+
+punlearn dmgroup
+pset dmgroup clobber=yes
+dmgroup infile=A1795_local1_sou.pi outfile=A1795_local1_grp35_sou.pi grouptype=NUM_CTS grouptypeval=35 ycolumn=counts binspec="" xcolumn=channel
+dmhedit infile=A1795_local1_grp35_sou.pi operation=del key=GROUPING file=""
+dmhedit infile=A1795_local1_grp35_sou.pi operation=del key=QUALITY file=""
+
+
+punlearn dmgroup
+pset dmgroup clobber=yes
+dmgroup infile=A1795_local2_sou.pi outfile=A1795_local2_grp35_sou.pi grouptype=NUM_CTS grouptypeval=35 ycolumn=counts binspec="" xcolumn=channel
+dmhedit infile=A1795_local2_grp35_sou.pi operation=del key=GROUPING file=""
+dmhedit infile=A1795_local2_grp35_sou.pi operation=del key=QUALITY file=""

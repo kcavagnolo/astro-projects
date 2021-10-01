@@ -1,0 +1,89 @@
+#!/bin/tcsh
+
+# before using this script be sure to look at this thread:
+# http://cxc.harvard.edu/ciao/threads/diffuse_emission/
+# and follow along.
+
+pset dmcopy clobber=yes
+
+dmcopy "merged.fits[energy=200:900][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" diff_image_2-9.fits
+
+dmcopy "merged.fits[energy=900:1500][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" diff_image_9-15.fits
+
+dmcopy "merged.fits[energy=1500:7000][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" diff_image_15-70.fits
+
+punlearn wavdetect
+
+pset wavdetect clobber=yes
+
+wavdetect infile=diff_image_2-9.fits outfile=sources_2-9.fits scellfile=sources_scell_2-9.fits imagefile=sources_image_2-9.fits defnbkgfile=sources_bkg_2-9.fits regfile=sources_2-9.reg scales="1 2 4" ellsigma=4 verbose=2
+
+wavdetect infile=diff_image_9-15.fits outfile=sources_9-15.fits scellfile=sources_scell_9-15.fits imagefile=sources_image_9-15.fits defnbkgfile=sources_bkg_9-15.fits regfile=sources_9-15.reg scales="1 2 4" ellsigma=4 verbose=2
+
+wavdetect infile=diff_image_15-70.fits outfile=sources_15-70.fits scellfile=sources_scell_15-70.fits imagefile=sources_image_15-70.fits defnbkgfile=sources_bkg_15-70.fits regfile=sources_15-70.reg scales="1 2 4" ellsigma=4 verbose=2
+
+mkBgReg.pl
+#ASCII region file (CIAO format): sources_2-9_mod.reg
+#Multiply source radius by: 2
+#Output filename: bkg_2-9.reg
+
+mkBgReg.pl
+#ASCII region file (CIAO format):sources_9-15_mod.reg
+#Multiply source radius by: 2
+#Output filename: bkg_9-15.reg
+
+mkBgReg.pl
+#ASCII region file (CIAO format):sources_15-70_mod.reg
+#Multiply source radius by: 2
+#Output filename: bkg_15-70.reg
+
+mkSubBgReg.pl
+#ASCII source region file (CIAO format): sources_2-9_mod.reg
+#ASCII background region file (CIAO format): bkg_2-9.reg
+#Output filename: bkg_2-9_sub.reg
+
+mkSubBgReg.pl
+#ASCII source region file (CIAO format): sources_9-15_mod.reg
+#ASCII background region file (CIAO format): bkg_9-15.reg
+#Output filename: bkg_9-15_sub.reg
+
+mkSubBgReg.pl
+#ASCII source region file (CIAO format): sources_15-70_mod.reg
+#ASCII background region file (CIAO format): bkg_15-70.reg
+#Output filename: bkg_15-70_sub.reg
+
+punlearn dmfilth
+
+pset dmfilth clobber=yes
+
+dmfilth infile=diff_image_2-9.fits outfile=diff_image_2-9_filled.fits method=POISSON srclist=@sources_2-9_mod.reg bkglist=@bkg_2-9_sub.reg randseed=123 verbose=2
+
+dmfilth infile=diff_image_9-15.fits outfile=diff_image_9-15_filled.fits method=POISSON srclist=@sources_9-15_mod.reg bkglist=@bkg_9-15_sub.reg randseed=123 verbose=2
+
+dmfilth infile=diff_image_15-70.fits outfile=diff_image_15-70_filled.fits method=POISSON srclist=@sources_15-70_mod.reg bkglist=@bkg_15-70_sub.reg randseed=123 verbose=2
+
+punlearn csmooth
+
+pset csmooth clobber=yes
+
+csmooth infile=diff_image_2-9_filled.fits outfile=smoothed_2-9_fill.fits outsigfile=smoothed_2-9_fill_sig.fits outsclfile=smoothed_2-9_fill_scl.fits sigmin=3 verbose=2
+
+csmooth infile=diff_image_9-15_filled.fits outfile=smoothed_9-15_fill.fits outsigfile=smoothed_9-15_fill_sig.fits outsclfile=smoothed_9-15_fill_scl.fits sigmin=3 verbose=2
+
+csmooth infile=diff_image_15-70_filled.fits outfile=smoothed_15-70_fill.fits outsigfile=smoothed_15-70_fill_sig.fits outsclfile=smoothed_15-70_fill_scl.fits sigmin=3 verbose=2
+
+# in addition, take the exposure corrected image from merge_all
+# and use the scl map to smooth
+# when prompted, change the minimal sigma to "3" and smoothing scales to "user"
+
+dmcopy "merged_expcorr_img.fits[energy=200:900][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" merged_expcorr_img_2-9.fits
+
+dmcopy "merged_expcorr_img.fits[energy=900:1500][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" merged_expcorr_img_9-15.fits
+
+dmcopy "merged_expcorr_img.fits[energy=1500:7000][ccd_id=7][bin x=3800:4200:1,y=3800:4200:1]" merged_expcorr_img_15-70.fits
+
+csmooth infile=merged_expcorr_img_2-9.fits sclmap=smoothed_2-9_fill_scl.fits outfile=merged_expcorr_2-9_smooth.fits outsigfile=merged_expcorr_2-9_smooth_sig.fits outsclfile=merged_expcorr_2-9_smooth_scl.fits verbose=2
+
+csmooth infile=merged_expcorr_img_9-15.fits sclmap=smoothed_9-15_fill_scl.fits outfile=merged_expcorr_9-15_smooth.fits outsigfile=merged_expcorr_9-15_smooth_sig.fits outsclfile=merged_expcorr_9-15_smooth_scl.fits verbose=2
+
+csmooth infile=merged_expcorr_img_15-70.fits sclmap=smoothed_15-70_fill_scl.fits outfile=merged_expcorr_15-70_smooth.fits outsigfile=merged_expcorr_15-70_smooth_sig.fits outsclfile=merged_expcorr_15-70_smooth_scl.fits verbose=2

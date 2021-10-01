@@ -1,0 +1,30 @@
+#!/bin/sh
+# Generic AIPS midnight job runner
+# un-comment next line to disable the job.
+# exit
+#
+. /usr/local/aips/LOGIN.SH >/dev/null 2>&1
+$CDTST >/dev/null 2>&1
+#
+# Assume this file is called 'something.hostname'
+# (to help in a multiple architecture installation)
+myname=`basename $0 | awk -F. '{print $2}'`
+[ "`$AIPS_ROOT/SETNAME`" = "$myname" ] || exit
+#
+# Get cvs in the path...
+# PATH=$PATH:/set/me/to/dir/where/cvs/is/found
+# export PATH
+#
+# uncomment to remove any old binaries if SAVE=TRUE...
+# (cd $LOAD; find . -name '*.EXE.OLD' -atime +2 -exec rm -f {} \;)
+#
+# Now do the MNJ
+cd $AIPS_VERSION/$ARCH/UPDATE
+#
+#uncomment the TST NEW line ONLY while 31DEC03 is still changing
+#(if you do, comment out the AIPSUPD TST line; you
+# do NOT want to run the darn thing twice)
+# ./AIPSUPD TST NEW
+./AIPSUPD TST
+#
+exit

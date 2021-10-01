@@ -1,0 +1,31 @@
+#!/bin/tcsh
+
+# start this script in the expmap/ dir
+# this script will generate an instrument map and exposure map
+# for CALDB updated evt files
+
+punlearn dmcopy
+dmcopy "../secondary/evt2.fits[energy=300:10000]" evt2.fits
+
+dmkeypar evt2.fits ROLL_NOM
+set roll = `pget dmkeypar value`
+dmcoords evt2.fits chip_id=7 opt=chip chipx=512.5 chipy=512.5 verbose=1 | grep SKY | awk 'BEGIN {printf("# Region file format: CIAO version 1.0\nrotbox(")} { printf("%f,%f,1024,1024,%f)\n", $2, $3, 360-'$roll')}' > chip_s3.reg
+dmcopy "evt2.fits[sky=region(chip_s3.reg)][bin sky=1]" img_s3.fits
+
+punlearn dmextract
+dmextract infile="evt2.fits[sky=region(obj.reg)][bin energy=300:10000:20]" outfile=obj_histogram_energy.fits opt=generic
+
+dmlist "obj_histogram_energy.fits[count_rate > 0.094][cols energy,count_rate]" data,clean
+
+punlearn asphist
+asphist infile="../primary/pcadf070013394N002_asol1.fits[@evt2.fits[ccd_id=7]]" outfile=asphist_7.fits evtfile=evt2.fits
+
+punlearn mkinstmap
+mkinstmap obsfile="asphist_7.fits[asphist]" outfile=instmap_1.0kev_7.fits det=ACIS-7 pixelgrid="1:1024:#1024,1:1024:#1024" spectrumfile=NONE monoenergy=1.0
+
+get_sky_limits img_s3.fits verbose="1"
+
+punlearn mkexpmap
+mkexpmap instmapfile=instmap_1.0kev_7.fits outfile=expmap_1.0kev_7.fits xygrid=")get_sky_limits.xygrid" asphistfile=asphist_7.fits useavgaspect=no normalize=no verbose=2
+
+

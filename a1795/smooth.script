@@ -1,0 +1,77 @@
+#!/bin/tcsh
+
+# before using this script be sure to look at this thread:
+# http://cxc.harvard.edu/ciao/threads/diffuse_emission/
+# and follow along.
+
+punlearn dmcopy
+dmcopy "../reprocessed/evt2.fits[energy=300:7000][ccd_id=7][bin x=4000:4400:1,y=3800:4200:1]" diff_image.fits
+
+punlearn wavdetect
+pset wavdetect infile=diff_image.fits
+pset wavdetect outfile=sources.fits
+pset wavdetect scellfile=sources_scell.fits
+pset wavdetect imagefile=sources_image.fits
+pset wavdetect defnbkgfile=sources_bkg.fits
+pset wavdetect regfile=sources.reg
+pset wavdetect scales="1 2 4"
+pset wavdetect ellsigma=4
+wavdetect
+#Input file name (diff_image.fits):
+#Output source list file name (sources.fits):
+#Output source cell image file name (sources_scell.fits):
+#Output reconstructed image file name (sources_image.fits):
+#Output normalized background file name (sources_bkg.fits):
+
+mkBgReg.pl
+#ASCII region file (CIAO format): sources_mod.reg
+#Multiply source radius by: 2
+#Output filename: bkg.reg
+
+mkSubBgReg.pl
+#ASCII source region file (CIAO format): sources_mod.reg
+#ASCII background region file (CIAO format): bkg.reg
+#Output filename: bkg_sub.reg
+
+punlearn dmfilth
+pset dmfilth infile=diff_image.fits
+pset dmfilth outfile=diff_image_filled.fits
+pset dmfilth method=POISSON
+pset dmfilth srclist=@sources_mod.reg
+pset dmfilth bkglist=@bkg_sub.reg
+pset dmfilth randseed=123
+dmfilth
+#Input image (or event) file (diff_image.fits):
+#Enter output file name(s) (diff_image_filled.fits):
+#Interpolation method (POLY|DIST|GLOBAL|POISSON|BILINT) (POISSON):
+#List of sources to fill in (@sources_mod.reg):
+#List of background regions (@bkg_sub.reg):
+
+punlearn csmooth
+pset csmooth infile=diff_image_filled.fits
+pset csmooth outfile=smoothed_fill.fits
+pset csmooth outsigfile=smoothed_fill_sig.fits
+pset csmooth outsclfile=smoothed_fill_scl.fits
+pset csmooth sigmin=3
+csmooth
+#input file name (diff_image_filled.fits):
+#image of user-supplied map of smoothing scales ():
+#output file name (smoothed_fill.fits):
+#output significance image (smoothed_fill_sig.fits):
+#output scales [kernel sizes] image (smoothed_fill_scl.fits):
+#Convolution method. (slide|fft) (fft):
+#Convolution kernel type. (gauss|tophat) (gauss):
+#initial (minimal) smoothing scale [pixel] (INDEF):
+#maximal smoothing scale [pixel] ()sclmax:) (INDEF):
+#minimal significance, s/n ratio (3):
+#maximal significance, S/N ratio ()sigmin:) (5):
+#compute smoothing scales or user user-supplied map (compute|user) (compute):
+
+# in addition, take the exposure corrected image from merge_all
+# and use the scl map to smooth
+
+pset csmooth infile = merged_expcorr_img.fits
+pset csmooth sclmap = smoothed_fill_scl.fits
+pset csmooth outfile = merged_expcorr_smooth.fits
+pset csmooth outsigfile = merged_expcorr_smooth_sig.fits
+pset csmooth outsclfile = merged_expcorr_smooth_scl.fits

@@ -1,0 +1,32 @@
+#!/bin/tcsh
+
+# make sure to start this script in the main dir of the structure
+# also make sure that ciao was started first and then source was run
+# correctly
+
+cd primary/
+punlearn ardlib
+acis_set_ardlib
+cd ../reprocessed/
+
+# treat the local bgds as sources and extract the regions
+
+punlearn acisspec
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(core.reg)]" root=A1795_core clobber=yes verbose=2
+
+
+# extract the local1 and local2 bgds from the deep bgd file
+# and edit the source headers
+
+punlearn dmextract
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(core.reg)][bin pi]" outfile=A1795_core_bgd.pi clobber=yes
+dmhedit infile=A1795_core_sou.pi operation=add key=BACKFILE value=A1795_core_bgd.pi filelist=""
+
+
+# add channel grouping so that xspec can better fit the data
+# edit headers to prevent xspec from choking- not sure why, but do it anyway
+
+punlearn dmgroup
+dmgroup infile=A1795_core_sou.pi outfile=A1795_core_grp35_sou.pi grouptype=NUM_CTS grouptypeval=35 ycolumn=counts binspec="" xcolumn=channel clobber=yes
+dmhedit infile=A1795_core_grp35_sou.pi operation=del key=GROUPING file=""
+dmhedit infile=A1795_core_grp35_sou.pi operation=del key=QUALITY file=""

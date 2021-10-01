@@ -1,0 +1,126 @@
+#!/bin/tcsh
+
+# make sure to start this script in the reprocessed dir
+
+ciao -o
+source ../../../../ciaotemps/source1
+punlearn ardlib
+cd ../primary/
+acis_set_ardlib
+cd ../reprocessed/
+
+# extract spectrum in annuli
+
+punlearn acisspec
+pset acisspec clobber=yes
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_annuli_0.reg)]" root=A1795_ann0 
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_annuli_1.reg)]" root=A1795_ann1  
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_annuli_2.reg)]" root=A1795_ann2 
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_annuli_3.reg)]" root=A1795_ann3 
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_annuli_4.reg)]" root=A1795_ann4
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_annuli_5.reg)]" root=A1795_ann5 
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_annuli_6.reg)]" root=A1795_ann6
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_panda_7.reg)]"  root=A1795_ann7
+acisspec soufile1="evt2_cluster_clean.fits[sky=region(A1795_panda_8.reg)]"  root=A1795_ann8
+
+# extract corresponding background spectrum
+
+punlearn dmextract
+pset dmextract clobber=yes
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_annuli_0.reg)][bin pi]" outfile=A1795_ann0_bgd.pi 
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_annuli_1.reg)][bin pi]" outfile=A1795_ann1_bgd.pi
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_annuli_2.reg)][bin pi]" outfile=A1795_ann2_bgd.pi
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_annuli_3.reg)][bin pi]" outfile=A1795_ann3_bgd.pi
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_annuli_4.reg)][bin pi]" outfile=A1795_ann4_bgd.pi
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_annuli_5.reg)][bin pi]" outfile=A1795_ann5_bgd.pi
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_annuli_6.reg)][bin pi]" outfile=A1795_ann6_bgd.pi
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_panda_7.reg)][bin pi]"  outfile=A1795_ann7_bgd.pi
+dmextract infile="bgevt2_cluster_reproj.fits[sky=region(A1795_panda_8.reg)][bin pi]"  outfile=A1795_ann8_bgd.pi
+
+# insert background keyword into headers
+
+dmhedit infile=A1795_ann0_sou.pi operation=add key=BACKFILE value=A1795_ann0_bgd.pi filelist=""
+dmhedit infile=A1795_ann1_sou.pi operation=add key=BACKFILE value=A1795_ann1_bgd.pi filelist=""
+dmhedit infile=A1795_ann2_sou.pi operation=add key=BACKFILE value=A1795_ann2_bgd.pi filelist=""
+dmhedit infile=A1795_ann3_sou.pi operation=add key=BACKFILE value=A1795_ann3_bgd.pi filelist=""
+dmhedit infile=A1795_ann4_sou.pi operation=add key=BACKFILE value=A1795_ann4_bgd.pi filelist=""
+dmhedit infile=A1795_ann5_sou.pi operation=add key=BACKFILE value=A1795_ann5_bgd.pi filelist=""
+dmhedit infile=A1795_ann6_sou.pi operation=add key=BACKFILE value=A1795_ann6_bgd.pi filelist=""
+dmhedit infile=A1795_ann7_sou.pi operation=add key=BACKFILE value=A1795_ann7_bgd.pi filelist=""
+dmhedit infile=A1795_ann8_sou.pi operation=add key=BACKFILE value=A1795_ann8_bgd.pi filelist=""
+
+# insert XFLT keywords needed by XSPEC deprojection model XFLT0001=semimajor axis
+# XFLT0002=semiminor axis XFLT0003=position angle (degrees) ; axis units any reasonable
+# self-consistent units (for now we'll stick with pixels)
+# XSPEC doesn't like pixels (number hardwired limits between 0-100)
+# so will convert to arcmin (0.492/60 * pixels)
+
+dmhedit infile=A1795_ann0_sou.pi operation=add key=XFLT0001 value=0.3854  filelist=""
+dmhedit infile=A1795_ann0_sou.pi operation=add key=XFLT0002 value=0.3854  filelist=""
+dmhedit infile=A1795_ann0_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+
+dmhedit infile=A1795_ann1_sou.pi operation=add key=XFLT0001 value=0.615  filelist=""
+dmhedit infile=A1795_ann1_sou.pi operation=add key=XFLT0002 value=0.615  filelist=""
+dmhedit infile=A1795_ann1_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+
+dmhedit infile=A1795_ann2_sou.pi operation=add key=XFLT0001 value=0.861  filelist=""
+dmhedit infile=A1795_ann2_sou.pi operation=add key=XFLT0002 value=0.861  filelist=""
+dmhedit infile=A1795_ann2_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+
+dmhedit infile=A1795_ann3_sou.pi operation=add key=XFLT0001 value=1.164  filelist=""
+dmhedit infile=A1795_ann3_sou.pi operation=add key=XFLT0002 value=1.164  filelist=""
+dmhedit infile=A1795_ann3_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+
+dmhedit infile=A1795_ann4_sou.pi operation=add key=XFLT0001 value=1.542  filelist=""
+dmhedit infile=A1795_ann4_sou.pi operation=add key=XFLT0002 value=1.542  filelist=""
+dmhedit infile=A1795_ann4_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+
+dmhedit infile=A1795_ann5_sou.pi operation=add key=XFLT0001 value=2.009  filelist=""
+dmhedit infile=A1795_ann5_sou.pi operation=add key=XFLT0002 value=2.009  filelist=""
+dmhedit infile=A1795_ann5_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+
+dmhedit infile=A1795_ann6_sou.pi operation=add key=XFLT0001 value=2.583  filelist=""
+dmhedit infile=A1795_ann6_sou.pi operation=add key=XFLT0002 value=2.583  filelist=""
+dmhedit infile=A1795_ann6_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+
+dmhedit infile=A1795_ann7_sou.pi operation=add key=XFLT0001 value=3.370  filelist=""
+dmhedit infile=A1795_ann7_sou.pi operation=add key=XFLT0002 value=3.370  filelist=""
+dmhedit infile=A1795_ann7_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+dmhedit infile=A1795_ann7_sou.pi operation=add key=XFLT0004 value=335 filelist=""
+dmhedit infile=A1795_ann7_sou.pi operation=add key=XFLT0005 value=280 filelist=""
+
+dmhedit infile=A1795_ann8_sou.pi operation=add key=XFLT0001 value=3.936  filelist=""
+dmhedit infile=A1795_ann8_sou.pi operation=add key=XFLT0002 value=3.936  filelist=""
+dmhedit infile=A1795_ann8_sou.pi operation=add key=XFLT0003 value=0  filelist=""
+dmhedit infile=A1795_ann8_sou.pi operation=add key=XFLT0004 value=350 filelist=""
+dmhedit infile=A1795_ann8_sou.pi operation=add key=XFLT0005 value=265 filelist=""
+
+# correct keywords in headers
+
+dmhedit infile=A1795_ann0_sou.pi operation=add key=ANCRFILE value=A1795_ann0_sou.warf filelist=""
+dmhedit infile=A1795_ann1_sou.pi operation=add key=ANCRFILE value=A1795_ann1_sou.warf filelist=""
+dmhedit infile=A1795_ann2_sou.pi operation=add key=ANCRFILE value=A1795_ann2_sou.warf filelist=""
+dmhedit infile=A1795_ann3_sou.pi operation=add key=ANCRFILE value=A1795_ann3_sou.warf filelist=""
+dmhedit infile=A1795_ann4_sou.pi operation=add key=ANCRFILE value=A1795_ann4_sou.warf filelist=""
+dmhedit infile=A1795_ann5_sou.pi operation=add key=ANCRFILE value=A1795_ann5_sou.warf filelist=""
+dmhedit infile=A1795_ann6_sou.pi operation=add key=ANCRFILE value=A1795_ann6_sou.warf filelist=""
+dmhedit infile=A1795_ann7_sou.pi operation=add key=ANCRFILE value=A1795_ann7_sou.warf filelist=""
+dmhedit infile=A1795_ann8_sou.pi operation=add key=ANCRFILE value=A1795_ann8_sou.warf filelist=""
+
+# group source spectrum into bins min=25
+
+punlearn dmgroup
+pset dmgroup clobber=yes
+dmgroup infile=A1795_ann0_sou.pi outfile=A1795_ann0_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+dmgroup infile=A1795_ann1_sou.pi outfile=A1795_ann1_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+dmgroup infile=A1795_ann2_sou.pi outfile=A1795_ann2_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+dmgroup infile=A1795_ann3_sou.pi outfile=A1795_ann3_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+dmgroup infile=A1795_ann4_sou.pi outfile=A1795_ann4_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+dmgroup infile=A1795_ann5_sou.pi outfile=A1795_ann5_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+dmgroup infile=A1795_ann6_sou.pi outfile=A1795_ann6_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+dmgroup infile=A1795_ann7_sou.pi outfile=A1795_ann7_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+dmgroup infile=A1795_ann8_sou.pi outfile=A1795_ann8_grp25_sou.pi grouptype=NUM_CTS grouptypeval=25 ycolumn=counts binspec="" xcolumn=channel
+
+dmhedit infile=A1795_ann0_grp25_sou.pi operation=del key=GROUPING file=""
+
+dmhedit infile=A1795_ann0_grp25_sou.pi operation=del key=QUALITY file="
