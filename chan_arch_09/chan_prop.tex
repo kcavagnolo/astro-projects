@@ -1,0 +1,511 @@
+%Work needed to be done:
+
+%-- ABUNDANCE --
+
+%-- Extract new abundance profiles with more counts/bin. The code is
+%finished and ready to use the up-to-date CIAO 4.0 and CalDB. To be
+%rigorous the data needs to be updated with the new calibration (if we
+%dare tread there) and shoved through the pipeline. I did a quick check
+%with the current database of how many clusters we can expect to have
+%after applying a minimum criterium of four annuli with 5K
+%counts/annulus and that leaves at least 200 clusters.
+
+%-- Fit abundance profiles with some function which allows for
+%peakiness, central decrement, width of abundance ``core,'' and
+%describes gradient at large radii. I have plenty of robust profile
+%fitting code which can do this, it's a super simple task.
+
+%-- 2D maps; The code to do this is all finished and gives the option
+%to use any of multiple algorithms in making maps: contour binning, a
+%variety of adaptive binning techniques, weighted voronoi tesselation
+%(WVT). Having the choice different algorithms at our disposal is
+%useful because different algorithms excel in different SN regimes:
+%contour binning-> high SN, adaptive binning-> mid-SN, WVT-> low-SN.
+%The maps which need to be made and analyzed are:
+%	+ temperature
+%	+ abundance
+%	+ density
+%	+ pressure
+%	+ entropy
+%	+ hardness ratio (maps and profiles, see note below)
+%About the hardness ratio maps: I just finished refereeing a paper by
+%Henning who is in the Burns and Hallman group at UC-Boulder. They make
+%some interesting predictions about the lingering signature major
+%mergers have on the hardness ratio profiles of the ICM. I don't expect
+%the paper will be on arXiv by the deadline, but it makes some
+%predictions which we could test in a week or two and which would be
+%paper worthy.
+
+%-- If we want to make meaningful comparisons with the outputs of
+%simualtions (which I think is a big selling point of this proposal),
+%we'll need someone with sims that have chemical enrichment and AGN
+%feedback. Rasera et al. is a good one, and I haven't dug around to
+%find others, I assumed this is something we could say we're going to
+%do, and then fill-in the blank of ``with who'' later on.
+
+%-- CONDUCTION --
+
+%As for the conduction stuff, which may or may not be worthy of going
+%in the proposal, but which I think is worth investigating either way,
+%here is the list of to-do:
+
+%A sidenote first: I recognize that Voigt & Fabian pretty much covered
+%this ground, but their sample was all K0 < 30 clusters. And it's also
+%worth pointing out that the systems where they found conduction was
+%probably an efficient heating mechanism, those 2 (3? I can't remember)
+%had the highest K0 of their sample. In addition, one cluster had no
+%Halpha emission and the other had a piddly little source.
+
+%-- calculate effective conductivity profiles (ala Voigt & Fabian)
+%-- calculate implied suppression factor profiles (ala Sanderson)
+%-- calculate minimum conductive efficiency (ala Rafferty in our
+%conduction paper)
+
+%-- SCALING --
+
+%I have the entropy scaling work underway, it just needs to be finished
+%and written-up. I want to write this paper, and I don't think it needs
+%to go into the proposal as something we're going to do.If we want to
+%tackle the topic of other scaling relations, then we'll need to:
+
+%-- Derive LX for small fixed overdensity (r2500. r1000) apertures and
+%then extrapolate out to larger fixed overdensity apertures (r500
+%etc). Do we want to incorporate ROSAT and/or XMM data when possible?
+%That adds the new beast of reducing and analyzing the XMM and ROSAT
+%data, which I think is a good idea, but I'd need to adapt the pipeline
+%to do this.
+
+%-- Derive masses and YX
+
+%-- Calc deviation from LX-TX for ACCEPT clusters
+
+%%%%%%%%
+% Header
+%%%%%%%%
+
+%\documentclass[letterpaper,11pt,twocolumn]{article}
+\documentclass[letterpaper,11pt]{article}
+\usepackage{common,graphicx}
+%\usepackage[nonamebreak,numbers,square, sort&compress,comma]{natbib}
+%\bibliographystyle{abbrv}
+%\bibliographystyle{apj}
+\setlength{\textwidth}{6.5in} 
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-0.0625in} 
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in} 
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in} 
+\setlength{\hoffset}{0in}
+\setlength{\voffset}{0in}
+\makeatletter
+\renewcommand{\section}{\@startsection%
+{section}{1}{0mm}{-\baselineskip}%
+{0.5\baselineskip}{\normalfont\Large\bfseries}}%
+\makeatother
+\begin{document}
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+%%%%%%%
+% Title
+%%%%%%%
+
+\begin{center} 
+\bfseries\uppercase{An Archival Study of Galaxy Cluster Metal
+  Enrichment, Thermal Conduction, and Scaling Relations}
+\end{center}
+
+%%%%%%%
+% Intro
+%%%%%%%
+We recently concluded a multi-year \chandra\ archival project where we
+analyzed the X-ray emission from the intracluster medium (ICM) for an
+archive-limited sample of $352$ galaxy clusters. In total, we analyzed
+459 ACIS-S/I observations with a combined exposure time of 12.5
+Msec. The goals of the archival work were to develop a better
+understanding of the galaxy cluster relaxation process and to quantify
+the entropy state of cluster cores with a specific focus on how
+entropy relates to feedback processes like star formation and
+outbursts from active galactic nuclei (AGN). The results from our
+archival work have been presented in seven referred publications thus
+far [3-7, 9, 21]. We have also made the all results from our work
+available to the public via the ``Archive of \chandra\ Cluster Entropy
+Profiles Tables'' (\accept)
+Database\footnote{http://www.pa.msu.edu/astro/MC2/accept/}.
+
+While most of the goals of the original project have been achieved,
+additional interesting scientific questions have arisen which, because
+of our extensive experience, we are well-positioned to study with more
+depth. Using an archive-limited sample of galaxy cluster observations,
+the topics we are proposing for study are: 1) a detailed investigation
+of ICM metal distributions and using those distributions as probes of
+the AGN feedback mechanism, supernovae enrichment, and redshift
+evolution of global cluster abundance; 2) in direct support of ongoing
+theoretical work, a study to investigate the conduction properties of
+the ICM for a broad range of clusters and discerning how those
+properties relate to the processes of star formation and AGN feedback;
+3) a study of the accuracy, scatter, and redshift evolution of
+mass-observable scaling relations.
+
+%%%%%%%%%%%
+% Abundance
+%%%%%%%%%%%
+\large
+\begin{center}
+\noindent{\bf{ICM Metal Distributions}}
+\end{center}
+\normalsize
+
+The heavy element content of the hot, diffuse gas pervaiding the space
+between galaxies in a cluster, the ICM, is a partial record of the
+integrated star formation history of cluster galaxies and how those
+metals were mixed into the ICM. There are a multitude of pathways for
+metals to migrate from their parent star into the ICM: ram-pressure
+stripping of gas previously bound to a galaxy as it travels through
+the ICM, tidal stripping of gas via galaxy-galaxy interactions, gas
+outflow via galactic superwinds, gas ejection from intragalaxy stars,
+and gas outflows powered by AGN outbursts which uplift enriched gas
+residing in the cluster core. Limitations of the current generation of
+X-ray instrumentation restrict direct observation of transport
+processes like ram-pressure stripping or galactic winds to mostly
+nearby objects like Coma or Virgo, and in rare instances spectacular
+objects like ESO 137-001 [20]. However, simulations have shown that
+the interaction between AGN jets, and subsequent buoyant bubbles which
+form in the ICM, result in bulk gas motions which result in observable
+alterations of the ICM metal distribution [16-18]. The AGN-ICM
+interaction has also been infered for several clusters with AGN
+induced ICM cavities [\eg\ 14], and directly observed in Hydra A
+[\eg\ 12].
+
+Though AGN induced mixing of metals into the ICM is not considered to
+be an important contributor to global ICM enrichment, the process is
+unique and interesting because it operates over a large range of
+physical scales and over long time periods. Thus resulting in changes
+of the bulk properties of the ICM metal distribution which are
+observationally accessible with \chandra. Hence, by observing the
+general characteristics of ICM metal distributions (\ie\ shape,
+normalization, and ``peakiness'') for a large sample of galaxy
+clusters and making additional comparisons with other cluster
+properties (\eg\ gas entropy distribution, properties of X-ray
+cavities, radio emission, outburst energetics, \etc), the metals
+become a valuable tracer of the AGN feedback process. At some level,
+the metals directly reflect ICM processes and properties like
+diffusion, convection, turbulence, and viscosity. Results from the
+work we are proposing can be used to place interesting constraints on
+these processes and how they included in simulations. These
+constraints can then be used in the next generation of simulations
+which seek to produce galaxy and cluster enrichment properties which
+are consistent with observations. It is therefore important to
+undertake a detailed study of the ICM metal distribution for a large
+sample of galaxy clusters utilizing the high-quality data found in the
+\chandra\ archive. {\bf{We propose an archival study to better
+    understand how AGN feedback impacts the ICM metal distribution in
+    galaxy clusters.}}
+
+We are well positioned to undertake a large archival study thanks to
+our well-tested, batch-style reduction and analysis pipeline which was
+written during completion of the \accept\ database. For our proposed
+archival study we will measure global abundances (both with and
+without the core region), radial abundance profiles, and when
+reasonable signal-to-noise (SN) allows, we will also generate 2D maps.
+We will then model the behavior of the radial abundance profiles by
+fitting a simple function to each profile to look for trends or
+correlations among the best-fit parameters and scientifically
+interesting quantities such as core entropy, central abundance, the
+steepness of the abundance gradient beyond the core. The modeling will
+enable us to reduce the scatter in interesting relations which may
+otherwise be washed out by the noise which would result from using
+values taken directly from the observational analysis. Looking for
+relationships among other ICM properties and metal distributions will
+help form a better understanding of, for example, the efficiency of
+metal transport in the ICM, the radial extent of ICM enrichment from
+AGN transport, limitations on turbulent mixing, and how all of these
+properties depend on cluster core environment. We will also
+investigate the central abundance ``dip'' which has been seen in many
+cool core clusters [19], and determine if it is feature related to a
+physical mechanism in many cool core clusters (AGN excavation of
+central region? Drop-out due to star formation?), or if it results
+from the limitations of the data and/or the analysis process. Our
+results can also be compared with results from simulations which
+include feedback and chemical enrichment [\eg\ 8, 16]. We can also
+investigate the controversial claim of redshift evolution in the
+global abundance of galaxy clusters and/or the properties of their
+abundance profiles [2, 13].
+
+The analysis which was used during creation of the \accept\ database
+will be updated to shift the focus from creating high-quality
+temperature profiles to creating high-quality abundance profiles. The
+quality increase will be accomplished by decreasing the uncertainties
+of the best-fit spectroscopically determined abundance measurements
+through improving the SN in each spectrum (\ie\ increasing the number
+of counts per radial bin). In addition, we will explore using more
+than a simple single-component temperature model during spectral
+fitting. This can include more complex spectral models which have
+multiple temperature components or variable metal species
+abundances. The more complex spectral models will also give us the
+ability, for spectra with good signal-to-noise, to use the relative
+abundances of various metal species as a probe of the enrichment rate
+from various types of supernovae. Based on the size of the
+\accept\ database and the expected minimum criteria for deriving
+high-quality abundance profiles (presumably a minimum of 4 radial
+annuli with 5000 counts per region), we expect to have $\ga 200$
+clusters in the archive-limited sample which will cover a broad range
+of redshifts, luminoisities, and morphologies.
+
+A study this large will also produce interesting comparisons of
+analysis methodologies and \chandra\ calibrations. We will explore the
+subtle systematic differences between various spectral models
+(\eg\ MeKaL, APEC, GDEM, \etc) and how they impact abundance
+measurements in addition to quantifying the role of multitemperature
+gas in biasing best-fit values. The results in \accept\ were derived
+using version 3.4.0 of the \chandra\ Calibration Database
+(\caldb). With a new large study, we will update the analysis to use
+the new \caldb\ version 4.1.1, which includes significant changes from
+v3.4.0. Through comparison of results in \accept\ with the results of
+a new study, we will be able to quantify how the major corrections to
+the \chandra\ effective area impact existing cluster studies.
+
+%%%%%%%%%%%%
+% Conduction
+%%%%%%%%%%%%
+\large
+\begin{center}
+\noindent{\bf{ICM Thermal Conduction}}
+\end{center}
+\normalsize
+
+Using measurements of \kna\ in addition to observations of
+\halpha\ emission, radio emission, and blue light from BCGs, [21]
+suggested that star formation in BCGs proceeds only if a multiphase
+medium can form as the result of thermal conduction being less
+efficient than radiative cooling. Moreover, one of the most intriguing
+results from [6] is the bimodal core entropy distribution
+(Fig. \ref{fig:hist}). [10] and [21] further propose that electron
+thermal conduction is a possible explanation for bimodality in the
+\kna\ distribution. The argument proceeds from writing the Field
+length, the length scale below which a space of thermal instabilities
+will be smoothed [11] ($\lambda_F$), as a function of entropy alone:
+$\lambda_F \propto f_c^{1/2}K^{3/2}$, where $K$ is gas entropy and
+$f_c$ is a suppression factor set by magnetic field strength and
+structure [10]. Shown in Fig. \ref{fig:cond} is a plot of a few
+\accept\ radial entropy profiles color coded for the presence of
+\halpha\ emission from the BCG and/or a BCG with an inwardly
+increasing blue color gradient. Red entropy profiles have neither
+\halpha\ or a blue gradient, green have only \halpha, and blue have
+both. The dashed lines indicate the value of the Field length for a
+given entropy and suppression factor. Below the dashed lines, the gas
+at each length scale represents a subsystem which are thermally
+unstable. From the figure it appears that a transition occurs from
+clusters with high \kna\ which cannot host thermal instabilities (red
+profiles), to those which can (green profiles), to those which are
+actively forming stars (blue profiles).
+
+Using hydrodynamical simulations, \chandra\ and NSF funded theoretical
+investigation of the coupling between AGN feedback, thermal
+conduction, and BCG star formation is already underway at MSU. The
+theory work is the first time detailed simulations have focused on the
+relationship between the transition of gas in clusters to a multiphase
+medium and conduction-related processes in the ICM. Our existing
+observational work has already provided a strong set of constraints
+for the theoretical study, however, additional constraints, such as
+the radial behavior of the infered magnetic suppression factor and the
+effective conductivity, are necessary to form a better understanding
+of the smaller-scale processes which manifest in larger scale
+structure (\eg\ the influence of magnetic fields).
+
+{\bf{We propose an archival investigation into the conduction
+    properties of the ICM in galaxy clusters.}} The archival work will
+be in direct support of the ongoing \chandra\ funded theoretical
+work. As part of the study we will place specific emphasis on studying
+clusters having a \kna\ which places them in the transition region
+between clusters with and without signs of thermal instability. The
+data needed to undertake an archival study is already in the
+\accept\ database. We will use the existing data to calculate radial
+profiles of the implied suppression factor, $f_c \propto r^2 K^{-3}$,
+which is an indicator for which clusters are capable of being
+stabilized by thermal conduction, \ie\ $f_c = 1$. As a corrolary, the
+minimum conductive efficiency, $\epsilon_{min} = \kappa T (\Lambda n_e
+n_H r^2)^{-1}$, and effective conductivity, $\kappa_{eff} \propto
+(\nabla{T} r^2)^{-1} \Lambda n_e n_H$, will be calculated for each
+cluster. A comparison of these quantities and profiles with cluster
+cooling luminosity profiles and the results from the simulations will
+give insight on the dependance of thermal heat transport on radial gas
+structure, and give guidance on how the radius at which conduction is
+unable to prevent cooling (\eg\ the Field length) depends on various
+properties of global cluster structure.
+
+%%%%%%%%%%%%%%%
+% Standing work
+%%%%%%%%%%%%%%%
+\large
+\begin{center}
+\noindent{\bf{ICM Scaling Relations}}
+\end{center}
+\normalsize
+
+The archival studies we have completed and are proposing yield an
+extensive amount of extra information which can be used in other
+important investigations. Cluster scaling relations is one such topic
+which has been the subject of exhaustive study by many groups, and
+which we can further explore with our archival work. A key challenge
+in using galaxy clusters as cosmological probes lies in obtaining
+reliable mass estimates. A cornerstone assumption of cluster mass
+estimation is that the ICM is in hydrostatic equilibrium and that
+departures from equilibrium are small. However, solving the equation
+of hydrostatic equilibrium requires detailed gas density and
+temperature measurements, which can be exceedingly difficult to
+measure for high redshift or intrinsically faint clusters. To
+circumvent this problem, observationalists have traditionally infered
+cluster masses by utilizing scaling relations between mass and
+observables like luminosity or temperature. When $T_X$, or at the very
+worst, $L_X$, are the only quantities which can be reliably measured
+for a cluster, mass can still be calculated via a scaling relation.
+
+-- L-T slope, evolution, intrinsic scatter\\
+-- archival sample is wildly hetergeneous, are there advantages?\\
+       + coverage of z and tx (mass)
+
+It is also possible to use the scatter in the $L_X-M$ relation to
+better understand the unknown biases in X-ray flux-limited samples
+which are used for cosmological studies.\\
+
+-- use yx as a proxy for mass and study lx-m relation\\
+
+The scope of our proposed and prior archival work allows us to further
+probe the accuracy, scatter within, and redshift evolution of
+mass-observable scaling relations such as $L_X-T_X$, $Y_X-T_X$,
+$M_{gas}-T_X$, and $M_{grav}-T_X$ for a sample which is larger than
+any used previously.\\
+
+-- also study deviations from self-sim evo (e.g. does scatter evolve with redshift?)\\
+
+-- entropy probes non-grav physics\\
+-- look at deviations from relations with mean temperature, yx, thbr, substructure\\
+-- K-scaling relations? work is done, just need to write.
+
+%%%%%%%%%%%%%%
+% ACCEPT Dbase
+%%%%%%%%%%%%%%
+\large
+\begin{center}
+\noindent{\bf{Expansion of Interactive \accept\ Database}}
+\end{center}
+\normalsize
+
+An important component of our prior archival work was making the
+results, data, and analysis code available to the entire research
+community via the \accept\ online database. As with our previous work,
+all results of the proposed archival study will be added to the
+\accept\ database so that the observational and theoretical
+communities will have access to our work and the richness of the
+\chandra\ archive. The database is currently a blend of \ascii\ files,
+binary \fits\ tables, useful figures/graphics, and has limited
+interactive functionality. With a new archival study we will convert
+the existing hybrid database into a proper \sql\ database. This
+conversion will allow us to maintain the ``flat'' look of the site,
+which provides ease of use, but at the same time allowing us to
+implement boolean operations directly from the site. This change will
+circumvent the need for users to download data and manipulate it with
+their own tools. With an \sql\ database and overlying \perl\ and
+\python\ tools, custom output files (both \ascii\ and \fits) and
+on-the-fly figure generation will also be available through the
+site. Owing to limited storage space and bandwidth, currently lacking
+from the site is access to fully reduced data products, such as
+flare-free, point source clean events files, which would be valuable
+to users (such as theorticians) who are unfamiliar with \chandra\ data
+reduction but have use for reduced data products. With a portion of
+the requested funds, we will to make data and results available to
+users as quickly as possible by adding large capacity, high-speed data
+storage (via a SAS RAID array) and high-bandwidth distribution
+capabilities (via a dedicated fibre channel). Simple, rapid
+dissemination of finished work to the largest audience possible
+benefits both us and the CXC by expanding the scope of our proposed
+and completed archival work.
+
+%%%%%
+% Bib
+%%%%%
+\large
+\begin{center}
+\noindent{\bf{References}}
+\end{center}
+\normalsize
+\noindent
+1. Balestra et al. 2007, A\&A, 462, 429\\
+2. Burns et al. 2008, ApJ, 675, 1125\\
+3. Cavagnolo 2008, PhD thesis, MSU\\
+4. Cavagnolo et al. 2008, ApJ, 683, L107\\
+5. Cavagnolo et al. 2008, ApJ, 682, 821\\
+6. Cavagnolo et al. 2009, arXiv 0902.1802\\
+7. Cavagnolo et al. 2009, In prep. for ApJ\\
+8. De Grandi et al. 2001, ApJ, 551, 153\\
+9. Donahue et al. 2006 ApJ, 643, 730\\
+10. Donahue et al. 2005, ApJ, 630, L13\\
+11. Field 1965, ApJ, 142, 531\\
+12. Kirkpatrick et al. 2009, In prep. for ApJ\\
+13. Maughan et al. 2008, ApJS, 174, 117\\
+14. McCarthy et al. 2008, MNRAS, 386, 1309\\
+15. McNamara et al. 2007, ARA\&A, 45, 117\\
+16. Rafferty et al. 2008, ApJ, 687, 899\\
+17. Rasera et al. 2008, ApJ, 689, 825\\
+18. Rebusco et al. 2006, MNRAS, 372, 1840\\
+18. Roediger et al. 2007, MNRAS, 375, 15\\
+19. Sanderson 2009, ArXiv 0902.1747\\
+20. Sun et al. 2007, ApJ, 671, 190\\
+21. Voit et al. 2008, ApJ, 681, L5
+%XX. Voigt et al. 2004, MNRAS, 347, 1130
+
+%%%%%%%%%
+% Figures
+%%%%%%%%%
+\begin{center}
+%\begin{figure}[htp]
+%  \includegraphics*[width=\columnwidth, trim=28mm 5mm 30mm 17mm, clip]{allsplots}
+%  \caption{}
+%  \label{fig:splot}
+%\end{figure}
+\begin{figure}[htp]
+  \includegraphics*[width=\columnwidth, trim=28mm 5mm 30mm 17mm, clip]{k0hist}
+  \caption{Histogran of best-fit core entropy, \kna, for the
+    current \accept\ database. The vertical line is drawn at
+    $\kna=30 \ent$.}
+  \label{fig:hist}
+\end{figure}
+\begin{figure}[htp]
+  \includegraphics*[width=\columnwidth, trim=0mm 0mm 0mm 0mm, clip]{cond1}
+  \caption{Gas entropy plotted versus radius: no \halpha\ and no
+    BCG blue gradient (red), only \halpha\ (green), both
+    \halpha\ and BCG blue gradient (blue). Dashed lines are Field
+    length for given entropy and supression factor.}
+  \label{fig:cond}
+\end{figure}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%
+% Budget and prev progs
+%%%%%%%%%%%%%%%%%%%%%%%
+\onecolumn
+\large
+\begin{center}
+\noindent{\bf{Proposed Budget}}
+\end{center}
+\normalsize
+\noindent
+
+\large
+\begin{center}
+\noindent{\bf{Previous \chandra\ Programs for PI Donahue, Co-I Cavagnolo, and Co-I Voit}}
+\end{center}
+\normalsize
+\noindent
+Cycle 10-GO program 10800695\\
+Cycle 10-TH program 10800396\\
+Cycle 6-GO program 06800721\\
+Cycle 6-AR program 06800364\\
+Cycle 4-AR program 04800840\\
+Cycle 4-GO program 04800327\\
+Cycle 2 GO Program 02800376\\
+Cycle 1-GO program 01800448
+
+\end{document}

@@ -1,0 +1,30 @@
+frm fak.pha
+xspec11
+query yes
+abund angr
+cosmo   70.000   0.000   0.730
+model wabs(apec) & 5.03E-02 & 5.0 & 0.6 & 0.0726 & 5.0E-05
+fakeit none & ../aciss_aimpt_cy12.rmf & ../aciss_aimpt_cy12.arf & y & & fak & 100000 /*
+exit
+y
+frm fak_grp.pha
+grppha infile="fak.pha" outfile="\!fak_grp.pha" chatter=0 comm="group min 20 & exit"
+xspec11
+cpd /xs
+data fak_grp.pha
+setplot  energy
+ignore **-0.5 8.0-**
+plot ldata
+mo wabs(mekal)
+0.0503,0
+4.2
+0
+0.6
+0.0726
+0
+1.0
+fit 10000 0.001
+plot ldata
+error 2 4 2.71
+exit
+y

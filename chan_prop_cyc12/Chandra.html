@@ -1,0 +1,1319 @@
+<!--		  Chandra Remote Proposal System WARNING                   -->
+<!-- Make sure this file has an extension of .html - Otherwise upon Reload, -->
+<!-- you will see THIS HTML TEXT, not the saved form. If you are reading    -->
+<!-- this, chances are you must rename the file extension and 'Reload'.     -->
+<!--            Go 'Back' in your WWW Browser now.  Thank you.              -->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<Head>
+<Title>SAO : Remote Proposal System (Chandra)</Title>
+<BASE HREF = "http://cxc.harvard.edu/soft" >
+<style type="text/css">
+SELECT.cmt {background-color:lightgray; }
+</style>
+</Head>
+
+<BODY >
+
+
+<center>
+<b>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/soft/RPS/Chandra/Chandra.help.html">Specific Help for Chandra</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/soft/RPS/Chandra.html">RPS Chandra Home Page</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<br>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/proposer/">Proposal Planning Tools</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/soft/RPS/Help.html">RPS Generic Help</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/soft/RPS/Help.html#buttons">RPS Button Descriptions</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+</b>
+</center>
+
+ 
+<Form Name="MyRPSForm" Method=POST Action="/cgi-bin/RPS/Chandra/RPS.pl" >
+<center>
+<input type="image" name="blankverify" value="" onclick="return false;" src ="/soft/RPS/graphics/buttons/blank.gif" alt="&nbsp;">
+<input type=image name="Submit" src= "/soft/RPS/graphics/buttons/Submit_Off.gif" disabled  onclick="this.form.target='_top';">
+<input type="image" name="Upload" alt="Upload" src= "/soft/RPS/graphics/buttons/SJ.gif"  onclick="this.form.target='_top';">
+</center>
+<center>
+<input type="image" name="Save"   alt="Save"   src="/soft/RPS/graphics/buttons/Save.gif"  onclick="this.form.target='_top';">
+<input type="image" name="Verify" alt="Verify" src="/soft/RPS/graphics/buttons/Verify.gif" onclick="this.form.target='_top';">
+
+<input type="image" name="Resources"   alt="Resources"   src="/soft/RPS/graphics/buttons/Resources.gif"  onclick="this.form.target='_blank';" >
+
+<input type="image" name="Simbad"  alt="Target Name/Coord Check"  src="/soft/RPS/graphics/buttons/Simbad.gif"  onclick="this.form.target='_blank';">
+</center><center><input type="image" name="Add" alt="Add Target" src="/soft/RPS/graphics/buttons/Add_Target.gif"onclick="this.form.target='_top';">
+<input type="image" name="Delete" alt="Delete Target" src="/soft/RPS/graphics/buttons/Delete_Target.gif" onclick="this.form.target='_top';">
+<input type="image" name="Renumber" alt="Renumber Targets" src="/soft/RPS/graphics/buttons/Renumber_Target.gif" onclick="this.form.target='_top';">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="image" name="LaTeX"  alt="LaTeX"  src="/soft/RPS/graphics/buttons/LaTeX.gif"  onclick="this.form.target='_top';">
+<input type="image" name="PDF" alt="PDF" src="/soft/RPS/graphics/buttons/PDF.gif" onclick="this.form.target='_top';">
+<A HREF="http://cxc.harvard.edu/helpdesk/"> <img src="/soft/RPS/graphics/buttons/Feedback.gif" alt="Feedback"></a>
+</center>
+
+
+
+<center>
+<h2>Proposal for Chandra Cycle 12 Observations</h2>
+</center>
+
+<P>There is only <font size="+1">1</font> day left until the <font size="+1">Mar 18 2010</font> deadline for Chandra proposals.
+<P>
+<b>All field names link to the RPS help file for Chandra.</b><p>Targets are unnecessary for Archive/Theory proposals. Targets will not be processed for these proposals.<p>Click on the blue triangles at the left of the section headers to toggle the display of the individual form sections.
+
+<!-- ============================= -->
+<!-- START of * * * COVER PAGE * * * -->
+<h1><input type=image name="RPS_DispCoverOFF" src="/soft/RPS/graphics/buttons/big_tri_down.gif"  onclick="this.form.target='_top';">
+<input Type=hidden Name="COVER">
+<b>Cover Page :  </b><a href="/soft/RPS/Chandra/Chandra.help.html#COVER">Help</a>
+<input type=hidden name="Proposal Number" value="">
+</h1>
+Please use the following fields if you are <b><font color="red">REPLACING</font>
+a proposal</b> that has already been submitted for the CURRENT Call For Proposals.
+On re-submission, a new number will be assigned to this proposal which should 
+appear in your browser. You should then resubmit (upload) your replacement 
+science justification using the new number.
+<br>
+<b><a href="/soft/RPS/Chandra/Chandra.help.html#Resubmit">Does this replace a previously submitted proposal for the current cycle?</a></b>  <Select name="Does this replace a previously submitted proposal for the current cycle?"><option selected>N<option>Y</select>
+<br>
+&nbsp;&nbsp;<a href="/soft/RPS/Chandra/Chandra.help.html#ResubmitProp">If known, please enter the previous proposal number:</a> <input Size=10 maxlength=10 name="If known, please enter the previous proposal number" value=""> 
+<p>
+<hr>
+
+<b>Principal Investigator</b>
+<table>
+<tbody><tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#PrincipalInvestigatorTitle">Title</a></td>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#FirstName">First</a></b></td>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#MiddleName">Middle</a></td>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#LastName">Last Name</a></b> </td>
+</tr>
+<tr>
+<td><input Size=12 maxlength=20 name="Principal Investigator Title" value="Dr."></td>
+<td> <input Size=17 maxlength=20 name="First Name" value="Kenneth"></td>
+<td> <input Size=12 maxlength=20 name="Middle Name or Initial" value=""> </td>
+<td><input Size=25 maxlength=25 name="Last Name" value="Cavagnolo"></td>
+</tr></tbody></table>
+<p>
+<table>
+<tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#Department">Department</a></td>
+<td><input Size=60 maxlength=100 name="Department" value="Physics and Astronomy"></td>
+</tr>
+<tr><td colspan="2">
+Please select an <a href="soft/RPS/institutions.html">institute </a> from 
+the pull down menu 
+<select class="cmt" Name="hiddenInstitute" onchange="this.form.Institute.value=this.options[this.selectedIndex].value;"><option value="">Other
+<option value="ACADEMY OF SCIENCES OF RUSSIA">ACADEMY OF SCIENCES OF RUSSIA
+<option value="AIR FORCE RESEARCH LABORATORY">AIR FORCE RESEARCH LABORATORY
+<option value="ANGLO-AUSTRALIAN OBSERVATORY">ANGLO-AUSTRALIAN OBSERVATORY
+<option value="ARECIBO OBSERVATORY">ARECIBO OBSERVATORY
+<option value="ARIZONA STATE UNIVERSITY">ARIZONA STATE UNIVERSITY
+<option value="ARMAGH OBSERVATORY">ARMAGH OBSERVATORY
+<option value="ASTRONOMICAL INST ULTRECHT">ASTRONOMICAL INST ULTRECHT
+<option value="ASTROPHYSICAL INSTITUTE POTSDAM">ASTROPHYSICAL INSTITUTE POTSDAM
+<option value="AUSTRALIA TELESCOPE NATIONAL FACILITY">AUSTRALIA TELESCOPE NATIONAL FACILITY
+<option value="AUSTRALIAN NATIONAL UNIVERSITY">AUSTRALIAN NATIONAL UNIVERSITY
+<option value="BALL AEROSPACE">BALL AEROSPACE
+<option value="BARNARD COL OF COLUMBIA UNIVERSITY">BARNARD COL OF COLUMBIA UNIVERSITY
+<option value="BEIJING">BEIJING
+<option value="BELL LABS, LUCENT TECHNOLOGIES">BELL LABS, LUCENT TECHNOLOGIES
+<option value="BISHOP'S UNIVERSITY">BISHOP'S UNIVERSITY
+<option value="BONN UNIVERSITY">BONN UNIVERSITY
+<option value="BOSSCHA OBSERVATORY">BOSSCHA OBSERVATORY
+<option value="BOSTON UNIVERSITY">BOSTON UNIVERSITY
+<option value="BRANDEIS UNIVERSITY">BRANDEIS UNIVERSITY
+<option value="BRIGHAM YOUNG UNIVERSITY">BRIGHAM YOUNG UNIVERSITY
+<option value="CALIFORNIA INST OF TECHNOLOGY">CALIFORNIA INST OF TECHNOLOGY
+<option value="CARNEGIE INST OF WASHINGTON">CARNEGIE INST OF WASHINGTON
+<option value="CARNEGIE MELLON UNIVERSITY">CARNEGIE MELLON UNIVERSITY
+<option value="CARNEGIE OBSERVATORIES">CARNEGIE OBSERVATORIES
+<option value="CARTER OBSERVATORY">CARTER OBSERVATORY
+<option value="CASE WESTERN RESERVE UNIVERSITY">CASE WESTERN RESERVE UNIVERSITY
+<option value="CATHOLIC UNIVERSITY OF AMERICA">CATHOLIC UNIVERSITY OF AMERICA
+<option value="CENTER FOR EUV ASTROPHYSICS">CENTER FOR EUV ASTROPHYSICS
+<option value="CENTRE D'ETUDES DE SACLAY">CENTRE D'ETUDES DE SACLAY
+<option value="CERRO TOLOLO INTER-AMERICAN OBSERVATORY">CERRO TOLOLO INTER-AMERICAN OBSERVATORY
+<option value="CLAREMONT MCKENNA COLLEGE">CLAREMONT MCKENNA COLLEGE
+<option value="CLEMSON UNIVERSITY">CLEMSON UNIVERSITY
+<option value="COLUMBIA UNIVERSITY">COLUMBIA UNIVERSITY
+<option value="COPENHAGEN UNIVERSITY">COPENHAGEN UNIVERSITY
+<option value="COPERNICUS ASTRONOMICAL CENTER">COPERNICUS ASTRONOMICAL CENTER
+<option value="CORNELL UNIVERSITY">CORNELL UNIVERSITY
+<option value="DANISH SPACE RESEARCH INST">DANISH SPACE RESEARCH INST
+<option value="DARTMOUTH COLLEGE">DARTMOUTH COLLEGE
+<option value="DICKENSON COLLEGE">DICKENSON COLLEGE
+<option value="DOMINION ASTROPHYSICAL OBS">DOMINION ASTROPHYSICAL OBS
+<option value="DUKE UNIVERSITY">DUKE UNIVERSITY
+<option value="DUNSINK OBSERVATORY">DUNSINK OBSERVATORY
+<option value="EAST TENNESSEE STATE UNIVERSITY">EAST TENNESSEE STATE UNIVERSITY
+<option value="EMORY UNIVERSITY">EMORY UNIVERSITY
+<option value="ESA/ESTEC">ESA/ESTEC
+<option value="ETH ZURICH">ETH ZURICH
+<option value="EUREKA SCIENTIFIC">EUREKA SCIENTIFIC
+<option value="EUROPEAN SOUTHERN OBSERVATORY">EUROPEAN SOUTHERN OBSERVATORY
+<option value="EUROPEAN SPACE AGENCY">EUROPEAN SPACE AGENCY
+<option value="FERMI NATIONAL ACCELERATOR LAB">FERMI NATIONAL ACCELERATOR LAB
+<option value="FLORIDA INSTITUTE OF TECHNOLOGY">FLORIDA INSTITUTE OF TECHNOLOGY
+<option value="GEORGE MASON UNIVERSITY">GEORGE MASON UNIVERSITY
+<option value="GEORGIA STATE UNIVERSITY">GEORGIA STATE UNIVERSITY
+<option value="HAMBURGER STERNWARTE">HAMBURGER STERNWARTE
+<option value="HARVARD">HARVARD
+<option value="HIGH ALTITUDE OBSERVATORY">HIGH ALTITUDE OBSERVATORY
+<option value="HIROSHIMA UNIVERSITY">HIROSHIMA UNIVERSITY
+<option value="HOWARD UNIVERSITY">HOWARD UNIVERSITY
+<option value="HUGHES DANBURY OPTICAL SYSTEMS">HUGHES DANBURY OPTICAL SYSTEMS
+<option value="HUGHES STX CORP">HUGHES STX CORP
+<option value="IMP COL OF SCI, TECH AND MED">IMP COL OF SCI, TECH AND MED
+<option value="INDIAN INST OF ASTROPHYSICS">INDIAN INST OF ASTROPHYSICS
+<option value="INDIAN INSTITUTE OF SCIENCE">INDIAN INSTITUTE OF SCIENCE
+<option value="INDIANA UNIVERSITY">INDIANA UNIVERSITY
+<option value="INST ARGENTINO DE RADIOASTRON">INST ARGENTINO DE RADIOASTRON
+<option value="INST D'ASTROPHYSIQUE DE PARIS">INST D'ASTROPHYSIQUE DE PARIS
+<option value="INST DE ASTROFIS DE ANDALUCIA">INST DE ASTROFIS DE ANDALUCIA
+<option value="INST DE ASTROFIS DE CANARIAS">INST DE ASTROFIS DE CANARIAS
+<option value="INST FISICA DECANTABRIA CSIC-U">INST FISICA DECANTABRIA CSIC-U
+<option value="INST OF SPACE AND ASTRONAUTICAL SCIENCE">INST OF SPACE AND ASTRONAUTICAL SCIENCE
+<option value="INSTITUTE OF SPACE RESEARCH">INSTITUTE OF SPACE RESEARCH
+<option value="INSTITUTO DE ASTRONOMIA, UNAM">INSTITUTO DE ASTRONOMIA, UNAM
+<option value="INTEGRAL SCIENCE DATA CENTRE">INTEGRAL SCIENCE DATA CENTRE
+<option value="INTER-UNIVERSITY CENTER ASTRONOMY AND ASTROPHYSICS">INTER-UNIVERSITY CENTER ASTRONOMY AND ASTROPHYSICS
+<option value="INTERNATIONAL SCHOOL FOR ADVANCED STUDIES">INTERNATIONAL SCHOOL FOR ADVANCED STUDIES
+<option value="IOWA STATE UNIVERSITY">IOWA STATE UNIVERSITY
+<option value="IPAC/CALTECH">IPAC/CALTECH
+<option value="IST DI ASTROFISICA INAF, BOLOGNA">IST DI ASTROFISICA INAF, BOLOGNA
+<option value="IST DI ASTROFISICA INAF, MILANO">IST DI ASTROFISICA INAF, MILANO
+<option value="IST DI ASTROFISICA INAF, PALERMO">IST DI ASTROFISICA INAF, PALERMO
+<option value="IST DI ASTROFISICA INAF, ROMA">IST DI ASTROFISICA INAF, ROMA
+<option value="IST DI RADIOASTRONOMIA INAF, BOLOGNA">IST DI RADIOASTRONOMIA INAF, BOLOGNA
+<option value="JET PROPULSION LAB/CALTECH">JET PROPULSION LAB/CALTECH
+<option value="JOHNS HOPKINS UNIVERSITY">JOHNS HOPKINS UNIVERSITY
+<option value="JOINT ASTRONOMY CENTRE">JOINT ASTRONOMY CENTRE
+<option value="KAPTEYN ASTRONOMICAL INSTITUTE">KAPTEYN ASTRONOMICAL INSTITUTE
+<option value="KATHOLIEKE UNIVERSITEIT">KATHOLIEKE UNIVERSITEIT
+<option value="KOBE UNIVERSITY">KOBE UNIVERSITY
+<option value="KONKOLY OBSERVATORY">KONKOLY OBSERVATORY
+<option value="KYOTO UNIVERSITY">KYOTO UNIVERSITY
+<option value="L'OBSV SCI L'UNIV DE GRENOBLE">L'OBSV SCI L'UNIV DE GRENOBLE
+<option value="LANDESSTERNWARTE HEIDELBERG">LANDESSTERNWARTE HEIDELBERG
+<option value="LAS CAMPANAS OBSERVATORY">LAS CAMPANAS OBSERVATORY
+<option value="LAWRENCE LIVERMORE NAT LAB">LAWRENCE LIVERMORE NAT LAB
+<option value="LICK OBSERVATORY">LICK OBSERVATORY
+<option value="LIVERPOOL JOHN MOORES UNIVERSITY">LIVERPOOL JOHN MOORES UNIVERSITY
+<option value="LOCKHEED MARTIN">LOCKHEED MARTIN
+<option value="LOS ALAMOS NATIONAL LABORATORY">LOS ALAMOS NATIONAL LABORATORY
+<option value="LOUISIANA STATE UNIVERSITY">LOUISIANA STATE UNIVERSITY
+<option value="LOWELL OBSERVATORY">LOWELL OBSERVATORY
+<option value="LUND OBSERVATORY">LUND OBSERVATORY
+<option value="MAX-PLANCK INST ASTRONOMIE (HEIDELBERG)">MAX-PLANCK INST ASTRONOMIE (HEIDELBERG)
+<option value="MAX-PLANCK INST ASTROPHYSIK (GARCHING)">MAX-PLANCK INST ASTROPHYSIK (GARCHING)
+<option value="MAX-PLANCK INST FUER EXTRATERR PHYS (GARCHING)">MAX-PLANCK INST FUER EXTRATERR PHYS (GARCHING)
+<option value="MAX-PLANCK INST FUER KERNPHYSIK (HEIDELBERG)">MAX-PLANCK INST FUER KERNPHYSIK (HEIDELBERG)
+<option value="MAX-PLANCK INST RADIOASTRONOMIE (BONN)">MAX-PLANCK INST RADIOASTRONOMIE (BONN)
+<option value="MCGILL UNIVERSITY">MCGILL UNIVERSITY
+<option value="MCMASTER UNIVERSITY">MCMASTER UNIVERSITY
+<option value="MICHIGAN STATE UNIVERSITY">MICHIGAN STATE UNIVERSITY
+<option value="MIDDLE EAST TECHNICAL UNIVERSITY">MIDDLE EAST TECHNICAL UNIVERSITY
+<option value="MIT">MIT
+<option value="MONTANA STATE UNIVERSITY">MONTANA STATE UNIVERSITY
+<option value="MSSL">MSSL
+<option value="MT STROMLO AND SIDING SPRINGS OBSERVATORIES">MT STROMLO AND SIDING SPRINGS OBSERVATORIES
+<option value="MULLARD RADIO ASTRONOMY OBSERVATORY">MULLARD RADIO ASTRONOMY OBSERVATORY
+<option value="NAGOYA UNIVERSITY">NAGOYA UNIVERSITY
+<option value="NANJING UNIVERSITY">NANJING UNIVERSITY
+<option value="NASA">NASA
+<option value="NASA HQ">NASA HQ
+<option value="NASA/AMES RESEARCH CENTER">NASA/AMES RESEARCH CENTER
+<option value="NASA/GSFC">NASA/GSFC
+<option value="NASA/GSFC/USRA">NASA/GSFC/USRA
+<option value="NASA/MSFC">NASA/MSFC
+<option value="NASA/MSFC/USRA">NASA/MSFC/USRA
+<option value="NATIONAL ASTRONOMY OBSERVATORY OF JAPAN">NATIONAL ASTRONOMY OBSERVATORY OF JAPAN
+<option value="NATIONAL OBSERVATORY OF ATHENS">NATIONAL OBSERVATORY OF ATHENS
+<option value="NAVAL RESEARCH LABORATORY">NAVAL RESEARCH LABORATORY
+<option value="NETH FOUN FOR RES IN ASTRON">NETH FOUN FOR RES IN ASTRON
+<option value="NEW MEXICO STATE UNIVERSITY">NEW MEXICO STATE UNIVERSITY
+<option value="NEW YORK UNIVERSITY">NEW YORK UNIVERSITY
+<option value="NICOLAUS COPERNICUS UNIVERSITY">NICOLAUS COPERNICUS UNIVERSITY
+<option value="NOAO">NOAO
+<option value="NOAO/CERRO TOLOLO OBSERVATORY">NOAO/CERRO TOLOLO OBSERVATORY
+<option value="NOAO/KITT PEAK NATIONAL OBSERVATORY">NOAO/KITT PEAK NATIONAL OBSERVATORY
+<option value="NORDIC INST FOR THEORETICAL PHYSICS">NORDIC INST FOR THEORETICAL PHYSICS
+<option value="NORTH CAROLINA SCH SCI & MATH">NORTH CAROLINA SCH SCI & MATH
+<option value="NORTH CAROLINA STATE UNIVERSITY">NORTH CAROLINA STATE UNIVERSITY
+<option value="NORTHERN ARIZONA UNIVERSITY">NORTHERN ARIZONA UNIVERSITY
+<option value="NORTHERN ILLINOIS UNIVERSITY">NORTHERN ILLINOIS UNIVERSITY
+<option value="NORTHWESTERN UNIVERSITY">NORTHWESTERN UNIVERSITY
+<option value="NRAO">NRAO
+<option value="NRAO/CHARLOTTESVILLE">NRAO/CHARLOTTESVILLE
+<option value="NRAO/GREENBANK">NRAO/GREENBANK
+<option value="NRAO/VLA">NRAO/VLA
+<option value="NSF">NSF
+<option value="NUFFIELD INST FOR THEORETICAL PHYSICS">NUFFIELD INST FOR THEORETICAL PHYSICS
+<option value="OBSERVATOIRE DE BESANCON">OBSERVATOIRE DE BESANCON
+<option value="OBSERVATOIRE DE GENEVE">OBSERVATOIRE DE GENEVE
+<option value="OBSERVATOIRE DE HAUTE PROVENCE">OBSERVATOIRE DE HAUTE PROVENCE
+<option value="OBSERVATOIRE DE LYON">OBSERVATOIRE DE LYON
+<option value="OBSERVATOIRE DE MARSEILLE">OBSERVATOIRE DE MARSEILLE
+<option value="OBSERVATOIRE DE NICE">OBSERVATOIRE DE NICE
+<option value="OBSERVATOIRE DE PARIS">OBSERVATOIRE DE PARIS
+<option value="OBSERVATOIRE DE STRASBOURG">OBSERVATOIRE DE STRASBOURG
+<option value="OBSERVATOIRE MIDI PYRENEES">OBSERVATOIRE MIDI PYRENEES
+<option value="OHIO STATE UNIVERSITY">OHIO STATE UNIVERSITY
+<option value="OHIO UNIVERSITY">OHIO UNIVERSITY
+<option value="ONSALA SPACE OBSERVATORY">ONSALA SPACE OBSERVATORY
+<option value="OSAKA UNIVERSITY">OSAKA UNIVERSITY
+<option value="OSMANIA UNIVERSITY">OSMANIA UNIVERSITY
+<option value="OSSERVATORIO ASTROFISICO DI ARCETRI">OSSERVATORIO ASTROFISICO DI ARCETRI
+<option value="OSSERVATORIO ASTRONOMICO DI BOLOGNA">OSSERVATORIO ASTRONOMICO DI BOLOGNA
+<option value="OSSERVATORIO ASTRONOMICO DI BRERA-MERATE">OSSERVATORIO ASTRONOMICO DI BRERA-MERATE
+<option value="OSSERVATORIO ASTRONOMICO DI BRERA-MILANO">OSSERVATORIO ASTRONOMICO DI BRERA-MILANO
+<option value="OSSERVATORIO ASTRONOMICO DI CAPODIMONTE NAPOLI">OSSERVATORIO ASTRONOMICO DI CAPODIMONTE NAPOLI
+<option value="OSSERVATORIO ASTRONOMICO DI CATANIA">OSSERVATORIO ASTRONOMICO DI CATANIA
+<option value="OSSERVATORIO ASTRONOMICO DI PALERMO">OSSERVATORIO ASTRONOMICO DI PALERMO
+<option value="OSSERVATORIO ASTRONOMICO DI ROMA">OSSERVATORIO ASTRONOMICO DI ROMA
+<option value="OSSERVATORIO ASTRONOMICO DI TORINO">OSSERVATORIO ASTRONOMICO DI TORINO
+<option value="P.N. LEBEDEV PHYSICAL INST">P.N. LEBEDEV PHYSICAL INST
+<option value="PAUL SCHERRER INSTITUTE">PAUL SCHERRER INSTITUTE
+<option value="PENNSYLVANIA STATE UNIVERSITY">PENNSYLVANIA STATE UNIVERSITY
+<option value="PHYSICAL RESEARCH LABORATORY">PHYSICAL RESEARCH LABORATORY
+<option value="PONTIFICA UNIV CATOLICA DE CHILE">PONTIFICA UNIV CATOLICA DE CHILE
+<option value="PRINCETON UNIVERSITY">PRINCETON UNIVERSITY
+<option value="PRISM COMPUTATIONAL SCIENCES">PRISM COMPUTATIONAL SCIENCES
+<option value="PURDUE UNIVERSITY">PURDUE UNIVERSITY
+<option value="PURPLE MOUNTAIN OBSERVATORY">PURPLE MOUNTAIN OBSERVATORY
+<option value="QUEEN MARY AND WESTFIELD COLLEGE">QUEEN MARY AND WESTFIELD COLLEGE
+<option value="QUEEN'S UNIVERSITY OF BELFAST">QUEEN'S UNIVERSITY OF BELFAST
+<option value="QUEEN'S UNIVERSITY, CA">QUEEN'S UNIVERSITY, CA
+<option value="RENSSELAER POLYTECHNIC INST">RENSSELAER POLYTECHNIC INST
+<option value="RICE UNIVERSITY">RICE UNIVERSITY
+<option value="RIKEN">RIKEN
+<option value="ROCHESTER INSTITUTE OF TECHNOLOGY">ROCHESTER INSTITUTE OF TECHNOLOGY
+<option value="ROYAL GREENWICH OBSERVATORY">ROYAL GREENWICH OBSERVATORY
+<option value="ROYAL OBSERVATORY">ROYAL OBSERVATORY
+<option value="RUHR-UNIVERSITAT BOCHUM">RUHR-UNIVERSITAT BOCHUM
+<option value="RUTGERS UNIVERSITY">RUTGERS UNIVERSITY
+<option value="SAN DIEGO STATE UNIVERSITY">SAN DIEGO STATE UNIVERSITY
+<option value="SAN FRANCISCO STATE UNIVERSITY">SAN FRANCISCO STATE UNIVERSITY
+<option value="SAO">SAO (SMITHSONIAN ASTROPHYSICAL OBSERVATORY)
+<option value="SAX SCIENCE DATA CENTER">SAX SCIENCE DATA CENTER
+<option value="SCIENCE INSTITUTE">SCIENCE INSTITUTE
+<option value="SEOUL NATIONAL UNIVERSITY">SEOUL NATIONAL UNIVERSITY
+<option value="SERVICE D'ASTROPHYSIQUE DU CEA">SERVICE D'ASTROPHYSIQUE DU CEA
+<option value="SGT, Inc.">SGT, Inc.
+<option value="SHANGHAI ASTRONOMICAL OBSV">SHANGHAI ASTRONOMICAL OBSV
+<option value="SHANGHAI JIAO TONG UNIVERSITY">SHANGHAI JIAO TONG UNIVERSITY
+<option value="SAO">SMITHSONIAN ASTROPHYSICAL OBSERVATORY (SAO)
+<option value="SOUTH AFRICAN ASTRONOMICAL OBSERVATORY">SOUTH AFRICAN ASTRONOMICAL OBSERVATORY
+<option value="SOUTHWEST RESEARCH INSTITUTE">SOUTHWEST RESEARCH INSTITUTE
+<option value="SPACE RESEARCH ORGANIZATION OF THE NETHERLANDS (SRON)">SPACE RESEARCH ORGANIZATION OF THE NETHERLANDS (SRON)
+<option value="SPACE SCIENCE INSTITUTE, BOULDER, CO">SPACE SCIENCE INSTITUTE, BOULDER, CO
+<option value="SPACE TELESCOPE SCIENCE INST">SPACE TELESCOPE SCIENCE INST
+<option value="SPECIAL ASTROPHYSICAL OBSERVATORY ">SPECIAL ASTROPHYSICAL OBSERVATORY 
+<option value="SPECOLA VATICANA">SPECOLA VATICANA
+<option value="SPITZER SCIENCE CENTER">SPITZER SCIENCE CENTER
+<option value="STANFORD UNIVERSITY">STANFORD UNIVERSITY
+<option value="STERNBERG ASTRONOMICAL INST">STERNBERG ASTRONOMICAL INST
+<option value="STERREWACHT LEIDEN">STERREWACHT LEIDEN
+<option value="STEWARD OBSERVATORY">STEWARD OBSERVATORY
+<option value="STOCKHOLM OBSERVATORY">STOCKHOLM OBSERVATORY
+<option value="SUNY - BUFFALO">SUNY - BUFFALO
+<option value="SUNY - STONY BROOK">SUNY - STONY BROOK
+<option value="SWARTHMORE COLLEGE">SWARTHMORE COLLEGE
+<option value="TATA INST OF FUND RESEARCH">TATA INST OF FUND RESEARCH
+<option value="TECHNION-ISRAEL INST OF TECHNOLOGY">TECHNION-ISRAEL INST OF TECHNOLOGY
+<option value="TEL AVIV UNIVERSITY">TEL AVIV UNIVERSITY
+<option value="TEMPLE UNIVERSITY">TEMPLE UNIVERSITY
+<option value="TEXAS A & M UNIVERSITY">TEXAS A & M UNIVERSITY
+<option value="TEXAS CHRISTIAN UNIVERSITY">TEXAS CHRISTIAN UNIVERSITY
+<option value="THE INSTITUTE FOR ADVANCED STUDY">THE INSTITUTE FOR ADVANCED STUDY
+<option value="TIANJIN NORMAL UNIVERSITY">TIANJIN NORMAL UNIVERSITY
+<option value="TOHOKU UNIVERSITY">TOHOKU UNIVERSITY
+<option value="TOKYO INST OF TECHNOLOGY">TOKYO INST OF TECHNOLOGY
+<option value="TRINITY UNIVERSITY">TRINITY UNIVERSITY
+<option value="TUFTS UNIVERSITY">TUFTS UNIVERSITY
+<option value="UNIV DE PARTO MONTE DA VIRGEM">UNIV DE PARTO MONTE DA VIRGEM
+<option value="UNIV DEGLI STUDI DI BOLOGNA">UNIV DEGLI STUDI DI BOLOGNA
+<option value="UNIV NAT AUTONOMA DE MEXICO">UNIV NAT AUTONOMA DE MEXICO
+<option value="UNIVERSIDAD DE CHILE">UNIVERSIDAD DE CHILE
+<option value="UNIVERSIDAD DE GUANAJUATO">UNIVERSIDAD DE GUANAJUATO
+<option value="UNIVERSIDADE DE SAO PAULO">UNIVERSIDADE DE SAO PAULO
+<option value="UNIVERSITA DEGLI STUDI DI ROMA">UNIVERSITA DEGLI STUDI DI ROMA
+<option value="UNIVERSITA DI FIRENZE">UNIVERSITA DI FIRENZE
+<option value="UNIVERSITA DI PALERMO">UNIVERSITA DI PALERMO
+<option value="UNIVERSITA DI TORINO">UNIVERSITA DI TORINO
+<option value="UNIVERSITAT BASEL">UNIVERSITAT BASEL
+<option value="UNIVERSITAT HAMBURG">UNIVERSITAT HAMBURG
+<option value="UNIVERSITAT HEIDELBERG">UNIVERSITAT HEIDELBERG
+<option value="UNIVERSITAT TUBINGEN">UNIVERSITAT TUBINGEN
+<option value="UNIVERSITATSSTERNWARTE GOTTINGEN">UNIVERSITATSSTERNWARTE GOTTINGEN
+<option value="UNIVERSITE DE LIEGE">UNIVERSITE DE LIEGE
+<option value="UNIVERSITE DE NICE">UNIVERSITE DE NICE
+<option value="UNIVERSITEIT VAN AMSTERDAM">UNIVERSITEIT VAN AMSTERDAM
+<option value="UNIVERSITY COLLEGE DUBLIN">UNIVERSITY COLLEGE DUBLIN
+<option value="UNIVERSITY COLLEGE LONDON">UNIVERSITY COLLEGE LONDON
+<option value="UNIVERSITY OF ALABAMA">UNIVERSITY OF ALABAMA
+<option value="UNIVERSITY OF ALABAMA, HUNTSVILLE">UNIVERSITY OF ALABAMA, HUNTSVILLE
+<option value="UNIVERSITY OF ARIZONA">UNIVERSITY OF ARIZONA
+<option value="UNIVERSITY OF ARKANSAS">UNIVERSITY OF ARKANSAS
+<option value="UNIVERSITY OF BELGRADE">UNIVERSITY OF BELGRADE
+<option value="UNIVERSITY OF BIRMINGHAM">UNIVERSITY OF BIRMINGHAM
+<option value="UNIVERSITY OF BOLOGNA">UNIVERSITY OF BOLOGNA
+<option value="UNIVERSITY OF BRISTOL">UNIVERSITY OF BRISTOL
+<option value="UNIVERSITY OF BRITISH COLUMBIA">UNIVERSITY OF BRITISH COLUMBIA
+<option value="UNIVERSITY OF CALGARY">UNIVERSITY OF CALGARY
+<option value="UNIVERSITY OF CALIFORNIA, BERKELEY">UNIVERSITY OF CALIFORNIA, BERKELEY
+<option value="UNIVERSITY OF CALIFORNIA, DAVIS">UNIVERSITY OF CALIFORNIA, DAVIS
+<option value="UNIVERSITY OF CALIFORNIA, IRVINE">UNIVERSITY OF CALIFORNIA, IRVINE
+<option value="UNIVERSITY OF CALIFORNIA, LOS ANGELES">UNIVERSITY OF CALIFORNIA, LOS ANGELES
+<option value="UNIVERSITY OF CALIFORNIA, MERCED ">UNIVERSITY OF CALIFORNIA, MERCED 
+<option value="UNIVERSITY OF CALIFORNIA, RIVERSIDE ">UNIVERSITY OF CALIFORNIA, RIVERSIDE 
+<option value="UNIVERSITY OF CALIFORNIA, SAN DIEGO">UNIVERSITY OF CALIFORNIA, SAN DIEGO
+<option value="UNIVERSITY OF CALIFORNIA, SANTA BARBARA">UNIVERSITY OF CALIFORNIA, SANTA BARBARA
+<option value="UNIVERSITY OF CALIFORNIA, SANTA CRUZ">UNIVERSITY OF CALIFORNIA, SANTA CRUZ
+<option value="UNIVERSITY OF CAMBRIDGE">UNIVERSITY OF CAMBRIDGE
+<option value="UNIVERSITY OF CAPE TOWN">UNIVERSITY OF CAPE TOWN
+<option value="UNIVERSITY OF CHICAGO">UNIVERSITY OF CHICAGO
+<option value="UNIVERSITY OF COLORADO">UNIVERSITY OF COLORADO
+<option value="UNIVERSITY OF CRETE">UNIVERSITY OF CRETE
+<option value="UNIVERSITY OF DELAWARE">UNIVERSITY OF DELAWARE
+<option value="UNIVERSITY OF DENVER">UNIVERSITY OF DENVER
+<option value="UNIVERSITY OF DURHAM">UNIVERSITY OF DURHAM
+<option value="UNIVERSITY OF EDINBURGH">UNIVERSITY OF EDINBURGH
+<option value="UNIVERSITY OF FLORIDA">UNIVERSITY OF FLORIDA
+<option value="UNIVERSITY OF GEORGIA">UNIVERSITY OF GEORGIA
+<option value="UNIVERSITY OF GLASGOW">UNIVERSITY OF GLASGOW
+<option value="UNIVERSITY OF GOTEBORG">UNIVERSITY OF GOTEBORG
+<option value="UNIVERSITY OF HAWAII">UNIVERSITY OF HAWAII
+<option value="UNIVERSITY OF HELSINKI">UNIVERSITY OF HELSINKI
+<option value="UNIVERSITY OF HERTFORDSHIRE">UNIVERSITY OF HERTFORDSHIRE
+<option value="UNIVERSITY OF HONG KONG">UNIVERSITY OF HONG KONG
+<option value="UNIVERSITY OF ILLINOIS">UNIVERSITY OF ILLINOIS
+<option value="UNIVERSITY OF IOWA">UNIVERSITY OF IOWA
+<option value="UNIVERSITY OF KANSAS">UNIVERSITY OF KANSAS
+<option value="UNIVERSITY OF KEELE">UNIVERSITY OF KEELE
+<option value="UNIVERSITY OF KENTUCKY">UNIVERSITY OF KENTUCKY
+<option value="UNIVERSITY OF KYOTO">UNIVERSITY OF KYOTO
+<option value="UNIVERSITY OF LEEDS">UNIVERSITY OF LEEDS
+<option value="UNIVERSITY OF LEICESTER">UNIVERSITY OF LEICESTER
+<option value="UNIVERSITY OF MAINE">UNIVERSITY OF MAINE
+<option value="UNIVERSITY OF MANCHESTER">UNIVERSITY OF MANCHESTER
+<option value="UNIVERSITY OF MARYLAND, BALTIMORE COUNTY">UNIVERSITY OF MARYLAND, BALTIMORE COUNTY
+<option value="UNIVERSITY OF MARYLAND, COLLEGE PARK">UNIVERSITY OF MARYLAND, COLLEGE PARK
+<option value="UNIVERSITY OF MASSACHUSETTS">UNIVERSITY OF MASSACHUSETTS
+<option value="UNIVERSITY OF MELBOURNE">UNIVERSITY OF MELBOURNE
+<option value="UNIVERSITY OF MIAMI">UNIVERSITY OF MIAMI
+<option value="UNIVERSITY OF MICHIGAN">UNIVERSITY OF MICHIGAN
+<option value="UNIVERSITY OF MILAN">UNIVERSITY OF MILAN
+<option value="UNIVERSITY OF MINNESOTA">UNIVERSITY OF MINNESOTA
+<option value="UNIVERSITY OF MISSOURI">UNIVERSITY OF MISSOURI
+<option value="UNIVERSITY OF MONTREAL">UNIVERSITY OF MONTREAL
+<option value="UNIVERSITY OF NEBRASKA">UNIVERSITY OF NEBRASKA
+<option value="UNIVERSITY OF NEVADA">UNIVERSITY OF NEVADA
+<option value="UNIVERSITY OF NEVADA, LAS VEGAS">UNIVERSITY OF NEVADA, LAS VEGAS
+<option value="UNIVERSITY OF NEVADA, RENO">UNIVERSITY OF NEVADA, RENO
+<option value="UNIVERSITY OF NEW HAMPSHIRE">UNIVERSITY OF NEW HAMPSHIRE
+<option value="UNIVERSITY OF NEW MEXICO">UNIVERSITY OF NEW MEXICO
+<option value="UNIVERSITY OF NEW SOUTH WALES">UNIVERSITY OF NEW SOUTH WALES
+<option value="UNIVERSITY OF NORTH CAROLINA">UNIVERSITY OF NORTH CAROLINA
+<option value="UNIVERSITY OF NORTH DAKOTA">UNIVERSITY OF NORTH DAKOTA
+<option value="UNIVERSITY OF NOTRE DAME">UNIVERSITY OF NOTRE DAME
+<option value="UNIVERSITY OF OKLAHOMA">UNIVERSITY OF OKLAHOMA
+<option value="UNIVERSITY OF ORADEA">UNIVERSITY OF ORADEA
+<option value="UNIVERSITY OF OREGON">UNIVERSITY OF OREGON
+<option value="UNIVERSITY OF OSLO">UNIVERSITY OF OSLO
+<option value="UNIVERSITY OF OXFORD">UNIVERSITY OF OXFORD
+<option value="UNIVERSITY OF PADOVA">UNIVERSITY OF PADOVA
+<option value="UNIVERSITY OF PATRAS">UNIVERSITY OF PATRAS
+<option value="UNIVERSITY OF PENNSYLVANIA">UNIVERSITY OF PENNSYLVANIA
+<option value="UNIVERSITY OF PITTSBURGH">UNIVERSITY OF PITTSBURGH
+<option value="UNIVERSITY OF PUERTO RICO">UNIVERSITY OF PUERTO RICO
+<option value="UNIVERSITY OF ROCHESTER">UNIVERSITY OF ROCHESTER
+<option value="UNIVERSITY OF ROME">UNIVERSITY OF ROME
+<option value="UNIVERSITY OF SOUTH CAROLINA">UNIVERSITY OF SOUTH CAROLINA
+<option value="UNIVERSITY OF SOUTHAMPTON">UNIVERSITY OF SOUTHAMPTON
+<option value="UNIVERSITY OF SOUTHERN CALIFORNIA">UNIVERSITY OF SOUTHERN CALIFORNIA
+<option value="UNIVERSITY OF ST. ANDREWS">UNIVERSITY OF ST. ANDREWS
+<option value="UNIVERSITY OF SUSSEX">UNIVERSITY OF SUSSEX
+<option value="UNIVERSITY OF SYDNEY">UNIVERSITY OF SYDNEY
+<option value="UNIVERSITY OF TASMANIA">UNIVERSITY OF TASMANIA
+<option value="UNIVERSITY OF TENNESSEE">UNIVERSITY OF TENNESSEE
+<option value="UNIVERSITY OF TEXAS">UNIVERSITY OF TEXAS
+<option value="UNIVERSITY OF THESSALONIKI">UNIVERSITY OF THESSALONIKI
+<option value="UNIVERSITY OF TOKYO">UNIVERSITY OF TOKYO
+<option value="UNIVERSITY OF TOLEDO">UNIVERSITY OF TOLEDO
+<option value="UNIVERSITY OF TORONTO">UNIVERSITY OF TORONTO
+<option value="UNIVERSITY OF TRIESTE">UNIVERSITY OF TRIESTE
+<option value="UNIVERSITY OF UTAH">UNIVERSITY OF UTAH
+<option value="UNIVERSITY OF UTRECHT">UNIVERSITY OF UTRECHT
+<option value="UNIVERSITY OF VICTORIA">UNIVERSITY OF VICTORIA
+<option value="UNIVERSITY OF VIRGINIA">UNIVERSITY OF VIRGINIA
+<option value="UNIVERSITY OF WALES, CARDIFF">UNIVERSITY OF WALES, CARDIFF
+<option value="UNIVERSITY OF WASHINGTON">UNIVERSITY OF WASHINGTON
+<option value="UNIVERSITY OF WATERLOO">UNIVERSITY OF WATERLOO
+<option value="UNIVERSITY OF WEST VIRGINIA">UNIVERSITY OF WEST VIRGINIA
+<option value="UNIVERSITY OF WESTERN ONTARIO">UNIVERSITY OF WESTERN ONTARIO
+<option value="UNIVERSITY OF WISCONSIN">UNIVERSITY OF WISCONSIN
+<option value="UNIVERSITY OF WOLLONGONG">UNIVERSITY OF WOLLONGONG
+<option value="UNIVERSITY OF WYOMING">UNIVERSITY OF WYOMING
+<option value="UPPSALA ASTRONOMICAL OBSERVATORY">UPPSALA ASTRONOMICAL OBSERVATORY
+<option value="US NAVAL OBSERVATORY">US NAVAL OBSERVATORY
+<option value="UTTAR PRADESH STATE OBSERVATORY">UTTAR PRADESH STATE OBSERVATORY
+<option value="VALDOSTA STATE UNIVERSITY">VALDOSTA STATE UNIVERSITY
+<option value="VANDERBILT UNIVERSITY">VANDERBILT UNIVERSITY
+<option value="VILLANOVA UNIVERSITY">VILLANOVA UNIVERSITY
+<option value="VILNIUS UNIVERSITY">VILNIUS UNIVERSITY
+<option value="VIRGINIA POLY INST & ST UNIV">VIRGINIA POLY INST & ST UNIV
+<option value="VRIJE UNIVERSITEIT BRUSSEL">VRIJE UNIVERSITEIT BRUSSEL
+<option value="WARSAW UNIVERSITY">WARSAW UNIVERSITY
+<option value="WASHINGTON STATE UNIVERSITY">WASHINGTON STATE UNIVERSITY
+<option value="WASHINGTON UNIVERSITY">WASHINGTON UNIVERSITY
+<option value="WEIZMAN INSTITUTE OF SCIENCE">WEIZMAN INSTITUTE OF SCIENCE
+<option value="WESLEYAN UNIVERSITY">WESLEYAN UNIVERSITY
+<option value="WEST CHESTER UNIVERSITY">WEST CHESTER UNIVERSITY
+<option value="WESTERN KENTUCKY UNIVERSITY">WESTERN KENTUCKY UNIVERSITY
+<option value="WESTERN MICHIGAN UNIVERSITY">WESTERN MICHIGAN UNIVERSITY
+<option value="XMM-NEWTON SCIENCE OPERATION CENTER">XMM-NEWTON SCIENCE OPERATION CENTER
+<option value="YALE UNIVERSITY">YALE UNIVERSITY
+<option value="YAMAGATA UNIVERSITY, JAPAN">YAMAGATA UNIVERSITY, JAPAN
+<option value="YUNNAN OBSERVATORY">YUNNAN OBSERVATORY
+ </select>
+<br>If it is not in the list, just type it in the <i>Institute</i> field.
+</td>
+</tr>
+<tr><td><b><a href="/soft/RPS/Chandra/Chandra.help.html#Institute">Institute</a></b></td>
+<td>
+<input Size=70 maxlength=100 name="Institute" value="UNIVERSITY OF WATERLOO"> 
+ </td>
+</tr><tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#Street">Address/Street</a></td>
+<td><input Size=30 maxlength=30 name="Address/Street" value="200 University Avenue West"></td>
+</tr><tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#Mailstop">Mailstop</a></td>
+<td><input Size=30 maxlength=30 name="Mailstop" value=""></td>
+</tr><tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#City">City/Town</a></td>
+<td><input Size=30 maxlength=30 name="City or Town" value="Waterloo"></td>
+</tr><tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#State">State/Province</a></td>
+<td><input Size=30 maxlength=30 name="State or Province" value="Ontario"></td>
+</tr><tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#Zip">Zip/Postal Code</a></td>
+<td><input Size=10 maxlength=10 name="Zip or Postal Code" value="N2L 3G1"> </td>
+</tr><tr>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#Country">Country</a></b></td>
+<td><Select Name="Country" Size=1> <option>USA<option>Argentina<option>Armenia<option>Australia<option>Austria<option>Belgium
+<option>Brazil<option>Bulgaria<option selected>Canada<option>Chile<option>China
+<option value=Czech>Czechoslovakia<option>Denmark<option>Estonia
+<option>Finland<option>France<option>Germany<option>Greece<option>Hongkong
+<option>Hungary
+<option>India<option>Indonesia<option>Iran<option>Ireland<option>Israel
+<option>Italy<option>Japan<option>Korea<option>Latvia<option>Lithuania
+<option>Mexico<option value=Neth>Netherland<option>Nigeria<option>Norway
+<option value=NZ>New Zealand<option>Peru<option>Poland<option>Portugal
+<option>Romania
+<option>Russia<option>Scotland<option value="S Africa">South Africa<option>Spain
+<option>Sweden<option value=Switz>Switzerland<option>Taiwan<option>Turkey
+<option value=UK>United Kingdom<option>Ukraine<option>Venezuela
+ </Select></td>
+</tr><tr>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#TelephoneNumber">Telephone</a></b></td>
+<td><input Size=15 maxlength=15 name="Telephone Number" value="519888456735074"></td>
+</tr><tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#Fax">Fax</a></td>
+<td><input Size=15 maxlength=15 name="Fax Number" value="5197468115"></td>
+</tr><tr>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#NetworkAddress">E-mail Address</a></b></td>
+<td><input Size=50 maxlength=50 name="E-mail Address" value="kcavagno@uwaterloo.ca"> </td>
+</tr></table>
+
+<hr>
+<table border=0>
+<tr>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#SubjectCategory">Subject Category</a></b></td>   
+<td><select name="Subject Category" >
+<option>
+<option>Solar System
+<option>Stars and WD
+<Option>WD Binaries and CV
+<Option>BH and NS Binaries
+<Option>SN, SNR and Isolated NS
+<Option>Normal Galaxies: Diffuse Emission
+<Option>Normal Galaxies: X-ray Populations
+<Option>Active Galaxies and Quasars 
+<Option selected>Clusters of Galaxies
+<option>Extragalactic Diffuse Emission and Surveys
+<option>Galactic Diffuse Emission and Surveys
+</select>
+</td>
+<td>&nbsp;</td>
+</tr><tr>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#ObservationType">Proposal Type</a></b></td>
+<td><Select name="Proposal Type" >
+<option>
+<option value="GO" selected>General Observer
+<option value="LP">Large Project
+<option value="VLP">Very Large Project
+<option>TOO 
+<option value="TOO/LP">TOO/Large Project
+<option value="ARCHIVE">Archive
+<option value="THEORY">Theory
+<option>GTO
+<option value="GTO/ALTERNATE">GTO/Alternate
+<option value="GTO/LP">GTO/LP
+<option>GTO/TOO
+<option value="GTO/TOO/ALTERNATE">GTO/TOO/Alternate
+<option value="CAL">CAL (Chandra personnel only)
+</Select>
+</td>
+<td>&nbsp;</td></tr><tr>
+<td colspan=2>&nbsp;&nbsp;<a href="/soft/RPS/Chandra/Chandra.help.html#ArchiveBudget">If&nbsp;<b>archive/theory</b>&nbsp;request,&nbsp;enter&nbsp;proposed budget&nbsp;</a>&nbsp;&nbsp;&nbsp;<input name="If archive/theory request, enter proposed budget" size=10  maxlength=10 value=""></td>
+<td>(units=1000&nbsp;U.S.&nbsp;dollars)</td></tr><tr>
+<td colspan=3>&nbsp;&nbsp;<a href="/soft/RPS/Chandra/Chandra.help.html#Linked">Is this <b>archive</b> proposal associated with an observing proposal?</a> <Select name="Is this archive proposal associated with an observing proposal?"><option selected>N<option>Y</select></td></tr><tr>
+<td colspan=3>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/soft/RPS/Chandra/Chandra.help.html#Linked">If known, please enter the observing proposal number:</a> <input Size=10 maxlength=10 name="If known, please enter the observing proposal number" value=""> 
+</td></tr><tr>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#ProprietaryData">Proprietary&nbsp;Rights </a></b></td>
+<td > <select name="Proprietary Rights"> 
+<option value="S" >Standard (12 months) 
+<option value=9>9 months
+<option value=6>6 months
+<option value=4>4 months
+<option value=3>3 months
+<option value=2>2 months
+<option value=1>1 month
+<option value="N">No proprietary rights </select>
+</td><td>&nbsp;</td></tr><tr>
+<td><b><a href="/soft/RPS/Chandra/Chandra.help.html#DistributionMedium">Data&nbsp;Distribution&nbsp;Medium</a> </b></td>
+<td > <Select Name="Data Distribution Medium">
+<option value="WWW ONLY" selected>WWW Only
+<option value="CD-ROM,zipped">CD-ROM, zipped
+<option value="CD-ROM,unzipped">CD-ROM, unzipped
+<option value="4GBDAT">4 GB 4mm DAT
+<option value="2GBDAT">2 GB 4mm DAT
+<option value="5GB8MM">5 GB 8mm Exabyte
+<option value="2GB8MM">2 GB 8mm Exabyte
+</Select>
+</td><td>&nbsp;</td></tr>
+</table>
+<hr>
+<a href="/soft/RPS/Chandra/Chandra.help.html#Joint"><b>Joint Proposals</b></a> <br>
+<table><tr><td>
+<a href="/soft/RPS/Chandra/Chandra.help.html#JointApproved">Has this proposal already been allocated Chandra time by the HST or XMM review panels?</a>  
+</td><td>
+<select name="Has this proposal already been allocated Chandra time by the HST or XMM review panels?"> <option value="">No<option>HST<option>XMM</select> 
+</td></tr></table>
+<p>
+Optional.  The Joint Proposal section should <b>ONLY</b> be filled out if 
+this is a joint proposal which also requests time on one/more of the facilities
+listed below. 
+If you are requesting Joint time through the Chandra Review, please enter your joint proposal parameters: 
+<table border=0>
+<tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#HSTTime">HST Orbits</a></td>
+<td><input name="For HST, proposed orbits" size=2  maxlength=2 value=""></td>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#HSTInstrument">Instruments</a></td>
+<td colspan="3"><input name="For HST, desired instruments" size=60  maxlength=60 value=""></td>
+<!--
+<td><select Name="For HST, desired instruments" multiple size="2"> 
+<option value="">&nbsp;
+<option>ACS/WFC
+<option>ACS/HRC
+<option>ACS/SBC
+<option>FGS
+<option>NICMOS
+<option>WFC3
+<option>WFPC2
+</select> </td>
+-->
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#XMMTime">XMM Exposure time(ksec)</a></td>
+<td><input name="For XMM, proposed exposure time" size=6  maxlength=6 value=""></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#SSTTime">Spitzer Hours</a></td>
+<td><input name="For Spitzer, proposed hours" size=6  maxlength=6 value=""></td>
+<td>&nbsp;</td>
+<!--
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#SSTInstrument">AOT</a></td>
+<td><select Name="For Spitzer, desired AOT" multiple size="2"> 
+<option value="">&nbsp;
+<option value="MIPS-Scan">MIPS-Scan
+<option value="MIPS-PH/SR"> MIPS-PH/SR
+<option value="MIPS-SED"> MIPS-SED
+<option value="MIPS-TP"> MIPS-TP
+<option value="IRS-Stare"> IRS-Stare
+<option value="IRS-Map"> IRS-Map
+<option value="IRS-Image"> IRS-Image
+<option value="IRAC-Map"> IRAC-Map
+</select>
+</td>
+-->
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#SuzakuTime">Suzaku Exposure time(ksec)</a></td>
+<td><input name="For Suzaku, proposed exposure time" size=6  maxlength=6 value=""></td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+<tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#NOAOTime">NOAO Nights</a></td>
+<td><input name="For NOAO, proposed nights" size=2  maxlength=2 value=""></td>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#NOAOInstrument">Instruments:</a> </td>
+<td colspan="3"><input name="For NOAO, requested telescopes/instruments" size=60  maxlength=60 value=""></td>
+</tr><tr>
+<td><a href="/soft/RPS/Chandra/Chandra.help.html#NRAOTime">NRAO Hours</a></td>
+<td> <input name="For NRAO, proposed hours" size=6  maxlength=6 value=""></td>
+<td> <a href="/soft/RPS/Chandra/Chandra.help.html#NRAOInstrument">Telescopes</a></td>
+<td> <select Name="For NRAO, requested telescopes" multiple size=2>
+<option value="">&nbsp;
+<option>GBT
+<option>VLA
+<option>VLBA
+
+</select> </td>
+<td>&nbsp;</td>
+<td> &nbsp;</td>
+</tr>
+</table>
+
+<hr>
+<p>
+<b><a href="/soft/RPS/Chandra/Chandra.help.html#ProposalTitle">Proposal Title</a> </b>
+<input Size=120 maxlength=120 name="Proposal Title" value="X-ray follow-up of radio mini-halo candidates">
+<br>
+<b><a href="/soft/RPS/Chandra/Chandra.help.html#Abstract">Abstract</a> </b><br>
+<textarea name="Abstract" rows=10 cols=80 >The galaxy clusters A2675 and Z808 host candidate radio mini-halos (MH), a rare class of object, and are ideal for deep Chandra follow-up. The clusters were identified from 780 other clusters for their steep spectrum radio source coincident with an optical emission line cD in a X-ray bright cluster. The radio properties are consistent with known MHs (d &gt; 200 kpc, surface brightness &lt; 1 mJy arcsec^2, alpha &lt; -1.1) and indicate in situ reacceleration of electrons. These targets have no Chandra data, multiwavelength data indicates merger activity, and the high-Lx's provide an opportunity to constrain the dynamical state of each cluster in relation to the formation/evolution of a MH. Our proposed observations will attain data sufficient to detect cold fronts, weak shocks, and faint cavities.
+</textarea>
+<HR size="3" noshade>
+<input type=hidden name="RPS_EndCover">
+<input type=hidden name="RPS_DispCover" value=ON>
+<!-- END of * * * COVER PAGE * * * -->
+
+<!-- ============================= -->
+<!-- START of * * * GENERAL FORM * * * -->
+<h1><input type=image name="RPS_DispGeneralON" src="/soft/RPS/graphics/buttons/big_tri_right.gif"  onclick="this.form.target='_top';">
+<input Type=hidden Name="GENERAL">
+<b>General Form :  </b><a href="/soft/RPS/Chandra/Chandra.help.html#GENERAL">Help</a>
+</h1>
+<!-- Start of hidden HTML for General Section Data -->
+<input type=hidden name="Co-Investigator First Name(1)"  value="Alastair">
+<input type=hidden name="Co-Investigator Last Name(1)"  value="Edge">
+<input type=hidden name="Co-Investigator E-Mail(1)"  value="alastair.edge@durham.ac.uk">
+<input type=hidden name="Co-Investigator Institute(1)"  value="UNIVERSITY OF DURHAM">
+<input type=hidden name="Co-Investigator Country(1)"  value="UK">
+<input type=hidden name="Co-Investigator First Name(2)"  value="Stephen">
+<input type=hidden name="Co-Investigator Last Name(2)"  value="Hamer">
+<input type=hidden name="Co-Investigator E-Mail(2)"  value="s.l.hamer@durham.ac.uk">
+<input type=hidden name="Co-Investigator Institute(2)"  value="UNIVERSITY OF DURHAM">
+<input type=hidden name="Co-Investigator Country(2)"  value="UK">
+<input type=hidden name="Co-Investigator First Name(3)"  value="Brian">
+<input type=hidden name="Co-Investigator Last Name(3)"  value="McNamara">
+<input type=hidden name="Co-Investigator E-Mail(3)"  value="mcnamara@uwaterloo.ca">
+<input type=hidden name="Co-Investigator Institute(3)"  value="UNIVERSITY OF WATERLOO">
+<input type=hidden name="Co-Investigator Country(3)"  value="Canada">
+<input type=hidden name="Co-Investigator First Name(4)"  value="Chiara">
+<input type=hidden name="Co-Investigator Last Name(4)"  value="Ferrari">
+<input type=hidden name="Co-Investigator E-Mail(4)"  value="chiara.ferrari@oca.eu">
+<input type=hidden name="Co-Investigator Institute(4)"  value="OBSERVATOIRE DE NICE">
+<input type=hidden name="Co-Investigator Country(4)"  value="France">
+<input type=hidden name="Co-Investigator First Name(5)"  value="">
+<input type=hidden name="Co-Investigator Last Name(5)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(5)"  value="">
+<input type=hidden name="Co-Investigator Institute(5)"  value="">
+<input type=hidden name="Co-Investigator Country(5)"  value="">
+<input type=hidden name="Co-Investigator First Name(6)"  value="">
+<input type=hidden name="Co-Investigator Last Name(6)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(6)"  value="">
+<input type=hidden name="Co-Investigator Institute(6)"  value="">
+<input type=hidden name="Co-Investigator Country(6)"  value="">
+<input type=hidden name="Co-Investigator First Name(7)"  value="">
+<input type=hidden name="Co-Investigator Last Name(7)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(7)"  value="">
+<input type=hidden name="Co-Investigator Institute(7)"  value="">
+<input type=hidden name="Co-Investigator Country(7)"  value="">
+<input type=hidden name="Co-Investigator First Name(8)"  value="">
+<input type=hidden name="Co-Investigator Last Name(8)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(8)"  value="">
+<input type=hidden name="Co-Investigator Institute(8)"  value="">
+<input type=hidden name="Co-Investigator Country(8)"  value="">
+<input type=hidden name="Co-Investigator First Name(9)"  value="">
+<input type=hidden name="Co-Investigator Last Name(9)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(9)"  value="">
+<input type=hidden name="Co-Investigator Institute(9)"  value="">
+<input type=hidden name="Co-Investigator Country(9)"  value="">
+<input type=hidden name="Co-Investigator First Name(10)"  value="">
+<input type=hidden name="Co-Investigator Last Name(10)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(10)"  value="">
+<input type=hidden name="Co-Investigator Institute(10)"  value="">
+<input type=hidden name="Co-Investigator Country(10)"  value="">
+<input type=hidden name="Co-Investigator First Name(11)"  value="">
+<input type=hidden name="Co-Investigator Last Name(11)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(11)"  value="">
+<input type=hidden name="Co-Investigator Institute(11)"  value="">
+<input type=hidden name="Co-Investigator Country(11)"  value="">
+<input type=hidden name="Co-Investigator First Name(12)"  value="">
+<input type=hidden name="Co-Investigator Last Name(12)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(12)"  value="">
+<input type=hidden name="Co-Investigator Institute(12)"  value="">
+<input type=hidden name="Co-Investigator Country(12)"  value="">
+<input type=hidden name="Co-Investigator First Name(13)"  value="">
+<input type=hidden name="Co-Investigator Last Name(13)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(13)"  value="">
+<input type=hidden name="Co-Investigator Institute(13)"  value="">
+<input type=hidden name="Co-Investigator Country(13)"  value="">
+<input type=hidden name="Co-Investigator First Name(14)"  value="">
+<input type=hidden name="Co-Investigator Last Name(14)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(14)"  value="">
+<input type=hidden name="Co-Investigator Institute(14)"  value="">
+<input type=hidden name="Co-Investigator Country(14)"  value="">
+<input type=hidden name="Co-Investigator First Name(15)"  value="">
+<input type=hidden name="Co-Investigator Last Name(15)"  value="">
+<input type=hidden name="Co-Investigator E-Mail(15)"  value="">
+<input type=hidden name="Co-Investigator Institute(15)"  value="">
+<input type=hidden name="Co-Investigator Country(15)"  value="">
+<input type=hidden name="Are there additional Co-Is listed in the science justification?"  value="N">
+<input type=hidden name="Is the first Co-I doing observing, rather than the PI?"  value="N">
+<input type=hidden name="Observing Investigator Telephone"  value="">
+<input type=hidden name="Name of Administrator"  value="Jeff Z.Y. Chen">
+<input type=hidden name="Administrative Authority"  value="Chair of Physics and Astronomy">
+<input type=hidden name="Administrative Institute"  value="UNIVERSITY OF WATERLOO">
+<!-- End of hidden HTML for General Section Data -->
+<input type=hidden name="RPS_EndGeneral">
+<input type=hidden name="RPS_DispGeneral" value=off>
+<!-- END of * * * GENERAL FORM * * * -->
+
+<!-- ============================== -->
+<!-- START of * * * TARGET FORM * * * -->
+<h1><input type=image name="RPS_DispTargetON" src="/soft/RPS/graphics/buttons/big_tri_right.gif"  onclick="this.form.target='_top';">
+<b>Target Form :  </b><a href="/soft/RPS/Chandra/Chandra.help.html#TARGET">Help</a>
+</h1>
+<!-- Start of hidden HTML for Target Section Data -->
+<input type=hidden name="TARGET"  value="">
+<input type=hidden name="RPS_TargletStat_TN_1"  value="ON">
+<input type=hidden name="Delete_TN_1"  value="N">
+<input type=hidden name="Target Number_TN_1"  value="1">
+<input type=hidden name="Target Description_TN_1"  value="IMAGING; MULTIWAVELENGTH STUDY; ELLIPTICAL GALAXIES; RADIO GALAXIES; COOLING FLOWS; INTRACLUSTER MEDIUM">
+<input type=hidden name="Target Name_TN_1"  value="RXC J2355.6+1120 (Abell 2675)">
+<input type=hidden name="Solar System Object_TN_1"  value="NONE">
+<input type=hidden name="Is target position known and fixed?_TN_1"  value="Y">
+<input type=hidden name="Right Ascension_TN_1"  value="23 55 42.6">
+<input type=hidden name="Declination_TN_1"  value="+11 20 35.8">
+<input type=hidden name="Is this observation (part of) a grid?_TN_1"  value="N">
+<input type=hidden name="Unique Grid Name_TN_1"  value="">
+<input type=hidden name="Number of grid pointings_TN_1"  value="">
+<input type=hidden name="Distance from center to farthest grid pointing_TN_1"  value="">
+<input type=hidden name="Y Detector Target Offset_TN_1"  value="">
+<input type=hidden name="Z Detector Target Offset_TN_1"  value="">
+<input type=hidden name="SIM Translation Offset_TN_1"  value="">
+<input type=hidden name="Do you want optical monitor data for your target?_TN_1"  value="N">
+<input type=hidden name="V-Magnitude of Target_TN_1"  value="">
+<input type=hidden name="Total Observing Time_TN_1"  value="80">
+<input type=hidden name="Detector_TN_1"  value="ACIS-S">
+<input type=hidden name="Grating_TN_1"  value="NONE">
+<input type=hidden name="Count Rate_TN_1"  value="1.659">
+<input type=hidden name="1st Order Count Rate_TN_1"  value="">
+<input type=hidden name="Total Field Count Rate_TN_1"  value="">
+<input type=hidden name="Is target an extended source?_TN_1"  value="N">
+<input type=hidden name="HRC Timing Mode_TN_1"  value="N">
+<input type=hidden name="ACIS Exposure Mode_TN_1"  value="TE">
+<input type=hidden name="Event Telemetry Format_TN_1"  value="VF">
+<input type=hidden name="CCD I0 On_TN_1"  value="O2">
+<input type=hidden name="CCD I1 On_TN_1"  value="O1">
+<input type=hidden name="CCD I2 On_TN_1"  value="Y">
+<input type=hidden name="CCD I3 On_TN_1"  value="Y">
+<input type=hidden name="CCD S0 On_TN_1"  value="N">
+<input type=hidden name="CCD S1 On_TN_1"  value="N">
+<input type=hidden name="CCD S2 On_TN_1"  value="Y">
+<input type=hidden name="CCD S3 On_TN_1"  value="Y">
+<input type=hidden name="CCD S4 On_TN_1"  value="N">
+<input type=hidden name="CCD S5 On_TN_1"  value="N">
+<input type=hidden name="I have reviewed the selection of ACIS chips and identified any chips whose operation is optional_TN_1"  value="Y">
+<input type=hidden name="What is the maximum number of counts you expect in any of the spectra you will analyze from this observation?_TN_1"  value="">
+<input type=hidden name=" Do you expect to analyze more than 2 resolved spectral lines in that spectrum?_TN_1"  value=" ">
+<input type=hidden name="Use most efficient frame exposure time?_TN_1"  value="Y">
+<input type=hidden name="CCD Frame exposure time_TN_1"  value="">
+<input type=hidden name="Subarray Type_TN_1"  value="None">
+<input type=hidden name="Custom Subarray Start Row_TN_1"  value="">
+<input type=hidden name="Custom Subarray No. Rows_TN_1"  value="">
+<input type=hidden name="Use Alternating Exposure Readout_TN_1"  value="N">
+<input type=hidden name="Number of secondary exposures_TN_1"  value="">
+<input type=hidden name="Exposure time for primary cycle_TN_1"  value="">
+<input type=hidden name="Use Energy Filter?_TN_1"  value="N">
+<input type=hidden name="Lower energy threshold_TN_1"  value="">
+<input type=hidden name="Energy filter range_TN_1"  value="">
+<input type=hidden name="Use spatial windows?_TN_1"  value="N">
+<input type=hidden name="Chip for spatial window(1)_TN_1"  value="">
+<input type=hidden name="Sample rate for window(1)_TN_1"  value="">
+<input type=hidden name="Start column for window(1)_TN_1"  value="">
+<input type=hidden name="Column Width of window(1)_TN_1"  value="">
+<input type=hidden name="Start row for window(1)_TN_1"  value="">
+<input type=hidden name="Row Height of window(1)_TN_1"  value="">
+<input type=hidden name="Lower threshold for window(1)_TN_1"  value="">
+<input type=hidden name="Energy range for window(1)_TN_1"  value="">
+<input type=hidden name="Chip for spatial window(2)_TN_1"  value="">
+<input type=hidden name="Sample rate for window(2)_TN_1"  value="">
+<input type=hidden name="Start column for window(2)_TN_1"  value="">
+<input type=hidden name="Column Width of window(2)_TN_1"  value="">
+<input type=hidden name="Start row for window(2)_TN_1"  value="">
+<input type=hidden name="Row Height of window(2)_TN_1"  value="">
+<input type=hidden name="Lower threshold for window(2)_TN_1"  value="">
+<input type=hidden name="Energy range for window(2)_TN_1"  value="">
+<input type=hidden name="Chip for spatial window(3)_TN_1"  value="">
+<input type=hidden name="Sample rate for window(3)_TN_1"  value="">
+<input type=hidden name="Start column for window(3)_TN_1"  value="">
+<input type=hidden name="Column Width of window(3)_TN_1"  value="">
+<input type=hidden name="Start row for window(3)_TN_1"  value="">
+<input type=hidden name="Row Height of window(3)_TN_1"  value="">
+<input type=hidden name="Lower threshold for window(3)_TN_1"  value="">
+<input type=hidden name="Energy range for window(3)_TN_1"  value="">
+<input type=hidden name="Additional spatial window definitions_TN_1"  value="">
+<input type=hidden name="Window Constraint(1)_TN_1"  value="N">
+<input type=hidden name="Window Constraint Start(1)_TN_1"  value="">
+<input type=hidden name="Window Constraint Stop(1)_TN_1"  value="">
+<input type=hidden name="Window Constraint(2)_TN_1"  value="N">
+<input type=hidden name="Window Constraint Start(2)_TN_1"  value="">
+<input type=hidden name="Window Constraint Stop(2)_TN_1"  value="">
+<input type=hidden name="Window Constraint(3)_TN_1"  value="N">
+<input type=hidden name="Window Constraint Start(3)_TN_1"  value="">
+<input type=hidden name="Window Constraint Stop(3)_TN_1"  value="">
+<input type=hidden name="Window Constraint(4)_TN_1"  value="N">
+<input type=hidden name="Window Constraint Start(4)_TN_1"  value="">
+<input type=hidden name="Window Constraint Stop(4)_TN_1"  value="">
+<input type=hidden name="Roll Constraint(1)_TN_1"  value="N">
+<input type=hidden name="Roll Constraint Angle(1)_TN_1"  value="">
+<input type=hidden name="Roll Constraint Tolerance(1)_TN_1"  value="">
+<input type=hidden name="Roll 180 rotation(1)_TN_1"  value="N">
+<input type=hidden name="Roll Constraint(2)_TN_1"  value="N">
+<input type=hidden name="Roll Constraint Angle(2)_TN_1"  value="">
+<input type=hidden name="Roll Constraint Tolerance(2)_TN_1"  value="">
+<input type=hidden name="Roll 180 rotation(2)_TN_1"  value="N">
+<input type=hidden name="Roll Constraint(3)_TN_1"  value="N">
+<input type=hidden name="Roll Constraint Angle(3)_TN_1"  value="">
+<input type=hidden name="Roll Constraint Tolerance(3)_TN_1"  value="">
+<input type=hidden name="Roll 180 rotation(3)_TN_1"  value="N">
+<input type=hidden name="Roll Constraint(4)_TN_1"  value="N">
+<input type=hidden name="Roll Constraint Angle(4)_TN_1"  value="">
+<input type=hidden name="Roll Constraint Tolerance(4)_TN_1"  value="">
+<input type=hidden name="Roll 180 rotation(4)_TN_1"  value="N">
+<input type=hidden name="Phase Dependent Observation_TN_1"  value="N">
+<input type=hidden name="Phase Dependent Epoch_TN_1"  value="">
+<input type=hidden name="Phase Dependent Period_TN_1"  value="">
+<input type=hidden name="Minimum Phase_TN_1"  value="">
+<input type=hidden name="Minimum Phase Error_TN_1"  value="">
+<input type=hidden name="Maximum Phase_TN_1"  value="">
+<input type=hidden name="Maximum Phase Error_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(1)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(2)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(2)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(2)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(3)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(3)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(3)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(4)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(4)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(4)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(5)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(5)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(5)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(6)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(6)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(6)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(7)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(7)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(7)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(8)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(8)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(8)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(9)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(9)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(9)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(10)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(10)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(10)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(11)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(11)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(11)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(12)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(12)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(12)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(13)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(13)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(13)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(14)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(14)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(14)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(15)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(15)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(15)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(16)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(16)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(16)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(17)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(17)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(17)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(18)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(18)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(18)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(19)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(19)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(19)_TN_1"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(20)_TN_1"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(20)_TN_1"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(20)_TN_1"  value="">
+<input type=hidden name="Group Observation?_TN_1"  value="N">
+<input type=hidden name="Group Identification_TN_1"  value="">
+<input type=hidden name="Time Interval for Group_TN_1"  value="">
+<input type=hidden name="Uninterrupted or Contiguous Observation Required_TN_1"  value="P">
+<input type=hidden name="Must this observation be coordinated with that of another observatory?_TN_1"  value="N">
+<input type=hidden name="Maximum Time Interval Encompassing Coordinated Observations_TN_1"  value="">
+<input type=hidden name="Observatories_TN_1"  value="">
+<input type=hidden name="Are there additional constraints or preferences in the Remarks?_TN_1"  value="N">
+<input type=hidden name="Remarks_TN_1"  value="">
+<input type=hidden name="Is this the trigger target for a TOO?_TN_1"  value="">
+<input type=hidden name="If this TOO is a resubmission of a proposal approved in the previous Cycle, should this TOO be canceled if the previous Cycle TOO is triggered?_TN_1"  value="">
+<input type=hidden name="Alternate Target Group Name_TN_1"  value="">
+<input type=hidden name="Number of targets requested for this alternate group_TN_1"  value="">
+<input type=hidden name="TOO Response Type_TN_1"  value="">
+<input type=hidden name="Exact CXC start response window_TN_1"  value="">
+<input type=hidden name="Exact CXC stop response window_TN_1"  value="">
+<input type=hidden name="Exact TOO trigger criteria_TN_1"  value="">
+<input type=hidden name="Probability of TOO Occurring in this cycle_TN_1"  value="">
+<input type=hidden name="If followups, time allocated for trigger target_TN_1"  value="">
+<input type=hidden name="Time allocated for followup(1)_TN_1"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(1)_TN_1"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(1)_TN_1"  value="">
+<input type=hidden name="Followup Target Number(1)_TN_1"  value="">
+<input type=hidden name="Time allocated for followup(2)_TN_1"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(2)_TN_1"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(2)_TN_1"  value="">
+<input type=hidden name="Followup Target Number(2)_TN_1"  value="">
+<input type=hidden name="Time allocated for followup(3)_TN_1"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(3)_TN_1"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(3)_TN_1"  value="">
+<input type=hidden name="Followup Target Number(3)_TN_1"  value="">
+<input type=hidden name="Time allocated for followup(4)_TN_1"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(4)_TN_1"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(4)_TN_1"  value="">
+<input type=hidden name="Followup Target Number(4)_TN_1"  value="">
+<input type=hidden name="Time allocated for followup(5)_TN_1"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(5)_TN_1"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(5)_TN_1"  value="">
+<input type=hidden name="Followup Target Number(5)_TN_1"  value="">
+<input type=hidden name="Time allocated for followup(6)_TN_1"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(6)_TN_1"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(6)_TN_1"  value="">
+<input type=hidden name="Followup Target Number(6)_TN_1"  value="">
+<input type=hidden name="Time allocated for followup(7)_TN_1"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(7)_TN_1"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(7)_TN_1"  value="">
+<input type=hidden name="Followup Target Number(7)_TN_1"  value="">
+<input type=hidden name="Time allocated for followup(8)_TN_1"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(8)_TN_1"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(8)_TN_1"  value="">
+<input type=hidden name="Followup Target Number(8)_TN_1"  value="">
+<input type=hidden name="TOO followup instructions_TN_1"  value="">
+<input type=hidden name="TARGET"  value="">
+<input type=hidden name="RPS_TargletStat_TN_2"  value="ON">
+<input type=hidden name="Delete_TN_2"  value="N">
+<input type=hidden name="Target Number_TN_2"  value="2">
+<input type=hidden name="Target Description_TN_2"  value="IMAGING; MULTIWAVELENGTH STUDY; ELLIPTICAL GALAXIES; RADIO GALAXIES; COOLING FLOWS; INTRACLUSTER MEDIUM">
+<input type=hidden name="Target Name_TN_2"  value="RXC J0301.6+0155 (Zwicky 808)">
+<input type=hidden name="Solar System Object_TN_2"  value="NONE">
+<input type=hidden name="Is target position known and fixed?_TN_2"  value="Y">
+<input type=hidden name="Right Ascension_TN_2"  value="03 01 38.0">
+<input type=hidden name="Declination_TN_2"  value="+01 55 14">
+<input type=hidden name="Is this observation (part of) a grid?_TN_2"  value="N">
+<input type=hidden name="Unique Grid Name_TN_2"  value="">
+<input type=hidden name="Number of grid pointings_TN_2"  value="">
+<input type=hidden name="Distance from center to farthest grid pointing_TN_2"  value="">
+<input type=hidden name="Y Detector Target Offset_TN_2"  value="">
+<input type=hidden name="Z Detector Target Offset_TN_2"  value="">
+<input type=hidden name="SIM Translation Offset_TN_2"  value="">
+<input type=hidden name="Do you want optical monitor data for your target?_TN_2"  value="N">
+<input type=hidden name="V-Magnitude of Target_TN_2"  value="">
+<input type=hidden name="Total Observing Time_TN_2"  value="100">
+<input type=hidden name="Detector_TN_2"  value="ACIS-S">
+<input type=hidden name="Grating_TN_2"  value="NONE">
+<input type=hidden name="Count Rate_TN_2"  value="1.003">
+<input type=hidden name="1st Order Count Rate_TN_2"  value="">
+<input type=hidden name="Total Field Count Rate_TN_2"  value="">
+<input type=hidden name="Is target an extended source?_TN_2"  value="N">
+<input type=hidden name="HRC Timing Mode_TN_2"  value="N">
+<input type=hidden name="ACIS Exposure Mode_TN_2"  value="TE">
+<input type=hidden name="Event Telemetry Format_TN_2"  value="VF">
+<input type=hidden name="CCD I0 On_TN_2"  value="O2">
+<input type=hidden name="CCD I1 On_TN_2"  value="O1">
+<input type=hidden name="CCD I2 On_TN_2"  value="Y">
+<input type=hidden name="CCD I3 On_TN_2"  value="Y">
+<input type=hidden name="CCD S0 On_TN_2"  value="N">
+<input type=hidden name="CCD S1 On_TN_2"  value="N">
+<input type=hidden name="CCD S2 On_TN_2"  value="Y">
+<input type=hidden name="CCD S3 On_TN_2"  value="Y">
+<input type=hidden name="CCD S4 On_TN_2"  value="N">
+<input type=hidden name="CCD S5 On_TN_2"  value="N">
+<input type=hidden name="I have reviewed the selection of ACIS chips and identified any chips whose operation is optional_TN_2"  value="Y">
+<input type=hidden name="What is the maximum number of counts you expect in any of the spectra you will analyze from this observation?_TN_2"  value="">
+<input type=hidden name=" Do you expect to analyze more than 2 resolved spectral lines in that spectrum?_TN_2"  value=" ">
+<input type=hidden name="Use most efficient frame exposure time?_TN_2"  value="Y">
+<input type=hidden name="CCD Frame exposure time_TN_2"  value="">
+<input type=hidden name="Subarray Type_TN_2"  value="None">
+<input type=hidden name="Custom Subarray Start Row_TN_2"  value="">
+<input type=hidden name="Custom Subarray No. Rows_TN_2"  value="">
+<input type=hidden name="Use Alternating Exposure Readout_TN_2"  value="N">
+<input type=hidden name="Number of secondary exposures_TN_2"  value="">
+<input type=hidden name="Exposure time for primary cycle_TN_2"  value="">
+<input type=hidden name="Use Energy Filter?_TN_2"  value="N">
+<input type=hidden name="Lower energy threshold_TN_2"  value="">
+<input type=hidden name="Energy filter range_TN_2"  value="">
+<input type=hidden name="Use spatial windows?_TN_2"  value="N">
+<input type=hidden name="Chip for spatial window(1)_TN_2"  value="">
+<input type=hidden name="Sample rate for window(1)_TN_2"  value="">
+<input type=hidden name="Start column for window(1)_TN_2"  value="">
+<input type=hidden name="Column Width of window(1)_TN_2"  value="">
+<input type=hidden name="Start row for window(1)_TN_2"  value="">
+<input type=hidden name="Row Height of window(1)_TN_2"  value="">
+<input type=hidden name="Lower threshold for window(1)_TN_2"  value="">
+<input type=hidden name="Energy range for window(1)_TN_2"  value="">
+<input type=hidden name="Chip for spatial window(2)_TN_2"  value="">
+<input type=hidden name="Sample rate for window(2)_TN_2"  value="">
+<input type=hidden name="Start column for window(2)_TN_2"  value="">
+<input type=hidden name="Column Width of window(2)_TN_2"  value="">
+<input type=hidden name="Start row for window(2)_TN_2"  value="">
+<input type=hidden name="Row Height of window(2)_TN_2"  value="">
+<input type=hidden name="Lower threshold for window(2)_TN_2"  value="">
+<input type=hidden name="Energy range for window(2)_TN_2"  value="">
+<input type=hidden name="Chip for spatial window(3)_TN_2"  value="">
+<input type=hidden name="Sample rate for window(3)_TN_2"  value="">
+<input type=hidden name="Start column for window(3)_TN_2"  value="">
+<input type=hidden name="Column Width of window(3)_TN_2"  value="">
+<input type=hidden name="Start row for window(3)_TN_2"  value="">
+<input type=hidden name="Row Height of window(3)_TN_2"  value="">
+<input type=hidden name="Lower threshold for window(3)_TN_2"  value="">
+<input type=hidden name="Energy range for window(3)_TN_2"  value="">
+<input type=hidden name="Additional spatial window definitions_TN_2"  value="">
+<input type=hidden name="Window Constraint(1)_TN_2"  value="N">
+<input type=hidden name="Window Constraint Start(1)_TN_2"  value="">
+<input type=hidden name="Window Constraint Stop(1)_TN_2"  value="">
+<input type=hidden name="Window Constraint(2)_TN_2"  value="N">
+<input type=hidden name="Window Constraint Start(2)_TN_2"  value="">
+<input type=hidden name="Window Constraint Stop(2)_TN_2"  value="">
+<input type=hidden name="Window Constraint(3)_TN_2"  value="N">
+<input type=hidden name="Window Constraint Start(3)_TN_2"  value="">
+<input type=hidden name="Window Constraint Stop(3)_TN_2"  value="">
+<input type=hidden name="Window Constraint(4)_TN_2"  value="N">
+<input type=hidden name="Window Constraint Start(4)_TN_2"  value="">
+<input type=hidden name="Window Constraint Stop(4)_TN_2"  value="">
+<input type=hidden name="Roll Constraint(1)_TN_2"  value="N">
+<input type=hidden name="Roll Constraint Angle(1)_TN_2"  value="">
+<input type=hidden name="Roll Constraint Tolerance(1)_TN_2"  value="">
+<input type=hidden name="Roll 180 rotation(1)_TN_2"  value="N">
+<input type=hidden name="Roll Constraint(2)_TN_2"  value="N">
+<input type=hidden name="Roll Constraint Angle(2)_TN_2"  value="">
+<input type=hidden name="Roll Constraint Tolerance(2)_TN_2"  value="">
+<input type=hidden name="Roll 180 rotation(2)_TN_2"  value="N">
+<input type=hidden name="Roll Constraint(3)_TN_2"  value="N">
+<input type=hidden name="Roll Constraint Angle(3)_TN_2"  value="">
+<input type=hidden name="Roll Constraint Tolerance(3)_TN_2"  value="">
+<input type=hidden name="Roll 180 rotation(3)_TN_2"  value="N">
+<input type=hidden name="Roll Constraint(4)_TN_2"  value="N">
+<input type=hidden name="Roll Constraint Angle(4)_TN_2"  value="">
+<input type=hidden name="Roll Constraint Tolerance(4)_TN_2"  value="">
+<input type=hidden name="Roll 180 rotation(4)_TN_2"  value="N">
+<input type=hidden name="Phase Dependent Observation_TN_2"  value="N">
+<input type=hidden name="Phase Dependent Epoch_TN_2"  value="">
+<input type=hidden name="Phase Dependent Period_TN_2"  value="">
+<input type=hidden name="Minimum Phase_TN_2"  value="">
+<input type=hidden name="Minimum Phase Error_TN_2"  value="">
+<input type=hidden name="Maximum Phase_TN_2"  value="">
+<input type=hidden name="Maximum Phase Error_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(1)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(2)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(2)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(2)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(3)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(3)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(3)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(4)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(4)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(4)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(5)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(5)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(5)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(6)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(6)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(6)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(7)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(7)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(7)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(8)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(8)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(8)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(9)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(9)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(9)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(10)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(10)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(10)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(11)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(11)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(11)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(12)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(12)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(12)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(13)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(13)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(13)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(14)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(14)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(14)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(15)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(15)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(15)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(16)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(16)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(16)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(17)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(17)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(17)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(18)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(18)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(18)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(19)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(19)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(19)_TN_2"  value="">
+<input type=hidden name="Exposure Time allocated for monitor(20)_TN_2"  value="">
+<input type=hidden name="Minimum time interval between preceding observation(20)_TN_2"  value="">
+<input type=hidden name="Maximum time interval between preceding observation(20)_TN_2"  value="">
+<input type=hidden name="Group Observation?_TN_2"  value="N">
+<input type=hidden name="Group Identification_TN_2"  value="">
+<input type=hidden name="Time Interval for Group_TN_2"  value="">
+<input type=hidden name="Uninterrupted or Contiguous Observation Required_TN_2"  value="P">
+<input type=hidden name="Must this observation be coordinated with that of another observatory?_TN_2"  value="N">
+<input type=hidden name="Maximum Time Interval Encompassing Coordinated Observations_TN_2"  value="">
+<input type=hidden name="Observatories_TN_2"  value="">
+<input type=hidden name="Are there additional constraints or preferences in the Remarks?_TN_2"  value="N">
+<input type=hidden name="Remarks_TN_2"  value="">
+<input type=hidden name="Is this the trigger target for a TOO?_TN_2"  value="">
+<input type=hidden name="If this TOO is a resubmission of a proposal approved in the previous Cycle, should this TOO be canceled if the previous Cycle TOO is triggered?_TN_2"  value="">
+<input type=hidden name="Alternate Target Group Name_TN_2"  value="">
+<input type=hidden name="Number of targets requested for this alternate group_TN_2"  value="">
+<input type=hidden name="TOO Response Type_TN_2"  value="">
+<input type=hidden name="Exact CXC start response window_TN_2"  value="">
+<input type=hidden name="Exact CXC stop response window_TN_2"  value="">
+<input type=hidden name="Exact TOO trigger criteria_TN_2"  value="">
+<input type=hidden name="Probability of TOO Occurring in this cycle_TN_2"  value="">
+<input type=hidden name="If followups, time allocated for trigger target_TN_2"  value="">
+<input type=hidden name="Time allocated for followup(1)_TN_2"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(1)_TN_2"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(1)_TN_2"  value="">
+<input type=hidden name="Followup Target Number(1)_TN_2"  value="">
+<input type=hidden name="Time allocated for followup(2)_TN_2"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(2)_TN_2"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(2)_TN_2"  value="">
+<input type=hidden name="Followup Target Number(2)_TN_2"  value="">
+<input type=hidden name="Time allocated for followup(3)_TN_2"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(3)_TN_2"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(3)_TN_2"  value="">
+<input type=hidden name="Followup Target Number(3)_TN_2"  value="">
+<input type=hidden name="Time allocated for followup(4)_TN_2"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(4)_TN_2"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(4)_TN_2"  value="">
+<input type=hidden name="Followup Target Number(4)_TN_2"  value="">
+<input type=hidden name="Time allocated for followup(5)_TN_2"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(5)_TN_2"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(5)_TN_2"  value="">
+<input type=hidden name="Followup Target Number(5)_TN_2"  value="">
+<input type=hidden name="Time allocated for followup(6)_TN_2"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(6)_TN_2"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(6)_TN_2"  value="">
+<input type=hidden name="Followup Target Number(6)_TN_2"  value="">
+<input type=hidden name="Time allocated for followup(7)_TN_2"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(7)_TN_2"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(7)_TN_2"  value="">
+<input type=hidden name="Followup Target Number(7)_TN_2"  value="">
+<input type=hidden name="Time allocated for followup(8)_TN_2"  value="">
+<input type=hidden name="Minimum Time Interval between preceding TOO observation(8)_TN_2"  value="">
+<input type=hidden name="Maximum Time Interval between preceding TOO observation(8)_TN_2"  value="">
+<input type=hidden name="Followup Target Number(8)_TN_2"  value="">
+<input type=hidden name="TOO followup instructions_TN_2"  value="">
+<!-- End of hidden HTML for Target Section Data -->
+<input type=hidden name="RPS_EndTarget">
+<input type=hidden name="RPS_DispTarget" value=off>
+<!-- END of * * * TARGET FORM * * * -->
+<br>
+<center>
+<input type="image" name="blankverify" value="" onclick="return false;" src ="/soft/RPS/graphics/buttons/blank.gif" alt="&nbsp;">
+<input type=image name="Submit" src= "/soft/RPS/graphics/buttons/Submit_Off.gif" disabled  onclick="this.form.target='_top';">
+<input type="image" name="Upload" alt="Upload" src= "/soft/RPS/graphics/buttons/SJ.gif"  onclick="this.form.target='_top';">
+</center>
+<center>
+<input type="image" name="Save"   alt="Save"   src="/soft/RPS/graphics/buttons/Save.gif"  onclick="this.form.target='_top';">
+<input type="image" name="Verify" alt="Verify" src="/soft/RPS/graphics/buttons/Verify.gif" onclick="this.form.target='_top';">
+
+<input type="image" name="Resources"   alt="Resources"   src="/soft/RPS/graphics/buttons/Resources.gif"  onclick="this.form.target='_blank';" >
+
+<input type="image" name="Simbad"  alt="Target Name/Coord Check"  src="/soft/RPS/graphics/buttons/Simbad.gif"  onclick="this.form.target='_blank';">
+</center><center><input type="image" name="Add" alt="Add Target" src="/soft/RPS/graphics/buttons/Add_Target.gif"onclick="this.form.target='_top';">
+<input type="image" name="Delete" alt="Delete Target" src="/soft/RPS/graphics/buttons/Delete_Target.gif" onclick="this.form.target='_top';">
+<input type="image" name="Renumber" alt="Renumber Targets" src="/soft/RPS/graphics/buttons/Renumber_Target.gif" onclick="this.form.target='_top';">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="image" name="LaTeX"  alt="LaTeX"  src="/soft/RPS/graphics/buttons/LaTeX.gif"  onclick="this.form.target='_top';">
+<input type="image" name="PDF" alt="PDF" src="/soft/RPS/graphics/buttons/PDF.gif" onclick="this.form.target='_top';">
+<A HREF="http://cxc.harvard.edu/helpdesk/"> <img src="/soft/RPS/graphics/buttons/Feedback.gif" alt="Feedback"></a>
+</center>
+<center>
+<b>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/soft/RPS/Chandra/Chandra.help.html">Specific Help for Chandra</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/soft/RPS/Chandra.html">RPS Chandra Home Page</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<br>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/proposer/">Proposal Planning Tools</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/soft/RPS/Help.html">RPS Generic Help</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+<a href="/soft/RPS/Help.html#buttons">RPS Button Descriptions</a>
+<img src="/soft/RPS/graphics/icons/redball.gif" alt="  ">
+</b>
+</center>
+<input type="hidden" name="RPS_FULL_LOAD" value="yep">
+</Form>
+<!-- End of FORM ========================================== -->
+<!-- Begin RPS Footer =================================================== -->
+<hr>
+
+<p>
+<!-- <CENTER> <A HREF="/cgi-bin/prop_rps_relnotes.cgi">
+View Release Notes for RPS</A> </CENTER> -->
+<!-- <CENTER>
+Questions, Comments, or Bugs? <A HREF="/cgi-gen/up.cgi?AIMACTION=vlogin">
+Contact CXC User Support</A></CENTER>
+<br>  -->
+<CENTER>
+RPS was written at the <a href="http://lheawww.gsfc.nasa.gov/docs/lhea/homepg_lhea.html">HEASARC</a> and
+<br>modifications to support Chandra were made at the <a href="/">CXC</a>. 
+</CENTER>
+<!-- <img src="/soft/RPS/graphics/valid_html3.2.gif" alt="HTML 3.2 Checked" > -->
+<!-- End RPS Footer ============================================= -->
+
+</Body>
+</HTML>

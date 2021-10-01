@@ -1,0 +1,241 @@
+%% LaTeX template for the science justification & technical
+%% feasibility to be submitted as part of a Chandra X-ray Observatory
+%% proposal.
+%%
+%% Chandra cycle 9
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% DOCUMENT FORMAT %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% The default font was chosen to be easily readable while allowing
+%% sufficient material to be included.
+
+%% The two-column, 11pt format fits the largest number of characters
+%% per page while still being within allowed limits.
+
+%% There are three documentclass commands provided below. Please
+%% uncomment the version you would like to use and comment out the
+%% others.
+
+%% Please note that the proposal will be printed on US Letter size paper,
+%% 8.5 in x 11 in, and that formatting the text for other sizes will
+%% generally cause layout problems and may result in text being cut
+%% off near the edges. PLEASE DO NOT CHANGE THE 'LETTERPAPER' OPTION
+%% IN THE DOCUMENTCLASS COMMAND.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Converting this document to PDF %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% We suggest the following method for this template because most
+%% proposal reviewers will 
+%% be reading your Scientific Justification on a computer screen, and
+%% many reviewers only have PDF (not PostScript) viewing capability. By
+%% default, a document produced with LaTeX uses so-called cm fonts, which
+%% differ significantly from any of the standard Type1 fonts built-in to
+%% PDF. PDF uses low-resolution bitmap images of these fonts to display
+%% the document. It prints well, but shows degraded resolution on the
+%% screen. 
+
+%% Use ps2pdf (preferably version 1.4) to convert a postscript file to PDF:
+%% 
+%% latex file.tex
+%% dvips -Ppdf -G0 -o file.ps file.dvi
+%% ps2pdf14 file.ps file.pdf 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Displaying DS9 figures %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% If you experience pdf errors when displaying figures you produced with DS9:
+
+%% Solution: Remake figure in DS9 and save as Postscript Level 1. In
+%% the Print window choose Level 1 under the Postscript heading. At this
+%% point you should re-LaTeX your SJ following the directions above. 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Default format: 11pt single column %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Default font, two-column %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\documentclass[letterpaper,11pt,twocolumn]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 'Maximum allowed' format %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\documentclass[letterpaper,11pt,twocolumn]{article}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% HOW TO INCLUDE FIGURES %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Please see the ``Included packages'' section below.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Included packages %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{graphics,graphicx}
+
+%% Feel free to modify the included packages list to use your
+%% favorite packages. 
+
+%% In the graphics and graphicx packages, Postscript and eps figures
+%% can be included using the \includegraphics command. The graphics
+%% package is part of standard LaTeX2e and provides a basic way of including a
+%% figure. The graphicx package is not standard, but extends the
+%% \includegraphics command to make it more user-friendly. If graphicx
+%% is not available on your system please remove it from the list of
+%% included packages above.  
+
+%% Syntax:
+%% In the graphics package:
+%%
+%% \begin{figure}
+%% \includegraphics[llx,lly][urx,ury]{file}
+%% \end{figure}
+%%
+%% where ll denotes 'lower left' and ur 'upper right' and the x and y
+%% values are the coordinates of the PostScript bounding box in
+%% points. There are 72 points in an inch.
+%%
+%% In the graphicx package:
+%% 
+%% \begin{figure}
+%% \includegraphics[key=val,key=val,...]{file}
+%% \end{figure}
+%%
+%% where some of the useful keys are: angle, width, height,
+%% keepaspectratio (='true' or 'false') and scale. Bounding box values
+%% can be given as [bb=llx lly urx ury].
+%%
+%% In either case you have to use LaTeX figure placement commands to
+%% position the figure on the page; \includegraphics will not do
+%% that. Both these commands also have other options that are listed
+%% in the LaTeX manual (for the graphics package) and in 'The LaTeX
+%% Graphics Companion' (for the graphicx package).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Page dimensions %%%%%
+%%%%%  DO NOT CHANGE  %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\textwidth}{6.5in} 
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-0.0625in} 
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in} 
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in} 
+\setlength{\hoffset}{0in}
+\setlength{\voffset}{0in}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Section heading format %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\renewcommand{\section}{\@startsection%
+{section}{1}{0mm}{-\baselineskip}%
+{0.5\baselineskip}{\normalfont\Large\bfseries}}%
+\makeatother
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Start of document %%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Title of proposal %%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center} 
+\bfseries\uppercase{%
+%%
+%% ENTER TITLE OF PROPOSAL BELOW THIS LINE
+replace this line with the title
+%%
+%%
+}
+\end{center}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Body of science justification %%%%%
+%%%%% and technical feasibility     %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%
+%% ENTER TEXT AND FIGURES BELOW
+%%
+
+
+
+
+
+
+
+%% Technical Justification for Joint Facilities section
+%% comment this section out on proposals not asking for
+%% joint time
+
+\section{Technical Justification for Joint Facilities}
+
+
+
+%% References section
+
+\section{References}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%  Previous Chandra Programs of the P.I. and Observer  %%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%% There is an easy way to change from twocolumn to onecolumn format and 
+%% back in the same latex file
+%%       \onecolumn
+%% or
+%%       \twocolumn
+%% but note each will cause a clearpage.
+
+\onecolumn
+%\twocolumn
+
+\section{Previous Chandra Programs}
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% End of document %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+

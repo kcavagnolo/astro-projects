@@ -1,0 +1,212 @@
+#########################################################
+#########################################################
+
+WARNING:
+All Tx's are unknown, so I estimated them using the Lx-Tx relation of
+Scharf and Mushotzky. This is poor, simplifying assumption, but the
+exposure times are minimally sensitive to Tx in the used range of 4-6
+keV.
+
+WARNING:
+The estimates below are based on the global properties from the ROSAT
+data and assume a simple beta-model surface brightness distribution
+with beta=0.6 and normalized such that the integrated count rate
+equals the ROSAT 0.1-2.4 count rate. These are arguably poor
+assumptions, but given the lack of data, this is the extent to which I
+felt comfortable making estimates.
+
+WARNING:
+I have also been OPTIMISTIC and used ACIS-S count rate estimates
+because the cluster temperatures are 4-6 keV and the difference in the
+soft energy effective area of S versus I is large enough that it makes
+the exposure times shorter and the request more appealing to the
+TAC. But note, the particle background has been bad lately because of
+the solar activity and there may be little advantage to S over I since
+S has a naturally higher background sensitivity. Also, I didn't check
+if FOV is important for these objects (since S if smaller than the I
+mosaic), but that can be verified quickly by viewing the ROSAT images
+with the ACIS regions overlaid in DS9 (check the
+regions->instrument->fov menu).
+
+#########################################################
+#########################################################
+
+The count rates have been calculated over the energy range 0.5-8.0
+keV, which I consider to be the most usable energy range where the
+soft Galactic and hard particle backgrounds are best understood and
+modeled. The NH values come from the LAB Survey and I have assumed an
+APEC thermal model with global metallicity of 0.4 Z_solar (good
+canonical value of clusters). My simulations with the Cycle-13
+responses are consistent with the PIMMS values, so that gives me
+confidence my numbers are accurate. Nonetheless, please double-check
+them.
+
+After looking at all the halo candidates in the X-ray with the NVSS,
+FIRST, and VLSS emission overlaid, some of the halos are not very
+convincing because of the presence of point sources with some extended
+emission. Nonetheless, without seeing the diffuse emission after
+source removal, it is difficult to make a strong conclusion. Given the
+ambiguity, I think shooting for minimal exposure times is probably the
+best approach. The legend for the "science" column is as follows:
+
+'lx' 	  => global cluster luminosity
+'tx' 	  => global cluster temperature
+'radprof' => radial profiles with a minimum of three annular bins with 2500 source counts per bin
+'maps'	  => 2D tx, pressure, entropy maps with 2500 source counts per bin (poor stats, but good res)
+'resid'	  => create residual images with some amount of confidence that spurious features will be minimal
+'cfs'	  => bright cold fronts should be detectable, but this is difficult to quantify and just a feeling
+'shocks'  => again, strong shocks (> 1.4) should be detectable, but this is a feeling and tough to quantify
+
+#########################################################
+#########################################################
+
+Total recommended time: 200 ksec
+Total ambitious time: 	500 ksec **LP**
+
+#########################################################
+#########################################################
+
+A0800:
+(ra,dec)      09h28m29.9s, +37d47m53s
+z	      0.2223
+lx(0.1-2.4)   3.583715d44
+flux	      2.4476195d-12
+NH	      1.08d20
+kT	      ~4 keV
+Z/Zsol	      0.4
+A-I ctr	      0.3565
+A-S ctr	      0.5371
+
+#expt	      totcts	2.5K_bins	science
+20	      10500	4		lx, tx, radprof
+40	      21500	8		-
+60	      32000	12		+maps
+80	      43000	17		-
+100	      54000	21		+resid
+
+recommendation: 20 ksec
+ambitious: 	60 ksec
+
+#########################################################
+#########################################################
+
+A0910:
+(ra,dec)      10h02m58.9s, 67d09m30s
+z	      0.206
+lx(0.1-2.4)   5.432857d44
+flux	      3.1d-12
+NH	      3.84d20
+kT	      ~5 keV
+Z/Zsol	      0.4
+A-I ctr	      0.5274
+A-S ctr	      0.7721
+
+#expt	      totcts	2.5K_bins	science
+20	      15000	6		lx, tx, radprofs
+40	      31000	12		+maps
+60	      46000	18		-
+80	      62000	24		+resid
+100	      77000	30		+cfs, shocks
+
+recommendation: 20 ksec
+ambitious: 	40 ksec
+
+#########################################################
+#########################################################
+
+A1550:
+(ra,dec)      12h29m12.8s, 47d42m25s
+z	      0.254
+lx(0.1-2.4)   3.760454d44
+flux	      1.411684d-12
+NH	      1.08d20
+kT	      ~4 keV
+Z/Zsol	      0.4
+A-I ctr	      0.2027
+A-S ctr	      0.3056
+
+#expt	      totcts	2.5K_bins	science
+20	      6000	2		lx, tx
+40	      12000	4		radprofs
+60	      18000	7		-
+80	      24000	9		-
+100	      31000	12		+maps
+
+recommendation: 40 ksec
+ambitious: 	40 ksec
+
+#########################################################
+#########################################################
+
+A1682:
+(ra,dec)      13h06m49.7s, 46d32m59s
+z	      0.234
+lx(0.1-2.4)   9.124869d44
+flux	      4.07d-12
+NH	      1.04d20
+kT	      ~6 keV
+Z/Zsol	      0.4
+A-I ctr	      0.6333
+A-S ctr	      0.9321
+
+#expt	      totcts	2.5K_bins	science
+20	      13000	7		lx, tx, radprofs
+40	      25000	14		+maps
+60	      38000	22		+resid
+80	      51000	29		+cfs, shocks
+100	      63000	37		+multiphase
+
+recommendation: 40 ksec
+ambitious: 	100 ksec
+
+#########################################################
+#########################################################
+
+A1703:
+(ra,dec)      13h15m0.7s, 51d49m10s
+z	      0.281
+lx(0.1-2.4)   8.202573d44
+flux	      2.54d-12
+NH	      1.34d20
+kT	      ~5 keV
+Z/Zsol	      0.4
+A-I ctr	      0.3867
+A-S ctr	      0.5738
+
+#expt	      totcts	2.5K_bins	science
+20	      11000	4		lx, tx, radprofs
+40	      23000	9		-
+60	      34000	13		+maps
+80	      46000	18		-
+100	      57000	22		+resid
+
+recommendation: 20 ksec
+ambitious: 	60 ksec
+
+#########################################################
+#########################################################
+
+ZwCl 1447.2+2619:
+(ra,dec)      14h49m28.2s, +26d07m57s
+z	      0.370
+lx(0.1-2.4)   3.42d44
+flux	      7.2175597e-13
+NH	      2.94d20
+kT	      ~4 keV
+Z/Zsol	      0.4
+A-I ctr	      0.1053
+A-S ctr	      0.1606
+
+#expt	      totcts	2.5K_bins	science
+20	      3200	1		lx, tx
+40	      6400	2		-
+60	      10000	3		radprofs
+80	      13000	5		-
+100	      16000	6		-
+200	      32000	12		maps
+
+recommendation: 60 ksec
+ambitious: 	200 ksec
+
+#########################################################
+#########################################################
