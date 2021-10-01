@@ -1,0 +1,1054 @@
+Things to fix/do:
+
+-- sbr degradation
+	+ effect on K0 as a function of z
+	+ is the number of low-K0 decreasing w/ redshift faster than
+	  resolution limit?
+-- what do I mean by K0?
+	+ not gas ent around smbh
+	+ not lowest state of gas ent
+	+ define as the "average" central gas entropy at ~ 10 kpc
+	  scale, beyond any possible central core?
+	+ define as beyond 5x(?) resolution element (5 or 20 kpc
+	  depends on redshift)?
+	+ simply call it ``core entropy''
+-- which clusters have a central source excluded? flag these
+	+ could be coronae
+	+ could be AGN
+	+ easy to hide high density, small things with an AGN or not
+	+ AGN don't heat all the way to the core, so it's okay to
+	ignore these areas
+-- say it this way, we're investigating the fuel depot of the feedback
+   mechanisms, and how that feedback energy interacts with the depot
+-- discuss temperature profs at large radii
+	+ we don't pay much attention there, the core we care about
+	+ background changing anyway
+-- add discussion of reflex, hiflugcs, B55 subsamples
+	+ are trends in full sample present in subsamples?
+	+ what's our completion level?
+-- don't call it universal ent pedestal
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+\documentclass[12pt, preprint]{aastex}
+\usepackage{common}
+\newcommand{\accept}{\textit{ACCEPT}}
+\begin{document}
+\title{Athenaeum of Chandra Cluster Entropy Profile Tables -- I.\\
+A Bimodal Core Entropy Distribution}
+\author{Kenneth W. Cavagnolo\altaffilmark{1,2},
+	Megan Donahue\altaffilmark{1},
+	G. Mark Voit\altaffilmark{1}, and
+	Ming Sun\altaffilmark{1}}
+\altaffiltext{1}{Michigan State University, Department of Physics and
+Astronomy, BPS Building, East Lansing, MI 48824}
+\altaffiltext{2}{cavagnolo@pa.msu.edu}
+\shorttitle{ACCEPT I.}
+\shortauthors{K. W. Cavagnolo et al.}
+\bibliographystyle{apj}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+We present radial entropy distributions of the intracluster
+medium (ICM) for 208 galaxy clusters collected from the \Chandra\ data
+archive. Radiative cooling of the ICM sets an entropy scale which is
+responsible for breaking the self-similarity which would otherwise be
+set by adiabatic hierarchical galaxy cluster formation. The entropy of
+the ICM can thus be used as a tool for studying the thermal history of
+a cluster, and as importantly, the feedback mechanisms, such as active
+galactic nuclei (AGN) or star formation, which naturally occur from
+the prodigious cooling of the ICM. We show that the entropy
+``pedestal'' which has been observed in classic cooling flow clusters
+is indeed a universal feature of clusters regardless of dynamical
+state. We also show that the distribution of central entropy, \kna,
+for our collection is consistent with models of ICM heating via AGN
+feedback, and that the distribution is bimodal. We suggest the
+observed distribution of \kna\ is a reflection of AGN feedback,
+thermal electron conduction, and mergers. This paper focuses on
+the data reduction, methodology, and initial results of \accept.
+We have named this project \accept\ for Athenaeum of Chandra Cluster
+Entropy Profiles Tables. The data and results for \accept\ can be
+found online at http://www.pa.msu.edu/astro/MC2/accept/.
+\end{abstract}
+
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
+
+\keywords{I'm -- a -- keyword!}
+
+%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%
+
+The general process of galaxy cluster formation through hierarchical
+merging is well understood, but many details, such as the impact of
+feedback sources on the cluster environment and radiative cooling in
+the cluster core, are not. The nature of feedback operating within
+clusters is of great interest because of the implications for using
+mass-observable scaling relations in cluster cosmological studies, and
+for better understanding galaxy formation. The adiabatic model of
+hierarchical structure formation predicts clusters of galaxies which
+are scaled versions of each other. This model also predicts the most
+massive galaxies in the Universe should be rife with young stellar
+populations. Observations have long shown \citep{1999ApJ...520...78H,
+2000ApJ...536...73N, 2001A&A...368..749F} however that clusters adhere
+to steeper scaling relations with larger intrinsic dispersion than
+theory predicts \citep{1996ApJ...469..494E, 1997MNRAS.292..289E}. In
+addition, the most massive galaxies are composed of old stars (the
+``old, red, and dead'' quandry) and have much less mass than predicted.
+Moreover these massive galaxies formed by $\red \sim 1-2$
+\citep{1996MNRAS.283.1388M, 1996Natur.384..439S} -- the so called
+down-sizing problem \citep{1996AJ....112..839C}.
+
+Because the cooling time in the cores of many clusters is much shorter
+than the Hubble time \citep{1994ARA&A..32..277F, 1998MNRAS.298..416P},
+the core region of clusters have been subject to cooling at some point
+in their past and most likely heating from feedback mechanisms which
+may initiate as a result of cooling. This secondary heating and
+cooling effectively decouples baryons from the dark matter and results
+in the breaking of self-similarity. As a consequence of radiative
+cooling, global cluster temperature decreases while global cluster
+luminosity increases. Thus, at a given mass scale, radiative cooling
+conspires to create dispersion in otherwise tight correlations between
+mass-luminosity and mass-temperature.
+
+Additional effects of radiative cooling, such as massive cooling
+flows ($100-1000 \Msol \pyr$), have been suggested but never
+observed \citep{tamura2001, peterson2001}. Methodical searches for the
+end products of this gas cooling have never yielded the enormous mass
+sinks expected to reside in the cores of clusters \citep{heckman89,
+mcnamara90, odea94, voit95} . On the contrary, the torrents of cool
+gas flowing to a cluster center are more like cooling trickles
+\citep{peterson2003}, depositing at most a few solar masses per year
+in the core and never reaching temperatures below approximately $1/3
+T_{virial}$. Obviously some source(s) of energetic feedback has heated
+the ICM to selectively remove gas with a short cooling time.
+
+Thanks to the high-resolution optics aboard \Chandra, previously
+unobserved bubbles and cavities in the ICM have been found in numerous
+clusters with short central cooling times. A consensus has been
+reached that these bubbles are blown by active galactic nuclei (AGN)
+and the outflow energies are sufficient to heat the ICM such that
+energy loss from cooling is balanced. This has made AGN the
+cornerstone for feedback models of ICM heating. Taken as a whole, the
+non-gravitational processes operating in clusters are proving to be
+very important for understanding how clusters form and evolve in
+addition to being important for understanding the formation of
+galaxies. These feedback processes are also interesting because
+the mechanisms operating present-day in the most massive galaxies are
+likely also the mechanisms which were important in galaxy formation
+early in the Universe.
+
+In the work presented in this paper, and Paper II, we have undertaken
+a 'close to the data' study of the ICM to better understand the
+physical state of gas below the cooling threshold. By studying the
+sub-threshold gas, we aim to gain insight to how ICM properties
+correlate with cluster feedback state, what can be learned of how
+feedback mechanisms operate, and how this feedback alters global
+cluster properties. To this end, we have paid particular attention to
+ICM entropy.
+
+Taken individually, ICM temperature and density do not fully
+illuminate the cluster thermal history because they are most
+influenced by the underlying dark matter potential. Gas temperature
+reflects the depth of the potential well, while density reflects the
+capacity of the well to compress the gas. However, recall that at
+constant pressure the density of a gas is determined by its specific
+entropy. So using the expression for the adiabatic constant
+$K=P\rho^{-5/3}$, rewriting pressure and density in terms of
+temperature and electron density, one can define a new quantity, $K =
+Tn_e^{-2/3}$, where $T$ is temperature and $n_e)$ is electron gas
+density, one captures the complete thermal history of the gas because
+only heating and cooling can change $K$. This quantity is typically
+referred to as entropy, but in actuality $K$ is only a pseudo-entropy
+as relation to true thermodynamic entropy is $s = \ln K^{3/2} +
+\mathrm{constant}$.
+
+Entropy imparts the wonderfully useful property of making a gas
+convectively stable only when $dK/dr \geq 0$. Thus, gravitational
+potential wells are giant entropy sorting devices: low entropy gas
+sinks to the bottom of the potential well, while high entropy gas
+buoyantly rises to a radius of equal entropy. If a cluster were a
+sealed box of gravitation-only processes, then the radial entropy
+distribution of the ICM would strictly follow a power-law relation
+across all radii. Thus, any departures of the radial entropy
+distribution from a power-law is indicative of past heating and
+cooling, \ie\ from AGN.
+
+If feedback activity in the core of a cluster is unrelated to the
+gas entropy, then the expectation is that central entropy and
+robust indicators of feedback, \eg\ radio-loud AGN and star formation,
+will be uncorrelated. But if ICM entropy and feedback are connected,
+then departures of $K(r)$ from a power-law can be used to better
+understand feedback timescales, deposition of AGN outflow energy,
+and ultimately the effects of feedback on cluster and massive galaxy
+evolution (\eg\ truncating star formation).
+
+In our previous work (\citealt{2006ApJ...643..730D}, hereafter DHC06),
+we analyzed a sample of nine nearby ($\red < 0.1$) classic cool core
+clusters selected for their potential to produce high-quality radial
+entropy profiles. In this paper, we present the results of an
+exhaustive study of radial entropy profiles for an archive-limited
+collection of observations taken from the \Chandra\ Data Archive. We have
+conveniently named this project \accept\ which is short for Athenaeum
+of \Chandra\ Cluster Entropy Profile Tables. For this project we cover
+a much broader range of \Lx, \Tx, and morphologies than was used in
+DHC06. The advantage being a uniformly analyzed collection of entropy
+profiles, covering a broad range of central entropys, which can then be
+utilized to study carefully selected sub-samples of clusters.
+
+\accept\ as a whole is not an unbiased, complete sample of clusters as
+it is drawn from the \Chandra\ archive and is thus subject to selection
+biases. But \accept\ does provide us with a powerful baseline to study
+any entropy-feedback connections which may exist. From our analysis we
+have found that the entropy pedestal observed in DHC06, and by many
+others previously (\eg\ \citealt{1999Natur.397..135P},
+\citealt{2000MNRAS.315..689L}, \citealt{2005A&A...433..101P}), is not
+isolated to just cooling flow clusters, but is a feature of all
+clusters. We also have found two indicators of feedback -- radio-loud
+AGN found using the NRAO VLA Sky Survey (NVSS) and star formation as
+evidenced by \halpha\ emission from the central dominant (cD) galaxy
+-- are strongly anti-correlated with central entropy. For the first
+time we also note two interesting results:
+\begin{enumerate}
+\item The central entropy distribution of the full \accept\ collection
+shows strong bimodality, while the distribution for the HIFLUGCS
+sub-sample shows robust multimodality. 
+\item There appears to exist a characteristic entropy threshold which
+coincides with the electron thermal conduction stability limit below
+which feedback proceeds and above which feedback is abated. The
+clusters below the limit are what would be called ``active'' clusters
+with star formation, AGN, and infrared excesses.
+\end{enumerate}
+We defer detailed scientific discussion of the above two points,
+feedback timescales, and entropy scaling relations for Papers II and
+III of the series.
+
+As part of this work, we have plans to make all data publicly available
+through two access points: 1) the NASA High Energy Space Archive
+(HEASARC) under the Chandra section of
+W3Browse\footnote{http://heasarc.gsfc.nasa.gov/W3Browse/chandra}, and
+2) our own searchable, interactive
+database\footnote{http://www.pa.msu.edu/astro/MC2/accept}. All data
+tables, plots, spectra, reduced \Chandra\ data products, scripts, and
+so on, will be available for any and all interested parties. We
+particularly encourage theorists to take advantage of the entropy
+profile library, a resource which to our knowledge is not available
+anywhere else as of right now.
+
+This paper focuses on the analysis methods and statistical trends of
+\accept. The structure of this paper is as follows:\\
+In \S\ref{sec:sample} we outline sample-selection criteria and
+\Chandra\ observations selected under these criteria. Data reduction
+is discussed in \S\ref{sec:data}. Spectral extraction and analysis are
+discussed in \S\ref{sec:specan}. Our method for deriving deprojected
+electron density profiles is outlined in \S\ref{sec:dene}. Results and
+discussion of our final analysis are presented in \S\ref{sec:r&d}. A
+summary this project is presented in \S\ref{sec:summary}. For this
+work we have assumed a flat \LCDM\ Universe with cosmogony $\OM=0.3$,
+$\OL=0.7$, and $\Hn=70\km\ps\pMpc$. All quoted uncertainties are at
+the $1.6\sigma$ level (90\% confidence).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Collection}
+\label{sec:sample}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Our sample was initially collected from observations publicly
+available in the \Chandra\ X-ray Telescope's Data Archive (CDA) as of
+June 2007. We first assembled a list of possible targets from multiple
+flux-limited surveys: \Rosat\ Brightest Cluster Sample
+\citep{1998MNRAS.301..881E}, RBCS Extended Sample
+\citep{2000MNRAS.318..333E}, \Rosat\ Brightest 55 Sample
+\citep{1990MNRAS.245..559E, 1998MNRAS.298..416P}, \Einstein\ Extended
+Medium Sensitivity Survey \citep{1990ApJS...72..567G}, North Ecliptic
+Pole Survey \citep{2006ApJS..162..304H}, \Rosat\ Deep Cluster Survey
+\citep{1995ApJ...445L..11R}, \Rosat\ Serendipitous Survey
+\citep{1998ApJ...502..558V}, Massive Cluster Survey
+\citep{2001ApJ...553..668E}, and REFLEX Survey
+\citep{2004A&A...425..367B}. After the first pass of data collection
+concluded, we continued expanding our collection by adding new archival
+data listed under the CDA Science Category as ``clusters of galaxies''
+or ``active galaxies''. As of submitting this paper, the result of our
+CDA scouring is a total of 454 observations amounting to a nominal
+exposure time of 15.05 Msec. 
+
+- Temperature, luminosity, and redshift ranges?
+
+Calculation of radial entropy necessitates measurement of the radial
+temperature structure (discussed further in \S\ref{sec:data}). To
+infer a temperature which is reasonably well constrained ($\pm 1.0
+\keV$) we require a minimum of 2500 counts per radial bin. We also
+require a minimum of three radial bins for each cluster. We find the
+last criterion necessary to avoid isothermal temperature profiles
+(within the uncertainties) which are a result of under-resolving
+temperature structure; the consequence of which is artificially
+flattened entropy profiles. After applying these constraints to all
+the observations in our collection we are left with 262 observations
+for 198 clusters totaling 8.40 Msec. Table \ref{tab:sample} lists the
+general properties for each cluster in \accept.
+
+% bad kprofs:
+% 36 clusters
+% 47 obs
+% 1.3 Msec
+% :(
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Analysis}
+\label{sec:data}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+The purpose of undertaking the archival entropy study which resulted in
+\accept\ was to create a library of uniformly analyzed galaxy cluster
+entropy profiles covering a broad range of masses, luminosities,
+temperatures, morphological states, and central cooling times. As
+presented in DHC06 and \cite{2002ApJ...576..601V}, we have defined
+used the adiabatic constant, $K=P\rho^{-5/3}$, to define entropy in
+terms of the gas temperature, $T(r)$, and electron density,
+$\nelec(r)$. Using these observables in place of the pressure and
+density yields entropy, $K(r) = T(r) \nelec(r)^{-2/3}$. The following
+sections outline our method for deriving $K(r)$.
+
+The radial temperature structure of each cluster was measured by
+fitting a single-temperature thermal model to spectra extracted from
+concentric annuli centered on the cluster X-ray peak. To acquire the
+gas density profile, we deprojected an exposure-corrected,
+background-subtracted, point source clean surface brightness profile
+(extracted in the 0.7-2.0\keV\ energy range) for each cluster and
+converted from observed surface brightness to emission density using a
+spatially dependent count rate conversion taken from the spectral
+analysis.
+
+The temperature and deprojected density profiles were then used to
+derive entropy profiles. The resulting profiles were fit with two
+models: The first model assumes power-law only behavior while the
+second adds a constant central entropy, \kna\, to the power-law.
+
+Details of our reprocessing and reduction of {\it Chandra} data, along
+with discussion of our background analysis, are covered more
+thoroughly in DHC06 and \citealt{xrayband} (hereafter CDV08). We
+direct interested reader's to those papers for in-depth
+discussion. In this paper we simply cover the basics of deriving gas
+entropy from X-ray observables. The primary difference between the
+present analysis and that of DHC06 and CDV08, is that we have used {\tt
+CIAO 3.4.1} and {\tt CALDB 3.4.0} when reducing data for this
+project. All quoted uncertainties are 90\% confidence ($\Delta\chisq=
+2.71 = 1.6\sigma$).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Temperature Profiles}
+\label{sec:temppr}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+One of the two components needed to derive gas entropy is the
+temperature as a function of radius. We therefore constructed radial
+temperature profiles for each cluster in our collection. A minimum of
+three annuli containing 2500 counts were required to reliably constrain
+a temperature and detect temperature structure beyond simple
+isothermality. To construct the annuli for each cluster, we extracted
+a background-subtracted cumulative counts profile using 1 pixel width
+annular bins originating from the cluster surface brightness peak and
+extending to a radius bounded by the detector edge, or $1/2 R_{180}$,
+whichever is smaller. Profiles are truncated at $1/2 R_{180}$ as this
+is the approximate radius where temperature profiles begin to turnover
+\citep{2005ApJ...628..655V}, and we are most interested in the radial
+entropy behavior in the cluster core. Additionally, analysis of
+cluster temperature structure at large radii requires a more time
+consuming and customized analysis of the X-ray background as the
+hard-particle background has been changing rapidly since 2004.
+
+The cumulative counts profiles were then divided into annuli
+containing at least 2500 counts (exact counts per annulus are listed
+in Table \ref{tab:specfits}). For well resolved clusters, the number
+of counts per annulus was arbitrarily increased to reduce the
+resulting uncertainty of $T_X$ and, for simplicity, to keep the number
+of annuli less than 50. The loss of temperature resolution from
+reducing the number of annuli and mixing of different gas phases in a
+given bin has an insignificant effect on the final entropy profiles.
+
+Background analysis was performed using the blank-sky datasets provided
+in the \Caldb. Backgrounds were reprocessed and reprojected to match
+each observation. Off-axis chips were used to normalize for variations
+of the hard-particle background by comparing blank-sky and observation
+9.5-12\keV\ count rates. Soft residuals were also created and fitted
+for each observation to account for the spatially-varying soft
+Galactic background. This component was added as an additional, fixed
+background component during spectral fitting. Errors associated with
+the soft background are estimated and added in quadrature to the final
+error budget.
+
+After defining annular apertures, we extracted source spectra from the
+target cluster and background spectra from the corresponding
+normalized blank-sky dataset. By standard \Ciao\ means we created
+response files (ARF) and redistribution matrices (RMF) for each
+cluster using a flux-weighted map (WMAP) across the entire extraction
+region. These files quantify the effective area, quantum efficiency,
+and imperfect resolution of the \Chandra\ instrumentation. The WMAP
+was calculated over the energy range 0.3-2.0\keV\ to weight
+calibration which varies as a function of position on the chip. Each
+spectrum was binned to contain a minimum of 25 counts per energy bin.
+
+Spectra were fitted with {\tt XSPEC 11.3.2ag}
+\citep{1996ASPC..101...17A} using an absorbed, single-temperature
+thermal model over the energy range 0.7-7.0 \keV. Galactic absorption
+values, $N_{HI}$, are taken from \cite{1990ARA&A..28..215D}. The
+potentially free parameters of the absorbed thermal model ({\tt
+WABS$\cdot$MeKaL}) are $N_{HI}$, X-ray temperature, metal abundance
+normalized to Solar (elemental ratios taken from
+\cite{1989GeCoA..53..197A}), and a normalization proportional to the
+integrated emission measure within the extraction region:
+\begin{equation}
+\label{eqn:norm}
+\eta = \frac{10^{-14}}{4\pi D_A^2(1+z)^2}\int \nelec \np dV\\
+\end{equation}
+where $D_A$ is the angular diameter distance, \red\ is cluster
+redshift, \nelec\ and \np\ are the electron and proton densities
+respectively, and $dV$ is the volume of the emission region. In all
+fits the metal abundance in each annulus was a free parameter and
+$N_{HI}$ was fixed to the Galactic value. No systematic error is added
+during fitting and thus all quoted errors are statistical only.
+
+For some clusters, more than one observation was available in the
+archive. We utilized the power of the combined exposure time by first
+extracting independent spectra, WARFs, WRMFs, normalized background
+spectra, and soft residuals for each observation. Then, these
+independent spectra were read into \textsc{XSPEC} simultaneously and
+fit with one spectral model which has all parameters, except
+normalization, tied among the spectra. The simultaneous fit is what is
+reported for these clusters, denoted by a ($\ddagger$), in Table
+\ref{tab:specfits}.
+
+Results from the spectral analysis are presented in Table
+\ref{tab:specfits} and corresponding plots of temperature profiles are
+presented in the first pane of the profile gallery. Our \accept\
+website\footnote{http://www.pa.msu.edu/astro/MC2/accept} also houses
+plots of spectra -- and their fits -- for the annuli of every cluster
+temperature profile. As in DHC06, we find spectral deprojection does
+not result in significant differences between best-fit temperatures
+inferred for projected or deprojected quantities. Thus, for this work,
+we quote projected temperatures only. Deprojection of temperature
+should result in slightly lower temperatures in the central bins of
+the clusters with the steepest temperature gradients. For these
+clusters, the end result would be a negligible lowering of the entropy
+for the central-most bins. We stress that deprojection does not
+significantly change the shape or \kna\ values we derive in this
+work.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Deprojected Electron Density Profiles}
+\label{sec:dene}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+For predominantly free-free emission, as is the case for the cluster
+ICM, gas emissivity strongly depends on gas density and only weakly on
+temperature, $\epsilon \propto \rho^2 T^{1/2}$. Therefore the measured
+flux in a narrow bandpass is an excellent measure of ICM density. To
+reconstruct the relevant gas density as a function of physical radius
+we deprojected the cluster emission from high-resolution surface
+brightness profiles and converted to electron density using
+normalizations and count rates taken from the spectral analysis.
+
+We began by extracting surface brightness profiles (second pane of the
+profile gallery) from the 0.7-2.0\keV\ energy range using concentric
+annular bins of size $\approx 5\arcsec$ (10 ACIS pixels) originating from
+the X-ray emission peak. To remove the effects of vignetting and
+exposure time fluctuations, we corrected each surface brightness
+profile by an observation specific, normalized radial exposure
+profile. Following the recommendation in the \Ciao\ guide for
+analyzing extended sources, exposure maps were created using the
+monoenergetic value associated with the observation count rate
+peak. We also tested the more sophisticated method of using spectral
+weights calculated for an incident spectrum with the temperature and
+metallicity of the observed cluster. But in the narrow band we
+consider, the response is relatively flat and we find no significant
+differences between using spectral weights or the monochromatic
+assumption. For all clusters the monoenergetic value used was $\sim
+1.0-1.7\keV$.
+
+The spectroscopic count rate and normalization in each temperature bin
+were then interpolated from the temperature radial grid to match the
+surface brightness radial grid. These interpolated values are then
+used to convert observed surface brightness to a deprojected electron
+density utilizing the deprojection technique of
+\citealt{1983ApJ...272..439K}. Radial electron density can be written
+in terms of relevant quantities as,
+\begin{equation}
+\nelec(r) = \sqrt{\frac{1.2 C(r) \eta(r) 4 \pi [D_A(1+z)]^2}{f(r) 10^{-14}}}
+\end{equation}
+where 1.2 comes from the ionization ratio \nelec=1.2\np, $C(r)$ is the
+radial emission density derived using equation A1 of
+\citealt{1983ApJ...272..439K}, $\eta$ is the spectral normalization from
+Eqn. \ref{eqn:norm}, $D_A$ is angular diameter distance, \red\ is
+redshift, and $f(r)$ is the 0.7-2.0\keV\ spectroscopic count rate. This
+method of density determination accounts for temperature and
+metallicity fluctuations which affect observed gas emissivity.
+
+Plots of the gas density as a function of radius are presented in pane
+three of the profile gallery. Fundamentally, this deprojection
+technique requires an assumption of geometric symmetry, and while we
+limit ourselves to the case of spherical symmetry, we also note this
+assumption has little effect on our results (see Appendix A of DHC06).
+Errors for the gas density profile were estimated using 5000 Monte
+Carlo simulations of the original surface brightness profile.
+
+Surface brightness irregularities, such as small inversions or
+extended flat cores, result in unstable, unphysical quantities when
+using the ``onion'' technique for deprojection. For cases where
+deprojection of the raw data was problematic, we resorted to fitting
+the surface brightness profile with the classic $\beta$-model. It is
+well known that the $beta$-model is only an isothermal approximation
+of the gas distribution and does not precisely represent all the
+features of the ICM
+\citep{2000MNRAS.311..313E,2002ApJ...579..571L,2007ApJ...665..911H}.
+However, we used the $\beta$-model as a means for generating a smooth
+analytic function which is easily deprojected. A more sophisticated
+method of modeling the gas density \cite{2005ApJ...628..655V} would
+avoid the problem of deprojection all together, but for our purposes
+here, we find such elegant schemes unnecessary. The models used in
+fitting were the single and double models:
+of \cite{1978A&A....70..677C}:
+\begin{eqnarray}
+S_X(r,\beta) &=& S_0 \left[1+\left(\frac{r}{r_c}\right)^2\right]^{-3\beta+0.5} \nonumber \\
+S_X(r,\beta_1,\beta_2) &=& S_{01} \left[1+\left(\frac{r}{r_{c1}}\right)^2\right]^{-3\beta_1+0.5} + S_{02} \left[1+\left(\frac{r}{r_{c2}}\right)^2\right]^{-3\beta_2+0.5} \nonumber
+\end{eqnarray}
+The models were fitted using Craig Markwardt's robust least-squares
+minimization IDL routines\footnote{available at
+http://cow.physics.wisc.edu/~craigm/idl/}.  The fits were weighted
+using the inverse square of the surface brightness errors. Using this
+weighting scheme results in residuals which are near unity for, on
+average, the inner 80\% of the radial range considered. In all cases, the
+$\beta$-model was an excellent fit to the data. Accuracy of errors
+output from the fitting routine are checked against a bootstrap Monte
+Carlo analysis of 1000 surface brightness realizations. Both models
+were considered and we established which model better represented the
+surface brightness profile by making a model comparison via an
+F-test. We considered the addition of free model components to be
+statistically necessary when the F-statistic was less than 0.05. A
+by-eye assessment was also made.
+
+For the clusters listed in Table \ref{tab:betafits}, we used the
+smooth analytic solution of the $\beta$-model, instead of the raw
+data, in deriving electron density and ultimately entropy. When
+necessary, the best-fit model is also plotted in pane two of the
+profile gallery. We emphasis that our use of a $\beta$-model fit for
+some clusters has not artificially introduced flattened cores into
+otherwise peaky surface brightness profiles. A visual comparison of
+the best-fit $\beta$-model and the raw surface brightness profile
+reinforces this point as there is little to no disagreement between
+the size and shape of the core region in the $beta$-models and the
+surface brightness.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Entropy Profiles}
+\label{sec:kpr}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We derived radial entropy profiles for the clusters which comprise
+\accept\ by taking $T(r)$ and \nelec$(r)$ and calculating $K(r) =
+T(r)\nelec(r)^{-2/3}$. To construct the radial entropy profiles, we
+interpolated the cluster temperature profile across the
+high-resolution radial grid of the deprojected electron density
+profile. Temperature interpolation across the central bin is applied
+in two ways: 1) as a linear gradient consistent with the slope of the
+other central bins (referred to as the 'flat' model) or 2) assumed to
+be constant across the central bin (referred to as the 'EXTR'
+model). Shown in Figure {\ref{fig:kcomp} is the ratio of central
+entropy, \kna, derived when the central temperature, $T_{X,0}$, is
+assumed to be constant or interpolated. It is worth noting that both
+schemes yield statistically consistent values for \kna\ except for the
+instances marked by red points.
+
+These special cases all have steep temperature gradients in their cores
+with the maximum and minimum radial temperatures differing by a factor of
+1.5-4.0. Extrapolating a steep temperature gradient to $r \rightarrow
+0$ results in very low central temperatures ($T_X \leq 1/3
+T_{virial}$) which are inconsistent with observations, most notably
+\citealt{2003ApJ...590..207P}. Most importantly however, is that the
+flattening of entropy we observe in the cores of our sample (discussed
+in \S\ref{sec:uped}) is {\bfseries\em{not}} a result of the method
+chosen for interpolating the temperature profile. For this paper we
+therefore focus on the results derived assuming a constant temperature
+across the central-most bin.
+
+Uncertainties generated by having assumed a single-component
+temperature gas in each annular bin and from neglecting the effect of
+ICM inhomogeneity (\eg\ cavities or bubbles) are discussed in detail
+in the Appendix of DHC06. Succinctly, the volume filling fraction of a
+second, cooler gas phase or high-entropy component must be non-trivial
+($> 50\%$) in order for our entropy profiles to be significantly
+altered. As is discussed in DHC06, our results are robust to the
+presence of unresolved cool gas and mostly insensitive to X-ray
+surface brightness decrements.
+
+With the exception of 24 clusters which required a $\beta$-model fit
+to their surface brightness profile, we have made no theoretical
+assumptions -- besides spherical symmetry and one observationally
+motivated assumption for $T(r\rightarrow0)$ -- regarding the
+equilibrium state of the ICM, shape or depth of the underlying dark
+matter potential, or temperature distributions. Thus we consider these
+entropy profiles to be the most genuine representation of the data.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results and Discussion}
+\label{sec:r&d}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Each entropy profile was fit with two models, one which assumed a
+constant entropy pedestal (1) and another which assumed only power-law
+behavior (2):
+\begin{eqnarray}
+(1)~K(r) &=& \kna + \khun\ \left(\frac{r}{100 \kpc}\right)^{\alpha}\nonumber \\
+(2)~K(r) &=& \khun\ \left(\frac{r}{100 \kpc}\right)^{\alpha}.\nonumber
+\end{eqnarray}
+where \kna\ is central entropy, \khun\ is a normalization for entropy
+at 100\kpc, and $\alpha$ is the power-law index. Listed in Table
+\ref{tab:kfits} are the results of the fitting. The table lists two
+sets of values for each model: 'EXTR' which was calculated using
+temperature profile which was allowed to got to zero in the central
+bin, and 'FLAT' which was calculated using a constant temperature in
+the central bin. Not the entire radial range was used for fitting as
+the outermost bins are noisy from the ``onion'' deprojection scheme
+used. The minimum and maximum radii used during fitting are also
+listed. For clusters which required a double $\beta$-model fit, we
+restrict the fit to the innermost region as we are most
+interested in the entropy of the core region. The power-law index is
+typically much steeper for these cases, but the outer regions have
+power-law indices which are typical of the rest of the sample.
+
+Shown in Figure \ref{fig:splots} is a composite of all the entropy
+profiles in \accept plotted in physical units. This figure represents
+the cornerstone purpose of \accept: a uniformly analyzed collection of
+entropy profiles covering a broad range of central entropies. Each
+profile is color-coded in representation of the global cluster
+temperature. Overlaid on the figure is the theoretical pure cooling
+curve calculated by \cite{2002ApJ...576..601V}. This curve represents
+the entropy profile which would result from gravitational heating
+alone.
+
+In the following sections we discuss the results gleaned from analysis
+of \accept. Results such as the universal entropy pedestal, the
+bimodal distribution of central entropy, and the asymptotic
+convergence of the entropy profiles to the self-similar $K(r) \propto
+r^{-1.1}$ power-law at $r \geq 100\kpc$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Universal Entropy Pedestal}
+\label{sec:uped}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Arguably the most striking feature of Figure \ref{fig:splots} is the
+ubiquity of a central entropy pedestal. Core flattening of surface
+brightness profiles (and conversely gas density) in clusters is a well
+established feature which led to the advent and wide usage of
+$\beta$-models (see \S\ref{sec:dene}). What is notable here however is
+that based on comparison of reduced $\chi^2$, none of the clusters in
+\accept\ have an entropy distribution which is best-fit by the power-law
+only model. For even the most highly peaked surface brightness
+profiles (e.g. Abell 478, Abell 2022, Abell 2029, Abell 2129) the
+incredible resolving power of \Chandra\ allows us to discern the
+subtle flattening of the gas density at small radii ($r < 10
+\kpc$). Only four clusters have a central entropy which is not
+statistically distinguishable from zero: 2PIGG 0011.5-2850, Abell
+4059, MS 0116.3-0115, and MS 1008.1-1224. For these clusters it may be
+the case that the core region of the cluster is very small
+($r_{\mathrm{core}} \lesssim 5-10\kpc$) and is thus not resolved.
+
+The departure of core entropy from the self-similar power-law
+behavior is a primary signature of past heating and cooling which has
+taken place inside the cluster during its formation. That this is a
+ubiquitous feature of cluster entropy profiles is telling of just how
+important feedback mechanisms are to understanding the global
+properties of clusters and their evolution. For the whole collection,
+the mean of \kna\ is $86.1 \pm 89.1 \ent$. Subdividing the collection
+into two arbitrary classes -- clusters with \kna\ below and above $50
+\ent$ -- we find means of $\kna\ = 19.2 \pm 11.3 \ent$ and $\kna\ =
+155.5 \pm 80.9 \ent$, respectively. We show section \S\ref{sec:bimod}
+that this arbitrary cut in \kna\ space is not so arbitrary, and that
+the low dispersion in these two subgroups of the full sample is
+related to the processes of AGN heating and possibly thermal electron
+conduction.
+
+While one may be tempted to explain the entropy pedestal feature
+as a resolution effect, we direct the reader again to DHC06 where we
+showed using a simulated surface brightness profile for a power-law
+entropy distribution, that the \Chandra\ PSF is not creating an
+envelope which limits resolution of low entropy ICM gas. Intuitively,
+one can see from the gallery of profiles that an entropy core of a few
+to tens of \kpc\ cannot possibly arise from instrument resolution
+effects alone.
+
+The PSF of course is not the only limitation on resolving ICM core
+entropy structure. There is the issue of our choice to use fixed
+angular size bins ($5\arcsec$) when extracting surface brightness
+profiles. This choice may introduce an artificial resolution limit which
+is redshift dependent. As redshift increases a fixed bin size
+incorporates a larger physical volume and the value of \kna\ might
+artificially increase because each radial bin possibly contains a
+broader range of gas entropys. This can be understood as a type of
+inherited resolution bias on the central entropy. Shown in Figure
+{\ref{fig:k0res} is a plot of \kna\ versus redshift. The trend of
+increasing central entropy with increasing redshift seen in the figure
+can take on several interpretations. One interpretation is that the
+trend is evidence of a redshift dependant entropy lower-boundary
+introduced from resolution effects. Another explanation is that the
+number of low entropy systems is decreasing as a function of redshift.
+
+As a test of the redshift dependence on measured central entropy, we
+selected all clusters with $\kna \leq 20 \ent$ and $\red \leq 0.3$
+and degraded their surface brightness profiles to mimic the effect of
+increasing the cluster redshift. This is best illustrated using an
+example: consider a cluster at $\red = 0.1$. For this cluster,
+$5\arcsec = 9 \kpc$. Were the cluster to be moved out to $\red = 0.2$,
+$5\arcsec$ would equal $16 \kpc$. To mimic moving this example cluster
+from $\red = 0.1$ to $\red = 0.2$, we can extract a new surface
+brightness profile using a bin size of $16\kpc$ instead of
+$5\arcsec$. This will result in a new surface brightness profile which
+is analogous to a cluster at a higher redshift.
+
+This procedure of artificially redshifting clusters was used on the
+subsample and repeated over an evenly distributed grid of redshifts
+thereby creating an ensemble of degraded surface brightness profiles
+and hence entropy profiles. Using this degradation method we traced
+the relative change in central entropy as a function of redshift for
+each cluster with $\kna \leq 20 \ent$ and $\red \leq 0.3$. Each
+cluster was stepped from $\red =$ 0.1 to  0.38 in increments of
+0.02. If the nominal redshift of the cluster was less than the next
+step, then that step was skipped. The effect of decreasing surface
+brightness due to cosmic reddening, $(1+z)^{-4}$, was also included in
+the degradation, however the effect of decreased signal-to-noise is
+not considered here.
+
+[the work for following paragraphs is not finished to my
+satisfaction]:
+
+After repeating the analysis from \S\ref{dene} and \S\ref{kpr} using
+the degraded entropy profiles we find the effect of redshift on our
+central entropy measure is... ???
+
+From our analysis of the degraded entropy profiles, we find the slope
+of the lower boundary in Figure \ref{fig:k0res} is steeper than it is
+in the degraded profiles [TRUE?]. This points to a physical
+mechanism as an explanation and not an observational effect. It has
+been suggested recently that the number of cool core clusters
+decreases with increasing redshift [REFS?]. We are most likely seeing
+this effect in our entropy profiles. If this is the case or not, we
+certainly find that the redshift resolution dependence is not
+significantly inflating the central entropy values we have measured
+for the clusters in \accept [TRUE?].
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Bimodality of Central Entropy and Central Cooling Time}
+\label{sec:bimod}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The time required for a gas parcel to radiate away its thermal energy
+is a function of the gas entropy. Low entropy gas radiates profusely
+and is thus subject to rapid cooling and vice versa for high
+entropy gas. Thus, the distribution of \kna\ is of particular interest
+because it is an indicator of the cooling timescale in the cluster
+core. Consequently, the \kna\ distribution for a carefully selected
+subsample (\eg\ HIFLUGCS or REXCESS) of \accept\ can be utilized to
+study how, and on what timescales, feedback mechanisms operate.
+
+In the top panel of Figure \ref{fig:k0hist} is plotted the
+logarithmically binned distribution of \kna. One can immediately see
+the distribution has at a minimum two distinct populations. In the
+bottom panel of Figure \ref{fig:k0hist} is plotted the cumulative
+distribution of \kna. If the distinct bimodality of the \kna\
+distribution were an artifact of binning, then one should expect the
+cumulative distribution to be relatively smooth. But there are clearly
+plateaus in the cumulative distribution, one of which coincides with
+the division between the two populations at $\kna \approx 40-60
+\ent$. To verify the presence of this bimodality we have performed two
+additional checks: a KMM test and examination of the central cooling
+time distribution.
+
+First, we applied the KMM bimodality test of \cite{1994AJ....108.2348A}
+to check for the presence of two statistically distinct \kna\
+distributions. The KMM test estimates the probability that a set of
+datapoints is better described by the sum of multiple Gaussians than
+by a single Gaussian. We tested two cases: the first assumed that the
+\kna\ distribution has two Gaussian components and the dispersions of
+these distributions are different (i.e. the heteroscedastic case). The
+second case was identical except with three Gaussian components. The
+results of the KMM test on the first case were peaks at $54.7 \pm XXX$
+and $253.8 \pm YYY \ent$. 163 clusters were assigned to the first
+distribution, while 36 were assigned to the second. The KMM code also
+outputs a P-value, $p$, for each fit. Under the assumption that
+\chisq\ describes the distribution of the likelihood ratio statistic,
+$1-p$ is the confidence interval for the model used. Our bimodal KMM
+test returned $p = 0.000$, or $100\%$ confidence that the bimodal
+distribution was a significantly better model than the single Gaussian
+model. We found a similar result for the second case which used three
+Gaussians, with peaks at $35.4 \ent$, $175.9 \ent$, and $337.5
+\ent$. 140 clusters were assigned to the first distribution, 48 to the
+second, and 11 to the third. The $p$-value was again 0.000. There is
+little to no possibility that the \kna\ distribution we observe in
+\accept\ arises from a single Gaussian population.
+
+As a second check, we converted entropy to cooling time and compared
+those values with central cooling times calculated from only the
+spectral results. Cooling times were calculated using the equation,
+\begin{equation}
+\tcool = \frac{5nkT}{2\nelec \nH\Lambda(T,Z)}
+\label{eqn:tcool}
+\end{equation}
+where \tcool is in seconds, $n$ is the total ion number ($\approx
+2.3\nH$ for a fully ionized plasma), \nelec and \nH are the electron
+and proton densities respectively, $\Lambda(T,Z)$ is the cooling
+function at a particular temperature and metal abundance, and $5/2$ is
+a constant appropriate for isobaric cooling. $\Lambda(T,Z)$ is
+calculated for each temperature bin by inputing the best-fit
+temperature and metal abundance into \xspec\ to get a flux. The
+flux is then converted into $\Lambda$. The $\Lambda$ values were
+interpolated across the radial grid of the electron density
+profile. Shown in Figure \ref{fig:tcool} is the logarithmically binned
+distribution of central cooling times.
+
+To make a nearly one-to-one comparison, we again calculate cooling
+times but using the entropy as input. Assuming free-free
+interactions are the dominant gas cooling mechanism, entropy is
+related to cooling time by recasting Eqn. 5.23 in \cite{sarazinbook}
+as, 
+\begin{equation}
+\tcool \approx 10^8 \yrs \left(\frac{K}{10 \ent}\right)^{3/2} \left(\frac{kT}{5 \keV}\right)^{-1}.
+\label{eqn:kcool}
+\end{equation}
+Because the central cooling times from Eqn. \ref{eqn:tcool} utilize
+only spectroscopic information, they are mostly independent of the
+entropy derivation and models we fit to the data. We can thus compare
+the distributions of cooling time and \kna\ as complementary checks
+for a bimodal distribution. After converting \kna\ into a cooling time
+(bottom panel of Fig. \ref{fig:tcool}) and comparing the two
+distributions, we find that the cooling time gaps from
+Eqn. \ref{eqn:tcool} and Eqn. \ref{eqn:kcool} are consistent with each
+other and occur at \tcool\ $\sim 0.7-1.0$ \Gyrs. The bimodality of the
+\kna\ distribution is clearly not an artifact of our analysis
+techniques.
+
+A bimodal entropy distribution is expected to arise in the model of
+episodic AGN feedback. \cite{2005ApJ...634..955V} put forth a model of
+ICM heating through AGN feedback whereby outbursts of $10^{45} \ergps$
+occurring every $\approx 10^8 \yrs$ can maintain a quasi-steady entropy
+pedestal of $\approx 10-30 \ent$. Rare, large AGN outbursts of total
+energy $10^{61} \ergps$ should push the central entropy level into the
+$\approx 30-50 \ent$ range. This model predicts quite well the
+distribution at $\kna \lesssim 50 \ent$, but depletion of the $40-60
+\ent$ region and populating $> 60 \ent$ requires an additional piece
+of physics.
+
+If after a cluster experiences a large AGN outburst, and the central
+entropy is boosted to $> 30 \ent$, some mechanism were to prevent the
+ICM from cooling, the cluster core should remain at its present
+entropy configuration since cooling can no longer reduce the core
+entropy level. Being unable to cool, these systems will never move
+back toward the mean of the \kna\ distribution. They have been
+isolated beyond a hardened lower entropy limit. Subsequent mergers
+could continue to raise the ICM entropy until most $40-60 \ent$
+clusters are gone and nothing but $> 60 \ent$ clusters remain. We do
+note however, that it is very difficult to generate enough entropy
+through AGN feedback and mergers alone to produce clusters with $\kna
+> 300 \ent$. To make these clusters may require some form of
+``pre-heating'' or it may be the case that these clusters were never
+cool.
+
+We propose that the mechanism by which clusters in the $> 30 \ent$
+regime are stabilized against cooling is electron thermal
+conduction. This has been proposed before by
+\cite{2005ApJ...630L..13D} in the case of two radio-quiet galaxy
+clusters with \kna\ $\approx 30-60 \ent$, and is discussed in much
+more detail in the forthcoming paper Voit \etal\ 2008. The premise of
+the model for conductively stabilized cluster cores is quite simply
+that above a critical entropy threshold, the energetic losses from
+radiative cooling are balanced by thermal conduction. The model relies
+on a ``coincidence of scaling'' whereby the Field length, a descriptor
+for the size of a gas cloud which can condense in the presence of
+conduction, is a function of entropy alone. It so happens that,
+assuming reasonable suppression, the entropy scale at which conduction
+balances cooling is $\kna \approx 20-30 \ent$. This is rather
+auspicious, as it is the same entropy scale above which the \kna\
+distribution falls-off rapidly. In Paper II we also present the result
+that below this critical entropy threshold of $20-30 \ent$, signatures
+of feedback (which rely on multi-phase gas) such as star formation and
+radio-loud AGN are almost universally present, while above this
+threshold they are not.
+
+We must mention that \accept\ is not a complete, uniformly selected
+sample of clusters, it is simply an archive-limited analysis of 
+publicly available \Chandra\ data. As such, one may suspect that a
+particular type of cluster (classic cooling flows or big mergers) draw
+the attention of proposers and TACs alike. \kna\ bimodality could be a
+manifestation of $40-60 \ent$ clusters being ``boring'' and thus
+underobserved. This possibility can be easily addressed through the
+study of either a complete sample of clusters or a carefully selected
+sample of clusters like those in REXCESS \citep{2007A&A...469..363B}
+or HIFLUGCS \citep{2002ApJ...567..716R}. We stress though that this
+sociological explanation is highly unlikely.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Slope and Normalization of Power-law Components}
+\label{sec:slopes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Beyond $\approx 100 \kpc$, the entropy profiles show a striking
+similarity in the slope of the power-law component which is
+independent of the central entropy value. For the entire collection,
+$\alpha = 1.22 \pm 0.31$ while for clusters with $\kna < 50 \ent$,
+$\alpha = 1.22 \pm 0.26$, and for clusters with $\kna \geq 50 \ent$,
+$\alpha = 1.21 \pm 0.35$. Scaling the entropy profiles by virial
+temperature and virial radius does reduce the scatter in Figure
+\ref{fig:splots}, but we reserve detailed discussion of scaling
+relations for a future paper. This mean slope of $\alpha = 1.22$, is
+not statistically different from the theoretical value of 1.1
+\citep{2001ApJ...546...63T} which arises from hierarchical cluster
+formation.
+
+The scaling factor used in the power-law component of model-1 and
+model-2, $\khun$, also shows statistical similarity but with much
+larger dispersion. For the whole collection, the mean value of
+$\khun$ is $131.9 \pm 65.3 \ent$. Again distinguishing
+between clusters below and above $\kna\ = 50 \ent$, we find
+$\khun = 146.8 \pm 68.1 \ent$ and $\khun = 116.4 \pm 58.7 \ent$,
+respectively. Additional entropy scaling relations and their
+importance will be explored more thoroughly in Paper III of the
+\accept\ series.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary and Conclusions}
+\label{sec:summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We have presented our analysis of 199 galaxy cluster entropy
+profiles derived using archival \Chandra\ data, a project which we
+have named \accept\ for Athenaeum of Chandra Cluster Entropy Profile
+Tables. We deprojected surface brightness profiles extracted from
+$5\arcsec$ annuli to obtain the electron gas density as a function of
+radius. We also generated temperature profiles using spectra extracted
+from a minimum of three concentric annuli containing 2500 counts each
+and extending to either the chip edge or $0.5 R_{180}$, whichever was
+smaller. Entropy profiles were then calculated from gas density and
+temperature using $K(r) = T(r)n(r)^{-2/3}$. Two models for the entropy
+distribution were then fit to each profile: power-law only and
+power-law plus constant entropy pedestal, \kna.
+
+We have demonstrated that for all clusters, the entropy profile is
+best described by the model which behaves like a power-law at large
+radii and has a constant entropy pedestal in the core. The profiles
+also show a remarkable similarity at radii greater than 100 kpc, and
+asymptotically approach the self-similar pure-cooling curve. We have
+also shown that the distribution of central entropy in \accept\ is at
+a minimum bimodal. This bimodality has a distinct peak at $\approx 20
+\ent$ with a dispersion of $\approx 10 \ent$. This part of the
+\kna\ distribution are clusters which would be dubbed ``classic cooling
+flows'' as they have central cooling times shorter than a Hubble
+time. The second broader peak of the distribution is at $\approx 150
+\pm 80 \ent$. These clusters can be mostly classified as having
+disturbed morphologies or as being highly diffuse or ``fluffy'' with
+no dense, cool cores in the lot.
+
+We propose that the observed range and distribution of central
+entropys in \accept\ are consistent with the picture of an entropy
+life-cycle which at it's heart is run by AGN feedback and
+conduction. Our position is strongly supported by a number of AGN
+feedback models and the continuing stream of literature detailing
+voids and bubbles in the ICM filled with radio emission associated
+with AGN activity. In our picture of this entropy life-cycle, clusters
+undergo a set of steps as follows:
+\begin{enumerate}
+\item Clusters with a central cooling time shorter than a Hubble time
+have been subject to prodigious core cooling at some point in their
+history.
+\item A very small fraction of this gas condenses and flows onto the
+supermassive black hole in the core of the galaxy residing at the
+bottom of the cluster potential well.
+\item Resulting AGN activity with a duty cycle of a few tens of Myrs
+and occurring every few hundred Myrs is capable of maintaining an entropy
+pedestal of $\approx 10-30 \ent$ as is observed in \accept.
+\item On rare occasion, an AGN outburst can supply enough energy to
+push the central entropy to $> 30 \ent$. However, at these entropy
+scales we suggest electron thermal conduction is capable of
+suppressing future cooling and thus setting a hard-limit above which a
+cluster will no longer cool.
+\item After becoming conductively stable, the cluster is then subject
+to continual mergers which boost the gas entropy ever higher.
+\end{enumerate}
+We suggest the above steps in a clusters entropy life-cycle describe
+well the observed range of central entropys and bimodality of the
+\kna\ distribution.
+
+There are additional consequences of this entropy life-cycle which are
+threshed out in Paper II. Foremost of which is that below the
+conductive threshold signatures of feedback which require a multiphase
+medium, such as AGN activity and star formation, should be present, as
+where above the threshold they should be unilaterally absent. In Paper
+II we show that below the theoretical conduction limit of $\approx 30
+\ent$, AGN activity and star formation in the central cluster galaxy, as
+demonstrated by radio-loud sources and \halpha\ emission, are
+universally ``on'' below the limit and ``off'' above it. We suggest
+this as a strong indication that the entropy life-cycle we have
+pieced together in this paper is most likely how feedback is regulated
+in clusters.
+
+In the effort toward developing a self-regulating model of cluster
+feedback, we believe a better understanding of ICM entropy has proven
+to be pivotal. Moving forward, developers of models of massive galaxy
+formation, and possibly galaxy formation in general, may find the
+online database associated with \accept\ a highly useful tool.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\acknowledgements
+Kenneth Cavagnolo was supported in this work by the National
+Aeronautics and Space Administration through \Chandra\ X-ray
+Observatory Archive grants AR-6016X and AR-4017A, with additional
+support from a start-up grant for Megan Donahue from Michigan State
+University. Megan Donahue and Michigan State University acknowledge
+support from the NASA LTSA program NNG-05GD82G. The \Chandra\ X-ray
+Observatory Center is operated by the Smithsonian Astrophysical
+Observatory for and on behalf of the National Aeronautics Space
+Administration under contract NAS8-03060. This research has made use
+of software provided by the Chandra X-ray Center (CXC) in the
+application packages \Ciao, \chips, and \sherpa. This research has
+made use of the NASA/IPAC Extragalactic Database (NED) which is
+operated by the Jet Propulsion Laboratory, California Institute of
+Technology, under contract with the National Aeronautics and Space
+Administration. This research has also made use of NASA's Astrophysics
+Data System. Some software was obtained from the High Energy
+Astrophysics Science Archive Research Center (HEASARC), provided by
+NASA's Goddard Space Flight Center.
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%%
+% Figures  and Tables%
+%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{figs.tex}
+%\clearpage
+%\LongTables
+%\input{sample.tex}
+%\clearpage
+%\input{betafits.tex}
+%\clearpage
+%\input{specfits.tex}
+%\clearpage
+%\input{kfit.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+% End the document %
+%%%%%%%%%%%%%%%%%%%%
+\end{document}

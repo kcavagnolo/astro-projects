@@ -1,0 +1,364 @@
+\documentclass[11pt]{article}
+\setlength{\topmargin}{-.3in}
+\setlength{\oddsidemargin}{-0.1in}
+\setlength{\evensidemargin}{-0.1in}
+\setlength{\textwidth}{6.7in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\topskip}{0.5in}
+\setlength{\textheight}{9.25in}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{1em}
+\usepackage{common,graphicx,hyperref,epsfig}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\today
+
+{\bf{Article:}} ApJS 295532
+
+{\bf{Title:}} Intracluster Medium Entropy Profiles for a Chandra Archival
+Sample of Galaxy Clusters
+
+{\bf{Authors:}} Kenneth W. Cavagnolo, Megan Donahue, G. Mark Voit, and Ming
+Sun
+
+Dear Editor,
+
+Below is our reply to the Referee's Report for ApJS Article 295532.
+The referee's comments are in quotes and {\it{italicized}}, while our
+replies are in regular font. We have found the referee's comments to
+be very helpful in making the focus and discussion of our paper more
+concise and thorough.
+
+---------------------------------------------------------------------
+
+{\it{``1) Section 3.4, describes how the values of K0 were derived and
+    shows in Figure 2 the ratio of the core entropy using the two
+    methods. I count about 40/239 systems for which the ratio is
+    significantly different from unity, which is a non-negligible
+    fraction. While it's pointed out in the text that the different
+    interpolation schemes do not affect the conclusion of non-sero
+    core entropy, I am wondering how the different temperature
+    interpolation schemes affect the bimodality in the K0
+    distribution. Since the bimodality is the principal result of the
+    paper, I think the effect of the temperature interpolation on this
+    result should be investigated.''}}
+
+Shown in Figure \ref{fig:k0hist} is the histogram of \kna\ values
+derived for the temperature interpolation scheme which assumes the
+temperature is not a constant in the centralmost bins. The bimodal
+behavior is still present, but with a second peak which is broader
+compared to the same peak shown in the paper. Our KMM test using these
+\kna\ values does not yield results which significantly differ from
+those presented in the paper. That the \kna\ bimodality is not
+significantly affected by the different \Tx\ interpolation schemes is
+an important point, and we have added paragraph six in \S 5.2 to
+emphasize this point.
+
+\begin{figure}[htp]
+  \begin{center}
+    \begin{minipage}[htp]{0.9\linewidth}
+      \includegraphics*[width=\textwidth, trim=20mm 10mm 10mm 10mm, clip]{k0hist_itpl.eps}
+      \caption{{\it{Top panel:}} Histogram of best-fit \kna\ derived
+      using the alternate temperature interpolation scheme. Bin widths
+      are 0.15 in log space. {\it{Bottom panel:}} Cumulative
+      distribution of \kna\ values.}
+      \label{fig:k0hist}
+    \end{minipage}
+  \end{center}
+\end{figure}
+
+---------------------------------------------------------------------
+
+{\it{``2) Related to this, Section 4, on systematics, is very
+    interesting. However, the entire Section is based on the
+    systematics introduced by angular resolution effects on the
+    density profiles, yet there are clusters in the sample for which
+    there are only three temperature bins. I would like to see some
+    discussion added on the effect of finite binning of temperature
+    profiles. This is especially important because the temperature
+    bins are (rightly) defined according to a total count criterion,
+    meaning that clusters with centrally peaked emission will yield
+    entropy profiles of generally better resolution than those with
+    flat central emission. For instance, what happens when the
+    temperature profile of a cluster with centrally peaked emission is
+    binned to the typical resolution of a cluster with flat central
+    emission?''}}
+
+This is a good point, one we considered during our analysis (paragraph
+four of \S 4.2) but did not discuss at length in the manuscript. We
+have segregated out the discussion of the degraded temperature
+profiles and added text to further explain our method. Inspired by this
+referee comment, we have also added a few sentences to the end of \S
+4.3 to point out that our use of counts per annulus in creating
+temperature profiles has not resulted in a relationship between
+\kna\ and exposure time or number of bins in $\Tx(r)$.
+
+---------------------------------------------------------------------
+
+{\it{``3) I'm not sure Section 4.2, on the subject of XMM profiles, is
+    entirely correct. Taking the example of the samples of Piffaretti
+    et al (2005) and Pratt et al. (2006), it is important to note
+    significant differences in the respective analyses. My
+    understanding of Piffaretti et al's analysis is that they derived
+    their gas density profiles from spectral fits to relatively coarse
+    annular bins defined for the temperature profile analysis.
+    However, I understand that Pratt et al. derived their density
+    profiles from deprojected, PSF deconvolved analytic model fits to
+    surface brightness profiles, corrected for radial variations in
+    emissivity due to temperature and abundance gradients, and their
+    temperature profiles are also corrected for PSF effects (as
+    described in Pointecouteau et al 2005). Furthermore, Croston et al
+    (2006) show that their analytic surface brightness models recover
+    the density distribution exceptionally well in comparison to
+    Chandra results, with differences occurring only in the single
+    central surface brightness bin. Thus the Pratt et al analysis is
+    undertaken on a radial surface brightness binning scale that is
+    equivalent to that of the present paper, while the Piffaretti et
+    all analysis is not.  Combining a discussion of resolution effects
+    in the context of redshift with a comparison with XMM profiles
+    confuses the issue further. I thus suggest that Section 4.2 should
+    deal only with resolution effects in the context of cluster
+    redshift, and that a separate Section should be added comparing
+    with XMM results. The latter Section will have to discuss the
+    effect of the different analysis methods employed. My belief is
+    that since the XMM profiles were never fitted to anything other
+    than a power law, it is disingenuous to conclude (especially in
+    the case of Pratt et al.) that these results did not find core
+    flattening because of resolution effects. It is more likely
+    because, unlike the present work, they did not think to
+    investigate core flattening.''}}
+
+We have pulled the discussion of angular resolution as it relates to
+XMM from \S 4.2 and moved it to a subsection in \S 5.6 with the rest
+of the discussion regarding XMM. We have expanded discussion of
+Piffaretti 2005 and Pratt 2006 to highlight their analysis methods and
+how they differ from our own. We have also pointed out, more heavily
+in this revised manuscript than the original, that some of the XMM
+profiles appear to have flattened cores, but nothing but a power law
+was used in fitting.
+
+---------------------------------------------------------------------
+
+{\it{``4) What are the implications of the bimodality? The existence
+    of a gap in the distribution of core entropies implies that either
+    the gap is intrinsic to the cluster population, or that the
+    entropy in the cluster cores is a constantly evolving property.
+    Both of these possibilities open up intriguing areas for further
+    discussion. If the gap is intrinsic, how is it that some clusters
+    have a high core entropy and some clusters have a low core
+    entropy? The idea suggested by McCarthy and collaborators, that
+    different clusters experience a different level of preheating, may
+    be one explanation. I'm sure the authors could think of others.
+    If the gap is a function of evolving core entropy distributions,
+    the fraction of clusters on one side or the other, and
+    particularly the evolution of that fraction over time, might be
+    indicative of a characteristic timescale. If that timescale is of
+    the order of Gyr, then it would suggest that dynamical
+    (gravitational) processes are modifying the core entropy, through
+    mixing of high and low entropy gas during mergers. If the
+    timescale is of order Myr, then it is possible that AGN-driven
+    feedback is the dominant driver of the distribution of core
+    entropies. Is it possible to investigate this with the current
+    sample? If not, what kind of sample would be needed to do this
+    kind of thing?  Is there anything special about the clusters in
+    the gap?  I think the paper would benefit from a bit more
+    discussion along these lines added to the text.''}}
+
+Our discussion of the physical meaning of \kna\ bimodality is parsed
+out to several sections (paragraph 7 of \S 5.2 and paragraph 7 of \S
+6) of the manuscript and most specifically we reserved the bulk of the
+discussion to Voit et al (ApJ 2008, 681 5L). In Voit et al we suggest
+that the gap is a result of the effects of thermal electron conduction
+slowing cooling with subsequent mergers possibly depopulating the
+\kna\ = 30-50 \ent\ region. Most of the questions the referee has
+offered are actually the focus of our ongoing projects, and hence we
+have been cautious in this manuscript to discuss ongoing work.
+
+---------------------------------------------------------------------
+
+{\it{``5) This may be a little more work, but I think the paper would
+    also benefit from a cross correlation of K0 with the presence of a
+    compact central radio source. Since AGN are thought to be key to
+    feedback in the ICM, such a cross-correlation seems to be the
+    obvious thing to do with such a large and well-observed sample,
+    especially in the context of an ApJS paper.''}}
+
+This is a very keen observation, one we addressed in the ApJ Letter
+Cavagnolo et al. 2008 (ApJ 683, 107). We found that \kna\ does
+correlate with the presence of AGN activity (as evidenced by radio
+emission) and possible star formation (as evidence by \halpha\
+emission).
+
+---------------------------------------------------------------------
+
+{\it{* Sect 1, para 2 (page 2): ``...otherwise tight mass observable
+    relations...'', I would say ``otherwise theoretically tight''.
+    O'Hara et al. (2006) could be added to the list of references
+    concerned with reduction of scatter about scaling relation.}}
+
+We agree that it is true the expectation for tight scaling relations
+comes from theory, hence we have altered the wording and added the
+reference.
+
+---------------------------------------------------------------------
+
+{\it{* Sect 1, para 7 (page 4) Pratt et al. (2006) could be added to
+    studies showing core entropy has larger dispersion than at large
+    radii.}}
+
+An oversight on our part, the reference has been added.
+
+---------------------------------------------------------------------
+
+{\it{* Sect 3, para 1 (page 7) The effect of the choice of center is
+    another source of systematics. Clusters with a large-scale
+    centroid far away from the surface brightness peak will have
+    flatter central entropies, or central entropies that yield
+    physically impossible values on deprojection. Also, within what
+    radius was the centroid defined?}}
+
+The centroid is defined via an iterative process which is detailed in
+Cavagnolo et al. 2008 (ApJ 682, 821). We have added this reference for
+interested readers and quote the relevant section from Cavagnolo et
+al. 2008 (ApJ 682, 821) below for the referee:
+
+-- snip --\\
+Defining the cluster ``center'' is essential for the later purpose of
+excluding cool cores from our spectral analysis (see
+\S\ref{sec:extraction}). To determine the cluster center, we
+calculated the centroid of the flare cleaned, point-source free
+level-2 events file filtered to include only photons in the $0.7-7.0$
+keV range. Before centroiding, the events file was exposure-corrected
+and ``holes'' created by excluding point sources were filled using
+interpolated values taken from a narrow annular region just outside
+the hole (holes are not filled during spectral extraction discussed in
+\S\ref{sec:extraction}). Prior to centroiding, we defined the emission
+peak by heavily binning the image, finding the peak value within a
+circular region extending from the peak to the chip edge (defined by
+the radius $R_{max}$), reducing $R_{max}$ by 5\%, reducing the binning
+by a factor of two, and finding the peak again. This process was
+repeated until the image was unbinned (binning factor of one). We then
+returned to an unbinned image with an aperture centered on the
+emission peak with a radius $R_{max}$ and found the centroid using
+{\textsc{CIAO}}'s {\textsc{dmstat}}. The centroid, ($x_c$,$y_c$), for
+a distribution of $N$ good pixels with coordinates ($x_i$,$y_j$) and
+values f($x_i$,$y_j$) is defined as:
+\begin{eqnarray}
+Q &=& \sum_{i,j=1}^N f(x_i,y_i) \\
+x_c &=& \frac{\sum_{i,j=1}^N x_i \cdot f(x_i,y_i)}{Q} \nonumber\\
+y_c &=& \frac{\sum_{i,j=1}^N y_i \cdot f(x_i,y_i)}{Q}. \nonumber
+\end{eqnarray}
+
+If the centroid was within 70 kpc of the emission peak, the emission
+peak was selected as the center, otherwise the centroid was used
+as the center. This selection was made to ensure all ``peaky'' cool
+cores coincided with the cluster center, thus maximizing their
+exclusion later in our analysis. All cluster centers were additionally
+verified by eye.
+-- snip --
+
+---------------------------------------------------------------------
+
+{\it{* Sect 3.1, para 8 (page 9) Regarding deprojection, steeply
+    declining T gradients would have lower central entropy, but
+    increasing T gradients would have higher central entropy.}}
+
+The wording in the paper was ambiguous, as we meant to convey exactly
+what the referee has stated above. We have altered the wording to be
+clearer.
+
+---------------------------------------------------------------------
+
+{\it{* Sect 3.2, para 3 (page 10) The T profile interpolation scheme
+    is not particularly well described, particularly outside the core
+    regions. Was there a model used? How well did this perform for the
+    case of T profiles with 3 radial bins? Also, were the interpolated
+    abundances also used to correct for emissivity variations or was
+    it just the T variations? Abundance variations have more of an
+    effect on emissivity than T variations.}}
+
+We used IDL's native linear interpolation routine {\it{interpol}} to
+place the temperature profile and density profile on the same radial
+grid. We have added this note to the first paragraph of \S 3.4 to make
+it clear that our method was very simplistic.
+
+We did not use a model for the temperature interpolation as one of our
+goals for this project was to avoid the use of models to minimize the
+number of assumptions embedded in the final entropy profiles.
+
+The deprojection technique we use, Kriss et al. 1983, produces an
+emission profile (count rate per unit volume) which is used to convert
+from surface brightness to gas density. The spectral count rate and
+normalization for each annulus of the temperature profile are part of
+the conversion from surface brightness to density. Since abundance is
+intrinsically linked with the count rate and normalization, our
+deprojection method does take into account emissivity variations. We
+have added text above Eqn. 2 to point this out.
+
+---------------------------------------------------------------------
+
+{\it{* Sect 3.3, para 1 (page 11) Quantitatively, how suitable an
+    approximation were the beta models, i.e., in terms of chi
+    squared?}}
+
+The reduced \chisq\ values and degrees of freedom for each
+$\beta$-model fit are listed in Table 2. Given the number of degrees
+of freedom for each fit, the \chisq\ values are not unacceptable.
+
+---------------------------------------------------------------------
+
+{\it{* Sect 5.2, para 5 (page 23) The fact that the KMM test indicates
+    that two statistically different populations are not present at
+    $z>0.4$ warrants more discussion. Is this due to resolution effects,
+    or is it an evolutionary effect? If the latter, what does this
+    tell us?}}
+
+Unfortunately, the lack of bimodality for $z>0.4$ clusters is most
+likely a result of poor statistics: there are 20 clusters with $z >
+0.4$. We checked this hypothesis by randomly selecting 20 clusters
+from our full archival sample 1000 times and running the KMM test
+again with each subset of clusters. Of the 1000 subsets, two
+statistically distinct populations were found 18 times ($~2\%$). This
+suggests 20 clusters is too few to detect a bimodal population. We
+have added this discussion to the end of paragraph five of \S 5.2.
+
+---------------------------------------------------------------------
+
+{\it{* Sect 5.5, para 1 (page 26) I would specify that the Tozzi \&
+    Norman results were for semi-analytic models and the Voit et al
+    results were for cosmological simulations with only gravitational
+    effects included.}}
+
+We have amended the section to point out this difference.
+
+---------------------------------------------------------------------
+
+{\it{* Sect 5.6, (page 27) This section should be revised as per point
+    3 above.}}
+
+See comments above and the manuscript for revisions.
+
+---------------------------------------------------------------------
+
+{\it{- Fig4: The legend ($T_x < 4.0; 8.0 < T_x$) is a bit confusing.}}
+
+For clarity we have changed \Tx\ to $T_{cluster}$, added units, and
+rearranged the legend to read $T_{cluster} > 8.0$ keV.
+
+---------------------------------------------------------------------
+
+{\it{- Fig 4: I suggest addition of two more panels showing the
+    subsamples with $z<0.4$ and $z>0.4$}}
+
+As addressed in the section above, the lack of bimodality at $z > 0.4$
+cannot be attributed to a physical cause as the statistics are
+poor. Hence examining the two populations, $z<0.4$ and $z>0.4$, loses
+its appeal and we have decided not to add the two panels to Fig. 4.
+
+---------------------------------------------------------------------
+
+\end{document}

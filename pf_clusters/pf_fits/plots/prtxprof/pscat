@@ -1,0 +1,32 @@
+#!/usr/bin/perl
+
+# Created by Nathan De Lee 6/04/04
+# This program produces a single postscript from many.
+# It can be used in two ways.  You can either use pscat input output or
+# you can use it as cat list.txt | pscat output
+# Revised 7/07/04
+
+$output = pop @ARGV;
+@line = @ARGV;
+foreach (@line) {
+    push(@new,$_ . " ");
+    if($_ eq $output) {
+	print "Your output is your input!\n";
+	exit; }
+}
+
+if (@ARGV == 0) {
+
+    while (<>) {
+	chomp;
+	push(@new,$_ . " ");
+	if($_ eq $output) {
+	    print "Your output is your input!\n";
+	    exit; }}
+}
+
+system "cat @new > temp.1234";
+
+print "Now repaginating ${output}.\n";
+system "ps2ps temp.1234 $output";
+unlink "temp.1234";

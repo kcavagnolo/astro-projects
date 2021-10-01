@@ -1,0 +1,539 @@
+\newcommand{\clnum}{\ensuremath{215}}
+\newcommand{\accept}{\textit{ACCEPT}}
+\newcommand{\kthr}{\ensuremath{K_{\mathrm{thresh}}}}
+
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+
+% \documentclass[12pt, preprint]{aastex}
+\documentclass{emulateapj}
+\usepackage{apjfonts,graphicx,here,lscape}
+\usepackage{common} 
+\bibliographystyle{apj}
+
+\begin{document}
+\title{Star Formation, AGN, and the Entropy-Feedback\\
+  Connection in Galaxy Clusters}
+\author{
+  Kenneth W. Cavagnolo\altaffilmark{1,2},
+  Megan Donahue\altaffilmark{1},
+  G. Mark Voit\altaffilmark{1}, 
+  and Ming Sun\altaffilmark{1}}
+\altaffiltext{1}{Michigan State University, Department of Physics and
+  Astronomy, BPS Building, East Lansing, MI 48824}
+\altaffiltext{2}{cavagnolo@pa.msu.edu}
+\shorttitle{Entropy, Star Formation, and AGN}
+\shortauthors{K. W. Cavagnolo et al.}
+\journalinfo{Submitted to ApJ Letters}
+%\accepted{ }
+\submitted{April 10, 2008}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+  We present the first results from our study of the entropy
+  distribution for a \Chandra\ archival sample of \clnum\ galaxy
+  clusters. After parameterizing the central entropy, \kna\, of each
+  cluster as the value at which the entropy distribution departs from
+  a power-law, we make comparisons with indicators of feedback such as
+  \halpha\ emission and radio-loud sources. Interpreting these
+  indicators to mean that star formation and AGN are active in the BCG
+  of the cluster, we find that for almost all clusters below an
+  entropy threshold of $\approx 30 \ent$ feedback is active, while
+  above this threshold the feedback is not detectable. This entropy
+  threshold is coincident with the level at which heating from thermal
+  electron conduction can offset radiative cooling and thereby prevent
+  multi-phase gas from forming.
+\end{abstract}
+
+\keywords{galaxies: clusters: general -- X-rays: active -- galaxies:
+  conduction -- galaxies: cooling flows -- galaxies}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In recent years the ``cooling flow problem'' has been the focus of
+intense scrutiny as the solutions have broad impact in the area of
+galaxy formation. The adiabatic model of hierarchical structure
+formation predicts an over-production of dwarf and massive galaxy
+haloes. Brightest cluster galaxies (BCGs) -- the most massive galaxies
+in the Universe -- are also predicted to be too blue and too massive.
+Compounding the issue is that the star formation rates in massive
+galaxies were larger at higher redshifts \citep{1996AJ....112..839C,
+  2005ApJ...619L.135J}, contradicting model predictions and resulting
+in the observation of present-day ellipticals being ``red and dead''.
+There is also the so-called cosmic down-sizing problem
+\citep{1996AJ....112..839C}, where massive galaxies are observed to
+form earlier than hierarchical galaxy formation models predict. There
+is intense on-going study of the hypothesis that these problems with
+the existing galaxy formation models are related to galactic feedback,
+\ie\ in the form of active galactic nuclei (AGN) and supernovae. This
+hypothesis has gained considerable traction in recent years both
+theoretically \citep{bower06, croton06} and observationally
+\citep{peterson2003, mcnamrev}.
+
+A fruitful area of work which has sought to explain the differences
+between galaxy formation models and observations involves studying the
+interaction of feedback sources with the hot atmosphere of their host
+galaxy cluster.  Using the properties of X-ray cavities in the
+intracluster medium (ICM) in combination with the energetics of the
+BCG radio source, \cite{birzan04} demonstrated that AGN do provide the
+necessary energy to retard cooling in the cores of clusters. This in
+turn indicates AGN are capable of quenching star formation in the BCG
+by heating the surrouding ICM and preventing gas from condensing onto
+the galaxy and forming stars.
+
+In previous observational work (\citealt{radioquiet, dhc06, accept2})
+we have focused on ICM entropy as a means for understanding the
+cooling and heating processes in clusters. Entropy is a more
+fundamental property of the ICM than temperature or density alone
+\citep{voitbryan,voitreview}. ICM temperature mainly reflects the
+depth and shape of the dark matter potential well, while density
+represents how much the well can compress the ICM.  Entropy on the
+other hand determines the density of an isobaric gas parcel, and only
+gains or losses of heat energy can change the entropy. Thus, study of
+the ICM entropy distribution is an investigation of the cluster
+thermal history.
+
+In the second paper of this series, \cite{accept2} -- hereafter Paper
+II, we present the radial entropy profiles for a sample of \clnum\
+clusters taken from the \Chandra\ Data Archive. We have named this
+project the Archive of Chandra Cluster Entropy Profile Tables, or
+\accept\ for short. There are two results in Paper II which are
+relevant to this letter: 1) a nearly universal departure of the radial
+entropy distribution in cluster cores from a self-similar power-law,
+and 2) a bimodal central entropy distribution.  We define central
+entropy as the parametric scale, \kna\ in the equation $K(r) = K_0
++K_{100}(r/100 \kpc)^{\alpha}$, at which the entropy distribution
+departs from a power-law. This is not always the minimum core entropy,
+nor is it the gas entropy which would be measured immediately around
+the AGN, it is a measure of the average entropy within the cluster
+core -- a region which can be anywhere from 10 to 100 kpc. In this
+letter we present the results of exploring the relationship between
+the expected by-products of cooling, \eg\ star formation and
+radio-loud AGN, to the central entropy value of the clusters in our
+sample.
+
+To determine the activity level of feedback in cluster cores we have
+selected two readily available observables: \halpha\ emission
+resulting from star formation and radio-loud sources associated with
+AGN. Using these observables as a window on the processes operating in
+the core of clusters, we find there exists a critical entropy level
+below which star formation and AGN are almost always present, while
+above this threshold feedback is diminished and in most cases has
+ceased completely. Through a coincidence of scaling, this entropy
+threshold is associated with the limit at which conductive stability
+is established in a cluster core.  In the light of these results, we
+suggest that low entropy ICM environments, along with electron thermal
+conduction, play a vital role in determining the state of feedback
+activity within cluster cores.
+
+This letter proceeds in the following fashion: In \S\ref{sec:data} we
+cover the basics of our data analysis. The entropy-star formation
+relationship is discussed in \S\ref{sec:sf}, while the entropy-AGN
+relationship is discussed in \S\ref{sec:agn}. Discussion of results
+and conclusions are presented in \S\ref{sec:diss}.  For this letter we
+have assumed a flat \LCDM\ Universe with cosmogony $\OM=0.3$,
+$\OL=0.7$, and $\Hn=70\km\ps\pMpc$. All uncertainties are 90\%
+confidence.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Data Analysis}
+\label{sec:data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+In this letter we only briefly describe our data reduction and methods
+for producing entropy profiles and refer interested readers to the
+more thorough explanations in \cite{dhc06}, \cite{xrayband}, and Paper
+II.
+
+%%%%%%%%%%%%%%%%%%%%
+\subsection{X-ray}
+\label{sec:xray}
+%%%%%%%%%%%%%%%%%%%%
+
+X-ray data was taken from publicly available observations in the
+\Chandra\ Data Archive. Following standard \Ciao\ reduction
+techniques\footnote{http://cxc.harvard.edu/ciao/guides/}, data was
+reprocessed using \Ciao\ 3.4.1 and \Caldb\ 3.4.0, resulting in point
+source and flare clean events files at level-2. Entropy profiles were
+derived using the relation $K(r) = T(r) \nelec(r)^{-2/3}$ where $T(r)$
+is the radial ICM temperature and $\nelec(r)$ is the radial ICM
+electron density.
+
+Radial temperature profiles were created by spatially dividing each
+cluster into concentric annuli with the minimum requirement of three
+annuli containing 2500 counts. Source spectra were extracted from
+these annuli, while corresponding background spectra were extracted
+from blank-sky backgrounds tailored to match each observation.  Each
+background is corrected to account for variation of the hard-particle
+and soft-galactic backgrounds. Weighted responses which account for
+spatial variations of the CCD calibration were also created for each
+observation. Spectra were then fit over the energy range 0.7-7.0 keV
+in \xspec\ 11.3.2ag \citep{xspec} using a single-component absorbed
+thermal model.
+
+Exposure-corrected, background-subtracted, point-source-clean surface
+brightness profiles were extracted from $5\arcsec$ concentric annular
+bins over the energy range 0.7-2.0 keV. In conjunction with the
+spectroscopic normalization and 0.7-2.0 keV count rate, surface
+brightness was converted to electron density using the deprojection
+technique of \cite{kriss83}. Errors were estimated using 5000 Monte
+Carlo realizations of the surface brightness profiles.
+
+A radial entropy profile for each cluster was then produced from the
+temperature and electron density profiles. The entropy profiles were
+fit with a hybrid model which is a power-law at large radii and
+flattens at small radii:
+\begin{equation}
+  K(r) = \kna + \khun\ \left(\frac{r}{100 \kpc}\right)^{\alpha} \nonumber \\
+\end{equation}
+where \khun\ is a normalization of the power-law component at 100 kpc
+and \kna\ describes the flattening of the profile in the core region.
+In this letter we define \kna\ from the best-fit model as the central
+entropy. In Paper II we demonstrate that the best-fit \kna\ and
+observational \kna\ do not significantly differ for most clusters. As
+noted \S\ref{sec:intro}, \kna\ is not the minimum gas entropy found in
+the core, nor does it represent an absolute flattening of the profile.
+Rather \kna\ is a parametric representation of where the entropy
+distribution departs from a power-law, and is a characterization of
+the average entropy of the core.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\subsection{\halpha}
+\label{sec:ha}
+%%%%%%%%%%%%%%%%%%%%%%
+
+\halpha\ emission has proven to be a useful indicator of ongoing star
+formation \citep{johnstone87, mcnamara89, voit97}.  Therefore, to
+check for star formation in the BCG of our sample clusters, we have
+taken \halpha\ values from several sources, most notably
+\cite{crawford99}.  Alternative sources are M.  Donahue's work at
+Carnegie Observatory, \cite{ir_quillen}, \cite{heckman89},
+\cite{lawrence96}, \cite{white97}, and \cite{2005MNRAS.363..216C}. To
+place all the \halpha\ measurements on equal footing, we have rolled
+back from the cosmogony used in each study cited and re-calculated
+\halpha\ luminosities using our assumed \LCDM\ values.
+
+The \lha\ values listed in this paper are not meant for strict
+interpretation of star formation rates, \eg\ using the Kennicutt
+relation \citep{kennicuttrelation}. The individual values of \lha\ are
+not important for the purposes of this paper and we suggest the reader
+interpret the \lha\ values as an analog indicator of star formation:
+either it is off or on.
+
+%%%%%%%%%%%%%%%%%%
+\subsection{Radio}
+\label{sec:radio}
+%%%%%%%%%%%%%%%%%%
+
+We take advantage of the nearly all-sky flux-limited coverage of the
+NRAO VLA Sky Survey (NVSS, \citealt{1998AJ....115.1693C}) and Sydney
+University Molonglo Sky Survey (SUMSS, \citealt{1999AJ....117.1578B,
+  2003MNRAS.342.1117M}) to look for radio emission from the central
+region of each cluster in our sample. NVSS is a continuum survey at
+1.4 GHz of the entire sky north of $\delta = -40\degr$, while SUMSS is
+a continuum survey at 843 MHz of the entire sky south of $\delta =
+-30\degr$. The completeness limit of NVSS is $\approx 2.5$ mJy and for
+SUMSS it is $\approx 10$ mJy when $\delta > -50\degr$ or $\approx 6$
+mJy when $\delta \leq -50\degr$. Both surveys probe very low radio
+luminosities and are excellent for our purposes. We calculate the
+radio power for each radio source using the standard relation $\nu
+L_{\nu} = 4 \pi D_L^2 S_{\nu} f_0$ where $S_{\nu}$ is the 1.4 GHz or
+843 MHZ flux from NVSS or SUMSS, $D_L$ is the luminosity distance in
+cm, and $f_0$ is the central beam frequency of the survey.
+
+Radio sources were found using two methods. The first method was to
+search for sources within a fixed angular distance, $20''$, of the
+cluster X-ray peak. The probability of randomly finding a radio source
+within an aperture of $20''$ is exceedingly low ($< 0.004$ for NVSS),
+thus in a sample of $\approx 200$ clusters we expect no more than one
+false match. The second method involved searching within $20\kpc$ of
+the X-ray peak for sources. At $z \approx 0.051$, $1''$ equals 1 \kpc,
+thus for clusters at $z \ga 0.05$ the 20 kpc aperture is smaller than
+the $20''$ aperture and the likelihood of a false match is even
+smaller. Both methods produce nearly the same list of radio sources
+with the differences being the very extended lobes of low-redshift
+radio sources such as Hydra A,
+
+To make a spatial and morphological assessment of the radio emission's
+origins, \ie\ determining if the radio emission is associated with the
+BCG, high angular resolution is necessary. However, NVSS and SUMSS are
+low-resolution surveys with FWHM at $\approx 45\arcsec$. We therefore
+cannot distinguish between ghost cavities/relics, extended lobes,
+point sources, re-accelerated regions, or if the emission is coming
+from a galaxy very near the BCG or a background/foreground source. We
+have handled this complication by visually inspecting each radio
+source in relation to the optical (using DSS I/II) and infrared (using
+2MASS) emission of the BCG. We have used this method to establish that
+the radio emission is most likely coming from the BCG. When available,
+high resolution data from VLA FIRST\footnote{Faint Images of the Radio
+ Sky at Twenty cm; http://sundog.stsci.edu} was added to the
+visual inspection.
+
+%A comparison of the NVSS search results for each method shows that the
+%$20\kpc$ search radius rarely (frequency $< 2\%$) finds fewer or more
+%sources than the $20''$ aperture. Using higher-resolution images from
+%VLA First, we examined For the cases where a source was not found in
+%one aperture and not the other, the source is typically the extended
+%lobes of very a large radio source (\eg\ Hydra A). The cases where an
+%additional source was found are typically low-redshift clusters with a
+%radio galaxy near the BCG. For each cluster, a final by-eye check of
+%the radio emission in relation to the optical (using DSS) and infrared
+%(using 2MASS) emission of the BCG is made.  The
+%NED\footnote{http://nedwww.ipac.caltech.edu/} database was also
+%queried with the central coordinates of each radio source to ensure
+%that for those sources which have been cataloged, their redshift was
+%within the limits of the cluster redshift
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Star Formation and Central Entropy}
+\label{sec:sf}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Of the \clnum\ clusters in \accept, we located \halpha\ luminosities
+from the literature for 97 clusters. Of those 97, 41 have
+\halpha\ detections and 56 do not. We treat the non-detections as
+upper-limits using the observation's flux-limit. The mean central
+entropy for clusters with detections is $\kna = 13.6 \pm 4.72 \ent$,
+and for clusters with only upper-limits $\kna = 118 \pm 46.6 \ent$. In
+Figure \ref{fig:ha} is plotted \lha\ versus \kna. One can immediately
+see there is a dichotomy between clusters with and without
+\halpha\ emission. If a cluster has a central entropy $\la 30 \ent$
+then star formation is ``on'', while above this threshold the star
+formation is almost universally ``off''. For brevity we refer to this
+threshold as \kthr\ hereafter. The exceptions above \kthr\ which have
+\halpha\ emission (blue boxes with orange dots) are RX J1000.4+4409
+($\kna = 35.8 \pm 3.8 \ent$) and Zwicky 2701 ($\kna = 45.6 \pm 4.8
+\ent$).  There are also exceptions below \kthr\ without
+\halpha\ emission (blue boxes with red stars): Abell 2029, A2107,
+A2151, EXO 0422-086, and RBS 533.
+
+The entropy threshold we observe is also insensitive to redshift
+effects, \ie\ star formation unaccounted for in high or low redshifts
+galaxies will not change our results. The mean and dispersion of the
+redshifts for clusters with and without \halpha\ are nearly identical,
+$z = 0.116 \pm 0.103$ and $z = 0.131 \pm 0.083$ respectively, and
+applying a redshift cut (\ie\ $z = 0-0.15$ or $z = 0.15-0.3$) does not
+change the \kna-\halpha\ dichotomy. Most important is that changes in
+the \halpha\ luminosities will only move clusters left and right in
+Figure \ref{fig:ha}, mobility along the \kna\ axis is
+minimal. Qualitatively, the correlation between low central entropy
+and presence of \halpha\ emission is very robust.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics*[width=\columnwidth, trim=30mm 7mm 40mm 17mm, clip]{ha}
+    \caption{Plotted here is central entropy versus \halpha\
+      luminosity. Orange circles represent detections, black squares
+      are non-detection upper-limits, and blue boxes with inset red
+      stars or orange dots are peculiar clusters which do not adhere
+      to the observed trend (see text). The horizontal dashed line
+      marks $\kna = 30 \ent$. Note the presence of a star formation
+      dichotomy beginning at $\approx \kna \la 30 \ent$.}
+    \label{fig:ha}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \centering
+    \includegraphics*[width=\columnwidth, trim=30mm 7mm 40mm 17mm, clip]{k0hist}
+    \caption{Shown is the log-space distribution of \kna\ for all
+      clusters in \accept. The vertical dashed line marks $\kna = 30
+      \ent$. The obvious bimodal distribution is predicted to be a
+      consequence of AGN feedback and thermal conduction in the
+      cluster core.}
+    \label{fig:k0hist}
+  \end{center}
+\end{figure}
+
+In Paper II we present the result that the \kna\ distribution for
+\accept\ is bimodal (shown in Figure \ref{fig:k0hist}). The clusters
+which populate the peak around $\kna \approx 15 \ent$ are clusters
+with short central cooling times ($\tcool \ll \Hn^{-1}$) and would be
+classified as ``cooling flow'' clusters. It does not come as a
+surprise that modest star formation is occurring in these BCGs
+\citep{hu85}, but it is very interesting that there appears to be a
+characteristic entropy threshold only below which multi-phase gas, and
+presumably stars, form. We will discuss this point further in
+\S\ref{sec:diss}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Radio-loud AGN and Central Entropy}
+\label{sec:agn}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Of the \clnum\ clusters in \accept, 100 have radio source detections
+with a mean $\kna = 20.8 \pm 7.85 \ent$, while the other 115 clusters
+with only upper-limits have a mean $\kna = 125 \pm 48.1 \ent$. Recall
+NVSS and SUMSS are low resolution surveys with FWHM at $\approx
+45\arcsec$ which at $\red = 0.2$ is $\approx 150\kpc$. This scale is
+larger then the size of a typical cluster cooling region and makes it
+difficult to determine if the radio emission is associated with the
+BCG. We therefore focus only on clusters at $z < 0.2$. After the
+redshift cut, 128 clusters remain -- 59 with radio detections (mean
+$\kna = 17.1 \pm 6.59 \ent$) and 69 without (mean $\kna = 108 \pm 43.7
+\ent$).
+
+In Figure \ref{fig:radzcut} we have plotted radio power versus \kna.
+The obvious dichotomy seen in the \halpha\ measures and characterized
+by \kthr\, is also present in the radio as an overabundance of
+clusters at $\lradio \gtrsim 10^{40} \ergps$ and $\kna \la \kthr$.
+This suggests that AGN activity in BCGs, while not exclusively limited
+to low core entropy clusters, still favors cluster cores which have an
+average entropy less than the threshold at which conductive stability
+dominates.
+
+\begin{figure}
+  \begin{center}
+    \includegraphics*[width=\columnwidth, trim=30mm 7mm 40mm 17mm, clip]{radio_zcut}
+    \caption{Plotted is the radio power versus \kna only for clusters
+      with $z \leq 0.2$. Orange circles represent detections, black
+      squares are non-detection upper-limits, and blue boxes with
+      inset red stars or orange dots are peculiar clusters which do
+      not adhere to the observed trend (see text). The trend of AGN
+      feedback preferentially being ``on'' below $\kna \approx 30
+      \ent$ is once again very clear.}
+    \label{fig:radzcut}
+  \end{center}
+\end{figure}
+
+We have again highlighted two subsets of clusters in Figure
+\ref{fig:radzcut}: clusters below \kthr\ without radio sources (blue
+boxes with red stars) and clusters above \kthr\ with radio sources
+(blue boxes with orange dots). The peculiar clusters below \kthr\ are
+A133, A744, A1204, A2107, A2556, AWM7, ESO 5520200, MACS J1931.8-2634,
+MKW 04, and MS J1157.3+5531. The peculiar clusters above \kthr\ are
+A193, A368, A586, A1942, A2063, A2244, A3528S, A3558, A4038, CL
+J1226.9+3332, MACS J0520.7-1328, MACS J1206.2-0847, MACS J2245.0+2637,
+RBS 0461, RX J0528.9-3927, and Zwicky 2701. Radio-quiet AGN are not
+uncommon, and having a few clusters in our sample without radio-loud
+sources where we expect to find them is not surprising.  However, the
+clusters above \kthr\ with a radio-loud source are surprising, and may
+be special cases of cluster BCGs with corona.  \cite{coronae} have
+studied coronae extensively and find they are like ``mini-cooling
+cores'' and may provide the environment to promote the gas cooling
+necessary to fuel an AGN. Indeed, some of these peculiar clusters show
+indications that a very compact X-ray source is associated with the
+BCG. These peculiar clusters are most likely exceptions to the low
+entropy-AGN activity relation and do not weaken the overall trend.
+
+%\begin{figure}
+%  \begin{center}
+%    \includegraphics*[width=\columnwidth, trim=30mm 7mm 40mm 17mm, clip]{radio_allz}
+%    \caption{Plotted is the power at 1.4 GHz (calculated from NVSS
+%      flux) versus \kna. Orange circles represent detections, black
+%      squares are non-detection upper-limits, and blue boxes with
+%      inset red stars or orange dots are peculiar clusters which do
+%      not adhere to the observed trend. Once again we see that only
+%      below $\kna \la 30 \ent$ are the most powerful radio sources --
+%      most likely associated with AGN -- ``on'', while above the
+%      threshold the trend is much weaker.}
+%    \label{fig:radall}
+%  \end{center}
+%\end{figure}
+%The weaker adherence to the \kthr\ for the radio sources can partially
+%be explained by resolution effects and fueling sources. NVSS and SUMSS
+%have low angular resolution of $\approx 45\arcsec$ at full width at
+%half maximum. At $z = 0.3$ this resolution is $\approx 200\kpc$ and at
+%$\red = 0.2$ it is $\approx 150\kpc$, both of which are much larger
+%then the scale size of a typical cluster cooling region. At these
+%physical scales we have nearly no information about the radio source
+%morphology and thus are not able to distinguish between AGN point
+%sources, extended radio lobes, detached lobes, ghosts, relics, and
+%even diffuse, amorphous re-accelerated regions. Being blind to
+%morphological distinction, we expect larger scatter in the radio-\kna\
+%relation than if we were to only focus on, for example, FRII radio
+%sources.
+%When we make a cut in redshift space and only
+%consider clusters at $\red \leq 0.2$, we find the entropy-AGN relation
+%to be more pronounced (see Figure \ref{fig:radzcut}). After the
+%redshift cut, 128 clusters remain -- 59 with radio detections (mean
+%$\kna = 17.1 \pm 6.59 \ent$) and 69 without (mean $\kna = 108 \pm 43.7
+%\ent$). Ignoring clusters above \kthr, the mean of clusters with radio
+%detections becomes $\kna = 12.1 \pm 4.31 \ent$. That the entropy
+%threshold at $\kna \approx 30 \ent$ is robust against the cut in
+%redshift space is important.
+
+%%%%%%%%%%%%%%%%%%%%%%%
+\section{Discussion}
+\label{sec:diss}
+%%%%%%%%%%%%%%%%%%%%%%%
+
+In \cite{radioquiet} and \cite{conduction}, the prediction is made
+that if thermal electron conduction is an important mechanism in some
+cluster cores, then the entropy distribution should ``bifurcate''. The
+model presented in \cite{conduction} proposes that above a certain
+entropy threshold, which we find observationally to be at least
+$\approx 30 \ent$, electron thermal conduction is capable of balancing
+the energy losses from radiative cooling is of great interest. If we
+assume heat conduction between a gas parcel and its surroundings is
+proceeding at the Spitzer rate, and we further assume the dominant
+cooling mechanism is free-free emission, then one can derive the size
+of the radiative cooling region specified by the Field length,
+\begin{equation}
+\lambda_F = \left(\frac{\kappa_S T}{n_e^2 \Lambda(T,Z)}\right)^{1/2} \approx 4 \kpc \left(\frac{K}{10 \ent}\right)^{3/2}f_c^{1/2}, \nonumber
+\end{equation}
+where $\kappa_S$ is the Spitzer conduction coefficient ($\kappa_S =
+6\times10^{-7} f_c T^{5/2} \ergps \pcm \mathrm{~K}^{-7/2}$), \nelec\
+is electron gas density, $T$ is gas temperature, $\Lambda(T,Z)$ is the
+cooling function at a given temperature and metallicity, and $f_c$ is
+a suppression factor. By a coincidence of scaling, the Field length is
+a function of entropy only, $\lambda_F \propto K^{3/2}$. The critical
+entropy profile which separates conductively stable systems from
+unstable systems is then $K(r) \approx 10 \ent f_c^{-1/3}
+(r/4\kpc)^{2/3}$ \citep{radioquiet}.
+
+Clusters below this critical entropy profile will be capable of
+supporting a multi-phase medium because thermal conduction cannot wipe
+out gas inhomogeneity. Hence, stars can form and small streams of gas
+can work their way onto the SMBH in the BCG and initiate an AGN
+feedback cycle. However, above the critical entropy profile,
+conduction proceeds faster than cooling and any cool gas clouds which
+might condense or be deposited in the core via mergers will evaporate.
+We suggest that our finding of a robust relation between indicators of
+feedback and central entropy strongly supports the hypothesis that
+electron thermal conduction is an important mechanism in the cluster
+feedback cycle. Recently \cite{2008arXiv0802.1864R} found that BCGs in
+low entropy environments have strong blue gradients (another indicator
+of active/recent star formation), a result which further supports our
+hypothesis.
+
+We propose that within the framework of an episodic AGN feedback model
+which includes thermal conduction, that our observation of the bimodal
+central entropy distribution is well explained as part of a larger
+cluster entropy life-cycle. Using the model of AGN feedback model of
+\cite{agnframework}, let us consider a cluster left in isolation for a
+few Gyrs. AGN outbursts originating from the BCG with power outputs of
+$10^{45} \ergps$ lasting a few tens of Myrs and occurring every few
+hundred Myrs are capable of supplying the energy to form a
+pseudo-stable core entropy of $0-30 \ent$. However, on the rare
+occasion that a large AGN outburst occurs ($E > 10^{61}$ ergs), the
+core entropy can be pushed above $30 \ent$. At these entropy levels
+the cluster becomes conductively stable. Unable to cool, mergers can
+quickly remove $40-60 \ent$ clusters, leaving a distinct gap in the
+\kna\ distribution and creating a second population with $\kna > 100
+\ent$. A detailed theoretical investigation of the role conduction
+plays in the entropy life-cycle of a cluster is a warranted next step.
+\\
+\\
+We were supported in this work through \Chandra\ grants AR-6016X,
+AR-4017A, an MSU start-up grant for Megan Donahue, and NASA LTSA
+program NNG-05GD82G. We thank Brian McNamara, David Rafferty, and Paul
+Nulsen for comparing data and stimulating discussion on this topic.
+The CXC is operated by the SAO for and on behalf of NASA under
+contract NAS8-03060.
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+\end{document}

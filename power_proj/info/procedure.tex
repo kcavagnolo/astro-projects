@@ -1,0 +1,68 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{graphics,graphicx}
+\setlength{\textwidth}{6.5in} 
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-0.0625in} 
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in} 
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in} 
+\setlength{\hoffset}{0in}
+\setlength{\voffset}{0in}
+\makeatletter
+\renewcommand{\section}{\@startsection%
+{section}{1}{0mm}{-\baselineskip}%
+{0.5\baselineskip}{\normalfont\Large\bfseries}}%
+\makeatother
+\begin{document}
+\pagestyle{plain}
+\pagenumbering{arabic}
+\begin{center}
+\bfseries\uppercase{Calculating Power Ratio; borrowed from Tesla Jeltema}
+\end{center}
+\section{Power Ratios}
+\begin{description}
+\item normalize image of cluster with exposure map\\
+	- exposure maps weighted by raymond-smith N$_H =
+3\times10^{20} cm^{-2}$, kT$ = 5$ keV, and Z$/Z_{\odot} = 0.3$.
+\item pt src holes filled using dmfilth
+\item exclude or include central sbr pt src, doesn't make significant
+change to ratios.
+\item compare soft band flux vs. RASS R4-R5 band flux for soft excess
+\item make two instrument only (no mirror or QE) exposure maps for each bgd\\
+	- one with bgd bad pixels\\
+	- one with obs bad pixels\\
+	- divide bgd image by bgd bad pixel exposure map\\
+	- then multiply bgd image by obs bad pixel exp map\\
+	- correct bgd image by full obs exposure map
+\item calculate centroid (location where P1 vanishes) in largest aperture
+\item calculate image moment, img$_i$
+\item calculate bgd image moment, bgd$_i$
+\item subtract bgd power from image power for net moment, $m_i = (img_i-bgd_i)$
+\item calculate power from net moment, p$_i$
+\end{description}
+
+\section{Error Estimate via bootstrap Monte Carlo}
+\begin{description}
+\item adaptively bin (a.b.) exposure corrected image to minimal S/N (like 2) to remove almost all zeroes from image
+\item multiply a.b. image by exposure map to reintroduce instrumental effects
+\item add Poission noise to each pixel by making pixel value the mean of a Poission distribution and then randomly selecting a new pixel value from that distr.
+\item exposure correct the image
+\item repeat 100 times for each image
+
+** for clusters with bgd moments similar to image moment, also perform the BsMC for bgd image
+
+\item calculate power ratio for each of 100 BsMC images
+\item define 90\% conf. as the fifth highest and fifth lowest ratios
+
+** pt srcs not included as they introduce a max of 13\% total flux
+
+\item compare 0.7-7.0 flux in obs to 0.7-7.0 flux in bgd
+\item determine possible change in flux, ie: 0.9-1.2
+\item run error calculation on bgd images with normalization of 0.9
+and 1.2; ie use 0.9*bgd in BsMC routine and 1.2*bgd in BsMC
+\item define sys err as difference between avg of 100 power ratios
+calculated with orig bgd and avg of 100 power ratios calculated with
+renormalized bgd.
+\end{description}
+\end{document}

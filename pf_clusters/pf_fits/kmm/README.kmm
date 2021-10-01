@@ -1,0 +1,58 @@
+              NOTES ON THE IMPLEMENTATION OF THE KMM ALGORITHM 
+
+(Keith M. Ashman, Christina M. Bird & Stephen E. Zepf. Last update: 4/4/94)
+
+The KMM algorithm is a powerful tool for detecting and quantifying bimodality 
+in datasets. KMM is a version of the EM (Expectation Maximization) algorithm
+which fits a user-specified number of Gaussians to a dataset and assesses
+the improvement of such a model over a single Gaussian model. This kind of 
+mixture-modelling technique has a wide range of applications, but in these
+explanatory notes we restrict our attention primarily to the use of KMM
+in detecting bimodality.
+
+The original code for this algorithm is included in "Mixture
+Models: Inference and Applications to Clustering" by G.J. McLachlan & K.E.
+Basford. The present version of the code was made available to us by Geoff
+McLachlan and Peter Adams of the University of Queensland. The most important
+addition to the code is that the P-value for the hypothesis test under
+consideration is now calculated. Apart for this and some other minor 
+modifications by McLachlan & Adams and ourselves, the code that you will
+receive is essentially as described in the McLachlan & Basford book.
+
+The purpose of these notes (supplemented by files containing examples of
+KMM input and ouput) is to allow you to use the KMM algorithm on your data.
+However, blind application of the algorithm is hazardous. A detailed 
+explanation of the history of the KMM algorithm, as well as some of its
+limitations and potential pit-falls, is described in the McLachlan & Basford
+book. However, we have summarized much of the relevant material in a paper
+entitled "Detecting Bimodality in Astronomical Datasets"
+(Ashman, Bird & Zepf 1994, to appear December). This paper also reports on
+our investigation of the sensitivity and reliability of the KMM algorithm and
+provides additional information on the interpretation of KMM results. 
+
+In addition to these notes, you should ftp the following files:
+
+kmm.f -- this is the code of the KMM algorithm. It should compile on UNIX 
+         and VMS systems. 
+
+kmmin.eg -- an example of a KMM input file correctly formatted to be 
+            acceptable to the current version of the code.
+
+kmmin.long -- as kmmin.eg, but this file includes an explanation of the
+              different parts of the input file
+
+kmmout.eg -- this is the ouput file obtained when running KMM on kmmin.eg.
+
+kmmout.long -- as kmmout.eg, but this file includes an explanation of the
+                output returned by KMM.
+
+The files kmmin.eg and kmmout.eg are included primarily so that you can
+check that KMM has compiled properly. If you run KMM on kmmin.eg and do
+*not* get an output file that looks like kmmout.eg, then let us know.
+The files kmmin.long and kmmout.long will hopefully make it possible for
+you to set up input files for your own (univariate) datasets and understand
+the results that KMM returns. However, we recommend glancing through
+Ashman, Bird & Zepf (1994) if you are unfamiliar with the potential
+hazards and over-interpretations that can arise from mixture-modelling.
+
+################################################################################

@@ -1,0 +1,230 @@
+150 1              # This file contains the same entries as kmmin.eg but has
+  -0.2850026       # additional comments. 
+  -0.9844491       # The first line contains the number of datapoints in the	
+  -0.7395087       # dataset (in this case 150) and the dimensionality of the
+   7.5640991E-02   # dataset (in this case 1). Dimensionality here refers to
+  -0.5332327       # the number of variables. KMM can be run on data of any
+   0.6155850       # dimensionality, but the univariate case is rather simpler
+   -1.750850       # to interpret (see Ashman, Bird & Zepf 1994). The 
+  -0.6723367       # multivariate case is discussed by Bird (1993, PhD thesis,
+   0.8910965       # University of Minnesota).
+   0.7423637       #
+  -6.4384774E-03   # The next 150 lines is the dataset under study. This is 
+   0.2204077       # dull, so search on the next occurence of #
+  -0.6667668    
+   0.7507900    
+   0.4699115    
+   0.8733494    
+   -3.138238    
+   -1.006427    
+    1.078808    
+    1.307392    
+   0.2293669    
+   -1.664603    
+  -0.5556028    
+  -4.7738377E-02
+  -0.5076625    
+   -1.606756    
+  -7.5314944E-03
+   0.1799396    
+   0.1469358    
+    1.009870    
+  -0.4397222    
+   0.6906278    
+  -0.2678846    
+   3.3565283E-02
+  -0.1399778    
+   4.1117009E-02
+  -0.5896435    
+   -1.701508    
+   0.9594218    
+   0.2607718    
+   -1.873893    
+   -1.078583    
+  -0.6417260    
+  -0.3355210    
+    1.172717    
+   -1.088439    
+   -1.685198    
+   -1.498465    
+   0.8722774    
+    2.548324    
+    1.533499    
+    1.555642    
+  -0.8403824    
+   0.1637646    
+  -0.1204071    
+    1.049285    
+  -4.2647954E-02
+   0.9810203    
+  -0.4810985    
+  -0.1579499    
+   -1.262462    
+   0.2063486    
+   0.3445379    
+    2.207353    
+   0.7988771    
+  -0.4229653    
+    1.264517    
+   3.9429646E-02
+    1.818621    
+  -2.1119364E-02
+    1.119426    
+   -1.060952    
+   0.7434130    
+    1.279918    
+   -1.504286    
+    1.830500    
+    3.004157    
+    1.445138    
+    5.353969    
+    4.026432    
+    1.536509    
+    3.356627    
+    2.243356    
+    2.818948    
+    2.839192    
+    2.405752    
+    3.196425    
+    2.307301    
+    3.546180    
+    1.136638    
+    3.358101    
+    4.123629    
+    2.416419    
+    1.991228    
+    3.558651    
+    2.959296    
+    1.096474    
+    3.438306    
+    2.045036    
+    1.103007    
+    1.558171    
+    2.065901    
+   0.2201126    
+    1.035814    
+    3.272021    
+    2.687411    
+    3.520621    
+    2.920931    
+    3.625326    
+    1.842526    
+    3.177019    
+    2.126071    
+    2.861871    
+    1.283055    
+    1.223137    
+    4.594627    
+    1.432350    
+    3.157021    
+    2.161763    
+    2.585367    
+    3.611186    
+    2.482273    
+    5.230175    
+    1.750697    
+    3.720368    
+    3.505153    
+    2.709290    
+    3.543890    
+    1.249791    
+    2.915677    
+    3.084338    
+    1.512405    
+    1.849135    
+    1.294785    
+    1.752546    
+    2.683052    
+    4.623872    
+    4.321164    
+    3.244363    
+    3.781884    
+    3.158820    
+    3.551238    
+    2.901993    
+    2.834052    
+    3.996003    
+    2.952103    
+    2.062943    
+    2.638036    
+    1.644993    
+    3.509127    
+2             # This is the user-specified number of groups
+1             # 1 or 2 (1 = homoscedastic, 2 = heteroscedastic)
+2             # Always 2 in our implementation
+0.0           # Estimated mean of first group
+2.75          # Estimated mean of second group
+1.0           # Estimated common covariance
+0.5 0.5       # Estimated mixing proportion
+
+### These last seven lines of the input file represent the slightly tricky
+    part where the user has to specify some estimated starting values for 
+    KMM. The first number is the number of groups that KMM is being asked to
+    fit to the data (and thus the number of groups that KMM will compare to
+    the best fit single Gaussian). Here the number is 2 since we are comparing
+    a bimodal to a unimodal fit. 
+    The second number is either 1 or 2 depending on whether one wants to fit
+    homoscedastic groups (common covariance) or heteroscedastic groups
+    (independent covariance). For reasons described in Ashman, Bird & Zepf 
+    (1994) we recommend sticking to the homoscedastic case unless there are
+    strong reasons not to do so.
+    The third number is always set to 2 in this implementation of KMM. 
+    (This tells KMM that the user will specify the initial values for
+    the group means and mixing proportions).
+    The fourth and fifth numbers are the estimated means of the two Gaussians
+    being fit to the data. There are objective techniques to determine these
+    "first guesses" but in most cases simply looking at the histogram of the
+    data allows reasonable estimates to be made.
+    The sixth number is the covariance (standard deviation squared)
+    of the groups. Here only one number is required since we are considering the
+    homoscedastic case. 
+    The final pair of numbers is the mixing proportion. In this case our first
+    guess is that the groups have the same number of members, hence the
+    mixing proportions are 0.5 and 0.5.
+
+
+### Other cases. In order to clarify this part of the input file, here are
+    a couple of other examples. Both are for univariate datasets. We hope
+    to address the multivariate case in future studies.
+
+Example 1) We want to compare a three group fit to a single Gaussian. We stick
+           to the homoscedastic assumption and our first guesses at the mean
+           values for the three groups are 0.0, 1.3 and 3.0. We also guess at
+           a common covariance of 0.5 and a mixing proportion of 50% of objects
+           in the first group, with 25% in the 2nd and 25% in the third group.
+           This is what the end of the input file should look like:
+
+3               # number of groups
+1               # homoscedastic
+2               # as usual
+0.0             # mean of group 1
+1.3             #               2
+3.0             #               3
+0.5             # estimated covariance
+0.5 0.25 0.25   # mixing proportions
+
+
+Example 2) This is the same as Example 1, but now suppose we have good reason
+           to believe that the covariance for the three groups is different
+           (the heteroscedastic case). Specifically, we guess that the
+           covariance of groups 1, 2 and 3 is 0.05, 0.25 and 1.0, respectively.
+	   Remember that in this case the P-value returned by KMM may be
+	   suspect and that bootstrapping is required to obtain a reliable
+	   value. The end of the input file would look like this:
+
+3               # number of groups
+2               # heteroscedastic
+2               # as usual
+0.0             # mean of group 1
+1.3             #               2
+3.0             #               3
+0.05            # covariance of group 1
+0.25            #                     2
+1.0             #                     3
+0.5 0.25 0.25   # mixing proportions
+
+
+These examples will hopefully allow you to construct input files for 
+any univariate dataset.
+
+################################################################################

@@ -1,0 +1,192 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Title: PGPLOT PostScript plot
+%%Creator: PGPLOT
+%%CreationDate: 27-Mar-2009 14:35
+%%BoundingBox: (atend)
+%%Orientation: Portrait
+%%Pages: (atend)
+%%EndComments
+%%BeginProlog
+/gs /gsave load def
+/gr /grestore  load def
+/L {moveto rlineto currentpoint stroke moveto} bind def
+/C {rlineto currentpoint stroke moveto} bind def
+/D {moveto 0 0 rlineto currentpoint stroke moveto} bind def
+/SLW {5 mul setlinewidth} bind def
+/SCF /pop load def
+/BP {newpath moveto} bind def
+/LP /rlineto load def
+/EP {rlineto closepath eofill} bind def
+/MB {gsave translate MFAC dup scale 1 setlinewidth 2 setlinecap 0 setlinejoin newpath} bind def
+/ME /grestore load def
+/CC {0 360 arc stroke} bind def
+/FC {0 360 arc fill} bind def
+% font stuff
+/pgscale 0.072 def
+% ISOLATIN encoding with built in linespacing definitions.
+% from tinydict by David Byram-Wigfield, http://www.capella.demon.co.uk
+% fontsize default setting.
+/FS      { /fs exch def } def     12 FS
+% linespacing ratio to fontsize: 1.3 is my default
+/LR {/lr exch def } def 1.3 LR
+/LG { /lg exch def } def   12 LG
+% calculate linespacing from chosen fontsize
+/F { exch dup lr mul LG dup FS exch findfont exch scalefont setfont } def
+/ISOFONT { findfont dup length dict begin { 1 index /FID ne {def} {pop pop}
+ifelse } forall /Encoding ISOLatin1Encoding def currentdict end /tmpfont
+exch definefont exch dup lr mul LG dup FS
+ scalefont setfont }  def
+/half { fs 2 div } bind def % half linespacing
+/quart { fs 4 div } bind def % quarter linespacing
+% vertical kerning: e.g. 5 v or -10 v
+/v { 0 exch rmoveto } def
+% horizontal kerning: e.g. 5 h or -10 h
+/h { 0 rmoveto } def
+% move up half the linespacing
+/up { half v } def
+% move down half the linespacing
+/dn { half neg v } def
+/TRL {/Times-Roman ISOFONT} bind def
+/TBL {/Times-Bold ISOFONT} bind def
+/TIL {/Times-Italic ISOFONT} bind def
+/TBIL {/Times-BoldItalic ISOFONT} bind def
+/HVL  {/Helvetica ISOFONT} bind def
+/HOL  {/Helvetica-Oblique ISOFONT} bind def
+/HNL  {/Helvetica-Narrow ISOFONT} bind def
+/HNOL  {/Helvetica-NarrowOblique ISOFONT} bind def
+/HBL  {/Helvetica-Bold ISOFONT} bind def
+/ZL  {/Zapf-Chancery-MediumItalic ISOFONT} bind def
+/SL { /Symbol F } def
+/RS{findfont exch scalefont setfont moveto dup stringwidth neg exch neg exch rmoveto show} bind def
+/TR  { fs TRL   moveto rotate show currentpoint } def
+/TB  { fs TBL   moveto rotate show currentpoint } def
+/TI  { fs TIL   moveto rotate show currentpoint } def
+/TBI { fs TBIL  moveto rotate show currentpoint } def
+/HV  { fs HVL   moveto rotate show currentpoint } def
+/H0  { fs HOL   moveto rotate show currentpoint } def
+/HB  { fs HBL   moveto rotate show currentpoint } def
+/HN  { fs HNL   moveto rotate show currentpoint } def
+/HNO { fs HNOL  moveto rotate show currentpoint } def
+/Z   { fs ZL    moveto rotate show currentpoint } def
+/S   { fs SL    moveto rotate show currentpoint } def
+/TRC  { fs TRL   show currentpoint } def
+/TBC  { fs TBL   show currentpoint } def
+/TIC  { fs TIL   show currentpoint } def
+/TBIC { fs TBIL  show currentpoint } def
+/HVC  { fs HVL   show currentpoint } def
+/H0C  { fs HOL   show currentpoint } def
+/HNOC { fs HNOL  show currentpoint } def
+/HBC  { fs HBL   show currentpoint } def
+/HNC  { fs HNL   show currentpoint } def
+/ZC   { fs ZL    show currentpoint } def
+/SC   { fs SL    show currentpoint } def
+%%EndProlog
+ 
+%%Page: 1 1
+%%BeginPageSetup
+/PGPLOT save def
+pgscale pgscale scale
+350 250 translate
+1 setlinejoin 1 setlinecap 1 SLW 1 SCF
+%%EndPageSetup
+%%PageBoundingBox: (atend)
+0.000 0.000 0.000 setrgbcolor 1 SLW 6239 0 780 3799 L 0 5022 C -6239 0 C 0 -5022 C 0 45 966 3799 L 0 45 1332 3799 L 0 45 1649 3799 L
+0 45 1929 3799 L 0 90 2179 3799 L 0 45 3825 3799 L 0 45 4787 3799 L 0 45 5470 3799 L 0 45 6000 3799 L 0 45 6433 3799 L
+0 45 6799 3799 L 0 45 966 8776 L 0 45 1332 8776 L 0 45 1649 8776 L 0 45 1929 8776 L 0 90 2179 8731 L 0 45 3825 8776 L
+0 45 4787 8776 L 0 45 5470 8776 L 0 45 6000 8776 L 0 45 6433 8776 L 0 45 6799 8776 L 45 0 780 3806 L 45 0 780 3896 L 90 0 780 3976 L
+45 0 780 4504 L 45 0 780 4813 L 45 0 780 5032 L 45 0 780 5202 L 45 0 780 5341 L 45 0 780 5458 L 45 0 780 5560 L 45 0 780 5650 L
+90 0 780 5730 L 45 0 780 6258 L 45 0 780 6567 L 45 0 780 6786 L 45 0 780 6956 L 45 0 780 7095 L 45 0 780 7212 L 45 0 780 7314 L
+45 0 780 7404 L 90 0 780 7484 L 45 0 780 8012 L 45 0 780 8321 L 45 0 780 8540 L 45 0 780 8710 L 45 0 6974 3806 L 45 0 6974 3896 L
+90 0 6929 3976 L 45 0 6974 4504 L 45 0 6974 4813 L 45 0 6974 5032 L 45 0 6974 5202 L 45 0 6974 5341 L 45 0 6974 5458 L
+45 0 6974 5560 L 45 0 6974 5650 L 90 0 6929 5730 L 45 0 6974 6258 L 45 0 6974 6567 L 45 0 6974 6786 L 45 0 6974 6956 L
+45 0 6974 7095 L 45 0 6974 7212 L 45 0 6974 7314 L 45 0 6974 7404 L 90 0 6929 7484 L 45 0 6974 8012 L 45 0 6974 8321 L
+45 0 6974 8540 L 45 0 6974 8710 L
+ 15.60  pgscale div FS gs  90.00        643.418       3782.201 moveto rotate (10) HVC   9.36 pgscale div FS up (-4) HVC dn  15.60 pgscale div FS gr
+ 15.60  pgscale div FS gs  90.00        643.418       5536.169 moveto rotate (10) HVC   9.36 pgscale div FS up (-3) HVC dn  15.60 pgscale div FS gr
+ 15.60  pgscale div FS gs  90.00        643.418       7273.417 moveto rotate (0.01) HVC gr
+238 0 780 7414 L 0 394 902 7192 L 163 0 1018 7706 L 0 355 1101 7508 L 154 0 1181 7795 L 0 320 1259 7618 L 144 0 1335 7728 L
+0 336 1408 7541 L 135 0 1479 8076 L 0 261 1547 7934 L 87 0 1614 8186 L 0 296 1658 8024 L 83 0 1701 8151 L 0 305 1743 7984 L
+120 0 1784 7867 L 0 300 1845 7702 L 114 0 1904 7939 L 0 287 1961 7782 L 36 0 2018 8665 L 0 304 2036 8498 L 72 0 2054 8248 L
+0 282 2091 8094 L 70 0 2126 8257 L 0 284 2162 8102 L 68 0 2196 8245 L 0 283 2230 8090 L 98 0 2264 8060 L 0 263 2314 7917 L
+95 0 2362 7954 L 0 281 2410 7801 L 90 0 2457 7799 L 0 311 2503 7628 L 116 0 2547 7697 L 0 291 2606 7538 L 84 0 2663 7839 L
+0 307 2705 7670 L 80 0 2747 7920 L 0 290 2787 7761 L 78 0 2827 7936 L 0 283 2866 7781 L 75 0 2905 7954 L 0 281 2943 7801 L
+73 0 2980 7881 L 0 295 3017 7719 L 71 0 3053 8084 L 0 258 3089 7944 L 46 0 3124 8081 L 0 316 3147 7907 L 68 0 3170 7821 L
+0 308 3204 7652 L 66 0 3238 7787 L 0 316 3271 7613 L 84 0 3304 7665 L 0 299 3346 7500 L 82 0 3388 7713 L 0 289 3430 7555 L
+60 0 3470 7791 L 0 314 3500 7618 L 58 0 3530 7732 L 0 335 3559 7546 L 94 0 3588 7354 L 0 336 3635 7168 L 90 0 3682 7413 L
+0 316 3728 7239 L 87 0 3772 7367 L 0 323 3816 7189 L 165 0 3859 6693 L 0 399 3943 6468 L 139 0 4024 6852 L 0 356 4095 6653 L
+103 0 4163 7090 L 0 333 4215 6906 L 99 0 4266 7134 L 0 319 4316 6958 L 134 0 4365 6892 L 0 319 4433 6716 L 115 0 4499 6965 L
+0 316 4557 6791 L 191 0 4614 6500 L 0 329 4711 6318 L 155 0 4805 6578 L 0 333 4884 6394 L 235 0 4960 6097 L 0 377 5081 5885 L
+160 0 5195 6345 L 0 368 5277 6139 L 167 0 5355 6261 L 0 367 5440 6055 L 211 0 5522 6069 L 0 351 5630 5874 L 193 0 5733 5989 L
+0 385 5832 5773 L 225 0 5926 5749 L 0 420 6042 5510 L 242 0 6151 5621 L 0 419 6275 5383 L 256 0 6393 5475 L 0 432 6524 5229 L
+370 0 6649 3917 L 0 765 6841 3799 L 238 0 780 7714 L 0 99 C 163 0 C 0 55 C 154 0 C 0 36 C 144 0 C 0 41 C 135 0 C 0 31 C 87 0 C
+0 16 C 83 0 C 0 11 C 120 0 C 0 3 C 114 0 C 0 -1 C 36 0 C 0 -3 C 72 0 C 0 -4 C 70 0 C 0 -7 C 68 0 C 0 -8 C 98 0 C 0 -11 C 95 0 C
+0 -14 C 90 0 C 0 -20 C 116 0 C 0 -21 C 84 0 C 0 -19 C 80 0 C 0 -22 C 78 0 C 0 -23 C 75 0 C 0 -19 C 73 0 C 0 -19 C 71 0 C 0 -26 C
+46 0 C 0 -45 C 68 0 C 0 -60 C 66 0 C 0 -42 C 84 0 C 0 -19 C 82 0 C 0 -7 C 60 0 C 0 -1 C 58 0 C 0 -55 C 94 0 C 0 -128 C 90 0 C
+0 -114 C 87 0 C 0 -321 C 165 0 C 0 -164 C 139 0 C 0 9 C 103 0 C 0 -31 C 99 0 C 0 -73 C 134 0 C 0 -35 C 115 0 C 0 -66 C 191 0 C
+0 -86 C 155 0 C 0 -98 C 235 0 C 0 -104 C 160 0 C 0 -100 C 167 0 C 0 -135 C 211 0 C 0 -172 C 193 0 C 0 -92 C 225 0 C 0 -475 C 242 0 C
+0 -397 C 256 0 C 0 -710 C 370 0 C 238 0 780 7714 L 0 0 902 7714 L 163 0 1018 7813 L 0 0 1101 7813 L 154 0 1181 7868 L
+0 0 1259 7868 L 144 0 1335 7904 L 0 0 1408 7904 L 135 0 1479 7945 L 0 0 1547 7945 L 87 0 1614 7976 L 0 0 1658 7976 L
+83 0 1701 7992 L 0 0 1743 7992 L 120 0 1784 8003 L 0 0 1845 8003 L 114 0 1904 8006 L 0 0 1961 8006 L 36 0 2018 8005 L
+0 0 2036 8005 L 72 0 2054 8002 L 0 0 2091 8002 L 70 0 2126 7998 L 0 0 2162 7998 L 68 0 2196 7991 L 0 0 2230 7991 L 98 0 2264 7983 L
+0 0 2314 7983 L 95 0 2362 7972 L 0 0 2410 7972 L 90 0 2457 7958 L 0 0 2503 7958 L 116 0 2547 7938 L 0 0 2606 7938 L 84 0 2663 7917 L
+0 0 2705 7917 L 80 0 2747 7898 L 0 0 2787 7898 L 78 0 2827 7876 L 0 0 2866 7876 L 75 0 2905 7853 L 0 0 2943 7853 L 73 0 2980 7834 L
+0 0 3017 7834 L 71 0 3053 7815 L 0 0 3089 7815 L 46 0 3124 7789 L 0 0 3147 7789 L 68 0 3170 7744 L 0 0 3204 7744 L 66 0 3238 7684 L
+0 0 3271 7684 L 84 0 3304 7642 L 0 0 3346 7642 L 82 0 3388 7623 L 0 0 3430 7623 L 60 0 3470 7616 L 0 0 3500 7616 L 58 0 3530 7615 L
+0 0 3559 7615 L 94 0 3588 7560 L 0 0 3635 7560 L 90 0 3682 7432 L 0 0 3728 7432 L 87 0 3772 7318 L 0 0 3816 7318 L 165 0 3859 6997 L
+0 0 3943 6997 L 139 0 4024 6833 L 0 0 4095 6833 L 103 0 4163 6842 L 0 0 4215 6842 L 99 0 4266 6811 L 0 0 4316 6811 L
+134 0 4365 6738 L 0 0 4433 6738 L 115 0 4499 6703 L 0 0 4557 6703 L 191 0 4614 6637 L 0 0 4711 6637 L 155 0 4805 6551 L
+0 0 4884 6551 L 235 0 4960 6453 L 0 0 5081 6453 L 160 0 5195 6349 L 0 0 5277 6349 L 167 0 5355 6249 L 0 0 5440 6249 L
+211 0 5522 6114 L 0 0 5630 6114 L 193 0 5733 5942 L 0 0 5832 5942 L 225 0 5926 5850 L 0 0 6042 5850 L 242 0 6151 5375 L
+0 0 6275 5375 L 256 0 6393 4978 L 0 0 6524 4978 L 370 0 6649 4268 L 0 0 6841 4268 L
+ 15.60  pgscale div FS gs  90.00        389.950       4929.553 moveto rotate (normalized counts/sec/keV) HVC gr
+ 15.60  pgscale div FS gs   0.00        779.900       8952.495 moveto rotate (RBS_0797_7902_annuli19_src1_grp.pi) HVC gr
+ 15.60  pgscale div FS gs   0.00       3092.771       9293.713 moveto rotate (RBS_0797 7902) HVC gr
+6239 0 780 1354 L 0 2436 C -6239 0 C 0 -2436 C 0 45 966 1354 L 0 45 1332 1354 L 0 45 1649 1354 L 0 45 1929 1354 L 0 90 2179 1354 L
+0 45 3825 1354 L 0 45 4787 1354 L 0 45 5470 1354 L 0 45 6000 1354 L 0 45 6433 1354 L 0 45 6799 1354 L 0 45 966 3745 L
+0 45 1332 3745 L 0 45 1649 3745 L 0 45 1929 3745 L 0 90 2179 3700 L 0 45 3825 3745 L 0 45 4787 3745 L 0 45 5470 3745 L
+0 45 6000 3745 L 0 45 6433 3745 L 0 45 6799 3745 L
+ 15.60  pgscale div FS gs   0.00       2118.709       1120.401 moveto rotate (1) HVC gr
+ 15.60  pgscale div FS gs   0.00       3764.506       1120.401 moveto rotate (2) HVC gr
+ 15.60  pgscale div FS gs   0.00       5940.130       1120.401 moveto rotate (5) HVC gr
+45 0 780 1381 L 45 0 780 1487 L 45 0 780 1592 L 45 0 780 1697 L 90 0 780 1802 L 45 0 780 1908 L 45 0 780 2013 L 45 0 780 2118 L
+45 0 780 2224 L 90 0 780 2329 L 45 0 780 2434 L 45 0 780 2540 L 45 0 780 2645 L 45 0 780 2750 L 90 0 780 2856 L 45 0 780 2961 L
+45 0 780 3066 L 45 0 780 3171 L 45 0 780 3277 L 90 0 780 3382 L 45 0 780 3487 L 45 0 780 3593 L 45 0 780 3698 L 45 0 6974 1381 L
+45 0 6974 1487 L 45 0 6974 1592 L 45 0 6974 1697 L 90 0 6929 1802 L 45 0 6974 1908 L 45 0 6974 2013 L 45 0 6974 2118 L
+45 0 6974 2224 L 90 0 6929 2329 L 45 0 6974 2434 L 45 0 6974 2540 L 45 0 6974 2645 L 45 0 6974 2750 L 90 0 6929 2856 L
+45 0 6974 2961 L 45 0 6974 3066 L 45 0 6974 3171 L 45 0 6974 3277 L 90 0 6929 3382 L 45 0 6974 3487 L 45 0 6974 3593 L
+45 0 6974 3698 L
+ 15.60  pgscale div FS gs  90.00        643.418       1742.414 moveto rotate (0) HVC gr
+ 15.60  pgscale div FS gs  90.00        643.418       2118.420 moveto rotate (0.01) HVC gr
+ 15.60  pgscale div FS gs  90.00        643.418       2644.947 moveto rotate (0.02) HVC gr
+ 15.60  pgscale div FS gs  90.00        643.418       3171.473 moveto rotate (0.03) HVC gr
+238 0 780 1571 L 0 243 902 1450 L 163 0 1018 1696 L 0 323 1101 1535 L 154 0 1181 1722 L 0 328 1259 1558 L 144 0 1335 1614 L
+0 315 1408 1456 L 135 0 1479 1982 L 0 388 1547 1788 L 87 0 1614 2121 L 0 508 1658 1867 L 83 0 1701 2041 L 0 500 1743 1791 L
+120 0 1784 1633 L 0 339 1845 1463 L 114 0 1904 1714 L 0 356 1961 1536 L 36 0 2018 3242 L 0 980 2036 2752 L 72 0 2054 2198 L
+0 525 2091 1936 L 70 0 2126 2222 L 0 534 2162 1955 L 68 0 2196 2207 L 0 525 2230 1945 L 98 0 2264 1910 L 0 383 2314 1718 L
+95 0 2362 1780 L 0 356 2410 1602 L 90 0 2457 1617 L 0 321 2503 1457 L 116 0 2547 1544 L 0 263 2606 1412 L 84 0 2663 1711 L
+0 333 2705 1545 L 80 0 2747 1828 L 0 351 2787 1653 L 78 0 2827 1875 L 0 350 2866 1700 L 75 0 2905 1924 L 0 356 2943 1746 L
+73 0 2980 1855 L 0 339 3017 1686 L 71 0 3053 2146 L 0 388 3089 1952 L 46 0 3124 2170 L 0 471 3147 1934 L 68 0 3170 1881 L
+0 327 3204 1718 L 66 0 3238 1902 L 0 321 3271 1742 L 84 0 3304 1822 L 0 258 3346 1693 L 82 0 3388 1882 L 0 267 3430 1748 L
+60 0 3470 1964 L 0 321 3500 1804 L 58 0 3530 1906 L 0 315 3559 1749 L 94 0 3588 1665 L 0 194 3635 1568 L 90 0 3682 1791 L
+0 196 3728 1693 L 87 0 3772 1831 L 0 189 3816 1736 L 165 0 3859 1711 L 0 96 3943 1663 L 139 0 4024 1808 L 0 106 4095 1755 L
+103 0 4163 1890 L 0 135 4215 1822 L 99 0 4266 1917 L 0 137 4316 1849 L 134 0 4365 1847 L 0 100 4433 1797 L 115 0 4499 1880 L
+0 109 4557 1826 L 191 0 4614 1774 L 0 62 4711 1743 L 155 0 4805 1808 L 0 69 4884 1774 L 235 0 4960 1752 L 0 41 5081 1731 L
+160 0 5195 1802 L 0 56 5277 1774 L 167 0 5355 1804 L 0 50 5440 1779 L 211 0 5522 1798 L 0 37 5630 1779 L 193 0 5733 1807 L
+0 36 5832 1789 L 225 0 5926 1795 L 0 29 6042 1780 L 242 0 6151 1815 L 0 24 6275 1803 L 256 0 6393 1821 L 0 21 6524 1810 L
+370 0 6649 1800 L 0 13 6841 1793 L
+ 15.60  pgscale div FS gs  90.00        389.950       2141.750 moveto rotate (residuals) HVC gr
+ 15.60  pgscale div FS gs   0.00       2894.911        698.184 moveto rotate (channel energy \(keV\)) HVC gr
+105 0 780 1802 L 105 0 990 1802 L 105 0 1200 1802 L 105 0 1410 1802 L 105 0 1620 1802 L 105 0 1830 1802 L 105 0 2040 1802 L
+105 0 2250 1802 L 105 0 2460 1802 L 105 0 2670 1802 L 105 0 2880 1802 L 105 0 3090 1802 L 105 0 3300 1802 L 105 0 3510 1802 L
+105 0 3720 1802 L 105 0 3930 1802 L 105 0 4140 1802 L 105 0 4350 1802 L 105 0 4560 1802 L 105 0 4770 1802 L 104 0 4980 1802 L
+105 0 5189 1802 L 105 0 5399 1802 L 105 0 5609 1802 L 105 0 5819 1802 L 105 0 6029 1802 L 105 0 6239 1802 L 105 0 6449 1802 L
+105 0 6659 1802 L 105 0 6869 1802 L
+PGPLOT restore showpage
+%%PageTrailer
+%%PageBoundingBox: 42 64 531 710
+ 
+%%Trailer
+%%BoundingBox: 42 64 531 710
+%%DocumentFonts: 
+%%Pages: 1
+%%EOF
