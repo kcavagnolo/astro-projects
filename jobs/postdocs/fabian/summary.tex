@@ -1,0 +1,242 @@
+\documentclass[11pt]{article}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage{subfig,epsfig,colortbl,graphics,graphicx,wrapfig,amssymb}
+\usepackage{macros_cavag}
+\pagestyle{myheadings}
+\font\cap=cmcsc10
+\setlength{\topmargin}{-0.2in}
+\setlength{\oddsidemargin}{-0.1in}
+\setlength{\evensidemargin}{0.in}
+\setlength{\headheight}{0.1in}
+\setlength{\headsep}{0.25in}
+\setlength{\topskip}{0.1in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9.25in}
+
+\markright{K.W. Cavagnolo Summary}
+
+\begin{document}
+\begin{center}
+\textbf{Summary of Past Research and Future Interests}\\
+\end{center}
+
+The general process of galaxy cluster formation through hierarchical
+merging is well understood, but many details, such as the impact of
+feedback sources on the cluster environment and radiative cooling in
+the cluster core are not. Mergers and feedback activity are interesting for
+two reasons: they potentially compromise the use of clusters for
+cosmological studies, and there is a tremendous amount of interesting
+astrophysics going on. My thesis research has focused on studying
+the details of feedback and mergers via X-ray properties of the ICM in
+clusters of galaxies. I have paid particular attention to ICM entropy
+distribution and the role of AGN feedback in shaping large scale
+cluster properties. Additionally I have examined the quantification
+of cluster virialization via aspect-independent metrics, with emphasis
+on understanding temperature inhomogeneity as a surrogate for cluster
+dynamic state.
+
+\subsection*{Mining the CDA}
+
+My thesis makes use of a 350 observation sample (276 clusters; 11.6
+Msec) taken from the {\it Chandra} archive. This massive
+undertaking necessitated the creation of a robust reduction and
+analysis pipeline which 1) interacts with mission specific software,
+2) utilizes analysis software (i.e. {\tt{XSPEC}}, {\tt{IDL}}), 3)
+incorporates calibration and software updates, and 4) is highly
+automated. Because my pipeline is written in a very general manner,
+adding pre-packaged analysis tools from missions such as
+{\textit{XMM}}, {\textit{Spitzer}}, and {\textit{VLA}} will be
+straightforward. Most importantly, my pipeline deemphasizes data
+reduction and accords me the freedom to move quickly into an analysis
+phase and generating publishable results.
+
+\subsection*{Quantifying Cluster Virialization}
+
+Cluster mass functions and the evolution of the cluster mass function
+are useful for measuring cosmological parameters. Cluster evolution
+tests the effect of dark matter and dark energy on the evolution of
+dark matter halos, and therefore provides a complementary and distinct
+constraint on cosmological parameters to those tests which constrain
+them geometrically (e.g. supernovae and baryon acoustic
+oscillations).
+
+Empirically, the relationship of mass and some observable properties
+is well-established. However, if we could identify a set of parameters
+-- possibly reflecting the degree of relaxation in the cluster -- we
+could improve the utility of clusters as cosmological probes. The work
+of Mathiesen and Evrard 2001 found an auxiliary measure of substructure
+which does not depend on perspective and could be combined with power
+ratio, axial ratio, and centroid variation to yield a more robust
+metric for quantifying a cluster's degree of relaxation.
+
+I have studied this auxiliary measure: the bandpass dependence in
+determining X-ray temperatures and what this dependence tells us about
+the virialization state of a cluster. The ultimate goal of this
+project is to find an aspect-independent measure for a cluster's
+dynamic state. To this end, I have investigated the net temperature skew in my
+sample of the hard-band (2.0$_{rest}$-7.0 keV) and full-band (0.7-7.0
+keV) temperature ratio for core-excised apertures. I have found this
+temperature ratio is statistically connected to mergers and the
+presence of cool cores. The next step is to make a comparison to
+the predicted distribution of temperature ratios and their
+relationship to putative cool lumps and/or non-thermal soft X-ray
+emission in cluster simulations. This will be carried out by a fellow
+graduate student as part of his thesis and funded by a successful
+{\textit{Chandra}} theory proposal by Dr. Mark Voit which was
+motivated by my work. In addition, this project has produced a first
+author paper which is near ApJ submission.
+
+\subsection*{Cluster Feedback and ICM Entropy}
+
+The picture of the ICM entropy-feedback connection
+(Fig. \ref{fig:splots}) emerging from my work suggests cluster radio
+luminosity and H$\alpha$ emission are anti-correlated with cluster
+central entropy ($K=T_Xn_e^{2/3}$). There also appears to be a
+bimodality in the distribution of central cooling times
+(Fig. \ref{fig:tcool}) which is likely related to AGN feedback (and to
+a lesser extent, mergers). I have found that clusters with central
+entropy $\leq 20$ keV cm$^2$ exhibit star formation
+(Fig. \ref{fig:ha}) and AGN activity (Fig. \ref{fig:rad}) in the BCG
+while clusters above this threshold unilaterally do not have star formation
+and exhibit diminished AGN radio feedback. This entropy level is
+auspicious as it coincides with the Field length, $\lambda_F$,
+(assuming reasonable suppression) at which thermal conduction can
+stabilize a cluster core. It is possible we have opened a window to
+solving a long-standing problem in massive galaxy formation (and
+truncation): how are ICM gas properties coupled to feedback mechanisms
+such that the system becomes self-regulating? However, this result
+serves to highlight unresolved issues requiring further intensive
+study.\\
+
+{\bf 1) What is the origin of the bimodality in $K_0$?}\\
+Is it archival bias? Meaning, are clusters with $K_0 \sim 70$ keV
+cm$^2$ ``boring'' (and faint) and thus have not been
+proposed for observation? In which case I will select a representative
+sample of clusters from a flux-limited survey, such as {\it ROSAT}
+400$\square^\circ$, which predictably fill this gap and observe them with
+{\it Chandra}. Or, is the gap physically driven? Is the gap
+representative of a very short period in a clusters life when AGN
+activity has boosted the core entropy to the point of being
+conductively stable ($K_0 > 20$ keV cm$^2$) and subsequent mergers
+have further elevated the ICM entropy to $K_0 > 100$ keV cm$^2$? A
+possible answer to this question may be found in analysis of
+simulations by asking the additional question: what is the timescale
+for depletion of $\sim 10^{12-13} M_{\odot}$ subclusters in a full dark matter
+halo? If this timescale is of the order a few Gyrs then this likely
+points to a collusion of AGN feedback and mergers to give rise to
+bimodality. But ultimately the questions I posed are related with two
+primary underlying questions: what does the distribution of $K_0$ for
+a complete sample of clusters look like? And what does the AGN energy
+injection distribution look like?\\
+
+{\bf 2) What role is star formation playing in the feedback cycle of clusters?}\\
+Thus far, indications from the literature are that most (possibly all?)
+BCGs in X-ray luminous clusters with $K_0 \leq 20$ keV cm$^2$ are
+dominated by star formation. But we can see from Figure \ref{fig:rad} that most of
+these systems contain radio AGN. So one can ask the question: are
+there any AGN dominated nebular BCGs? An interesting project to pursue
+with the {\it Spitzer} archive would be to examine the shape of
+spectral energy distributions (SEDs) for all clusters with a BCG and
+attempt to reveal if the BCG is star formation or AGN dominated.
+A cross-reference of my thesis sample (which is essentially the
+entire CDA) with the {\it Spitzer} data archive reveals 150+
+clusters have already been observed by {\it Spitzer} (combinations of
+75+ MIPS, 50+ IRAC, 30+ IRS) covering a broad entropy, luminosity (X-ray,
+H$\alpha$, radio), and mass range. The large pool to draw from makes
+selection of a representative subsample immediately possible. Does
+star formation precede/inhibit/enhance/stunt AGN feedback? Currently
+we do not know. All we know is these two processes are triggered in
+cluster BCGs which reside in low entropy environments. Surely they are
+coupled somehow, which is why I highlighted several poor clusters/rich
+groups in Figures \ref{fig:ha} and \ref{fig:rad} with blue boxes and
+red stars. These systems are in the proper regime for feedback, yet
+they exhibit only one or neither of star formation or AGN. Follow-up of
+these objects with {\it Spitzer} and {\it XMM}'s Optical Monitor to
+search for polycyclic aromatic hydrocarbon features, UV excess, or
+dusty AGN would be interesting.\\
+
+{\bf 3) How is energy generated on the parsec scale from a SMBH
+deposited uniformly in the ICM over a few cubic megaparsecs?}\\
+As you are well aware and have shown quite elegantly through your work
+on Perseus, the role of AGN feedback in shaping global cluster
+properties is quite complex and to some extent poorly
+understood. Models for the process of thermalizing energy in AGN blown
+bubbles have been proposed, but details of these models still need to be explored.
+For example, do bubbles contain a very low density non-relativistic
+thermal plasma or are they truly voids in the ICM? We'd like to know
+if bubbles are pressure supported, and this could be studied via SZ
+effects. Radio sources are also being revealed as much more powerful
+than ever expected now that they have been observed at low radio
+frequencies (i.e. 330 MHz). Use of surveys such as LOFAR, LWA and
+EVLA will make study of clusters across a broad radio range a rich
+field for years to come. Also, what is the contribution of cosmic rays in
+bubbles? The presence of cosmic rays should be detectable with GLAST
+using observation of $\gamma$-rays from the decay of $\pi^0$ in bubble
+lobes. How do bubbles rise to distances $\geq 100$ kpc without being
+shredded by instabilities? What is the role of $\vec{B}$ fields in
+stabilizing bubbles? And what is the origin of these fields? This area
+of cluster feedback studies is littered with more questions than
+current answers, which makes for an attractive research avenue for a
+post-doc to write many observing and grant proposals.\\
+
+I have attempted to highlight without too much depth the areas I have
+already worked and the directions I would like to go. Most of my
+experience is with X-ray data, but multiwavelength analysis is the
+next necessary step in my career, and I hope it will be under your
+direction at IoA.
+
+\clearpage
+\begin{figure}[t]
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+	\includegraphics*[width=\textwidth, trim=28mm 8mm 30mm 10mm, clip]{splots}
+        \caption{\small Radial entropy profiles of 143 clusters of
+	galaxies in my thesis sample. The observed range of $K_0 \lesssim
+	40$ keV cm$^2$ is consistent with models of episodic AGN
+	heating. Color coding indicates global cluster temperature (in keV)
+	derived from core excised apertures of size R$_{2500}$.}
+	\label{fig:splots}
+    \end{minipage}
+    \hspace{0.1in}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=28mm 8mm 30mm 10mm, clip]{tcool}
+        \caption{\small Distribution of central cooling times for an
+	unbiased sub-sample of the clusters analyzed for my
+	thesis. The peak in the range of cooling times (several hundred Myrs)
+	is consistent with inferred AGN duty cycles of both weak ($\sim
+	10^{40-50}$ ergs) and strong ($\sim 10^{60}$ ergs)
+	outbursts. However, note the distinct gap at $0.6-1$ Gyr. An
+	explanation for this bimodality does not currently exist.}
+	\label{fig:tcool}
+    \end{minipage}
+    \hspace{0.1cm}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=28mm 8mm 30mm 10mm, clip]{ha}
+        \caption{\small Central entropy plotted against H$\alpha$
+	luminosity. Orange dots are detections, black boxes with
+	arrows are non-detection upper-limits, and blue boxes with red stars
+	are poor clusters/rich groups which do not match the
+	trend. Notice the characteristic entropy threshold for star
+	formation of $K_0 \lesssim 20$ keV cm$^2$. This is also the entropy scale at
+	which conduction no longer balances radiative cooling and condensation
+	of low entropy gas onto a BCG can proceed.}
+        \label{fig:ha}
+    \end{minipage}
+    \hspace{0.1in}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=28mm 8mm 30mm 10mm, clip]{rad}
+        \caption{\small Central entropy plotted against NVSS or PKS radio
+	luminosity. Orange dots are detections, black boxes with
+	arrows are non-detection upper-limits, and blue boxes with red stars
+	are poor clusters/rich groups which do not match the
+	trend. There appears to be a dichotomy which might be related to AGN
+	fueling mechanisms: AGN which are feed via low entropy gas, and the
+	smattering of points at $K_0 > 50$ keV cm$^2$ which are likely
+	fueled by mergers.}
+        \label{fig:rad}
+    \end{minipage}
+\end{figure}
+\end{document}

@@ -1,0 +1,519 @@
+\documentclass[11pt]{article}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage{subfig,epsfig,colortbl,graphics,graphicx,wrapfig,mathrsfs,common}
+\pagestyle{myheadings}
+\font\cap=cmcsc10
+\setlength{\topmargin}{-0.25in}
+\setlength{\oddsidemargin}{-0.1in}
+\setlength{\evensidemargin}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0.1in}
+\setlength{\topskip}{0.5in}
+\setlength{\textwidth}{6.5in}
+\setlength{\textheight}{9.25in}
+
+\begin{document}
+\begin{center}
+\LARGE
+\textbf{A Multiwavelength Study of Pre-AGN Outburst BCGs in X-ray
+Luminous Clusters and Groups of Galaxies}
+\end{center}
+\normalsize
+
+\section{Motivation}
+
+The general process of galaxy cluster formation through hierarchical
+merging is well understood, but many details, such as the impact of
+feedback sources on the cluster environment and radiative cooling in
+the cluster core are not. The most massive baryonic component of a
+galaxy cluster is the intracluster medium (ICM) which has densities of
+a few $10^{-3} \mathrm{~cm}^{-3}$ and temperatures ranging
+$2-10$ keV. The ICM is observed as a luminous X-ray ``cloud'' which
+pervades the cluster over several cubic Mpcs, and has varying
+amounts of substructure which depend on the cluster dynamical
+state. Clusters which have not experienced a major merger event for a
+few Gyrs, the ICM is observed to be stratified, spherically symmetric,
+and in approximate hydrostatic equilibrium.\\
+
+In the absence of processes other than gravity, all clusters will
+be scaled versions of each other with the defining characteristic
+being cluster mass. The mass of a cluster determines the depth of the
+gravitational potential well and the well depth in turn defines global
+cluster properties such as ICM luminosity and temperature. But the
+Universe does not operate so simplistically as to have gravity be the
+only process which defines a cluster's properties. Portions of the
+inhomogeneous ICM have cooling times shorter than the age of the
+Universe and are thus subject to radiative cooling. As the ICM
+radiatively cools, massive ``cooling flows'' of cold gas streaming to
+the bottom of the clusters potential well should result. But these
+cooling flows have never been observed with the predicted rates of
+hundreds to thousands of solar masses per year, instead the flows are
+more like trickles depositing at best a few solar masses per year in
+the core.\\
+
+I must digress for a moment to introduce the concept of ICM entropy
+on which I rely heavily in this proposal. Density and temperature are
+not the truest representation of the ICM's physical state because they
+are most influenced by the underlying dark matter potential. These two
+quantities are therefore not ideal for understanding the thermal
+history of the ICM. But when we define a new quantity, $K=Tn^{-2/3}$,
+which we call entropy (but is in actuality the adiabatic constant), we
+have captured the gas thermal history because only heating and cooling
+can alter entropy. Compression and expansion of the ICM does not
+change $K$ the way it affects temperature. Even better, the radial
+entropy distribution of the ICM is very telling because a
+potential well is like a giant entropy sorting device: the ICM is only
+convectively stable when $dK/dr \geq 0$. If a cluster were a sealed box
+of gravitation-only processes whom's core was dominated by a cooling
+flow, then the radial entropy distribution would strictly follow a
+power-law relation across all radii.\\
+
+In my thesis I have conclusively proven that a central entropy
+pedestal (Fig. \ref{fig:splots}) is a universal feature of
+clusters. But what secondary process(es) removes low-entropy gas from
+the core of a cluster? Recently, bubbles blown in the ICM by AGN have
+been observed in numerous clusters (\cite{2007ARA&A..45..117M}). These
+bubbles contain the energy necessary to retard core cooling and thus
+to eradicate low-entropy gas in the core. In support of this AGN
+feedback framework is the picture of the ICM entropy-feedback
+connection emerging from my thesis. My work suggests BCG radio
+luminosity (Fig. \ref{fig:radk0}) and BCG H$\alpha$ emission
+(Fig. \ref{fig:hak0}) are anti-correlated with cluster central
+entropy. I have found that clusters with central entropy $\leq 20$ keV
+cm$^2$ exhibit star formation and radio AGN activity in the BCG while
+clusters above this threshold unilaterally do not have star formation
+and exhibit diminished AGN radio feedback. Corroborating observations
+of strong blue gradients as a function of decreasing central entropy
+in BCGs has also been seen by Rafferty et. al. (2007 in press).\\
+
+A satisfactory solution to the cooling flow problem and flattening of
+entropy profiles has been found with AGN, but a nasty problem of these
+models has also emerged: {\bf how does AGN feedback couple to ICM
+properties such that the system becomes self-regulating?} The central
+entropy level mentioned above, $K_0 = 20$ keV cm$^{2}$, is auspicious
+as it coincides with the Field length at which thermal conduction can
+stabilize a cluster core (Fig. \ref{fig:conduction}). It is possible
+conduction is the physical mechanism by which ICM gas properties are
+coupled to feedback mechanisms such that the system becomes
+self-regulating. If an AGN outburst does not boost the ICM entropy of
+the core to greater than $\sim 20 $ keV cm$^{2}$ then the core will
+not be subject to stabilization by conduction and cooling plus
+condensation will proceed, ultimately leading to future AGN outbursts
+and prodigious star formation in the BCG.\\
+
+But while this framework is exciting, it needs refinement to produce a
+robust model which explains the fueling of AGN, resulting AGN heating,
+couples the ICM with AGN, and properly predicts the effect on
+BCG star formation rates. Observations of an AGN interacting with the
+hot cluster atmosphere (a very useful diagnostic) abound
+(i.e. \cite{2004ApJ...607..800B}), but the best diagnostic -- direct
+observation of on-going shock heating from a young AGN -- are rare, 
+most likely short-lived, or impossible to see because of observation
+resolution limits or gas and dust enshroudment. I suggest we attack
+the problem of understanding AGN feedback in clusters by inverting the
+problem. Instead of basing models only on observations of feedback
+{\it after} it has occurred, we should also add constraints by
+focusing on the cluster core environment {\it before} an AGN outburst
+is very near. But how does one go about selecting a sample of objects
+which we know to be near the beginning of a feedback cycle?\\
+
+Looking closer at Figure \ref{fig:radk0} and Figure \ref{fig:hak0} you
+will notice blue boxes with red stars. These points indicate clusters
+with BCGs which {\bf do not} have star formation or radio AGN, but
+have central entropies below the conduction stabilization limit of $K_0
+= 20$ keV cm$^2$. Henceforth I refer to all objects in my proposed
+sample as ``clusters'', but in strict terms the sample is a mix of
+large groups, poor clusters, and rich clusters. There is the added
+curiosity that none of these clusters exhibit signs of mergers or
+dramatic AGN feedback (bubbles or cavities) which might explain their
+current physical state (the exception being Abell 133 which has a cool
+``tongue'' and radio relic/ghost whose origin is not clear
+\cite{2004ApJ...616..157F}). General properties of my proposed sample
+are listed in Table \ref{tab:sample}.\\
+
+My proposition is that these clusters are in the final stages of low
+entropy gas condensation in the core which ultimately feeds an AGN
+outburst cycle. This is a very important stage in the
+life-cycle of the most massive galaxies in the Universe, and
+performing an observational ``book-keeping'' of all the low entropy gas
+should yield insight into how massive galaxy formation is ultimately
+truncated via AGN feedback. {\bf As a IPM fellow, I propose to
+conduct a multiwavelength (X-ray, UV, IR, radio) observational
+campaign on this peculiar class of galaxy clusters/groups, which have
+$K_0 \leq 20$ keV cm$^2$ and either no radio emission or no star
+formation, in an effort to understand how AGN are fueled, how stars
+form in the most massive galaxies in the Universe, and to further
+develop a robust model for coupling the ICM to AGN feedback.} This
+work will characterize the gas environments of low entropy systems
+which have thus far been under-studied, and will hopefully yield new
+constraints on the properties of gas accreting onto the SMBH in the
+BCG of these systems. Additionally this project will address the
+hypothesis that conduction plays a crucial role in setting the entropy
+scale below which star formation occurs, and it will also involve
+better understanding how AGN feedback energy is dissipated into the
+ICM.
+
+\markright{K.W. Cavagnolo, IPM Fellowship Proposal}
+
+\section{Observations}
+Multi-phase gas can only be properly accounted for by observing across
+multiple wavelength regimes. The coldest gas will be brightest in the
+Far-IR while the hottest gas has already been observed in the X-ray
+(the impetus for this proposal). As reference, Table
+\ref{tab:observations} lists data which currently resides in publicly
+accessible archives and will serve to streamline this project.
+
+\subsection{X-ray}
+While high resolution X-ray spectra of cool core clusters have
+disproved the presence of massive quantities of gas expected in
+classical cooling flow models (\cite{2006PhR...427....1P}), they have
+also proven it is possible to detect the heavy element recombination lines
+of species such as FeXVII and OVIII. These are an important
+diagnostic for calculating the true mass of gas cooling out of the ICM
+and into a BCG. For my proposed project I will utilize the RGS
+instruments on-board {\it XMM-Newton} to collect high resolution
+spectra of the cores of my sample. To a lesser degree, {\it Chandra}'s
+HETG and LETG instruments will be utilized for cross-calibration
+purposes. As part of my thesis I have already analyzed the {\it
+Chandra} X-ray data for all these clusters, which resulted in
+temperature, density, entropy, pressure, and mass analysis. The {\it
+XMM-Newton} archive will also be utilized to cross-calibrate these
+results.
+
+Only three clusters require new {\it XMM} observations: Abell
+1204, Abell 2107, and Abell 2556. All of these objects are very
+luminous (L$_X > 10^{44}$), cool (T$_X < 4$ keV), and relatively
+nearby (z $<$ 0.18) making them ideal candidates for an {\it XMM}
+observing proposal. There is excellent scientific justification for
+observing these clusters, and it is reasonable to believe I will be
+awarded observing time.
+
+\subsection{Ultraviolet and Optical}
+As an additional constraint on the gas cooling rate, data from {\it
+XMM-Newton}'s Optical Monitor will be utilized. This data will be used
+to calculate star formation rates (SFRs) which will compliment and further
+constrain cooling rates calculated from RGS/HETG/LETG X-ray spectra
+and X-ray imaging spectroscopy of {\it Chandra}. The research group
+I'm presently working with has already utilized this technique of
+calculating SFRs from UV excess for 2A 0335+096
+(\cite{2007AJ....134...14D}).
+
+\subsection{Infrared}
+Not all UV indicators are unbiased in the estimation of SFRs
+(\cite{2007ApJ...666..870C}) because ionizing radiation can be
+reprocessed by dust enshrouding star forming regions. This is where
+utilization of {\it Spitzer} MIPS and IRAC data will provide an
+additional, tighter constraint on calculating SFRs and fully
+accounting for the fate of the cool gas condensing in these low
+entropy systems. Far-IR photometry will also be useful in determining
+if a heavily dust obscured AGN is present in systems which no radio
+AGN was previously detected. Removal of AGN contamination will also be
+important for accurate determination of SFRs using IR data. The data
+presently available in the {\it Spitzer} archive does not provide
+full-coverage of my sample, but the observations I am suggesting in
+the Mid-IR do not require the use of cryogen. Thus it is reasonable to
+believe submission of an observing proposal of $\sim 10-12$ hrs. in
+next year's {\it Spitzer} AOR cycle has a good chance of being
+accepted.
+
+\subsection{Radio}
+Analysis of radio data is not predicated upon acceptance of observing
+time as all the data needed already resides in the VLA archives. For
+the BCGs which do exhibit radio AGN activity it will be important to
+reanalyze VLA FIRST or SUMMS data to calculate the energetics of the
+outflows from the AGN. If conduction is an important mechanism in
+distributing heat throughout a cool core, then one should also expect
+AGN kinetic energy to preferentially interact with low density gas
+and leaving high density gas (in which star formation is most likely
+to occur) intact. This effect has already been observed in a few
+cluster cores, but for very powerful AGN outbursts and in BCGs which
+are not currently experiencing star formation. Uplifting of low
+entropy gas by an AGN will also need to be investigated as such an
+effect can potentially skew the total cooling mass too high. I have
+only listed VLA FIRST high resolution observations which are
+publicly available in Table \ref{tab:observations}, but radio data
+does exist for all my sources, it will need to be acquired through
+personal request.
+
+\section{Analysis: Star Formation Rates and Accounting for Cool Gas}
+This project is an attempt to directly combine model independent
+measurements for the majority of cooling gas in the cores of low
+entropy clusters and characterize the environments in which star
+formation and AGN feedback {\it are initiated}. The project I am
+proposing can be summarized as an attempt to construct the broadest
+wavelength spectral energy distribution (SED) possible for a sample of
+extremely interesting cluster BCGs; this is a book-keeping project
+which will be useful for making a better framework of understanding
+what happens to cool gas just before and just after an AGN feedback
+cycle starts.
+
+To constrain the star formation rates in the BCGs of my proposed
+sample clusters I have chosen a multi-pronged attack. The first task is
+to calculate X-ray cooling rates for the cluster core from the
+temperature and density distributions of the ICM. This does not
+require much effort as I have already done this for my thesis. The
+X-ray cooling rate establishes the expected amount of gas which will be
+condensing onto the BCG. Recall, these systems have been chosen
+because they are dramatically different than their well-heated
+brethren: low entropy with no radio AGN or no star formation. All
+three of which are indicators that the cluster is nearing or long
+removed ($t \geq 1$ Gyr) from the last major heating event.
+
+An additional robust constraint on the properties of the cooling gas
+will be calculated using the high resolution spectra from RGS. The
+relative strengths of lines from heavy elements species such as Fe, O,
+Mg, Ne, and Si will be used to calculate cooling rates and also will
+serve as a temperature diagnostic for gas which is not
+spectroscopically resolved by EPIC/MOS and ACIS. Of course these
+emission lines will not be present with the strengths classic cooling
+flow models predict, but this is precisely the physical characteristic
+I am proposing to study.
+
+Complimentary Mid/Far-IR data from {\it Spitzer} and UV data from {\it
+XMM}-OM will also be used to calculate cooling rates. The emission
+lines from polycyclic aromatic hydrocarbons (PAHs) longward of
+$\sim2\mu$ are very useful for detecting dusty starbursts which
+would otherwise be missed. For the starlight which is not being
+reprocessed by dust, it can be directly observed in the near-UV and
+will show up as a luminosity excess. Assuming an IMF and using the
+L$_{UVW1}$-L$_J$ relation of \cite{2005ApJ...635L...9H} (which is
+founded upon archival {\it XMM}-OM data) any net UV excess will be
+used to calculate star formation rates.
+
+Taking all these constraints together will provide a stringent
+accounting of the state of the lowest entropy gas in these
+clusters. Taking this sample as a distinctly unique set of clusters
+and comparing them against other well studied BCGs and cluster cores
+should reveal if they are different in some fundamental way:
+\begin{enumerate}
+\item Do these clusters truly have cores with fewer stars?
+\item Is the ionization state of the ICM in these cluster cores
+different than typical cool core clusters?
+\item Are the effects of conduction glaringly lacking?
+\item Is there any evidence for very young dust obscured AGN?
+\item Do the gas kinematics suggest bulk motions which are atypical of
+other cool core clusters?
+\end{enumerate}
+The answer to these questions are interesting for several reasons.
+If these cluster cores aren't different from other cool core clusters,
+meaning we find more stars than are indicated by H$\alpha$ emission or
+AGN which aren't radio-loud, then the standard feedback framework is
+intact. I will be able to slot these clusters into the expected
+feedback life-cycle. But, what if these clusters have cores that are
+different from other cool core clusters. One must ask, ``what the heck
+{\it is} going on?''  Why aren't there stars and/or AGN? The standard
+framework of cluster feedback has a glaring hole in explaining this
+class of object and a good opportunity to plug that hole will have
+presented itself.
+
+I can only conjecture at the moment. Imagine an overdense gas parcel
+buried in a very low entropy medium. As the gas parcel sinks it will
+reach a region of higher density, stop, and then buoyantly
+rise. Reproducing this process over an $\approx$ 10 kpc region should
+result in all the overdense gas parcels being washed out while the
+overall entropy of the region continues to lower. The result would be
+a low entropy core with no overdense regions which could produce stars
+or gas streams which could reach the SMBH and initiate AGN
+activity. But is this process stable? Does it require large magnetic
+suppression of conduction? I'm not sure at the moment, this
+idea requires more thought.
+
+A logical next step will be in the utilization of radio data to
+understand the kinematics of the radio AGN (for sources which have
+them). Within this sample of peculiar clusters should arise another
+dichotomy- clusters with AGN and clusters without. The star formation
+rates and cooling rates should be different between these two classes
+of cluster. This will be related to the plasma outflows of the AGN and
+may also be related to the weak shocking of the ICM as the jets
+supersonically move through the dense cluster core environment. An
+additional exciting use for the radio data will be to ``radio date''
+the AGN in an effort to assign an age for these sources. Several
+diagnostics will be useful: 1) dynamic age -- the age inferred from
+kinematics of the source (i.e. distance of jets/lobes from nuclear
+source); 2) synchrotron age -- the age inferred from the break frequency
+of the radio spectrum (presuming no in situ re-acceleration of the jet
+outflow). Ages of the radio sources will be a very interesting piece
+of information as it relates directly to the timescales of ICM
+condensation and feedback energy thermalization.
+
+\section{Benefits to IPM Science and Conclusion}
+This proposal seeks to address many outstanding issues of the feedback
+regulated cooling in the cores of clusters. All of the questions I've
+raised in this proposal relate directly to research currently underway
+at OSU/IPM.
+
+How truncation/downsizing of the massive end of the galaxy luminosity
+function (GLF) proceeds is not well constrained from
+observation. However, cosmological simulations which include cooling
+and feedback are beginning to generate gas distributions which agree
+with observation (\cite{2007ApJ...668....1N}). These simulations also
+have GLFs which have the appropriate density of massive galaxies and
+have cluster BCGs which are blue and not red
+(\cite{2006MNRAS.365...11C}).
+
+But the successes of models including AGN feedback have also served to
+highlight the failings of these models observationally. Specifically,
+we do not currently understand how feedback energy is thermalized
+within the ICM and most importantly we do not understand how AGN are
+fueled via cooling from the ICM. As I presented in the introduction,
+there is good observational and theoretical reason to believe
+conduction is the answer to both these problems. But in the context of
+conduction being the solution we will need to account for the peculiar
+class of clusters which I have presented in this proposal which 
+have low central entropy, no radio AGN (radio being the favored
+mode of energy transport), and/or no star formation (as inferred from
+H${\alpha}$ measurements). IPM has an established stake in all these
+areas of research and will benefit greatly from endorsing me as a
+fellow to further study them.
+
+The research groups at OSU/IPM have an established reputation for use of
+{\it XMM-Newton} which will only serve to make my proposed project all
+the more fruitful. Specifically, I have not touched on the
+implications of star formation on metal enrichment in the cores of
+these clusters, turbulent mixing of the ICM from AGN, and the
+ICM magnetic fields and their role in shaping the interaction of the
+AGN with the ICM. All of these topics have been, or are currently,
+under study by someone at IPM. Many other archival projects could be
+produced from this proposal by expanding the scope to include the
+above mentioned topics.
+
+Along with this proposal are also many other topics which could
+potentially be studied. For example, do AGN blown bubbles contain a very low
+density non-relativistic thermal plasma or are they truly voids in the
+ICM (potentially an SZ experiment)? Maybe bubbles contain cosmic rays,
+a possibility which will make for an interesting GLAST project. How do
+bubbles rise to distances $\geq 100$ kpc without being shredded by
+instabilities? The answer to this question will likely entail better
+understanding of ICM $\vec{B}$ fields, with their origin being either
+from preheating, AGN deposition, or a combination of both.
+
+In conclusion, the class of peculiar galaxy clusters I have presented
+warrant extensive study in their own right, but a uniform, systematic
+study of these objects will have broad implications for better
+understanding AGN feedback and star formation in the most massive
+galaxies in the Universe.
+
+\clearpage
+\begin{figure}[t]
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=26mm 8mm 30mm 10mm, clip]{splots}
+        \caption{\small Entropy profiles for 164 clusters of galaxies
+        in my thesis sample. The range of central entropies is
+        consistent with models of episodic AGN heating which regulate
+        the presence of low entropy gas in cluster cores. The
+        so-called ``cooling flow'' problem does not appear to be a problem any
+        longer.}
+        \label{fig:splots}
+    \end{minipage}
+    \hspace{0.1in}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=28mm 8mm 30mm 10mm, clip]{k0rad}
+        \caption{\small Central entropy derived in my thesis work
+        plotted against radio luminosity calculated using
+        NVSS. Clusters without radio source detections are represented
+	by upper-limits (left pointing arrows). The eight clusters in my
+	sample without radio detections and $K_0 < 20$ are plotted as blue
+	boxes with red stars.}
+        \label{fig:radk0}
+    \end{minipage}
+    \hspace{0.1in}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=28mm 8mm 30mm 10mm, clip]{ha_k0}
+        \caption{\small Central entropy derived in my thesis work
+        plotted against H$\alpha$ luminosity calculated from data in
+	\cite{1999MNRAS.306..857C}. Clusters without H$\alpha$ source
+	detections are represented by upper-limits (left pointing arrows). The
+	five clusters in my sample without H$\alpha$ detections and $K_0 < 20$
+	are plotted as blue boxes with red stars.}
+        \label{fig:hak0}
+    \end{minipage}
+    \hspace{0.1in}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=0.95\textwidth, trim=0mm 0mm 0mm 0mm, clip]{conduction}
+        \caption{\small 
+	Toy entropy profiles plotted as a function of radius and overlaid with
+	dashed lines representing cooling and conduction equivalence for two
+	suppression factors. Above the dashed lines conduction is effective
+	and condensation cannot occur, the opposite is true below the
+	lines. $K_0 < 20$ keV cm$^2$ is the break point at which the Field
+	length criterion suggests gas condensation (i.e. star formation and
+	condensation on the SMBH) can proceed. Reproduced courtesy of Dr. G.
+	Mark Voit.}
+        \label{fig:conduction}
+    \end{minipage}
+\end{figure}
+
+\begin{center}
+General Properties of Cluster/Group Sample
+\small
+\begin{tabular}{lcccccccc}
+\hline
+Name & RA         & Dec           & $z$   & $T_X$ & $K_0$      & $L_{bol.}$    & $L_{H\alpha}$ & $L_{Radio}$\\
+---  & hr:min:sec & $^\circ:':''$ & ---   & keV   & keV cm$^2$ & 10$^{44}$ cgs & 10$^{39}$ cgs & 10$^{39}$ cgs\\
+\hline
+\hline
+Abell 133            & 01:02:41.756 & -21:52:49.79 & 0.0558 & 3.71 & 17.26 & 6.46 & 6.00    & $<$2.03\\
+Abell 1204           & 11:13:20.419 & +17:35:38.45 & 0.1706 & 3.63 & 15.31 & 3.92 & 58.6    & $<$22.2\\
+EXO 0422-086$^{(g)}$ & 04:25:51.271 & -08:33:36.42 & 0.0397 & 3.41 & 13.77 & 0.65 & $<$0.10 & 45.2\\
+Abell 2556           & 23:13:01.413 & -21:38:04.47 & 0.0862 & 3.57 & 12.38 & 1.43 & planned & $<$5.07\\
+Abell 2107           & 15:39:39.113 & +21:46:57.66 & 0.0411 & 3.82 & 11.11 & 3.02 & $<$1.65 & $<$0.79\\
+Abell 2029           & 15:10:56.163 & +05:44:40.89 & 0.0765 & 8.20 & 10.50 & 13.9 & $<$5.91 & 822\\
+AWM7$^{(pc)}$        & 02:54:27.631 & +41:34:47.07 & 0.0172 & 3.71 & 10.21 & 4.07 & planned & $<$0.18\\
+MKW4$^{(g)}$         & 12:04:27.218 & +01:53:42.79 & 0.0198 & 2.16 & 6.86  & 0.46 & planned & $<$0.24\\
+ESO 5520200$^{(g)}$  & 04:54:52.318 &  18:06:56.52 & 0.0314 & 2.34 & 5.89  & 1.40 & planned & $<$0.62\\
+MS J1157.3+5531      & 11:59:52.295 & +55:32:05.61 & 0.0810 & 3.28 & 5.54  & 0.12 & planned & $<$4.44\\
+Abell 2151$^{(pc)}$  & 16:04:35.887 & +17:43:17.36 & 0.0366 & 2.90 & 4.27  & 1.41 & $<$1.30 & 0.59\\
+RBS 533$^{(pc)}$     & 04:19:38.111 & +02:24:35.62 & 0.0123 & 1.29 & 2.56  & 0.17 & $<$0.14 & 0.61\\
+%Centaurus            & 12:48:48.926 & -41:18:44.75 & 0.0109 & 3.96 & 1.34  & 1.74 & 15.0    & 6.79\\
+%Abell 1991           & 14:54:31.620 & +18:38:41.48 & 0.0565 & 5.40 & 1.33  & 1.35 & 5.48    & 32.5\\
+\hline
+\end{tabular}
+\label{tab:sample}
+\end{center}
+\footnotesize
+Notes: Clusters are ordered by decreasing $K_0$; (g) denotes a group;
+(pc) denotes a poor cluster. Clusters without H${\alpha}$ are scheduled
+to be observed using the SOAR Optical Imager (SOI) which is on MSU's
+SOAR Telescope in Cerro Pach\'{o}n, Chile.\\
+\normalsize
+
+\begin{center}
+Exisiting Archival Data
+\small
+\begin{tabular}{lcccccccccc}
+\hline
+Name & X-ray & Inst. & Grating & Inst. & UV & Inst. & IR & Inst. & Radio & Inst.\\
+\hline
+\hline
+Abell 133       & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & N & ------- & Y & priv.\\
+Abell 1204      & N & --- & N & --- & N & ------ & Y & {\it Spitzer} & Y & {\it VLA}\\
+EXO 0422-086    & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & N & ------- & Y & priv.\\
+Abell 2556      & N & --- & N & --- & N & ------ & N & ------- & Y & priv.\\
+Abell 2107      & N & --- & N & --- & N & ------ & N & ------- & Y & priv.\\
+Abell 2029      & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & Y & {\it Spitzer} & Y & {\it VLA}\\
+AWM7            & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & N & ------- & Y & priv.\\
+MKW4            & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & Y & {\it Spitzer} & Y & priv.\\
+ESO 5520200     & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & N & ------- & Y & priv.\\
+MS J1157.3+5531 & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & N & ------- & Y & priv.\\
+Abell 2151      & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & Y & {\it Spitzer} & Y & {\it VLA}\\
+RBS 533         & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & N & ------- & Y & priv.\\
+%Centaurus       & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & N & ------- & Y & priv.\\
+%Abell 1991      & Y & {\it XMM} & Y & RGS & Y & {\it XMM}-OM & N & ------- & Y & priv.\\
+\hline
+\end{tabular}
+\label{tab:observations}
+\end{center}
+\footnotesize
+Notes: All clusters have publically available {\it Chandra} data.
+\normalsize
+
+
+\clearpage
+\bibliographystyle{unsrt}
+\bibliography{cavagnolo}
+ 
+\end{document}
