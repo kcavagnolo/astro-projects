@@ -1,0 +1,48 @@
+This is the README file for the program spec_decon
+
+Files:
+  This package should include the following 5 files:
+  README               -- This file
+  LICENSE              -- The license for this program (GPL 2)
+  spec_decon.sl        -- The main program
+  do_spec_decon.sl     -- Driver script for the main program
+  spec_decon.changelog -- Revision history
+
+Description:
+  Fits concentric annular spectra in Sherpa. The algorithm for
+  determining the contributions of the outer annuli to the spectra of
+  the inner ones was adapted from the program norm_ang by Liz Blanton,
+  with modifications for the case of elliptical (instead of circular)
+  annuli. Uses the same FITS header keywords used by the projct model
+  in XSPEC, so the same files can be used for both purposes without
+  the need for additional files to describe the onion skin geometry.
+  Output is a text file containing the results of the fits and a
+  postscript file with a plot of those results.
+
+Author:
+  Joshua Kempner <josh@kempner.net>
+
+Requirements:
+  CIAO 3.0 or later (3.3 or later on OS X)
+
+History:
+  See changelog
+
+License:
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation; either version 2 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Contact Information:
+  Please send any bug fixes, enhancements, or useful comments by email
+  to josh@kempner.net.

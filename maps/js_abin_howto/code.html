@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<title>Adbin code details</title>
+</head>
+
+<body text="#000066" bgcolor="#FFFFFF" link="#006600"
+vlink="#CC0000" alink="#FF0000">
+<h1>Adbin code details</h1>
+
+<p>
+The included code contains a couple of useful libraries written in C++
+which may be useful to those writing software.
+</p>
+
+<h2>FITS image library</h2>
+<p>A simple FITS image library, contained within the FITS subdirectory
+of the distribution, is included. The code isn't great (I'm in the
+process a redesign and rewrite), but it does the job and is probably
+fine for small projects.</p>
+
+<p>It can load and save FITS format images. It contains a class for
+the easy manipulation of images in memory. It converts all images to
+double format two-dimensional images on loading.</p>
+
+<h3>Sample code (untested!)</h3>
+<pre>
+#include &lt;FITS/FITSFile.h&gt;
+#include &lt;FITS/FITSImage.h&gt;
+
+...
+
+// load images
+CFITSFile inputfile1("image1.fits", CFITSFile::existingro);
+CFITSFile inputfile2("image2.fits", CFITSFile::existingro);
+
+// multiply the images
+CFITSImage manip = inputfile1.GetImage();
+manip *= inputfile2.GetImage();
+
+// square root result
+manip.Sqrt();
+
+// do something pointless to the individual pixels
+for(int y=0; y&lt;manip.GetYW(); y++)
+  for(int x=0; x&lt;manip.GetXW(); x++)
+    manip.SetPixel(x, y, manip.GetPixel(x, y) + x);
+
+{
+  // save the output image
+  CFITSFile outputfile("out.fits", CFITSFile::create);
+  outputfile.SetImage(manip);                 // set output image
+  outputfile.SetPosn(inputfile1.GetPosn());   // copy WCS information
+  outputfile.WriteImage();
+}
+</pre>
+
+<h2>Parammm library</h2>
+<p>Parammm is quite a useful library to handle parameters and
+GNU-style switches to programs. I wrote it because I didn't like the
+way popt does things. The library is extensible and I'm fairly happy
+with the OOP way in which it does things. Here is a list of features:
+</p>
+<ol>
+<li>Can take lots of datatypes (user-addable) as options to
+switches. For example ints, doubles and strings.</li>
+<li>Automatic option help generation, listing syntax and
+parameters.</li>
+<li>Provides a list of strings giving the parameters.</li>
+</ol>
+
+<h3>Sample code</h3>
+<pre>
+#include &lt;string&gt;
+#include &lt;parammm/parammm.hh&gt;
+
+using std::string;
+
+...
+
+int main(int argc, char *argv[])
+{
+  parammm::param params(argc, argv);  // define param object
+
+  int minchan=0, maxchan=1024, noslices=1;
+  string sliceoutfilename, backgrndfilename;
+
+  params.add_switch( parammm::pswitch("minchan", 'i',
+                                      parammm::pint_opt(&amp;minchan),
+                                      "set minimum channel", "CHAN"));
+  // take an integer switch ( --minchan=xx or -i xx )
+  // note how the return variable and type are specified
+  // the final param specifies the help text and the quantity
+  // "unit" being taken.
+
+  params.add_switch( parammm::pswitch("maxchan", 'x',
+                                      parammm::pint_opt(&amp;maxchan),
+                                      "set maximum channel", "CHAN" ));
+  // another int parameter
+
+  params.add_switch( parammm::pswitch("noslices", 'n',
+                                      parammm::pint_opt(&amp;noslices),
+                                      "set number of slices", "NUM" ));
+  // another int
+
+  params.add_switch( parammm::pswitch("sliceout", 'o',
+                                      parammm::pstring_opt(&amp;sliceoutfilename),
+                                      "set output filename", "FILE" ));
+  // string parameter
+
+  params.add_switch( parammm::pswitch("background", 'b',
+                                      parammm::pstring_opt(&amp;backgrndfilename),
+                                      "set background filename", "FILE"));
+  // string parameter
+
+  params.set_autohelp("Usage: EqualSpec [OPTION]... inputspectrum.fits\n"
+                      "divide a spectrum into equal slices (count-wise)\n"
+                      "written by Jeremy Sanders, 2000.",
+                      "Report bugs to &lt;jss@ast.cam.ac.uk&gt;");
+  // text to output at the top and bottoms of the automatic help
+  // text.
+
+  params.enable_autohelp();
+  // if we get a dodgy parameter, show automatic help and
+  // exit the program
+
+  params.interpret_and_catch();
+  // actually process argv
+
+  if(params.args().size() != 1)
+    params.show_autohelp();
+    // actual parameters (non-switches) are stored in the vector&lt;string&gt;
+    // params.args(). show_autohelp() shows the autohelp text and exits
+
+  string filename = params.args()[0];
+  // copy the first parameter (program name not stored)
+
+  ...
+
+  return(0);
+}
+</pre>
+
+<hr />
+<p>
+<a href="./">Back to the adaptive-binning page</a>
+</p>
+<hr />
+<address>
+This page is maintained by <a href="mailto:jss@ast.cam.ac.uk">Jeremy
+Sanders</a>. It was last modified on 2000/11/27. This page is not an
+official page of the <a href="http://www.ast.cam.ac.uk/IoA/">Institute
+of Astronomy</a>.
+</address>
+</body>
+</html>

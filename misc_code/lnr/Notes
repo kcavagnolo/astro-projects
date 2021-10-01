@@ -1,0 +1,43 @@
+-------------------------------------------------------------------------
+Notes - this file contains brief notes on sofware
+-------------------------------------------------------------------------
+	Matthew A. Bershady
+        Pennsylvania State University           voice: (814) 865-0150
+        Dept. of Astronomy & Astrophysics       email: mab@astro.psu.edu
+        525 Davey Lab                           fax:   (814) 863-3399
+        University Park, PA 16802               
+---------------------------------------------------------------------------
+Modification History
+	April 2 1995    MAB     Initial Release
+-------------------------------------------------------------------------
+
+bces_regress.f          linear regions OLS(Y|X), OLS(X|Y), bisector, and
+			orthogonal for model with heteroscedastic errors
+			in X and Y, and homescedastic intrinsic scatter. 
+			Variances calculated analytically and with bootstrap 
+			resampling.
+
+wls_regress.f           weighted OLS for model with heteroscedastic errors
+			and homescedastic intrinsic scatter in Y only.
+			Variances calculated analytically and with bootstrap 
+			resampling.
+
+slopes.f                linear regressions OLS(Y|X), OLS(X|Y), bisector,
+			orthogonal, reduced major axis, and mean-OLS 
+			regressions. Variances calculated analytically and with 
+			bootstrap and jacknife resampling.
+
+			This program has been modified by MAB from the oroginal
+			release by EDF in that ran3 from Numerical Recipes
+			now replaces earlier subroutines, and the bootstrap
+			subroutine has been moved into a separate file.
+			This has no effect on the calculations: ran3 is the
+			same algorithm as before.
+
+sixlin.f		subroutine called by slopes and wls_regress to
+			calulate linear regressions
+
+bootsp.f		bootstrap subroutine for slopes.f
+bootspbec.f		bootstrap subroutine for bces_regress.f
+bootspe.f		bootstrap subroutine for wls_regress.f
+ran3.f			random number generator for bootstrap subroutines

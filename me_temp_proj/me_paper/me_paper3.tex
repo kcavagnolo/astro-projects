@@ -1,0 +1,924 @@
+%%%%%%%%%%
+% Header %
+%%%%%%%%%%
+%\documentclass[12pt, preprint]{aastex}
+%\documentclass[onecolumn]{emulateapj}
+\documentclass{emulateapj}
+\usepackage{apjfonts}
+\usepackage{graphicx}
+\usepackage{here,lscape}
+\shorttitle{X-ray Band Dependent Temperature}
+\shortauthors{Cavagnolo et al.}
+\bibliographystyle{apj}
+\newcommand{\tf}{T$_{HFR}$ }
+\newcommand{\hard}{T$_{2.0-7.0}$ }
+\newcommand{\full}{T$_{0.7-7.0}$ }
+\newcommand{\tx}{T$_{X}$}
+
+%%%%%%%%%%%%%%%%%%%%%
+% Title and Authors %
+%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\title{X-ray Band Dependence of X-ray \\
+	Temperatures in Galaxy Clusters}
+\author{Kenneth W. Cavagnolo\altaffilmark{1,2}, Megan
+Donahue\altaffilmark{1}, G. Mark Voit\altaffilmark{1}, and Ming
+Sun\altaffilmark{1}}
+\altaffiltext{1}{Department of Physics and Astronomy, Michigan State
+University, BPS Building, East Lansing, MI 48824}
+\altaffiltext{2}{cavagnolo@pa.msu.edu}
+
+%%%%%%%%%%%%
+% Abstract %
+%%%%%%%%%%%%
+
+\begin{abstract}
+
+We explore the band-dependence of the inferred X-ray temperature of
+the intracluster medium (ICM) for 179 well-observed ($N_{photons} >
+1500$) clusters of galaxies selected from the Chandra data archive. If
+the hot gas in a cluster is nearly isothermal in the projected region
+of interest, the  X-ray temperature inferred from a broad-band
+(0.7-7.0 keV) spectrum should be identical to the X-ray temperature
+inferred from a hard-band (2.0-7.0 keV) spectrum. However,  if there are
+excess soft X-ray photons contributed by cooler lumps of gas or by
+non thermal processes, the temperature of a best-fit 
+single-temperature thermal model will be cooler for a broad-band
+spectrum than for a hard-band spectrum. Such a diagnostic may
+indicate such contamination even when the X-ray spectrum itself may
+not have sufficient signal-to-noise to resolve multiple temperature
+components. To test this possible diagnostic, we extract X-ray spectra
+from annular regions between $R=70$ kpc and $R=R_{2500}$, $R_{5000}$ for
+each cluster in our archival sample. We compare the X-ray temperatures
+inferred for single-temperature fits of global spectra when the energy
+range of the fit is 0.7-7.0 keV (full) and when the energy range is
+2.0/(1+z)-7.0 keV (hard). We find, on average, the hard-band
+temperature is significantly higher than the full-band 
+temperature. Upon further exploration, we find the ratio
+\tf = \hard/\full is enhanced preferentially for clusters which are
+known merger systems and for clusters which are isothermal. Clusters
+with temperature decrements in their cores (known as cool-core
+clusters) tend to have best-fit hard-band temperatures that are
+statistically consistent with their best fit full-band
+temperatures. We show, using simulated spectra, that this test is
+sensitive to cool components with emission measures $> 4\%$ of the
+hot component for $2.0 \leq $\tx$ \leq 15.0$ keV and for $z < 0.6$.
+
+We show this test is relatively insensitive to second components
+in an individual cluster when the total counts in the spectrum are $<
+2500$, but that investigation of a sample of low-count clusters may
+still reveal interesting trends. A comparison to the predicted
+distribution of temperature ratios and their relationship to putative
+cool lumps and/or non-thermal soft X-ray emission in cluster simulations would be a very useful next step.
+\end{abstract}
+
+%%%%%%%%%%%%
+% Keywords %
+%%%%%%%%%%%%
+
+\keywords{catalogs -- galaxies: clusters: general -- X-rays: galaxies:
+clusters -- cosmology: observations -- methods: data analysis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}\label{sec:intro}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Cluster mass functions and the evolution of the cluster mass function
+are useful for measuring cosmological parameters
+\citep{1989ApJ...341L..71E, 1998ApJ...508..483W, 2001ApJ...553..545H,
+2003PhRvD..67h1304H, 2004PhRvD..70l3008W}. Cluster evolution tests the
+effect of dark matter and dark energy on the evolution of dark matter
+halos, and therefore provide a complementary and distinct constraint
+on cosmological parameters to those tests which constrain
+them geometrically (e.g. supernovae \citep{1998AJ....116.1009R,
+2007ApJ...659...98R} and baryon acoustic oscillations
+\citep{2005ApJ...633..560E}).
+
+However, clusters are a useful cosmological tool only if we can infer
+cluster masses -- the fundamental cluster property inferred from
+cosmological simulations \citep{1990ApJ...363..349E} -- from
+observable properties such as X-ray luminosity, X-ray temperature,
+lensing shear, optical luminosity, and galaxy velocity
+dispersion. Empirically, the relationship of mass and these observable
+properties is well-established \citep{2005RvMP...77..207V}. However,
+if we could identify a ``3rd parameter" -- possibly reflecting the
+degree of relaxation in the cluster -- we could improve the utility of
+clusters as cosmological probes.
+
+Toward this end, we desire to understand the dynamical state of a
+cluster beyond identifying which clusters appear to be relaxed and
+those which appear to be unrelaxed. More likely, clusters have a
+dynamical state which is somewhere in between
+\citep{2006ApJ...639...64O, 2006ApJ...650..128K}. The degree to which
+a cluster is virialized must be quantified within simulations and then
+observationally calibrated with an unbiased statistical sample of
+clusters.
+
+One such study to quantify the dynamical state of
+clusters was performed by \cite{2001ApJ...546..100M} (hereafter ME01)
+using the ensemble of simulations by \cite{1997ApJ...491...38M}. ME01
+found clusters which had experienced a recent merger were much cooler
+than the cluster mass-observable scaling relations predict. They
+attribute this to the presence of cool, spectroscopically unresolved
+accreting subclusters which introduce energy into the ICM which
+requires a long timescale to dissipate. The consequence being an
+under-prediction of cluster binding masses of $15-30\%$
+\citep{2001ApJ...546..100M}.
+
+One method of quantifying the underestimate of the cluster temperature
+(and therefore cluster mass) employs the ratios of X-ray surface
+brightness moments to quantify the degree of relaxation
+\citep{1995ApJ...452..522B, 1996ApJ...458...27B,
+2005ApJ...624..606J}. Although an excellent tool, power ratios suffer
+from being aspect dependent. ME01 found an auxiliary measure of
+substructure which does not depend on perspective and could be
+combined with power ratio to yield a more robust metric for
+quantifying a cluster's degree of relaxation. They found hard-band
+(2.0$_{rest}$-9.0 keV) temperatures were $\sim 20\%$ hotter than
+broad-band (0.5-9.0 keV) temperatures. The cooler broad-band
+temperature being caused by unresolved accreting cool subclusters
+contributing significant amounts of line emission to the
+soft-band ($E<2$ keV). Work by \cite{2004MNRAS.354...10M} and
+\cite{2006ApJ...640..710V} have confirmed this effect in simulated
+{\textit{Chandra}} and {\textit{XMM-Newton}} spectra.
+
+ME01 proposed this temperature skewing, and consequently the fingerprint of
+accretion, could be detected utilizing the energy resolution and
+soft-band sensitivity of {\textit{Chandra}}. They proposed comparing
+single-phase temperature fits to a hard band and full band for a
+sufficiently large sample of clusters covering a broad dynamical range
+then checking for a net skew in the ratio of hard and full
+temperatures above unity.
+
+In this paper we present our findings of just such a temperature ratio
+test using {\textit{Chandra}} archival data. We find on average, the
+hard-band temperature exceeds the broad-band temperature by $\sim15\%$
+in multiple flux-limited samples of X-ray clusters from the Chandra
+archive. This mean excess is weaker than the $20\%$
+predicted by ME01, but is significant at the $11\sigma$ level
+nonetheless. Hereafter, we refer to the hard-band to broad-band
+temperature ratio as \tf. 
+
+This paper proceeds in the following manner. In \S\ref{sec:selection}
+we outline sample selection criteria and {\textit{Chandra}}
+observations selected under these criteria. Data reduction and
+handling of the X-ray background is discussed in
+\S\ref{sec:data}. Spectral extraction is discussed in
+\S\ref{sec:extraction} while fitting and simulated spectra are
+discussed in \S\ref{sec:specan}. Results and discussion of our
+analysis are presented in \S\ref{sec:r&d}. A final summary of our work
+is presented in \S\ref{sec:summary}. For this work we have assumed a
+flat $\Lambda$CDM Universe with cosmology $\Omega_{M} = 0.3$,
+$\Omega_{\Lambda} = 0.7$, and $H_{0} = 70$ km s$^{-1}$ Mpc$^{-1}$. All
+quoted uncertainties are at the 1.6$\sigma$ level (90\% confidence).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sample Selection} \label{sec:selection}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Our sample is selected from observations publicly available in the
+{\textit{Chandra}} X-ray Telescope's Data Archive (CDA). Our initial
+selection pass came from the {\textit{ROSAT}} Brightest Cluster Sample
+\citep{1998MNRAS.301..881E}, RBC Extended Sample
+\citep{2000MNRAS.318..333E}, and {\textit{ROSAT}} Brightest 55 Sample
+\citep{1990MNRAS.245..559E, 1998MNRAS.298..416P}. The portion of our
+sample at z $\gtrsim 0.4$ can also be found in a combination of the
+{\textit{Einstein}} Extended Medium Sensitivity Survey
+\citep{1990ApJS...72..567G}, North Ecliptic Pole Survey
+\citep{2006ApJS..162..304H}, {\textit{ROSAT}} Deep Cluster Survey
+\citep{1995ApJ...445L..11R}, {\textit{ROSAT}} Serendipitous Survey
+\citep{1998ApJ...502..558V}, and Massive Cluster Survey
+\citep{2001ApJ...553..668E}. We later extended our sample to include
+clusters found in the REFLEX Survey \citep{2004A&A...425..367B}. Once
+we had a master list of possible targets, we cross-referenced this
+list with the CDA and gathered observations where a minimum of
+R$_{5000}$ (defined below) is fully within the aimpoint CCD's field of
+view.
+
+R$_{\Delta_c}$ is defined as the radius at which the average cluster
+density is $\Delta_c$ times the critical density of the Universe,
+$\rho_c=3H_{0}^2/8\pi G$. For our calculations of R$_{\Delta_c}$ we adopt the relation
+from \cite{2002A&A...389....1A}:
+
+\begin{eqnarray}
+R_{\Delta_c} &=& 2.71 \text{ Mpc }
+\beta_T
+\Delta_{\text{z}}^{-1/2}
+(1+z)^{3/2}
+(\frac{kT_X}{10 \text{ keV}})^{1/2}\\
+\Delta_z &=& \frac{\Delta_c \Omega_M}{18\pi^2\Omega_z} \nonumber \\
+\Omega_z &=& \frac{\Omega_M (1+z)^3}{[\Omega_M
+(1+z)^3]+[(1-\Omega_M-\Omega_{\Lambda})(1+z)^2]+\Omega_{\Lambda}} \nonumber
+\end{eqnarray}
+
+where R$_{\Delta_c}$ is in units of h$_{70}^{-1}$, $\Delta_c$ is
+the assumed density contrast of the cluster at R$_{\Delta_c}$, and
+$\beta_T$ is a numerically determined, cosmology-independent
+($\lesssim \pm 20\%$) normalization for the virial relation $GM/2R =
+\beta_TkT$. We use $\beta_T = 1.05$ taken from
+\cite{1996ApJ...469..494E}.
+
+The result of our CDA search is a total of 374 observations of which
+224 are used from 179 clusters. The bolometric ($E \sim 0.1-100$ keV)
+luminosities, L$_{bol}$, for our sample clusters plotted as a function of
+redshift are shown in Figure \ref{fig:lx_z}. These L$_{bol}$ values
+are limited to the region of the spectral extraction (from $R=70$ kpc
+to $R=R_{2500}$).
+
+Basic properties of our sample are listed in Table
+\ref{tab:sample}. For the sole purpose of computing extraction regions
+as is discussed in \S\ref{sec:extraction}, fiducial temperatures and
+redshifts were taken from the Ph.D. thesis of Don Horner\footnote{Available at
+http://asd.gsfc.nasa.gov/Donald.Horner/thesis.html} (all redshifts confirmed with
+NED\footnote{http://nedwww.ipac.caltech.edu/}). For clusters not
+observed with {\textit{ASCA}} and thus not listed in Horner's thesis,
+we used a literature search to locate temperature values. If no published value
+could be located, we approximated a temperature by recursively
+extracting a spectrum in the region 0.1 $<$ r $<$ 0.2 R$_{500}$
+fitting a temperature and recalculating R$_{500}$. This process was
+repeated until three consecutive iterations produced R$_{500}$ values
+which differed by $\leq 1\sigma$. This method of temperature
+determination has been employed in other studies, see
+\cite{2006MNRAS.tmp.1068S} and \cite{2006ApJS..162..304H} as
+examples.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\textit{Chandra} Data}\label{sec:data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Reprocessing and Reduction}\label{sec:reprocessing}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+All datasets were reduced utilizing the Chandra Interactive Analysis of
+Observations package ({\tt CIAO}) and accompanying Calibration
+Database ({\tt CALDB}). Using {\tt CIAO v3.3.0.1} and {\tt
+CALDB v3.2.2}, standard data analysis was followed for each
+observation to apply the most up-to-date time-dependent gain
+correction and charge transfer inefficiency (CTI) correction (when
+appropriate) \citep{2000ApJ...534L.139T}. Observations taken in {\tt
+VFAINT} mode had possible background events flagged using the {\tt
+check\_vf\_pha} mode switch in {\tt acis\_process\_events}.
+
+The X-ray events were then filtered for bad grades. Only events
+recorded during the good time intervals (GTI) were used. For
+observations taken prior to standard data processing version (SDP)
+7.4, we flagged, inspected, and then removed the afterglow correction
+applied as part of the older SDP pipeline. For observations taken
+prior to SDP 7.4 and using {\tt FAINT} mode, or SDP 7.6 and {\tt
+VFAINT} mode, a new bad pixel file was constructed.
+
+To detect and remove point sources we used the adaptive wavelet 
+tool {\tt wavdetect} \citep{2002ApJS..138..185F} on events files
+filtered in the energy range $0.3-9.0$ keV. This energy window extends
+below and above the energy range of interest for our spectral analysis
+as the photons below $0.7$ keV and above $7.0$ keV, while useless
+for diffuse emission studies, are a good diagnostic for detecting
+point sources \citep{2000SPIE.4012...17J}. 
+
+After visually inspecting an image of the observation overlaid with
+the source regions generated by {\tt wavdetect}, we added regions for point
+sources which were missed by wavdetect and deleted regions for
+spuriously detected ``sources'' thus creating a point source
+mask. Spurious sources are typically CCD features not fully removed by
+dividing out the exposure map. Each remaining source was then masked out using
+$2\sigma$ ellipses as calculated from {\tt wavdetect}. This process
+results in an events file (at "level 2") that has been cleaned of
+point sources.
+
+To check for contamination from background flares or periods of
+excessively high background, light curve analyses were performed using
+Maxim Markevitch's contributed {\tt CIAO} script {\tt
+lc\_clean.sl}\footnote{Available at
+http://cxc.harvard.edu/contrib/maxim/acisbg/}. Periods with count
+rates $\geq 3\sigma$ and/or a factor $\geq 1.2$ of the mean background
+level of the observation were removed from the GTI file. As prescribed
+by Markevitch's
+cookbook\footnote{http://cxc.harvard.edu/contrib/maxim/acisbg/COOKBOOK},
+ACIS front-illuminated (FI) chips were analyzed in the $0.3-12.0$ keV
+range with time bins of $259.28$ sec in length, and for the ACIS
+back-illuminated (BI) chips, $2.5-7.0$ keV energy range with time bins
+of $1037.12$ sec.
+
+If possible, we compared light curves from a FI and BI chip in an
+effort to detect long duration, soft-flares which can go undetected on
+the FI chips but show up on the BI chips. While rare, this class of
+flare needs to be filtered out of the data as it introduces a spectral
+component which artificially increases the best-fit temperature via a
+high energy tail.
+
+Determining a cluster ``center'' is essential for the later purpose of
+removing cool cores from our spectral analysis (see
+\S\ref{sec:extraction}). To determine the cluster center, we
+calculated the centroid of the resulting flare clean, point source
+free level-2 events file filtered to include only photons in the
+$0.7-7.0$ keV range. Before centroiding, the events file is exposure
+corrected and ``holes'' created by excluding point sources are filled
+using interpolated values taken from a narrow annular region just
+outside the hole. This last step is implemented using the Poisson
+method of the {\tt CIAO} tool {\tt dmfilth}. Prior to centroiding we define
+the emission peak by heavily binning the image, finding the peak value
+within a circular region extending from the peak to the chip edge
+(defined by the radius, R$_{max}$), reducing R$_{max}$ by 5\%
+and the binning by a factor of two, and finding the peak again. This
+process is repeated until the image is unbinned (binning factor of
+one). We then return to an unbinned image with an aperture centered on
+the emission peak with a radius R$_{max}$ and find the centroid using
+{\tt CIAO}'s {\tt dmstat}. The centroid, (x$_c$,y$_c$), for a
+distribution of $N$ good pixels with coordinates (x$_i$,y$_j$) and
+values f(x$_i$,y$_j$) is defined as:
+
+\begin{eqnarray}
+Q &=& \sum_{i,j=1}^N f(x_i,y_i) \\
+x_c &=& \frac{\sum_{i,j=1}^N x_i \cdot f(x_i,y_i)}{Q} \nonumber \\
+y_c &=& \frac{\sum_{i,j=1}^N y_i \cdot f(x_i,y_i)}{Q} \nonumber \\
+\end{eqnarray}
+
+If the centroid was within 70 kpc of the emission peak the emission
+peak is selected as the center, otherwise the centroid is used
+as the center. This selection was made to ensure all ``peaky'' cool
+cores are at the cluster center thus maximizing their exclusion later
+in our analysis. All cluster centers are verified by-eye.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{X-ray Background} \label{sec:background}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Because we are attempting to measure a global cluster temperature,
+specifically looking for a temperature ratio shift in energy bands
+which can be contaminated by the high-energy particle background or
+the soft local background, it is important to carefully analyze the
+background and subtract it from our resulting spectra.
+
+We use blank-sky observations of the X-ray background from
+\cite{2001ApJ...562L.153M} supplied within the CXC {\tt CALDB}. First, we
+compare the flux from the diffuse soft X-ray background of the
+{\textit{ROSAT}} All-Sky Survey ({\textit{RASS}}) combined
+bands\footnote{RASS combined bands give fluxes for energy ranges of
+0.12-0.28 keV, 0.47-1.21 keV, and 0.76-2.04 keV respectively
+corresponding to R12, R45, and R67.} R12, R45, and R67 to the 0.7-7.0
+keV flux in each extraction aperture for each observation. For the
+purpose of simplifying the subsequent analysis, we discarded
+observations with an R45 flux $\geq 10\%$ of the total cluster X-ray
+flux.
+
+The appropriate blank-sky dataset for each observation was
+selected from the {\tt CALDB}, reprocessed exactly as the
+observation, and then reprojected using the aspect solutions provided
+with each observation. For observations on the ACIS-I array, we
+constructed blank-sky backgrounds for chips I0-I3 plus chips S2 and/or
+S3. For ACIS-S observations, we created blank-sky backgrounds only for
+the S3 chip plus chips I2 and/or I3. The additional off-aimpoint
+chips were included only if they were active during the observation
+and had available blank-sky data sets for the observation time
+period. For observations which did not have a matching off-aimpoint
+blank-sky background in the CALDB a source-free region of the active
+chips is located and used for background normalization. Off-aimpoint
+chips were cleaned for point sources and diffuse sources using the
+method outlined in \S\ref{sec:reprocessing}.
+
+The additional off-aimpoint chips were included in data reduction
+since they contain data which is farther from the cluster center and
+are therefore more useful in analyzing the observation background. To
+normalize the hard particle component we measured fluxes for identical
+chips in the blank-sky field and target field in the 9.5-12.0 keV
+range. The effective area of the ACIS arrays above 9.5 keV is zero and
+thus the collected photons there are exclusively from the particle
+background. 
+
+A histogram of the ratios of the 9.5-12.0 keV count rate from an
+observation's off-aimpoint chip to that of the observation specific
+blank-sky background are presented in Figure \ref{fig:bgd}. The
+majority of the observations are in agreement to $\lesssim 20\%$ of
+the blank-sky background rate, which is small enough to not affect our
+analysis; regardless, we re-normalize all blank-sky backgrounds. 
+
+Normalization brings the observation background and blank-sky
+background into agreement for energies $> 2$ keV, but even after
+normalization, typically, there still exists a soft excess/deficit
+associated with the spatially varying soft Galactic
+background. Following the technique detailed in
+\cite{2005ApJ...628..655V} we construct and fit soft residuals for
+this component. For each observation we first compare the 0.3-2.0 keV
+flux of the blank-sky field and off-aimpoint field. We then
+subtract a spectrum of the blank-sky field from a spectrum of the
+off-aimpoint field to create a residual. The residual is fit
+with a solar abundance, zero redshift {\tt MeKaL} model
+\citep{1985A&AS...62..197M, 1986A&AS...65..511M, 1992SRON,
+1995ApJ...438L.115L} where the normalization is allowed to be
+negative. The resulting best-fit temperatures for all of the soft
+residuals identified here were between 0.2-1.0 keV, which is in
+agreement with results of \cite{2005ApJ...628..655V}. The
+normalization of this background component was then scaled to the
+cluster sky area. The re-scaled component is included as a fixed
+background component during fitting of a cluster's spectra.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Notes for Individual Clusters} \label{sec:indnotes}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We find evidence for long duration soft flares in the observations of
+Abell 1758 \citep{2004ApJ...613..831D}, CL J2302.8+0844, and IRAS
+09104+4109. These flares were handled by adding the {\tt XSPEC}
+CUTOFFPL/b model during spectral analysis, freezing the spectral index
+at $\Gamma=-0.15$, freezing the high energy exponential cut-off at 5.6
+keV, and allowing the normalization to be the only free
+parameter. This procedure follows directly from the recommendations of
+\cite{2003ApJ...583...70M}. IRAS 09104+4109 presented a special, 
+troubling circumstance which resulted in its removal from the sample.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Spectral Extraction} \label{sec:extraction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The simulated spectra calculated by ME01 were analyzed in the energy
+ranges $0.5-9.0$ keV and $2.0_{rest}-9.0$ keV, but to make a reliable
+comparison with {\textit{Chandra}} data we restrict our focus to a
+full energy band, $0.7-7.0$ keV, and a hard energy band,
+$2.0_{rest}-7.0$ keV. We exclude data below $0.7$ keV to avoid the
+effective area and quantum efficiency variations of the ACIS
+detectors, and exclude energies above $7.0$ keV in which diffuse
+emission is dominated by the background and {\textit{Chandra}'s}
+effective area is small. We also account for cosmic redshift by
+shifting our hard energy band from 2.0 keV to $2.0/(1+z)$
+keV (henceforth, assume the 2.0 keV cut is in the rest frame unless
+otherwise stated).
+
+ME01 calculated the relation between
+T$_{0.5-9.0}$ and T$_{2.0-9.0}$ using apertures of R$_{200}$ and
+R$_{500}$ in size. While it is trivial to calculate a temperature out
+to R$_{200}$ or R$_{500}$ from a simulation, such a measurement at
+these scales is extremely difficult with {\textit{Chandra}}
+observations (see \cite{2005ApJ...628..655V} for a detailed
+explanation).  However, in typical Chandra fields of view, apertures
+with $R=R_{200}$ or even $R_{500}$ are not fully included. Thus we
+chose to extract spectra from regions with radius R$_{2500}$ when
+possible and R$_{5000}$ otherwise. Clusters analyzed only within
+R$_{5000}$ are denoted in Table \ref{tab:sample} by a dagger.
+
+The cores of some clusters are dominated by cool cores which affect
+the global temperature, therefore we excise the central 70 kpc of each
+aperture. These excised apertures are denoted by ``-CORE'' in the
+text. Recent work by \cite{2007astro.ph..3504M} has shown excising
+0.15 R$_{500}$ rather than 70 kpc reduces scatter in mass-observable
+scaling relations. But such a reduction does not effect this work as
+the conclusions drawn from our spectral analysis are strongly related
+to the uncertainties of \hard and not on the best-fit value of \full
+where the effect of a cool core is the strongest.
+
+Although some clusters are not circular in projection, but rather are
+elliptical or asymmetric, we find that extracting from a circular
+annulus does not significantly change the best-fit values. For another
+such example see \cite{2005MNRAS.359.1481B}.
+
+After defining annular apertures, we extracted source spectra from the
+target cluster and background spectra from the corresponding
+normalized blank-sky dataset. By standard {\tt CIAO} means we created
+effective area functions (ARF files) and redistribution matrices (RMF
+files) for each cluster using a flux-weighted map (WMAP) across the
+entire extraction region. The WMAP was calculated over the energy
+range 0.3-2.0 keV to  weight calibrations that vary as a function of
+position on the chip. Each spectrum was then binned to contain a
+minimum of 25 counts per channel.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Spectral Analysis} \label{sec:specan}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Fitting} \label{sec:fitting}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Spectra were fit with {\tt XSPEC 11.3.2ag} \citep{1996ASPC..101...17A}
+using a single-temperature {\tt MeKaL} model in combination with the
+photoelectric absorption model {\tt WABS} \citep{1983ApJ...270..119M}
+for Galactic absorption. Galactic absorption values, $N_{HI}$, are taken from
+\cite{1990ARA&A..28..215D}. The parameters which can be fit in the
+{\tt WABS(MeKaL)} model are $N_{HI}$, X-ray temperature (\tx),
+metal abundance ($Z/Z_{\sun}$), and a normalization proportional to the
+integrated emission measure of the cluster. The spectra from
+clusters with multiple observations were fit simultaneously. Results
+from the fitting are presented in Table \ref{tab:r2500specfits} and
+Table \ref{tab:r5000specfits}. No systematic error is added during
+fitting and thus all quoted errors are statistical only.
+
+Additional statistical error is introduced into our fitting through
+inclusion of the soft local background component discussed in
+\S\ref{sec:background}. To account for this error we use the
+differences between \tx of the model using the scaled 
+normalization and \tx of the model using $\pm1\sigma$ of the
+scaled normalization as the errors associated with this additional
+component. The statistical error and the error inferred from the range
+of normalization to the soft X-ray background component are then
+added in quadrature to produce a final error. In all cases this
+additional background error on the temperature is $< 10\%$ of the
+total statistical error and represents a minor inflation of the error
+budget.
+
+In all fits the metal abundance is allowed to be free. When comparing
+fits using $N_{HI}$-free and $N_{HI}$-fixed we find the best-fit
+$N_{HI}$ values did not significantly alter \tx or improve the
+goodness of fit, thus $N_{HI}$ is fixed at the Galactic value with the
+exception of three cases: Abell 399 \citep{2004MNRAS.351.1439S},
+Abell 520, and Hercules A.
+
+After fitting we reject several datasets as their best-fit \hard
+had no upper bound in the 90\% confidence interval and thus we gain
+nothing from their inclusion in the final analysis. All R$_{5000}$ and
+R$_{5000-\text{CORE}}$ fits of the clusters Abell 781, Abell 1682, CL
+J1213+0253, CL J1641+4001, MS 0302.7+1658, RX J1053+5735, and RX
+J1525+0958 are rejected; we also reject all fits for R$_{2500}$ and
+R$_{2500-\text{CORE}}$ apertures of Lynx E and MACS J1824.3+4309.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Simulated Spectra}\label{sec:simulated}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To quantify the effect a second, cooler gas component has on a
+single-phase spectral model, we used the {\tt fakeit} command within
+{\tt XSPEC} to create an ensemble of simulated spectra for our entire
+sample. With these simulated spectra we are attempting to answer the
+question: How bright must a second temperature component be to see it
+in the 2.0-7.0 over the 0.7-7.0 keV bandpass?  Put another
+way, we are asking at what flux ratio a second gas phase skews
+\tf to greater than unity at the 1$\sigma$ level.
+
+We began by convolving the observation-specific background, ARF, and RMF
+with a {\tt WABS(MeKaL$_{1}$+MeKaL$_{2}$)} model for a time period equal to
+the observation exposure time and adding Poisson noise. We define the
+{\tt MeKaL$_1$} component to have the best-fit temperature and metallicity of
+the R$_{2500-\text{CORE}}$, 0.7-7.0 keV fit for that observation.
+
+For each realization of an observation's simulated spectrum, we vary
+the {\tt MeKaL$_2$} component temperature over values 0.5, 0.75, and
+1.0 keV. The {\tt MeKaL$_2$} metallicity is assumed to be equal to the
+value of {\tt MeKaL$_1$}.
+
+We adjust the normalization of the simulated two-component spectra to
+achieve equivalent count rates to that in the real spectra. We
+increment the {\tt MeKaL$_1$} normalization, $K_1$, away from the
+best-fit value by a prescribed factor, $\xi$, while leaving the {\tt
+MeKaL$_2$} normalization, $K_2$, free. We explore
+a wide variety of $K_2$ by using $\xi$ values of 0.8, 0.85, 0.9, 0.95,
+0.96, 0.97, 0.98, and 0.99 $K_1$.
+
+We also simulate a control sample of single-temperature models. The
+control sample is essentially a simulated version of the best-fit
+model. This control provides us with a check of how often a hard
+component temperature might differ from a broad-band temperature
+statistically (i.e. calibration effects under control).
+
+For each observation, we have 59 total simulated spectra-- 35
+single-temperature control spectra and 24 two-component simulated
+spectra (three second temperatures, each with 8 different $\xi$). Our
+resulting simulated spectra ensemble contains 11269 spectra. After
+generating all the spectra we follow the same fitting routine detailed
+in \S\ref{sec:fitting}.
+
+There are two important results taken away from the analysis of these
+simulated spectra:\\
+1. A single temperature component rarely (frequency $\sim 2\%$) gives
+a significantly different \full and \hard temperature as demonstrated
+with the control sample shown in the first panel of Figure
+\ref{fig:ft_histo}. The two real data distributions are qualitatively
+in agreement with the distribution of the multicomponent simulated
+distribution, while the control sample distribution is roughly
+Gaussian and peaked around \tf = 1.0. This is a strong indication the
+calibration of {\textit{Chandra}} is under control and will not be the
+driver for any measured temperature skew.\\
+2. A significantly bright second temperature component, for
+example $\xi > 0.96$ where the effect of a second spectral temperature
+diminishes to $< 10\%$, must be present in order to get
+significant deviations of \tf from 1.0 as large as 1.1-1.2, as seen in
+the real data. Figure \ref{fig:fak_tx} highlights this fact further. Even
+in the extreme case of a second component only accounting for $1\%$ of
+the observed flux, the weighted-average of \tf still registers a
+skew of $1.06\pm0.005$. The control sample however has a \tf
+weighted-average of $1.00\pm0.001$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Results and Discussion} \label{sec:r&d}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Temperature Ratios} \label{sec:tspecresults}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We estimate a temperature ratio \tf = \hard/\full for each
+cluster. We find a clear departure of the mean \tf from unity for
+our entire sample at greater than $11\sigma$. The weighted mean values
+for our sample are shown in Table \ref{tab:wavg}. Presented in Figure
+\ref{fig:ftx} are the binned weighted-means and raw \tf values of
+R$_{2500-\text{CORE}}$ and R$_{5000-\text{CORE}}$. Each bin contains
+25 clusters with the exception of the highest temperature bins which
+have 6 and 20 for the  R$_{2500-\text{CORE}}$ and
+R$_{5000-\text{CORE}}$, respectively. The peculiar points with \tf
+$<$ 1 are all statistically consistent with \tf = 1. In addition,
+ratios less than one in the real data occur at nearly the same
+frequency in the simulated data, $\sim 0.3\%$, suggesting that these
+ratios are consistent with statistical uncertainties in the data. The
+presence of clusters where \tf = 1 suggests that the calibration is
+not the sole reason for deviations of \tf from 1. We also do not
+find the temperature ratio depends on the best-fit full-band
+temperature.
+
+The uncertainty associated with each value of \tf is dominated by
+the larger error in \hard, and on average, $\Delta$\hard$\approx
+2.3\Delta$\full. This error interval discrepancy naturally results
+from excluding the bulk of a cluster's emission occurring below 2
+keV. While choosing a temperature-sensitive cut-off energy for the
+hard-band (other than $2.0_{rest}$ keV) might maintain a more consistent
+error budget across our sample (see Figure \ref{fig:ftxerr}), we do not
+find any systematic TREND in the ratio with cluster temperature. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Systematics} \label{sec:sys}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Aside from instrumental and calibration effects there may be
+additional systematics in our analysis which do not present themselves
+on an individual basis but emerge as underlying trends in the sample
+as a whole. Three possible sources of these systematics
+are signal-to-noise (S/N), redshift selection, and Galactic
+absorption. Presented in Figure \ref{fig:sys} are these three
+parameters versus \tf. The trend in \tf with redshift is expected
+as the 2.0/(1+z) keV hard-band lower boundary nears convergence with
+the 0.7 keV full-band lower boundary which occurs at z $\sim 1.85$. We
+find no systematic trends with S/N or Galactic absorption, which might
+occur if the ratio skew were a consequence of poor calibration. Also
+shown in panel four of Fig. \ref{fig:sys} is a comparison of the best-fit
+results for R$_{2500-\text{CORE}}$ and R$_{5000-\text{CORE}}$. Our
+results are robust at the 1$\sigma$ level against change in aperture
+size.
+
+Shown in Figure \ref{fig:asch} is the ratio of {\textit{ASCA}}
+temperatures taken from Don Horner's thesis to {\textit{Chandra}}
+temperatures derived in this work. Not all of our sample clusters have
+an {\textit{ASCA}} temperature, but a sufficient number (57) are
+available to make this comparison reliable. Apertures used in the
+extraction of {\textit{ASCA}} spectra had no core region removed and
+were substantially larger than R$_{2500}$. Thus we compare the the
+unexcised R$_{2500}$ temperatures as it gets us the closest to
+replicating the {\textit{ASCA}} apertures. We note a trend of
+comparatively hotter {\textit{Chandra}} temperatures for clusters $>
+10$ keV.
+
+If we exclude the hottest clusters (\tx$ > 10$ keV where
+{\textit{ASCA}} and {\textit{Chandra}} disagree) from our sample, the
+mean temperature ratio for the sample remains $1.16$ and the error
+increases from $\pm 0.014$ to $\pm 0.015$ for R$_{2500-\text{CORE}}$;
+\tf increases by $0.9\%$ for R$_{5000-\text{CORE}}$ from $1.14\pm
+0.013$ to $1.15\pm 0.014$. Our results are not being influenced by the
+inclusion of hot clusters.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Using \tf to Select for Relaxation} \label{sec:relax}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsubsection{Cool Core Versus Non-Cool Core}\label{sec:ccncc}
+
+The process of virialization may robustly result in the formation of a
+cool core \citep{2006ApJ...640..673O}. Flux-limited surveys have found
+the prevalence of CCs to be $34-60\%$ \citep{1997MNRAS.292..419W,
+1998MNRAS.298..416P, 2005MNRAS.359.1481B, 2007A&A...466..805C}
+depending upon definition, completeness, and possible selection
+biases. As discussed in \S\ref{sec:intro}, ME01 give us reason to
+believe the observed skewing of \tf to greater than unity is related
+to the dynamic state of a cluster. We thus seek to identify which
+clusters in our sample have cool cores (CC), which have (NCC), and if
+the presence or absence of a cool core is correlated to \tf. We also
+ask about the number of cool core (CC) and non-cool core (NCC)
+clusters as a function of \tf. Recall that we exclude the cool core
+itself from the cluster spectrum.
+
+To identify a CC cluster, we extract spectra for a 50 kpc region
+surrounding the cluster center, then we define a temperature decrement
+using the ratio of temperatures for the inner 50 kpc, T$_{50}$, and
+the R$_{2500-\text{CORE}}$ aperture, T$_{dec} =
+$T$_{50}/$T$_{R_{5000-\text{CORE}}}$ (clusters without
+R$_{2500-\text{CORE}}$ fits are excluded from this analysis). When
+finding T$_{50}$ we alter the fitting method outlined in
+\S\ref{sec:fitting} to use {\tt XSPEC}'s modified Cash statistic
+\citep{1979ApJ...228..939C}, {\tt cstat}, on ungrouped
+spectra. This choice is made because the distribution of counts per
+bin in low count spectra is not Gaussian but instead
+Poisson. As a result the best-fit temperature using $\chi^2$ is
+typically cooler \citep{1989ApJ...342.1207N, 2007A&A...462..429B}. We
+have explored this systematic in {\bfseries\em{all}} our fits and
+only found it to be significant in the lowest count spectra of the
+inner 50 kpc apertures discussed here. But for consistency, we fit all
+inner 50 kpc spectra using the modified Cash statistic.
+
+If T$_{dec} < 1$ at the 2$\sigma$ level then we define it
+as a CC cluster, otherwise it is a NCC cluster. We find CCs in 46\% of
+our sample using 1$\sigma$ and 35\% using 2$\sigma$ thus indicating we
+are consistent with more detailed studies of CC/NCC populations.
+
+With each cluster classified we then take cuts in \tf at the $1\sigma$
+level and ask how many CC and NCC clusters are above these cuts. 
+Figure \ref{fig:cc_ncc_bin} shows the normalized number of CC and NCC
+clusters as a function of cuts in \tf. If \tf were insensitive to
+the dynamical state of a cluster we would expect, for normally
+distributed \tf values, to see the number of CC and NCC clusters
+monotonically decreasing. However, the number of CC clusters falls off
+more rapidly than the number of NCC clusters. This effect
+is dramatically reduced - as expected - if the core is included. All
+curves demonstrate linear behavior in the region $0.9 \leq
+$T$_{HFR,cut} \leq 1.2$. The slope of the linear curve segment for
+R$_{2500-\text{CORE}}$ CC is $-3.10\pm 0.26$ and for NCC is $-2.41\pm
+0.07$. For R$_{5000-\text{CORE}}$ the CC slope is $-2.55\pm 0.21$ and
+for NCC is $-2.37\pm 0.13$. All fits have excellent goodness of fit.
+This steeper fall-off of CCs indicates the contribution of soft
+emission is indeed playing a role in affecting \tf. This result is
+insensitive to our choice of significance level in both the core
+classification and \tf cuts.
+
+However, cluster redshift is playing a role in our ability to classify
+CCs and NCCs. As redshift increases cool gas is shifted out of the
+observable X-ray band and we lose spectral information about the core
+which would aid in its classification. An analog of this effect can be
+seen in our spectral simulations. Shown in Figure \ref{fig:fak_z} is
+\tf plotted against redshift. The first three panels of
+Fig. \ref{fig:fak_z} are the most interesting as they clearly show
+this effect in the extreme cases of a second, cooler temperature
+component which is $10-20\%$ the brightness of the hot gas phase. At
+redshifts $> 0.6$ \tf begins to scatter about unity and a skew in
+\tf only shows up under weight averaging making a cluster by cluster
+detection of the coolest cluster gas difficult. Thus we are likely
+not detecting weak CCs in the highest redshift clusters of our sample.
+
+Because of the CC/NCC definition we've selected, our identification of
+CCs and NCCs is only as robust as the errors on T$_{50}$ allow. One can
+thus ask the question, does our loose definition bias us towards
+finding more NCCs than CCs? Aside from the redshift effect, how often
+would a CC be classified as a NCC because of low S/N? To explore these
+questions we simulated 20 spectra for each observation following the
+method outlined in \S\ref{sec:simulated} for the control sample but
+using the inner 50 kpc spectral best-fit values as input. For each
+simulated spectrum we then calculate the temperature decrement as
+described above and re-classify the cluster as a CC or NCC. These
+classifications based on simulated data are then compared to the
+classification made from the real data. Based on this comparison we
+can assign a reliability factor to each real classification. This
+reliability factor is simply the percent of simulated spectra which
+agree with the real classification. Values of 1.0 mean complete
+agreement and 0.0 mean no agreement.
+
+If we remove clusters with reliability factors less than 0.9 and
+repeat the analysis above we find no significant change in the number
+of CC clusters as a function of \tf.
+
+\subsubsection{Mergers Versus Non-Mergers}\label{sec:merge}
+
+We further define a subclass of NCC clusters as known mergers. Known
+mergers are NCC clusters which have been identified as mergers in the
+cluster literature. From Figure \ref{fig:ftx_tx} we can see clusters
+exhibiting the highest significant values of \tf are all ongoing or
+recent mergers. At the 2$\sigma$ level, we find increasing values of
+\tf favor merger systems with NCCs over relaxed, CC clusters. Mergers
+have left a spectroscopic imprint on the ICM which is predicted by
+ME01 and which we observe in our sample.
+
+To further investigate \tf we list the identities of 
+clusters with T$_{frac} > 1.1$ at the 1$\sigma$ level. These are
+presented in Table \ref{tab:tf11}. Of the 29 clusters, only six have
+CCs. Three of those, MKW3S, 3C 28.0, and RX J1720.1+2638 have their
+apertures centered on the bright, dense cores in confirmed
+mergers. Two more clusters, Abell 2384 and RX J1525+0958, while
+unconfirmed mergers have morphologies which are consistent with
+powerful ongoing mergers. Abell 2384 has a long gas tail extending out
+to a gaseous clump which has presumably passed through the cluster
+recently. RXJ1525 has a core which is shaped like an arrowhead and is
+reminiscent of the bow shock seen in 1E0657-56. Abell 907 is the
+remaining CC of the six listed. It has no signs of being a merger
+system but the highly compressed surface brightness contours to the
+west of the core are indicative of a prominent cold
+front which are tell-tale signs of a subcluster merger event
+\citep{2007PhR...443....1M}.
+
+The unclassified systems, RX J0439.0+0715, MACS J2243.3-0935, MACS
+J0547.0-3904, ZWCL 1215, MACS J2311+0338, and Abell 267, have NCCs and
+X-ray morphologies consistent with an ongoing or post-merger
+scenario. Two clusters, Abell 1204 and MACS J1427.6-2521, show no
+signs of recent or ongoing merger activity, however, they reside at
+the bottom of the arbitrary \tf cut, and as evidenced by Abell 401 and
+Abell 1689, exceptional spherical symmetry is no guarantee of
+relaxation.
+
+Returning to the discussion in \S\ref{sec:ccncc}, we find no cluster
+with \tf $> 1.1$ has a reliability factor $< 0.9$. The correlation of
+\tf with a cluster's dynamical state is robust.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Summary and Conclusions}\label{sec:summary}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+We have explored the band-dependence of the inferred X-ray temperature
+of the intracluster medium (ICM) for 179 well-observed ($N_{counts} >
+1500$) clusters of galaxies selected from the Chandra data archive.
+
+We extracted spectra from the annulus between $R=70$ kpc and
+$R=R_{2500}$, R$_{5000}$ for each cluster. We compare the X-ray
+temperatures inferred for single-temperature fits to global spectra
+when the energy range of the fit is 0.7-7.0 keV (full) and when the
+energy range is $2.0/(1+z)$-7.0 keV (hard). We find that, on
+average, the hard-band temperature is significantly higher than
+the full-band temperature. Upon further exploration, we find that
+the ratio \tf is enhanced preferentially for clusters which are known
+merger systems and for clusters which are isothermal. Clusters with
+temperature decrements in their cores (known as as cool-core clusters)
+tend to have best-fit hard-band temperatures that are statistically
+consistent with their best fit full-band temperatures.
+
+As was the original motivation from ME01, we suggest \tf can be
+utilized as an indicator for the degree of relaxation/virialization. A
+test for this prediction can be made with simulations by tracking \tf
+during hierarchical assembly of clusters.
+
+If \tf is correlated with a cluster's degree of relaxation then along
+with other methods of substructure measure, such as power ratio, axial
+ratio, and centroid shift, we can assemble a powerful metric for
+measuring a cluster's expected deviation from mean scaling relations
+such as L$_X$-\tx and L$_X$-M. Because \tf is aspect independent
+this metric will have two components, spatial and spectroscopic,
+by adding spectroscopic information to our understanding of cluster
+virialization we may be able to reduce the scatter introduced into
+observational studies of scaling relations which will in turn yield
+smaller uncertainties in cosmological studies. However, to reach such
+a lofty goal we need to expand our observational sample and begin
+getting information about the underlying distribution of \tf and the
+intrinsic scatter in \tf which was not possible with this sample.
+
+%%%%%%%%%%%%%%%%%%%
+% Acknowledgments %
+%%%%%%%%%%%%%%%%%%%
+
+\acknowledgements
+This work was supported through {\textit{Chandra}} grant
+XXX-YYY-123456. We thank the Chandra X-Ray Observatory Science Center,
+operated for the National Aeronautics and Space Administration (NASA)
+by the Smithsonian Astrophysical Observatory (SAO), for maintaining
+the Chandra Data Archive (CDA) and for supplying and supporting the
+Chandra Interactive Analysis of Observations (CIAO) software and
+Calibration Database (CALDB). This project also utilized the NASA/IPAC
+Extragalactic Database (NED), which is operated by the Jet Propulsion
+Laboratory, California Institute of Technology, under contract with
+NASA, and of NASA's Astrophysical Data System Bibliographic
+Services. We also extend a special thanks to Keith Arnaud for
+personally providing support for {\tt XSPEC}, obtained from the High
+Energy Astrophysics Science Archive Research Center (HEASARC) and
+supported by NASA's Goddard Space Flight Center.
+
+%%%%%%%%%%%%%%%%
+% Bibliography %
+%%%%%%%%%%%%%%%%
+
+\bibliography{cavagnolo}
+
+%%%%%%%%%%%%%%%%%%%%%
+% Figures and Tables%
+%%%%%%%%%%%%%%%%%%%%%
+
+\input{figs.tex}
+
+%%%%%%%%%%
+% Tables %
+%%%%%%%%%%
+
+\clearpage
+\LongTables
+\input{sample.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Comparison of Tfrac for wavg %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{tfwav.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Clusters with thfr > 1.1 %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{cc_nccdesc.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% R2500 Spectral fit results %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{r2500.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% R5000 Spectral fit results %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\input{r5000.tex}
+
+%%%%%%%%%%%%%%%%%%%%
+% End the document %
+%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

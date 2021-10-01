@@ -1,0 +1,34 @@
+synchrotron_fit:
+
+This program fits three synchrotron models to the supplied datafile.
+The models used are:
+
+Kardashev and Pacholczyk (KP) model:
+	Kardashev, N. S., 1962, Soviet Astron.-AJ, 6, 317
+	Pacholczyk, A. G. 1970, Radio Astrophysics (San Francisco: Freeman)
+Jaffe and Perola (JP) model:
+	Jaffe, W. J., & Perola, G. C. 1973, A&A, 26, 423
+Continuous Injection (CI) model: 
+	Heavens,A.F., & Meisenheimer, K.  1987, MNRAS, 225, 335
+
+The exact forms of these models are listed in the comments of the file
+`synchrotron_functions.c`.  
+
+
+The author wishes to thank Chris Carilli for making his synchrotron
+fitting code available while I was working on this.  It helped greatly
+in helping me understand how these models are calculated.
+
+The GNU Scientific Library (GSL) is needed to compile this program.
+It can be found at http://www.gnu.org/software/gsl/.  No other
+external libraries are used, and it should compile on any platform
+with a c compiler, although it has only been tested using GCC on
+Linux.
+
+Please include a citation to the paper "Ultraviolet Hubble Space
+Telescope Observations of the Jet in M87" (Waters, C. Z., & Zepf,
+S. E. 2005, ApJ, 624, 656) in any works that use this code.
+
+Chris Waters
+October 2006
+$Id: README,v 1.1 2009-12-04 22:28:25 cavagnolo Exp $

@@ -1,0 +1,54 @@
+Usage:
+
+fm2ph -sim XrayPhotonMap_a1.001_y \
+      -nH 2e20                    \
+      -arf flux2phot.arf	  \
+      -rmf flux2phot.rmf	  \
+      -nphot 1e6		  \
+      -out phot.fits
+
+sim:   flux map from simulations (produced by Daisuke)
+nH:    Galactic absorption. Typical values range from 1e20 to 1e21
+arf:   Chandra arf (provided)
+rmf:   Chandra rmf (provided)
+nphot: number of photons to simulate; max of 10e6 hardcoded (see nphotmax)
+out:   Output fits file
+
+"constant" parameters can be put in a file, i.e. fm2ph.par like so
+
+arf=flux2phot.arf
+rmf=flux2phot.rmf
+nH=5e20
+nphot=1e7
+
+and then it can be used on the command line:
+
+fm2ph -sim XrayPhotonMap_a1.001_y -out phot.fits @fm2ph.par
+
+**********************************************************************
+
+The output photon list contains photon locations (in kpc/h; (x,y)=0 is
+at the cluster center) and Chandra energy channels. The nominal observed
+energy is channel*14.6eV.
+
+Photons can be visualized by making a fits image and then using any
+standard image display (ds9, see http://hea-www.harvard.edu/RD/ds9/)
+
+To make images out of the photon list, use "fitscopy" from the
+cfitsio-2.500 subdirectory:
+
+fitscopy phot.fits[events][pi>35&&pi<140][bin (x,y)=-2500:2500:10] \!img.fits
+
+(makes image with 10kpc/h pixels in the energy range 36-139 channels).
+
+For full description of the fitscopy syntax see
+http://legacy.gsfc.nasa.gov/docs/software/fitsio/c/c_user/node79.html
+
+**********************************************************************
+
+Next steps: 
+a) add background
+b) write a script to extract spectra
+
+
+

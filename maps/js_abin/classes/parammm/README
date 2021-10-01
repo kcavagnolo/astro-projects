@@ -1,0 +1,85 @@
+parammm
+-------
+This is a little C++ library to parse command line options,
+as I got tired of popt.
+
+It accepts GNU-style short and long options, and tries to be
+as clever as possible. It supports string, integer, boolean
+and double parameters. I'll try and write some proper docs
+when I have time. It can print automatic help text if the
+parameters are incorrect.
+
+This code is Copyright 2000 Jeremy Sanders and is released under
+the GNU GPL. See the file COPYING for details.
+
+Example code:
+
+#include <string>
+#include <parammm/parammm.hh>
+
+using std::string;
+
+...
+
+int main(int argc, char *argv[])
+{
+  parammm::param params(argc, argv);  // define param object
+
+  int minchan=0, maxchan=1024, noslices=1;
+  string sliceoutfilename, backgrndfilename;
+  string filename;
+
+  params.add_switch( parammm::pswitch("minchan", 'i',
+					parammm::pint_opt(&minchan),
+					"set minimum channel", "CHAN"));
+	// take an integer switch ( --minchan=xx or -i xx )
+	// note how the return variable and type are specified
+	// the final param specifies the help text and the quantity
+	// "unit" being taken.
+
+  params.add_switch( parammm::pswitch("maxchan", 'x',
+					parammm::pint_opt(&maxchan),
+					"set maximum channel", "CHAN" ));
+	// another int parameter
+
+  params.add_switch( parammm::pswitch("noslices", 'n',
+					parammm::pint_opt(&noslices),
+					"set number of slices", "NUM" ));
+	// another int
+
+  params.add_switch( parammm::pswitch("sliceout", 'o',
+					parammm::pstring_opt
+					(&sliceoutfilename),
+					"set output filename", "FILE" ));
+	// string parameter
+
+  params.add_switch( parammm::pswitch("background", 'b',
+					parammm::pstring_opt
+					(&backgrndfilename),
+					"set background filename", "FILE"));
+	// string parameter
+
+  params.set_autohelp("Usage: EqualSpec [OPTION]... inputspectrum.fits\n"
+			"divide a spectrum into equal slices (count-wise)\n"
+			"written by Jeremy Sanders, 2000.",
+			"Report bugs to <jss@ast.cam.ac.uk>");
+	// text to output at the top and bottoms of the automatic help
+	// text.
+
+  params.enable_autohelp();
+	// if we get a dodgy parameter, show automatic help and
+	// exit the program
+
+  params.interpret_and_catch();
+	// actually process argv
+
+  if(params.args().size() != 1)
+    params.show_autohelp();
+	// actual parameters (non-switches) are stored in the vector<string>
+	// params.args(). show_autohelp() shows the autohelp text and exits
+
+  filename = params.args()[0];
+	// copy the first parameter (program name not stored)
+
+  ...
+}

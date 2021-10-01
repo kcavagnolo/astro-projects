@@ -1,0 +1,421 @@
+\documentclass[11pt]{article}
+\setlength{\topmargin}{-.3in}
+\setlength{\oddsidemargin}{-0.1in}
+\setlength{\evensidemargin}{-0.1in}
+\setlength{\textwidth}{6.7in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\topskip}{0.5in}
+\setlength{\textheight}{9.25in}
+\setlength{\parindent}{0.0in}
+\setlength{\parskip}{1em}
+\usepackage{common,graphicx,hyperref,epsfig}
+
+\pagestyle{empty}
+
+\begin{document}
+
+To the editor:
+
+Below is our reply to Referee's Report of ApJ MS \#73823. The referee's
+comments are in quotes and \textit{italicized}, while our replies are
+in regular font. We have found the referee's comments to be very
+helpful in making the focus and discussion of our paper more concise
+and thorough.
+
+TITLE: Bandpass Dependence of X-Ray Temperatures in Galaxy Clusters
+
+AUTHORS: Kenneth W. Cavagnolo, Megan Donahue, G. Mark Voit, and Ming
+Sun
+
+---------------------------------------------------------------------
+
+\textit{
+``General Comments:\\
+The Author never discuss the influence of the metalicity in
+their measurements. In Table 4 and 5 there are some clusters
+with extremely low metalicity values, a significant fraction
+has metallicity equal to 0. I would like to see a discussion in
+Sec. 6.2 about the dependence of $T_{HBR}$ from the metalicity. If
+it is significant I would show it in a new panel of Figure 4.''
+}
+
+We have addressed the concern of a $T_{HBR}$ abundance dependence by
+including an additional figure, Figure 6, which plots $T_{HBR}$ versus
+abundance in Solar units. We find no significant trends for either
+$R_{2500-\mathrm{CORE}}$, $R_{5000-\mathrm{CORE}}$, or for the control
+sample of simulated spectra.
+
+---------------------------------------------------------------------
+
+\textit{
+``Listening the simulated spectra results, the second point states that
+to obtained a $T_{HBR}$ greater than 1.1 one need the emission of the
+second component greater than 10\% the total emission (this phrase is
+present in the abstract). I suppose that this number - 10 \% - depends
+on the choice of the second component temperature, $T_2$. To perform
+their test the Authors fixed $T_2$ equal to 0.5, 0.7, 1, assuming
+implicitly that it is only the very cold gas that causes the increase
+of $T_{HBR}$. I believe that $T_{HBR}$ is greater than 1 whenever the
+lower component is lower than $T_2$ = 2-3 keV and there is a big
+difference with the first component $T_1$. Even if, in the case of $T_2$ =
+3 the required emission of the second component could be of order of
+20-30\%. I would like to see a larger discussion on this point. My
+suggestion is to plot the minimum emission required for the 2nd
+component in order to have $T_{BHR}>1.1$ versus the Delta T=(T1-T2)
+once fixed $T_2$ = 0.5 or 0.7 or 1.''
+}
+
+The referee is correct, the 10\% quoted in the abstract and text was
+for the case of $T_2 = 0.75$ keV. The purpose of for using the simulated
+spectra was to demonstrate that cold gas contributing a reasonable
+proportion of the emission could in fact produce the large values and
+dispersion of $T_{HBR}$ we measured. After reading the referee's
+comments we have revised the way in which we both produce and analyze
+the ensemble of simulated spectra.
+
+The following is a step-by-step explanation of the new procedure:\\
+1. We take the best-fit $R_{2500-\mathrm{CORE}}$ temperature (or
+$R_{5000-\mathrm{CORE}}$ in the cases where no
+$R_{2500-\mathrm{CORE}}$ analysis was performed) and construct a two
+temperature component absorbed spectral model: $T_1 + T_2$.\\
+2. $T_2$ is incremented over values of 0.5, 0.75, 1.0, 2.0, and 3.0
+keV.\\
+3. The normalizations of each component, $N_1$ and $N_2$, are
+adjusted such that the total spectral normalization is $N = N_1 + \xi
+\cdot N_2$.\\
+4. $\xi$ is prescribed to be 0.4, 0.3, 0.2, 0.15, 0.1, 0.05, and
+$N_1$ is determined iteratively such that the real and simulated
+spectral count rates are equal.\\
+5. Each simulated spectrum represents the best-fit cluster spectrum
+plus a prescribed cool component of some known strength.\\
+6. We then take these simulated spectra and fit them following the
+exact same routine outlined in the ``Fitting'' section.\\
+7. With $T_{2.0-7.0}$ and $T_{0.7-7.0}$ in hand for each simulated
+spectrum, we then calculate $T_{HBR}$.\\
+
+The new simulations are used to more thoroughly explore the question:
+For a given cluster and for each $T_2$, what is the minimum $\xi$
+which produces $T_{HBR} \geq 1.1$ with 90\% confidence? We
+recognize that the referee suggested a plot of $\Delta T$ versus
+$\xi_{min}$, but we found this figure to not be informative as a
+consequence of considerable statistical scatter. We therefore opted to
+define for each $T_2$ what mean $\xi_{min}$ was required to produce
+a $T_{HBR}$ significantly greater than 1.1. These values are listed in
+Table 2.
+
+We also simulated a new set of two-temperature spectra
+representing an idealized observation for a spectral model with
+$N_{HI} = 3.0\times10^{20}$ cm$^{-2}$, $T_1 = 5$ keV, $Z/Z_{\odot} =
+0.3$ and $z = 0.1$. For these spectra we used a finer temperature and
+$\xi$ grid of $T_2 = 0.5 \rightarrow 3.0$ in steps of 0.25 keV, and
+and $\xi = 0.02 \rightarrow 0.4$ in steps of 0.02 and explored spectra
+with counts of 15K, 30K, 60K, and 120K. We use these idealized spectra
+as a means of testing the effect of only adding cool gas
+(e.g. neglecting background and variations in CCD response epoch,
+$N_{HI}$, redshift, abundance, et cetera).
+
+The added discussion answers not only the question
+``Are we sensitive to the presence of cool gas?'', but also the
+question, ``What general emission-measure strength is required to
+change the temperature ratio?'' The entire ``Simulated
+Spectra'' section has been revised and expanded as a result. A table
+has been added which summarizes the results of this analysis.
+
+---------------------------------------------------------------------
+
+\textit{
+``Again on this point, I would like to know why the Authors did not
+retrieve $T_2$ directly from the spectra using a 2 MEKAL models''
+}
+
+For many of the clusters in our sample, the addition of a separate
+second temperature component, $T_2$, when fitting the observational
+spectra is not necessary as, based on a comparison of $\chi^2$, a two
+temperature model does not produce a better fit for any cluster in our
+sample. The addition of a second component also presumes the accreting
+gas is isothermal, while it is more likely multi-phase. The motivation
+from ME01 is that the cool, accreting subclumps which are biasing the
+temperature are not spectroscopically resolved and thus do not make
+their presence known by producing poor fits when a single-component
+thermal model is used in fitting. The trend here of a common soft
+component sufficient to change the temperature measurement in a
+single-temperature model is statistical, a result that comes from an
+aggregate view of the sample rather than any individual fit.
+
+---------------------------------------------------------------------
+
+\textit{
+``In Figure 1, in Figure 4 (1st, 2nd, 3rd, and 5th panel), and in Figure
+6 I suggest to differentiate the points representing $R_{2500-CORE}$
+from those relative to $R_{5000-CORE}$ (ad ex. using empty and filled
+symbols)''
+}
+
+We have addressed this lack of clarity by adding additional
+plots and panels which are specific to $R_{2500-\mathrm{CORE}}$ and
+$R_{5000-\mathrm{CORE}}$. We believe this to be a more transparent
+solution and should make discerning between apertures obvious to the
+reader.
+
+---------------------------------------------------------------------
+
+\textit{
+``During the analysis, some cluster have been excluded. I suggest to
+evidence them using a bold font in Table 4 and 5. Moreover, I will
+state clearly what is the final number of clusters analyzed after all
+the exclusions.''
+}
+
+We have italicized the excluded clusters in Table 1, and the excluded
+clusters should not have been present in Tables 4 and 5. This was an
+oversight on our part and we thank the referee for being so thorough
+as to catch this mistake.
+
+We have added mention of the initial and final number of clusters in
+our sample in several places:\\
+1. the abstract\\
+2. last paragraph of the ``Sample Selection'' section\\
+3. caption for Fig. 1\\
+4. caption for Fig. 4\\
+5. caption for Fig. 5\\
+6. first paragraph of the ``Summary and Conclusions'' section
+
+---------------------------------------------------------------------
+
+\textit{
+``It is clear to me that some clusters present in Table 5 are not
+present in Table 4, but I do not understand why the vice-versa should
+be true. For ex. why ABELL 0781 is present in Table 4 and not in Table
+5?''
+}
+
+As stated above, this was an oversight on our part. The clusters which
+were in Table 4 and not Table 5 were clusters which were excluded from
+our analysis (Abell 781, Abell 1682, CL J1213+0253, CL J1641+4001,
+IRAS 09104+4109, Lynx E, MACS J1824.3+4309, MS 0302.7+1658, and RX
+J1053+5735) but had not been removed from the table. This was a result
+of automatically generating tables and not incorporating them into the
+ms.tex file properly. This error has been corrected.
+
+---------------------------------------------------------------------
+
+\textit{
+``{INTRODUCTION}\\
+The Authors refer to the Mathiesen \& Evrard 2001 as the inspiring
+paper for this project. There, it was predicted a 20\% of difference
+between temperatures measured in the broad band and in the hard
+band. This value is larger than what found from the Authors in this
+work. The most probable solution of this discrepancy is due to the
+fact that the simulations used in Mathiensen \& Evrard were performed
+with a simple treatment of the Intra Cluster Medium physics
+comprehensive of only no-radiative description. We know that the
+presence, the distribution and the evolution of cold blobs during the
+merging phase is strictly connected to the physics involved in
+simulations. With only no-radiative physics the cold blobs are not
+destroyed during a merging event and they conserve their identity for
+longer. This behavior, among others, tell us that no-radiative
+simulations are not suited to describe the true universe. I think is
+worth to add this comment in the Introduction Section.''
+}
+
+We have added a paragraph in the introduction which addresses this
+point. We note that radiative cooling is important if simulations are
+to properly replicate the observables of clusters, but that one might
+still expect to observe the temperature skewing predicted by ME01, but
+at a different level than they find from their non-radiative
+simulations.
+
+---------------------------------------------------------------------
+
+\textit{
+``{SAMPLE SECTION}\\
+I will add in the text some general description of the sample as
+redshift range, luminosity and temperature range.''
+}
+
+We have included a sentence in paragraph three of the ``Sample
+Selection'' section which highlights the redshift, luminosity, and
+temperature ranges of our sample:\\
+1. $z = 0.045-1.24$\\
+2. $L_{bol.} = 0.12-100.4\times10^{44} \mathrm{~ergs~s}^{-1}$ ($E = 0.1-100$ keV)\\
+3. $T_X = 2.56-19.2$ keV
+
+---------------------------------------------------------------------
+
+\textit{
+``{SPECTRAL ANALYSIS: FITTING}\\
+Specify the used statistic.''
+}
+
+The second to last sentence of the first paragraph in the ``Fitting''
+section has been added to clearly specify which statistic was used
+during spectral fitting.
+
+---------------------------------------------------------------------
+
+\textit{
+``In the spectroscopic analysis the Authors fit their spectra using the
+MEKAL model. Is there any reason for which they do not use the APEC
+model?''
+}
+
+The optically-thin collisional plasma models MEKAL, APEC, and SMITH
+have been shown to produce spectral fits which are not significantly
+different (e.g. de Plaa, et al. 2006, A\&A, 465, 345; Kim, D. \&
+Fabbiano, G. 2004, ApJ, 613, 933). There is arguably a difference
+between APEC and MEKAL models when fitting for individual element
+abundances (e.g. Sanders, J. S. \& Fabian, A. C.  2006, MNRAS, 371
+1483), but as we have shown in this paper, $T_{HBR}$ is insensitive to
+the abundance parameter and thus any differences which could arise
+from the different spectral models is negligible at best.
+
+---------------------------------------------------------------------
+
+\textit{
+``The Authors should clarify the meaning of the dagger symbol used in
+Table 4 and Table 5.''
+}
+
+We have expanded the discussion in the notes of Tables 4 and 5, in
+addition to adding a paragraph of discussion in section ``Fitting'',
+to make it more clear for the reader what is meant by ``fit
+simultaneously''.
+
+---------------------------------------------------------------------
+
+\textit{
+{SPECTRAL ANALYSIS: SIMULATED SPECTRA}\\
+In Table 4 and Table 5 there are clusters with 0 metalicity. When you
+computed the simulated spectra did you fix the metalicity equal to the
+0 value?''
+}
+
+Yes, the metallicity is fixed to zero to match the best-fit
+metallicity to the observed spectrum for these clusters. While this is
+clearly not physical, we nevertheless fixed metallicity to zero to
+accurately reconstruct the best-fit spectrum so that we could properly
+explore the parameter space for our ensemble of simulated
+spectra. While zero is a boundary of the parameter space, it is still
+a valid quantity and thus must be included in the analysis. In the
+end, the metallicity makes little difference as we show in Figure 6.
+
+---------------------------------------------------------------------
+
+\textit{
+``The control sample in Figure 3 (right panels) is not referred and
+commented in the text.  Add a reference and explain which control
+sample is used (single temperature or double temperature)''
+}
+
+The control sample is a single-temperature simulation of the best-fit
+spectral model for each cluster. The explanation of what the control
+sample is and how it was generated have been re-worded and expanded
+for more clarity. We have also added a sentence in the ``Simulated
+Spectra'' section which references the far right panels of Figure
+3. As discussed above, we have revised our treatment and analysis of
+the simulated spectra, but the use of the control sample remains the
+same. The text now makes it clear that there is only one control
+sample.
+
+---------------------------------------------------------------------
+
+\textit{
+``Last point of Section 5.2. I would also mention that for clusters at
+high redshifts the difference between broad and hard band decreases
+since the lower energy limit is redshift-dependent. At z=0.6, 2/(1+z)
+$\approx$ 1.2 and at z=1.37 (the highest redshift consider)
+2/(1+z)$\approx$ 0.8''
+}
+
+We have added sentences to point \#4 in section ``Simulated Spectra''
+which discuss the effect of redshift on $T_{HBR}$.
+
+---------------------------------------------------------------------
+
+\textit{
+``{RESULTS AND DISCUSSION}\\
+Figure 3. I am surprise to see that there is an object at redshift around
+1.1 which seems to have a $T_{HBR}$ around 1.3-1.40. It seems
+improbable to me that the temperature in the band [0.7-7] keV is
+30-40\% different from that one in the [0.95-7] keV (I am assuming
+that the object is at 1.1)''
+}
+
+The best-fit value for this point, while impressive, is not
+statistically distinguishable from unity. The uncertainty on this
+point (cluster RX0910+5422) is large owing to the large upper-limit on
+the $T_{2-7}$ temperature.
+
+---------------------------------------------------------------------
+
+\textit{
+``Figure 3. I strongly suggest to add two other panels for the
+$R_{2500-CORE}$ and $R_{500-CORE}$ where to plot
+$T_{HBR}/\sigma$. This would make clear the significancy of the
+result.''
+}
+
+This was a very good suggestion and we have added a panel each to
+Figures 4 and 5 which show the number of standard deviations of
+$T_{HBR}$ from unity.
+
+---------------------------------------------------------------------
+
+\textit{
+``Section 6.3.1, Paragraph 4. Presenting Figure 5 the Authors state:
+"the number of CC clusters falls off more rapidly than the number of
+NCC clusters. This effect is dramatically reduced -as expected- if the
+core is included." Is this clear from Figure 5? I understood the all
+the points in Figure 5 are core-excluded.''
+}
+
+This statement, ``...the number of CC clusters falls off more rapidly
+than the number of NCC clusters. This effect is dramatically reduced,
+as expected, if the core is included...'' is not evidenced by the
+figures presented. We find this statement extraneous to the discussion
+and so have omitted it from the revision.
+
+---------------------------------------------------------------------
+
+\textit{
+``Figure 5. Say in the caption what is the total number of clusters
+here considered.''
+}
+
+We have added a comment in the caption which notes the number of
+clusters plotted for each aperture.
+
+---------------------------------------------------------------------
+
+\textit{
+``Section 6.3.2. Figure 6. Same comment of Figure 3: I will split the
+Figure in two panel and plot in the second one $T_{HBR}/\sigma$.
+Furthermore, at the end of Section 6.3.2 there is a list of clusters:
+six are CC and ten unclassified, I will label these objects with
+numbers and letters in Figure 6 to make clear their position in
+the plot.''
+}
+
+We have expanded Figure 5 (which is now Fig. 8 in the revision) to
+include panels for each aperture. We have also added a comment in the
+caption which notes the number of total clusters and types plotted for
+each aperture. Addition of letters and or numbers for the clusters
+mentioned at the end of section 6.3.2, while a good idea, resulted in
+a figure which was too cluttered, and we find the merit of the figure to
+be somewhat compromised as a result. Interested readers can quickly
+find the value of $T_{HBR}$ and $T_X$ for each of these clusters via
+Tables 3, 4, and 5.
+
+---------------------------------------------------------------------
+
+\textit{
+``{SUMMARY}\\
+The fact that all the clusters have a $N_{counts}$ greater than 1500
+should have been declared also before in Section 5.1''
+}
+
+A sentence about the minimum number of counts in the cluster spectra
+was added at the end of the first paragraph in section ``Fitting''.
+
+\end{document}

@@ -1,0 +1,219 @@
+-----------------------------------------------------------------------------
+		PIPELINE SOFTWARE FOR ACIS CHIPS
+----------------------------------------------------------------------------
+
+The following IDL procedures may be used to reprocess and analyze 
+nongrating Chandra data. Each should be run from the parent directory of 
+the observation (i.e. from the directory that contains the primary and 
+secondary directories). These instructions assume the pipeline procedure
+files are in your IDL path and the NEWCOOL executable is in your regular path. 
+
+General instructions:
+--------------------
+0) Download the following files from the Chandra Data Archive [you must use
+   Chaser or WebChaser (http://cda.harvard.edu/chaser) to download the 
+   files if you wish to make a new bad pixel file]:
+	*_evt1.fits
+	*_evt2.fits
+	*_asol1.fits (may be more than one)
+	*_aoff1.fits
+	*_bpix1.fits
+	*_flt1.fits
+	*_msk1.fits  
+   	*_bias0.fits (optional: for new bpix file, place in secondary directory)
+	*_pbk0.fits  (optional: for new bpix file, place in secondary directory)
+1) Edit ciao_info.txt.  Enter the path to ciao.csh (this should be the
+   same as the path in your .cshrc file) and the path to lhea-init.csh 
+   (for XPSEC and FTOOLS). 
+2) Copy the following files to the observation directory:
+	ciao_info.txt
+	weights.txt
+	newcool (for use on turvy)
+4) Change to the observation directory if you're not already there.
+
+
+   To reprocess and make blank-sky background file:
+   -----------------------------------------------
+5) Run ACIS_REPROCESS in IDL for the chip of interest (see diagram below).  
+   The default chipid is 7 (the ACIS-S3 chip). If desired, use /newbpix to 
+   make a new bad pixel file:
+   
+	IDL> acis_reprocess [, chipid=chipid, /newbpix]
+
+
+   To extract spectra in annuli:
+   ----------------------------
+6) Determine the center for the concentric annuli in physical coordinates
+   (ie xc,yc; a good image to look at is images/ccd_img_clean.fits), as 
+   well as the ellipticity (1-b/a) and the position angle (degrees ccw from 
+   +x-axis to semi-major axis) if you want to use ellipses.
+7) Run EXTRACT_ANNULI in IDL:
+
+	IDL> extract_annuli, xc, yc, mincnts, /mkacisrmf [, chipid=chipid, 
+	                     ellip=ellip, pa=pa, cencnts=cencnts]
+
+
+   To fit the spectra with a single temperature model:
+   --------------------------------------------------
+8) Run FIT_SPECTRA in IDL:
+
+	IDL> fit_spectra, /DEPROJECTED [, /FLUX]
+                           
+   The FLUX keyword will calculate fluxes for the best-fit model. Values
+   are required for Galactic nH (use the weighted average value from 
+   http://heasarc.gsfc.nasa.gov/cgi-bin/Tools/w3nh/w3nh.pl), kT (typically
+   kT=3.0 works well), abundance (0.3 works well), redshift (from NED: 
+   http://nedwww.ipac.caltech.edu/), low and high energy cutoffs (typically
+   low=0.5 and high=7.0, the range for which Chandra is well calibrated), 
+   the number of regions to fit (typically the number of regions that you
+   extracted in EXTRACT_ANNULI), and the counts per bin (typically 30).
+   
+   
+   To plot the results:
+   -------------------
+9) Run PLOT_ANNULI in IDL:
+
+	IDL> plot_annuli, /DEPROJECTED
+	
+
+The following 3 steps are only necessary if you want to fit models to the 
+cooling region; otherwise, skip to step 13.
+		
+   To extract cooling regions:
+   --------------------------
+10) To make a region whose outer boundary lies exactly on the cooling radius
+    (defined to be the radius at which the cooling time is 7.7 Gyr), run 
+    EXTRACT_COOLING in IDL:
+    
+        IDL> extract_cooling [, chipid=chipid, /MKACISRMF]
+        
+    The annuli properties used in EXTRACT_ANNULI are used again here.  The radii
+    of the two regions nearest the cooling radius will be adjusted.  The number
+    of the cooling region (the region whose outer boundary lies exactly on the
+    cooling radius) will be displayed on the screen and is required for the next
+    step.
+  
+    
+   To fit a cooling model:
+   ----------------------
+11) Run FIT_SPECTRA in IDL:
+        IDL> fit_spectra, /COOLING [, /FLUX]
+        
+
+   To find the total X-ray or cooling flux inside the cooling radius:
+   ------------------------------------------------------
+12) Run FIT_SPECTRA in IDL:
+        IDL> fit_spectra, /COOL_FLUXES     
+   
+   
+    To get a summary of the cluster properties:
+    ------------------------------------------
+13) Run CLUSTER_PROPERTIES in IDL:
+        IDL> cluster_properties, /DEPROJECTED [, /COOLING, /FLUX]
+        
+     
+    To clean up all unnecessary files:
+    ---------------------------------
+14) Once you've finished the analysis, run CLEAN_UP.SH to delete uneeded files:
+        % clean_up.sh
+                            
+   
+   
+   
+   
+-----------------------
+ACIS_REPROCESS:
+-----------------------
+
+Purpose: Reprocesses the event files and the background file (calls 
+process_events.pro and acis_bg.pro), starting from the data archive products.
+
+Required files:	secondary/flt1 file
+		secondary/evt1 file
+		secondary/aoff1 file
+		primary/evt2 file
+		primary/asol1 file(s)
+		ciao_info.txt
+		
+Optional files: secondary/bias0 file (for new bad pixel file)
+                secondary/pbk0 file  (")	
+
+Key files created: obs_info_###.txt (information about the data)
+		   reprocessed/evt2_c7_clean.fits (cleaned event file)
+		   reprocessed/evt2_c7_clean_no_ptsrc.fits (no point sources)
+		   background/bg.fits (background file)
+		   primary/new_bpix.fits (optional: new bad pixel file)
+
+
+-----------------------
+EXTRACT_ANNULI:
+-----------------------
+
+Purpose: Extracts spectra in circular or elliptical annuli for spectral 
+fitting and makes the appropriate weighted RMFs and ARFs. Will also extract
+a central spectrum with a different number of counts (cencnts) from the other
+spectra (mincnts).
+
+Required files:	primary/bpix1 file
+		primary/asol1 file(s)
+		outputs of ACIS_REPROCESS
+
+Key files created: obs_info_###.txt (updated)
+		   spectra/ccd_asphist.fits
+		   spectra/reg*_sou.pi (spectra)
+		   spectra/reg*_bgd.pi (background spectra)
+		   regions/annuli_mincnts.reg (ds9 region file)
+		   spectra/annuli.txt (summary of region properties)
+		   spectra/sb.dat (surface brightness data file)
+		   
+		   
+-----------------------
+FIT_SPECTRA:
+-----------------------
+
+Purpose: Fits the resultant spectra extracted by "extract_annuli.pro" with a 
+single temperture wabs*mekal model in XSPEC.  Prompts for intial model 
+parameters.  Fits either a projected model (wabs*mekal) or a deprojected model
+(projct*wabs*mekal). The abundance (Z) is allowed to vary; nH and redshift are
+fixed.
+
+Required files:	output of EXTRACT_ANNULI
+
+Key files created: obs_info_###.txt (updated)
+		   spectra/plot_mekal.ps (plot of fitted spectra)
+		   spectra/source_mekal.spectra (best fit model)
+		   spectra/xspec_mekal.log (fit summary)
+		   
+PLOT_ANNULI makes: radial_plots_deproj_1.ps (radial plots of kT, ne, P, and S)
+ 		   radial_plots_deproj_2.ps (radial plots of Z, SB, and t_cool)
+	
+	
+-----------------------
+ACIS CHIP ID:
+-----------------------
+
+The folowing diagram shows the ACIS chip configuration when looking at an
+image:
+
+			---------- ----------
+			|	 | |	    |
+	Chip name	|   I1   | |   I0   |
+			|    	 | |        |
+	Chip ID 	|   1	 | |   0    |
+			---------- ----------
+			---------- ----------
+			|	 | |	    |
+			|   I3   | |   I2   |
+			| 	 | |        |
+			|   3	 | |   2    |
+			---------- ----------
+     ---------- ---------- ---------- ---------- ---------- ----------
+     |	      | |        | |        | |	       | |	  | |        |
+     |   S5   | |   S4   | |   S3   | |   S2   | |   S1   | |   S0   |
+     |        | |        | |        | |        | |        | |        |
+     |   9    | |   8    | |   7    | |   6    | |   5    | |   4    |
+     ---------- ---------- ---------- ---------- ---------- ----------
+	
+		
+-----------------------		   
+(4/5/2006 - DAR)

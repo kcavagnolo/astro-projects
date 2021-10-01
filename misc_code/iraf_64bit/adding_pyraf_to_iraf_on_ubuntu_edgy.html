@@ -1,0 +1,329 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+    <title>Adding PyRAF to IRAF on Ubuntu Edgy | MJHutchinson.com</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="/sites/mjhutchinson.com/themes/shiny/favicon.ico" type="image/x-icon" />
+    <link type="text/css" rel="stylesheet" media="all" href="/files/css/51f19d1d9fef9a3fa55d91994fd6ac90.css" />
+<link type="text/css" rel="stylesheet" media="print" href="/files/css/217c09558a102a72eafbe111b6ac3ac2.css" />
+    <script type="text/javascript" src="/files/js/44652f77ef183e49292e6460964690b3.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+jQuery.extend(Drupal.settings, { "basePath": "/", "googleanalytics": { "trackOutgoing": 1, "trackMailto": 1, "trackDownload": 1, "trackDownloadExtensions": "7z|aac|avi|csv|doc|exe|flv|gif|gz|jpe?g|js|mp(3|4|e?g)|mov|pdf|phps|png|ppt|rar|sit|tar|torrent|txt|wma|wmv|xls|xml|zip", "LegacyVersion": 0 } });
+//--><!]]>
+</script>
+    <!--[if lt IE 7]>
+      <link type="text/css" rel="stylesheet" media="all" href="/themes/garland/fix-ie.css" />    <![endif]-->
+  </head>
+  <body class="sidebar-left">
+
+<!-- Layout -->
+  <div id="header-region" class="clear-block"></div>
+
+    <div id="wrapper">
+    <div id="container" class="clear-block">
+
+      <div id="header">
+        <div id="logo-floater">
+        <h1><a href="/" title="MJHutchinson.com Michael Hutchinson&#039;s Home on the Web"><span>MJHutchinson.com</span> Michael Hutchinson&#039;s Home on the Web</a></h1>        </div>
+
+                  <ul class="links primary-links"><li class="menu-88 first"><a href="/journal" title="">Journal</a></li>
+<li class="menu-93"><a href="/tags">Tags</a></li>
+<li class="menu-91"><a href="/about">About</a></li>
+<li class="menu-90"><a href="/search">Search</a></li>
+<li class="menu-89 last"><a href="/contact">Contact</a></li>
+</ul>                                  
+      </div> <!-- /header -->
+
+              <div id="sidebar-left" class="sidebar">
+                    <div id="block-search-0" class="clear-block block block-search">
+
+
+  <div class="content"><form action="/journal/2006/11/14/adding_pyraf_to_iraf_on_ubuntu_edgy"  accept-charset="UTF-8" method="post" id="search-block-form">
+<div><div class="container-inline">
+  <div class="form-item" id="edit-search-block-form-1-wrapper">
+ <label for="edit-search-block-form-1">Search this site: </label>
+ <input type="text" maxlength="128" name="search_block_form" id="edit-search-block-form-1" size="15" value="" title="Enter the terms you wish to search for." class="form-text" />
+</div>
+<input type="submit" name="op" id="edit-submit" value="Search"  class="form-submit" />
+<input type="hidden" name="form_build_id" id="form-093da0b4d85f083d3d9bac6fae73fc5d" value="form-093da0b4d85f083d3d9bac6fae73fc5d"  />
+<input type="hidden" name="form_id" id="edit-search-block-form" value="search_block_form"  />
+</div>
+
+</div></form>
+</div>
+</div>
+<div id="block-block-5" class="clear-block block block-block">
+
+  <h2>Journal Archive</h2>
+
+  <div class="content"><ul class="menu"><li class="collapsed"><a href="/journal/2008">2008 (15)</a></li><li class="collapsed"><a href="/journal/2007">2007 (22)</a></li><li class="expanded"><a href="/journal/2006">2006 (18)</a><ul class="menu"><li class="leaf"><a href="/journal/2006/12">December (2)</a></li><li class="leaf"><a href="/journal/2006/11">November (3)</a></li><li class="leaf"><a href="/journal/2006/08">August (3)</a></li><li class="leaf"><a href="/journal/2006/07">July (2)</a></li><li class="leaf"><a href="/journal/2006/06">June (2)</a></li><li class="leaf"><a href="/journal/2006/05">May (4)</a></li><li class="leaf"><a href="/journal/2006/04">April (1)</a></li><li class="leaf"><a href="/journal/2006/02">February (1)</a></li></ul></li><li class="collapsed"><a href="/journal/2005">2005 (13)</a></li></ul></div>
+</div>
+<div id="block-block-1" class="clear-block block block-block">
+
+  <h2>Categories</h2>
+
+  <div class="content"><div class="item-list"><ul><li class="first"><a href="/journal/category/drupal">Drupal (9)</a></li>
+<li><a href="/journal/category/fun">Fun (2)</a></li>
+<li><a href="/journal/category/gaming">Gaming (2)</a></li>
+<li><a href="/journal/category/mono">Mono (68)</a></li>
+<li><a href="/journal/category/out_and_about">Out and About (6)</a></li>
+<li><a href="/journal/category/pc_hardware">PC Hardware (2)</a></li>
+<li><a href="/journal/category/personal">Personal (9)</a></li>
+<li><a href="/journal/category/photography">Photography (6)</a></li>
+<li><a href="/journal/category/programming_languages">Programming languages (1)</a></li>
+<li><a href="/journal/category/site_news">Site News (9)</a></li>
+<li><a href="/journal/category/technology">Technology (3)</a></li>
+<li><a href="/journal/category/university">University (9)</a></li>
+<li class="last"><a href="/journal/category/web_standards">Web Standards (3)</a></li>
+</ul></div></div>
+</div>
+<div id="block-user-0" class="clear-block block block-user">
+
+  <h2>User login</h2>
+
+  <div class="content"><form action="/journal/2006/11/14/adding_pyraf_to_iraf_on_ubuntu_edgy?destination=node%2F110"  accept-charset="UTF-8" method="post" id="user-login-form">
+<div><div class="form-item" id="edit-openid-identifier-wrapper">
+ <label for="edit-openid-identifier">Log in using OpenID: </label>
+ <input type="text" maxlength="255" name="openid_identifier" id="edit-openid-identifier" size="13" value="" class="form-text" />
+ <div class="description"><a href="http://openid.net/">What is OpenID?</a></div>
+</div>
+<div class="form-item" id="edit-name-wrapper">
+ <label for="edit-name">Username: <span class="form-required" title="This field is required.">*</span></label>
+ <input type="text" maxlength="60" name="name" id="edit-name" size="15" value="" class="form-text required" />
+</div>
+<div class="form-item" id="edit-pass-wrapper">
+ <label for="edit-pass">Password: <span class="form-required" title="This field is required.">*</span></label>
+ <input type="password" name="pass" id="edit-pass"  maxlength="60"  size="15"  class="form-text required" />
+</div>
+<input type="submit" name="op" id="edit-submit-1" value="Log in"  class="form-submit" />
+<input type="hidden" name="form_build_id" id="form-945d9438211c27351353470644f6a7b2" value="form-945d9438211c27351353470644f6a7b2"  />
+<input type="hidden" name="form_id" id="edit-user-login-block" value="user_login_block"  />
+<input type="hidden" name="openid.return_to" id="edit-openid.return-to" value="http://mjhutchinson.com/openid/authenticate?destination=node%2F110"  />
+<div class="item-list"><ul><li class="openid-link first"><a href="/%2523">Log in using OpenID</a></li>
+<li class="user-link last"><a href="/%2523">Cancel OpenID login</a></li>
+</ul></div><div class="item-list"><ul><li class="first"><a href="/user/register" title="Create a new user account.">Create new account</a></li>
+<li class="last"><a href="/user/password" title="Request new password via e-mail.">Request new password</a></li>
+</ul></div>
+</div></form>
+</div>
+</div>
+        </div>
+      
+      <div id="center"><div id="squeeze"><div class="right-corner"><div class="left-corner">
+          <div class="breadcrumb"><a href="/">Home</a> › <a href="/journal">Journal</a> › <a href="/journal/2006">2006</a> › <a href="/journal/2006/11">November</a></div>                              <h2>Adding PyRAF to IRAF on Ubuntu Edgy</h2>                                                  <div class="clear-block">
+            <div id="node-110" class="node">
+
+
+
+      <span class="submitted">Tue, 2006-11-14 00:31 — Michael</span>
+  
+  <div class="content clear-block">
+    <p>Following up on my earlier post on <a href="/journal/2006-05-11/install_iraf_on_ubuntu_edgy_amd64">installing IRAF on Ubuntu Edgy</a>, here's a walkthrough for installing <a href="http://www.stsci.edu/resources/software_hardware/pyraf">PyRAF</a>, a Python shell for IRAF. As part of this we'll have to install STSDAS and TABLES, two popular IRAF packages from <a href="http://www.stsci.edu/resources/software_hardware">STSCI</a>. </p>
+<h3>History of this Document</h3>
+<p>This is largely based on the <a href="http://www.stsci.edu/resources/software_hardware/stsdas/install">STSDAS installation instructions</a> and the <a href="http://www.stsci.edu/resources/software_hardware/pyraf/stsci_python/Installation">stsci_python installation instructions</a>, adapted and shortened for a simple binary installation on Ubuntu Edgy.</p>
+<dl>
+<dt><strong>19 Nov 06:</strong></dt>
+<dd>Changed installation directory from /usr/local/iraf to /iraf, removed need for a chroot on amd64, changed architecture to name "linux" though still using "redhat" binaries, tidied up commands, updated to STSDAS/TABLES 3.6 and stsci_python 2.4.</dd>
+<dt><strong>20 Nov 06:</strong></dt>
+<dd>Added warning about following previous guide, fixed launch script.</dd>
+<dt><strong>24 Nov 06:</strong></dt>
+<dd>Added ipyraf and fixed launch script (again).</dd>
+<dt><strong>26 Dec 06:</strong></dt>
+<dd>Fixed typo in launch script.</dd>
+<dt><strong>15 Jan 07:</strong></dt>
+<dd>Fixed lots of little problems.</dd>
+<dt><strong>7 June 07:</strong></dt>
+<dd>Missed 'install' in an 'apt-get'.</dd>
+</dl>
+<h3>Preliminary steps</h3>
+<p>Throughout this guide I will be working on the assumption that you have followed my previous walkthrough for installing <a href="http://mjhutchinson.com/journal/2006-05-11/install_iraf_on_ubuntu_edgy_amd64">IRAF on Ubuntu Edgy</a>. If this is not the case you may have to correct some of the install locations.</p>
+<p>The installations should be done logged in as the IRAF maintenance user, "iraf". This can be done using the command "su iraf" from another user's terminal. If you're working in a chroot, this all must take place within the chroot using "dchroot -d" or similar. Also, the iraf user must have admin privileges for the duration of the installation so that the "sudo" command can be used.</p>
+<p>First create the folders in the IRAF extern directory. These folders should already be defined as the location of TABLES and STSDAS in the file "$hlib/extern.pkg.NOAO"; if not, add them.</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="kw3">cd</span> <span class="sy0">/</span>iraf<span class="sy0">/</span>extern<span class="sy0">/</span>
+<span class="kw2">mkdir</span> tables stsdas</pre></div>
+<h3>Install TABLES and STSDAS</h3>
+<p>Download and extract TABLES</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="co0">#download source</span>
+<span class="kw3">cd</span> <span class="sy0">/</span>iraf<span class="sy0">/</span>extern<span class="sy0">/</span>tables<span class="sy0">/</span>
+<span class="kw2">wget</span> <span class="kw2">ftp</span>:<span class="sy0">//</span>ftp.stsci.edu<span class="sy0">/</span>pub<span class="sy0">/</span>software<span class="sy0">/</span>stsdas<span class="sy0">/</span>tables_v3.6<span class="sy0">/</span><span class="kw3">source</span><span class="sy0">/</span>tables36.tar.gz
+<span class="kw2">tar</span> <span class="re5">-zxf</span> tables36.tar.gz
+<span class="kw2">rm</span> tables36.tar.gz
+&nbsp;
+<span class="co0">#download redhat binaries</span>
+<span class="kw3">cd</span> bin.linux<span class="sy0">/</span>
+<span class="kw2">wget</span> <span class="kw2">ftp</span>:<span class="sy0">//</span>ftp.stsci.edu<span class="sy0">/</span>pub<span class="sy0">/</span>software<span class="sy0">/</span>stsdas<span class="sy0">/</span>tables_v3.6<span class="sy0">/</span>binaries<span class="sy0">/</span>tables36.bin.rh.tar.gz
+<span class="kw2">tar</span> <span class="re5">-zxf</span> tables36.bin.rh.tar.gz
+<span class="kw2">rm</span> tables36.bin.rh.tar.gz</pre></div>
+<p>Download and extract STSDAS. It also requires compilation of some Python code, but this works fine on amd64.</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="co0">#download source</span>
+<span class="kw3">cd</span> <span class="sy0">/</span>iraf<span class="sy0">/</span>extern<span class="sy0">/</span>stsdas
+<span class="kw2">wget</span> <span class="kw2">ftp</span>:<span class="sy0">//</span>ftp.stsci.edu<span class="sy0">/</span>pub<span class="sy0">/</span>software<span class="sy0">/</span>stsdas<span class="sy0">/</span>stsdas_v3.6<span class="sy0">/</span><span class="kw3">source</span><span class="sy0">/</span>stsdas36.tar.gz
+<span class="kw2">tar</span> <span class="re5">-zxf</span> stsdas36.tar.gz
+<span class="kw2">rm</span> stsdas36.tar.gz
+&nbsp;
+<span class="co0">#download redhat binaries</span>
+<span class="kw3">cd</span> bin.linux
+<span class="kw2">wget</span> <span class="kw2">ftp</span>:<span class="sy0">//</span>ftp.stsci.edu<span class="sy0">/</span>pub<span class="sy0">/</span>software<span class="sy0">/</span>stsdas<span class="sy0">/</span>stsdas_v3.6<span class="sy0">/</span>binaries<span class="sy0">/</span>stsdas36.bin.rh.tar.gz
+<span class="kw2">tar</span> <span class="re5">-zxf</span> stsdas36.bin.rh.tar.gz
+<span class="kw2">rm</span> stsdas36.bin.rh.tar.gz</pre></div>
+<p>Now you'll need to compile some of the Python components of STSDAS.</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="kw3">cd</span> <span class="sy0">/</span>iraf<span class="sy0">/</span>extern<span class="sy0">/</span>stsdas
+python python<span class="sy0">/</span>compileall.py .<span class="sy0">/</span>python
+python python<span class="sy0">/</span>compileall.py .<span class="sy0">/</span>python<span class="sy0">/*</span></pre></div>
+<h3>Installing stsci_python and PyRAF</h3>
+<p><a href="http://www.stsci.edu/resources/software_hardware/pyraf">PyRAF</a> comes as part of <a href="http://www.stsci.edu/resources/software_hardware/pyraf/stsci_python/current/download">stsci_python</a>.</p>
+<p>First make sure that you have all of the prerequisites.</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="kw2">sudo</span> <span class="kw2">apt-get</span> <span class="kw2">install</span> python python-numeric tk8.4 libreadline5 python-pmw python-dev python2.4-scipy</pre></div>
+<p>SciPy is not strictly necessary but it's a useful library of scientific Python code.</p>
+<p>Now download and extract stsci_python</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="co0">#download and extract</span>
+<span class="kw3">cd</span> <span class="sy0">/</span>iraf
+<span class="kw2">wget</span> <span class="kw2">ftp</span>:<span class="sy0">//</span>ra.stsci.edu<span class="sy0">/</span>pub<span class="sy0">/</span>pyraf<span class="sy0">/</span>v2.4<span class="sy0">/</span>stsci_python-2.4.tar.gz
+<span class="kw2">tar</span> <span class="re5">-zxf</span> stsci_python-2.4.tar.gz
+<span class="kw2">rm</span> stsci_python-2.4.tar.gz
+<span class="kw3">cd</span> stsci_python-<span class="nu0">2.4</span></pre></div>
+<p>On i386 we can get libf2c from the repositories,</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="co0">#i386 only</span>
+<span class="kw2">sudo</span> <span class="kw2">apt-get</span> <span class="kw2">install</span> libf2c2 libf2c2-dev</pre></div>
+<p>but on amd64 we must download and build it</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="co0">#amd64 only</span>
+<span class="kw2">wget</span> <span class="kw2">ftp</span>:<span class="sy0">//</span>ra.stsci.edu<span class="sy0">/</span>pub<span class="sy0">/</span>pyraf<span class="sy0">/</span>support_pyraf<span class="sy0">/</span>libf2c.tar.gz
+<span class="kw2">tar</span> <span class="re5">-zxf</span> libf2c.tar.gz
+<span class="kw2">rm</span> libf2c.tar.gz 
+<span class="kw3">cd</span> libf2c_stsci<span class="sy0">/</span>
+<span class="kw2">make</span> <span class="re5">-f</span> makefile.linux64</pre></div>
+<p>Though numarray is available from the Edgy repositories, we need to install a newer version. Be aware that this will overwrite the existing version.</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="co0">#install numarray</span>
+<span class="kw3">cd</span> <span class="sy0">/</span>iraf<span class="sy0">/</span>stsci_python-<span class="nu0">2.4</span><span class="sy0">/</span>numarray-1.5.2
+<span class="kw2">sudo</span> python setup.py config <span class="kw2">install</span> <span class="re5">--gencode</span></pre></div>
+<p>The setup script must then be run, pointed at the correct libf2c. This varies depending whether we built in (on amd64) or downloaded it (on i386).</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="kw3">cd</span> <span class="sy0">/</span>iraf<span class="sy0">/</span>stsci_python-<span class="nu0">2.4</span>
+<span class="co0">#EITHER amd64 version</span>
+<span class="kw2">sudo</span> python setup.py <span class="kw2">install</span> --with-<span class="re2">f2c</span>=<span class="sy0">/</span>iraf<span class="sy0">/</span>stsci_python-<span class="nu0">2.4</span><span class="sy0">/</span>libf2c_stsci<span class="sy0">/</span>
+<span class="co0">#OR i386 version</span>
+<span class="kw2">sudo</span> python setup.py <span class="kw2">install</span> --with-<span class="re2">f2c</span>=<span class="sy0">/</span>usr </pre></div>
+<p>I couldn't find an uninstaller, so I'm not happy that everything is being installed to /usr instead of /usr/local, but I still haven't worked out the options needed to do it correctly.</p>
+<p>We'll now create a convenience script to launch pyraf in an xgterm with ds9, in the ~/iraf folder. Create a new file "/usr/local/bin/pyrafshell" containing the following code, and make it world-executable.</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="co0">#!/bin/bash</span>
+<span class="re2">PID</span>=<span class="sy0">`</span><span class="kw2">pidof</span> ds9<span class="sy0">`</span>
+<span class="kw1">if</span> <span class="br0">&#91;</span> <span class="sy0">!</span> <span class="re1">$PID</span> <span class="br0">&#93;</span>; <span class="kw1">then</span>
+    ds9 <span class="sy0">&amp;</span>
+<span class="kw1">fi</span>
+<span class="kw3">pushd</span> ~<span class="sy0">/</span>iraf <span class="sy0">&gt;</span> <span class="sy0">/</span>dev<span class="sy0">/</span>null;
+xgterm <span class="re5">-iconic</span> <span class="re5">-geometry</span> 80x24 <span class="re5">-sb</span> <span class="re5">-title</span> <span class="st0">&quot;IRAF&quot;</span> <span class="re5">-bg</span> <span class="st0">&quot;lemon chiffon&quot;</span> <span class="re5">-fg</span> <span class="st0">&quot;black&quot;</span> <span class="re5">-e</span> pyraf <span class="sy0">&amp;</span>
+<span class="kw3">popd</span> <span class="sy0">&gt;</span> <span class="sy0">/</span>dev<span class="sy0">/</span>null;</pre></div>
+<p>If you're in a chroot, you can run this from the host system with the command 'dchroot -d "pyrafshell"'.</p>
+<p>Optionally you may create a variant of this script that uses the more advanced interactive python shell, ipython. This gives you tab completion on python objects and lots of other useful features, and is due to become the default for pyraf at some point.</p>
+<div class="geshifilter">
+<pre class="bash geshifilter-bash" style="font-family:monospace;"><span class="co0">#install ipython</span>
+<span class="kw2">sudo</span> <span class="kw2">apt-get</span> <span class="kw2">install</span> ipython
+<span class="co0">#create a copy of the existing script</span>
+<span class="kw2">sudo</span> <span class="kw2">cp</span> <span class="sy0">/</span>usr<span class="sy0">/</span><span class="kw3">local</span><span class="sy0">/</span>bin<span class="sy0">/</span>pyrafshell <span class="sy0">/</span>usr<span class="sy0">/</span><span class="kw3">local</span><span class="sy0">/</span>bin<span class="sy0">/</span>ipyrafshell
+<span class="kw2">sudo</span> <span class="kw2">chmod</span> +x <span class="sy0">/</span>usr<span class="sy0">/</span><span class="kw3">local</span><span class="sy0">/</span>bin<span class="sy0">/</span>ipyrafshell</pre></div>
+<p>Edit the new file, "/usr/local/bin/ipyrafshell", and change "-e pyraf" to "-e pyraf --ipython". If you have not yet run ipython, run it before running ipyrafshell so that it can create you a profile.</p>
+<p>That's it! Log out of the "iraf" account and don't forget to remove its admin privileges. </p>
+<p>You can now run PyRAF with the command "pyraf", STSDAS and TABLES will be usable from within IRAF and PyRAF, and the command "pyrafshell" will launch a complete PyRAF session. You may find the <a href="http://stsdas.stsci.edu/pyraf/doc/pyraf_guide/">PyRAF Programmer's Guide</a> useful, and there's a <a href="http://www.scipy.org/wikis/topical_software/Tutorial">SciPy tutorial</a> that also makes use of PyRAF and PyFITS.</p>
+  </div>
+
+  <div class="clear-block">
+    <div class="meta">
+          <div class="terms"><ul class="links inline"><li class="taxonomy_term_36 first"><a href="/journal/category/university" rel="tag" title="">University</a></li>
+<li class="taxonomy_term_61"><a href="/tags/edgy" rel="tag" title="">Edgy</a></li>
+<li class="taxonomy_term_59"><a href="/tags/iraf" rel="tag" title="">IRAF</a></li>
+<li class="taxonomy_term_63"><a href="/tags/pyraf" rel="tag" title="">PyRAF</a></li>
+<li class="taxonomy_term_64"><a href="/tags/python" rel="tag" title="">Python</a></li>
+<li class="taxonomy_term_67"><a href="/tags/stsci_python" rel="tag" title="">stsci_python</a></li>
+<li class="taxonomy_term_65"><a href="/tags/stsdas" rel="tag" title="">STSDAS</a></li>
+<li class="taxonomy_term_66 last"><a href="/tags/tables" rel="tag" title="">TABLES</a></li>
+</ul></div>
+        </div>
+
+          <div class="links"><ul class="links inline"><li class="comment_add first"><a href="/comment/reply/110#comment-form" title="Share your thoughts and opinions related to this posting.">Add new comment</a></li>
+<li class="quote last"><a href="/comment/reply/110?quote=1#comment-form" title="Quote this post in your reply.">Quote</a></li>
+</ul></div>
+      </div>
+
+</div>
+<div id="comments"><h2 class="comments">Comments</h2><a id="comment-173"></a>
+<div class="comment comment-published odd">
+
+  <div class="clear-block">
+      <span class="submitted">Thu, 2007-03-15 23:08 — Anonymous (not verified)</span>
+  
+  
+  
+    <h3><a href="/journal/2006/11/14/adding_pyraf_to_iraf_on_ubuntu_edgy#comment-173" class="active">Installing into /usr/local</a></h3>
+
+    <div class="content">
+      <p>On amd64 to install pyraf into /usr/local, you can use this line:<br />
+sudo python setup.py install --local=/usr/local --with-f2c=/iraf/stsci_python-2.4/libf2c_stsci/</p>
+<p>Also, before you do this you need to install the dev libraries for X, for example:<br />
+sudo apt-get install xlibs-dev<br />
+which will install about 25 Xorg development packages.</p>
+          </div>
+  </div>
+
+      <div class="links"><ul class="links"><li class="comment_reply first"><a href="/comment/reply/110/173">reply</a></li>
+<li class="quote last"><a href="/comment/reply/110/173?quote=1#comment-form" title="Quote this post in your reply.">quote</a></li>
+</ul></div>
+  </div>
+<div class="indented"><a id="comment-174"></a>
+<div class="comment comment-published even">
+
+  <div class="clear-block">
+      <span class="submitted">Thu, 2007-03-15 23:25 — Anonymous (not verified)</span>
+  
+  
+  
+    <h3><a href="/journal/2006/11/14/adding_pyraf_to_iraf_on_ubuntu_edgy#comment-174" class="active">Replying to myself, this is</a></h3>
+
+    <div class="content">
+      <p>Replying to myself, this is not a good thing to do...better to specify a directory like /usr/local/pyraf/ for the install rather than /usr/local as pyraf does not observe the unix directory structure.<br />
+Then the start script would be modified so that pyraf-&gt;/usr/local/pyraf/pyraf/pyraf.</p>
+          </div>
+  </div>
+
+      <div class="links"><ul class="links"><li class="comment_reply first"><a href="/comment/reply/110/174">reply</a></li>
+<li class="quote last"><a href="/comment/reply/110/174?quote=1#comment-form" title="Quote this post in your reply.">quote</a></li>
+</ul></div>
+  </div>
+</div></div>          </div>
+                    <div id="footer">This is a personal website, and stated opinions may not represent the position of my employer. Except where noted otherwise, original text and images are copyright Michael Hutchinson. Code samples are released under the MIT X11 licence.<div id="block-system-0" class="clear-block block block-system">
+
+
+  <div class="content"><a href="http://drupal.org"><img src="/misc/powered-blue-80x15.png" alt="Powered by Drupal, an open source content management system" title="Powered by Drupal, an open source content management system" width="80" height="15" /></a></div>
+</div>
+</div>
+      </div></div></div></div> <!-- /.left-corner, /.right-corner, /#squeeze, /#center -->
+
+      
+    </div> <!-- /container -->
+  </div>
+<!-- /layout -->
+
+  <script type="text/javascript" src="/files/js/8927b4767c5b7158e649804a4c4ce0ba.js"></script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+//--><!]]>
+</script>
+<script type="text/javascript">
+<!--//--><![CDATA[//><!--
+var pageTracker = _gat._getTracker("UA-377991-1");pageTracker._initData();pageTracker._trackPageview();
+//--><!]]>
+</script>
+  </body>
+</html>

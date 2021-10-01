@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<title>AdaptiveBin documentation</title>
+</head>
+
+<body text="#000066" bgcolor="#FFFFFF" link="#006600"
+vlink="#CC0000" alink="#FF0000">
+<h1>AdaptiveBin documentation (for version 0.1.1)</h1>
+
+<p>
+AdaptiveBin is the main Adbin program. It takes one or more images and
+adaptively bins them. If one image is supplied, then the pixels are
+binned by fractional error on the intensity. If two or more images are
+supplied, then the pixels are fractional binned by error on the
+combined colour.
+</p>
+
+<h2>Usage</h2>
+<pre>
+# AdaptiveBin --help
+Usage: AdaptiveBin [OPTIONS] file bg=count...
+Adaptively bins a set of images
+Written by Jeremy Sanders, 2000, 2001.
+
+  -o, --out=FILE           set out file (def adbin_out.fits)
+  -e, --error=FILE         set error out file (def adbin_err.fits)
+  -n, --binmap=FILE        set binmap out file (def adbin_binmap.fits)
+  -p, --pixel=FILE         set pixel out file (DISCOURAGED)
+  -t, --threshold=VAL      set threshold fraction (def 10%)
+  -v, --value=STR          set output value (eg count(0), ratio(1,2))
+  -s, --subpix=INT         set subpixel positioning divisior (def. 1)
+  -c, --contig             only allow contiguous regions
+      --verbose            display more information
+      --help               display this help message
+  -V, --version            display the program version
+
+Report bugs to &lt;jss@ast.cam.ac.uk&gt;
+</pre>
+
+<p>
+AdaptiveBin takes a list of input FITS files and (optional) background
+counts. If one image is given, the image is binned based on the
+fractional error of the intensity of that image. If more than one
+images are supplied, then the adaptive binning is based on the
+fractional error of the <em>combined colour</em> of that image.
+</p>
+
+<p>
+The switches <code>--out</code>, <code>--error</code> and
+<code>--binmap</code> set the output FITS images for the
+output binned image, error map and bin map, respectively. By default
+the file names are <code>adbin_out.fits</code>,
+<code>adbin_err.fits</code> and <code>adbin_binmap.fits</code>.
+</p>
+
+<p>
+Version &lt; 0.1.2: The <code>--pixel</code> option was used
+instead of <code>--binmap</code>. The old option is still available,
+but discouraged. Also the default output file names
+were different (<code>adbin-out.fits</code>,
+<code>adbin-err.fits</code> and <code>pixel.fits</code>). 
+</p>
+
+<p>
+The maximum fractional error is set using the <code>--threshold=0.xx</code>
+option. By default it is 0.1.
+</p>
+
+<p>
+The type of binned image produced is set using the <code> --value </code>
+switch. This option is only useful when colour binning is being
+done. If this option is set to <code>count(x)</code>, then the pixels in
+the output-image will contain the average count in band <code>x</code>
+for their bins (<code>x</code> is numbered from 0). The
+error map will show the fractional error on that count (note the bins
+are always produced using the error on the combined-colour).
+If <code> --value </code> is set to <code>ratio(x,y)</code>, then the
+output-image will show the average colour <code>x/y</code> in the bin,
+and the error map will show the error on that colour.
+</p>
+
+<p>
+The <code>--subpix=x</code> switch enables sub-pixel positioning (it
+should be called sub-bin positioning). The results of this option
+usually aren't great, but feel free to experiment. This option takes
+an integer value greater than 1. The value specifies where the top
+corner of a bin can be placed. Normally bins can only be placed on a
+regular grid, with a grid spacing of the size of the bin. This switch
+allows bins to be placed at intervals <code>x</code> times that
+frequency. Bins are drawn in ascending fractional error.
+</p>
+
+<p>
+Version &gt;= 0.1.1: The <code>--contig</code> option has been added. This
+makes sure that bins form contiguous regions. Using this option
+prevents 'stranded bins' which are binned together with a lower
+intensity region, due to them not having enough counts to have an
+error less than or equal to the threshold. If a bin consists of two
+isolated regions, then it is split into two different bins. A region
+is isolated if it does not have any neighbouring pixels (including
+sharing corners) with a different region. This option slows down the
+program, but there is probably some room for optimisation of the code.
+<br />
+<img src="contiguous.png" alt="Contiguous regions" />
+</p>
+
+<h2>Notes</h2>
+<ol>
+
+<li>Version &gt;= 0.1.2: AdaptiveBin can expand its options and arguments
+from a file, instead of the command line. Using an argument of
+<code>@filename</code> will substitute the text in the file in as
+options. The file can contain comments (preceeded by the
+<code>#</code> character); quote signs must be escaped using a
+backslash character.</li>
+
+<li>Brackets are changed by shells. The <code>--value</code> option
+needs to be surrounded by quotes. For example,
+<code>--value="ratio(0,1)"</code>
+</li>
+
+<li>WCS information is copied (in a simple form) from the first input image
+to the output images (including error and pixel maps).</li>
+<li>All input images must be of the same size.</li>
+
+</ol>
+
+
+<h2>Examples</h2>
+<pre>
+# AdaptiveBin --threshold=0.05 --out=adbin_intensity_005.fits \
+    --err=adbin_intensity_error_005.fits --binmap=binmap_005.fits \
+    infile.fits bg=0.874
+</pre>
+<p>
+Bin infile.fits using intensity-adaptive binning with a fractional
+error threshold of 0.05 (5%). The output filename is
+<code>adbin_intensity_005.fits</code>, with error and binmap filenames
+<code>adbin_intensity_error_0.05.fits</code> and
+<code>binmap_005.fits</code>. A background of 0.874 counts per pixel is
+used to analyse the input file.
+</p>
+
+<pre>
+# AdaptiveBin --threshold=0.2 --value="ratio(1,2)" \
+    image0.fits image1.fits bg=2.3 image2.fits bg=4.12
+</pre>
+<p>
+Do combined colour adaptive binning with a fractional error threshold
+of 0.2. The input images are <code>image0.fits</code> (no background),
+<code>image1.fits</code> (background 2.3 counts per pixel) and
+<code>image2.fits</code> (background 4.12 counts per pixel). The
+output, error and pixel filenames are the defaults. A colour image is
+outputted in the output and error images showing the ratio of the
+second and third input images (<code>image1.fits</code> and
+<code>image2.fits</code>).
+</p>
+
+<hr />
+<p>
+<a href="./">Back to the documentation page</a>
+</p>
+<hr />
+<address>
+This page is maintained by <a href="mailto:jss@ast.cam.ac.uk">Jeremy
+Sanders</a>. It was last modified on 2001/1/18. This page is not an
+official page of the <a href="http://www.ast.cam.ac.uk/IoA/">Institute
+of Astronomy</a>.
+</address>
+</body>
+</html>

@@ -1,0 +1,845 @@
+#!/usr/bin/perl -w
+#
+#  Copyright (C) 2007-2010  Smithsonian Astrophysical Observatory
+#
+#
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License along
+#  with this program; if not, write to the Free Software Foundation, Inc.,
+#  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+#
+###########################################################################
+# Script:  merge_all
+# Version: 3.9
+# Date:    22 May 2009
+#
+# See also the CIAO Imaging Science threads:
+# http://cxc.harvard.edu/ciao/threads/imag.html
+#
+# This script takes a list of evt2 files, reprojects them to a given RA, 
+# Dec, and combines them.  It then makes a combined exposure map, a matching 
+# image, and a fluxed image.  If only one event file is input, it is treated 
+# as a merged event file.  Note: all input evt and asol files *must* be 
+# time-sorted.
+# 
+# Also note that the script may be used to simply combine a
+# set of two or more ObsIDs.  In this case, the only parameters
+# which are needed are evtfile, ccd, refcoord, and merged.
+#
+# If a combined ObsID already exists, it may be entered as the evtfile, and
+# the parameters refcoord and merged may be omitted. 
+#
+# If a combined Aspect Histogram exists from a previous run, and it is in the
+# "intdir" and retains its original name, the script will use it instead of 
+# creating a new one (will provide a warning).
+#
+# Using dm filters: it is possible to provide an energy filter.  However, 
+# region filters are not supported: this is because the xygrid is the region 
+# filter for the exposure map, and the image size and shape must match that 
+# of the exposure map.  Filters (to remove sources, etc.) can be applied
+# to the evtfile prior to running the script, if desired.
+#
+# Below is a detailed description of the inputs:
+#
+# 1) evtfile - input level 2 file(s); comma-separated list
+#
+# 2) asol - time-sorted file(s), comma-separated list (don't 
+# need if just merging data.)
+#
+# 3) dtffile - comma-separated list of DTF file name(s) to be 
+# used in asphist; for HRC-I observations only (don't need if just 
+# merging data.).
+#
+# 4) chip - either ccd_id(s) for ACIS CCDs you want -- comma-separated or 
+# range (':' or '-') -- or 'HRC-I' or 'HRC-S" 
+#
+# 5) refcoord - either ra,dec or evt2 file for reproject_events (leave 
+# blank if using an already-merged file or single obsid.)
+#
+# 6) xygrid - grid for mkexpmap and creating image; mkexpmap format (don't 
+# need if just merging data.)
+#
+# 7) energy - either a number (monoenergy) or a spectral weights file (don't 
+# need if just merging data.)
+# 
+# 8) merged - output merged event file name (leave blank if inputting an 
+# already-merged file or single obsid.)
+#
+# 9) expmap - output (merged) exposure map (leave blank if you don't want 
+# one.)
+#
+# 10) expcorr - output fluxed image (leave blank if you don't want one.)
+#
+# 11) intdir - directory where intermediate products are placed
+#
+##############################################################################
+
+# VERSION UPDATES
+#
+# 3.9, 05/22/2009: check that intdir directory exists and is writeable;
+#                  run punlearn before running mkinstmap
+#
+# 3.8, 12/06/2007: replaced echo command with pget to assign "oldtab" 
+#                  variable
+#
+# 3.7, 04/11/2007: use dmtcalc in place of outdated chips workaround;
+#                  a few instances of dmlist were replaced by dmkeypar
+#                  (updates for CIAO 4.0 Beta 1)
+#
+# 3.6, 04/11/2007: added "[subspace -expno]" to dmmerge command as workaround 
+#                  for problem merging data with different EXPNO ranges.
+#                  (released with CIAO 3.4)
+#
+# 3.5, 02/08/2007: test whether "energy" value is monochromatic or 
+#                  spectrum file.  Script exits early if the spectrum
+#                  file does not exist.  Error messages contain name
+#                  of script.  Temporary files have timestamp as rootname.
+#
+# 3.4, 11/01/2006: removed "punlearn mkinstmap" to allow new CIAO 3.4 
+#                  mkinstmap parameters (pbkfile, dafile) to be set 
+#                  before running the script, if desired; parameters 
+#                  supplied on the command line will not be prompted 
+#
+# 3.3, 09/27/2005: The syntax of the asphist tool was updated for 
+#                  this release: the GTI filter is attached to the event 
+#                  file instead  of the aspect solution file(s).  For a 
+#                  detailed explanation of the syntax change, refer to 
+#                  the asphist help file ("ahelp asphist"). 
+#
+# 3.0.0, 6/9/2003: Changed asphist syntax for compatibility with CIAO 3.0.  
+#                  Now infile is filtered with "@evt2[ccd_id=x]" for ACIS 
+#                  and "@evt2" for HRC. 
+#
+# 2.0.3, 5/31/2002: Bug fix: doesn't die with an error if the xygrid 
+#                   parameter doesn't have a '.' after the first number in 
+#                   the x and y ranges.
+#
+# 2.0.2, 3/27/2002: Bug fix: fixed asphist crash when asol files were given 
+#                   with absolute paths (used to prepend "./" to the 
+#                   filename.)  Enhancement: now the files to be input to 
+#                   dmmerge are put into a stack first, so one doesn't bump 
+#                   into the 1024 character limit with the input string.
+#
+# 2.0.1, 3/5/2002:  Bug fix: modified warning which previously caused script 
+#                   to exit if no dtffile was given regardless of whether  
+#                   or not an exposure map was to be made.  Now, checks to 
+#                   see if exposure map is requested first.
+#
+# 2.0, 1/29/2002:   Bug fixes: spectrum file now properly propagated if more 
+#                   than one CCD is selected.  Will check SIM_Z of input 
+#                   asols against input events file when the events file is 
+#                   an already-merged one.
+#
+#                   Enhancements: will combine both HRC-I and HRC-S event 
+#                   files; will create exposure maps for HRC-I.  Now accepts 
+#                   file stacks using standard CIAO syntax (@<stackname>).  
+#                   Properly updates the DETNAM keyword of the output file 
+#                   headers.  Warns user if binning factor for x is not the 
+#                   same as that for y.  More helpful warning messages and 
+#                   user error catches.
+#
+# 1.0.1, 11/17/2001: now checks evtfile syntax for a possible region filter, 
+#                   and dies with an error if one is found.  Also checks 
+#                   for already-created aspect histograms from previous 
+#                   runs, uses them and warns the user.
+#
+#############################################################################
+
+use Carp; # used by some of the subroutines
+$|++;     # ensure printing to STDOUT is flushed asap
+
+## Declare subroutines (definitions at end)
+#
+sub check4CIAO (;$);
+
+sub punlearn ($);
+sub pset     ($$$);
+sub paccess  ($);
+sub pget     ($$);
+sub pquery   ($$);
+
+## Constants
+#
+use constant PROGNAME => "merge_all";
+
+## Global variables
+#
+my $verbose = 0;       # how verbose should the script be?
+my $tool_verbose = 0;  # how verbose should the tools be?
+my $CIAO = undef;      # path to CIAO tools - ie $ASCDS_INSTALL/bin
+
+## Code
+#
+check4CIAO( '2.2' );
+
+# Parse options (command line)
+# if there are any
+#
+die "Error: Unable to find parameter file for " . PROGNAME . "\n"
+  if paccess( PROGNAME ) eq "";
+if ( $#ARGV > -1 ) {
+    system( "pset", PROGNAME, @ARGV ) == 0
+      or die "\n# merge_all: ERROR: unable to `pset " . PROGNAME . " ...'\n";
+}
+
+# extract the parameter info
+#
+# Input 'files'
+$evtFiles  = pquery PROGNAME, "evtfile";
+$asolFiles = pquery PROGNAME, "asol";
+$dtffile = pquery PROGNAME, "dtffile";
+
+# 'info'
+$ccdIds   = pquery PROGNAME, "chip";
+$refCoord = pquery PROGNAME, "refcoord";
+$xygrid   = pquery PROGNAME, "xygrid";
+$energy   = pquery PROGNAME, "energy";
+
+# 'output' stuff
+$mergeOut = pquery PROGNAME, "merged";
+$expOut   = pquery PROGNAME, "expmap";
+$normImg  = pquery PROGNAME, "expcorr";
+$outDir   = pquery PROGNAME, "intdir";
+
+# general stuff
+# note: we have a mode for this script ($mode) and
+#       one for the tools it calls ($tmode), but we don't
+#       (currently) let the user change $tmode
+#
+$clbr = pquery PROGNAME, "clobber";
+$mode = pquery PROGNAME, "mode";
+
+my $tmode = "hl";
+
+# at the moment $mode isn't used, so we do a "no-operation"
+# with it to stop warning messages
+#
+$mode = $mode;
+
+## check that stuff isn't empty - should we check more?
+#
+# could try & be clever and do an eval loop, but won't
+die "\n# merge_all: ERROR: evtfile can not be empty\n" if $evtFiles eq "";
+die "\n# merge_all: ERROR: chip can not be empty\n" if $ccdIds eq "";
+die "\n# merge_all: ERROR: must enter dtffile if creating an exposure map for HRC-I data\n" if (($dtffile eq "") && ($ccdIds =~ /HRC/i) && ($expOut));
+die "\n# merge_all: ERROR: script cannot produce exposure map for HRC-S\n" if (($expOut) && ($ccdIds =~ /HRC-S/i));
+die "\n# merge_all: ERROR: must provide a value for expmap if creating an exposure-corrected image\n" if (($expOut eq "") && ($normImg ne ""));
+die "\n# merge_all: ERROR: must provide a value for xygrid if creating an exposure map\n" if (($expOut ne "") && ($xygrid eq ""));
+
+if ($xygrid ne "") {
+    die "\n# merge_all: ERROR: xygrid parameter is not of the proper form (e.g., 0.5:8192.5:#1024,0.5:8192.5:#1024)\n" unless ($xygrid =~ /^(-)??\d+(\.?\d*):(-)??\d+(\.?\d*):#\d+(\.?\d*),(-)??\d+(\.?\d*):(-)??\d+(\.?\d*):#\d+(\.?\d*)$/);										
+													    }
+
+# is energy monochromatic or a spectrum file
+# moved from mkInst subroutine
+
+die "\n# merge_all: ERROR: must provide an energy value or spectrum file if creating an exposure map\n" if (($expOut ne "") && ($energy eq ""));
+
+if ($energy ne "") {
+
+  # is_decimal test from Data::Types
+  $specFile = "";
+  unless ( $energy =~ /^(?:\d+(?:\.\d*)?|\.\d+)$/ ){
+    if (-e $energy) {
+	$specFile = $energy;
+	$energy = 1;
+    } else {
+	die "\n# merge_all: ERROR: the energy file \"$energy\" does not exist\n";	
+    }
+  }
+}
+
+# Check to make sure output files don't already exist if clobber=no
+
+if ($clbr eq "no") {
+    die "\n# merge_all: ERROR: $mergeOut already exists and clobber=no\n" if (-e "$mergeOut");
+    die "\n# merge_all: ERROR: $expOut already exists and clobber=no\n" if (-e "$expOut");
+    die "\n# merge_all: ERROR: $normImg already exists and clobber=no\n" if (-e "$normImg");
+}    
+
+# If the ccd param was input as a range (m:n), convert it to comma-separated
+if ($ccdIds =~ /:/) {
+    ($ccdMin,$ccdMax) = split ':', $ccdIds;
+    $a = $ccdMin;
+    $ccdIds = "";
+    while ($a <= $ccdMax) {
+	$ccdIds = "$ccdIds,$a";
+	$a++;
+    }
+    substr ($ccdIds, 0, 1) = "";
+} elsif ($ccdIds =~ /HRC/i) { # set flag if this is an HRC observation
+    $hrc = 1;
+} elsif ($ccdIds =~ /-/) {
+    ($ccdMin,$ccdMax) = split '-', $ccdIds;
+    $a = $ccdMin;
+    $ccdIds = "";
+    while ($a <= $ccdMax) {
+	$ccdIds = "$ccdIds,$a";
+	$a++;
+    }
+    substr ($ccdIds, 0, 1) = "";
+}
+
+# Create an array with each element a single event file; check to 
+# make sure that the files exist.  Then check to see if there is 
+# more than one element- if so, go to the subroutine which reprojects
+# and combines the obsids.
+
+# check to see if it's a file stack
+if ($evtFiles =~ s/\@//) {
+    open (FILE, "<$evtFiles");
+    @evt2 = <FILE>;
+    close (FILE);
+    foreach $line (@evt2) {
+	chomp $line;
+    }
+} else {
+    @evt2 = split ',', $evtFiles;
+}
+
+if ($asolFiles =~ s/\@//) {
+    open (FILE, "<$asolFiles");
+    @asol = <FILE>; 
+    close (FILE);
+    foreach $line (@asol) {
+	chomp $line;
+    }
+} else {
+    @asol = split ',', $asolFiles;
+}
+
+@ccds = split ',', $ccdIds;
+($ccdNum = $ccdIds) =~ s/,//g;
+if ($hrc) {
+    $ccdPure = uc($ccdNum);
+} else {
+    $ccdPure = "ACIS-$ccdNum";
+}
+if ($xygrid) {
+    ($b,$c,$biny) = split '#', $xygrid;
+    ($binx,$d) = split ',', $c;
+    ($xmin,$xmax) = split ':', $b;
+    ($ymin,$ymax) = split ':', $d;
+    $binFX = ($xmax - $xmin)/($binx);
+    $binFY = ($ymax - $ymin)/($biny);
+    if ($binFX ne $binFY) {
+	print "\nWARNING: binning in x is different from that in y.\n Resulting image will look distorted.\n";
+    }
+}
+
+$numCCD = scalar(@ccds);
+$numObs = scalar(@evt2);
+$numAsol = scalar(@asol);
+@evt2pure = ();
+$e = 0; # error counter for &cleanUp 
+
+
+print "\n";
+
+# Set intermediate directory to /tmp if not given
+
+$outDir = "/tmp" unless ($outDir);
+if (!-d $outDir) {
+    print "ERROR: The intdir directory \"$outDir\" does not exist.\n";
+    exit(0);
+}
+if (!-w $outDir) {
+    print "ERROR: The intdir directory \"$outDir\" is not writeable.\n";
+    exit(0);
+}
+
+$tmproot= time();
+
+# Set clobber to "no" if not given
+
+$clbr = "no" unless ($clbr);
+
+# Check to make sure the input files exist
+
+foreach $line (@evt2) {
+
+# Check to make sure there is no embedded region syntax
+
+    if ($line =~ s/\(.*$//) {
+	print "Check evtfile syntax for possible region filter (not allowed here)\n";
+	exit(0);
+    }
+# Get rid of virtual syntax stuff before looking for file, create a second array
+# with just the bare filenames
+
+    ($modLine = $line) =~ s/\[.*$//;
+    push @evt2pure, $modLine;
+    unless (-e $modLine) {
+	print "Event file $modLine not found\n";
+	exit(0);
+    }
+}
+
+foreach $line (@asol) {
+    unless (-e ($line)) {
+	print "Aspect solution file $line not found\n";
+	exit(0);
+    }
+}
+
+# If only one evt2 file is input, treat it as the merged file; create one "pure" file without syntax filters and one which retains syntax filters for future tools.  (For two or more observations, these filters are applied in the &mergeEvts subroutine, so it is unneccesary to retain the filters for the &mkImage routine.) 
+
+$mergeOutPure = "$evt2pure[0]" unless ($numObs > 1);
+$mergeOut = "$evtFiles" unless ($numObs > 1);
+&mergeEvts unless ($numObs == 1);
+
+# only make the exposure maps and images if desired
+
+unless (!$expOut) {
+    &mkAsp;
+    &mkInst;
+    &mkExp;
+    &mergeExp;
+    unless (!$normImg) {
+	&mkImage;
+	&normImg;
+    }
+}
+&cleanUp;
+
+## End of code
+#
+exit;
+
+## Subroutines
+#
+
+sub mergeEvts {
+    $a = 0;
+    $b = 0;
+    foreach $line (@evt2) {
+# Make sure the event 2 file you're reprojecting isn't the reference one
+	unless ($evt2pure[$b] eq $refCoord) {
+	    $a++;
+	    $t = "reproject_events";
+	    print "Reprojecting $evt2pure[$b] to $refCoord\n\n";
+	    `punlearn $t`;
+	    if ($hrc) { # if it's an HRC observation
+	    `pset $t infile="$line" outfile=$outDir/$tmproot\_reproj_$a.fits match="$refCoord" mode=$tmode clobber=$clbr`;
+	} else { # if it's an ACIS observation
+	    `punlearn dmlist ; dmlist \"$line\[cols time\]\" opt=data rows=1 cells=1 outfile=temp verbose=0`;
+	    if (-e "temp") {
+		$random = -1;
+	    } else {
+		print "## Error is OKAY! Results from check.\n";
+		$random = 0;
+	    }
+	    unlink("temp");
+	    `pset $t infile="$line\[ccd_id=$ccdIds\]" outfile=$outDir/$tmproot\_reproj_$a.fits random=$random match="$refCoord" mode=$tmode clobber=$clbr`;
+	}
+	    `$t`;
+	    $line = "$outDir/$tmproot\_reproj_$a.fits";
+	    unless (-e "$outDir/$tmproot\_reproj_$a.fits") {
+		print "Unable to create file $outDir/$tmproot\_reproj_$a.fits\n";
+		$e=1;
+		&cleanUp;
+	    }
+	}
+	$b++;
+    }
+# Create a new header lookup table that has the following changes:
+# DETNAM     WarnFirst
+# ROLL_NOM   WarnFirst
+# SIM_Z      WarnFirst
+# so that it uses the values from the first file rather than omitting
+# them.  This saves work down the road!
+    my $tmpfile = "$outDir/$tmproot\_lookup.txt";
+    unlink $tmpfile if -e $tmpfile;  
+    `punlearn dmmerge`;
+    $oldtab = `pget dmmerge lookupTab`;
+    open (FILE, "<$oldtab") or die "Can't access $oldtab\n";
+    open (TAB, ">$tmpfile") or die "Can't create temporary file $tmpfile\n";
+    while (<FILE>) {
+	s/DETNAM     Merge-Merged\;Force-Unknown/DETNAM     WarnFirst/;
+	s/ROLL_NOM   WarnOmit-1.0/ROLL_NOM   WarnFirst/;
+	s/SIM_Z      WarnOmit-0.1/SIM_Z      WarnFirst/;
+	print TAB $_ or die "Unable to create lookup table $outDir/$tmproot\_lookup.txt\n";
+    }
+    close (FILE);
+    close (TAB);
+
+# Create a comma-separated string from the evt2 array
+    $inEvt = "";
+    foreach $line (@evt2) {
+	$inEvt = "$inEvt\n!$line";
+    }
+    substr($inEvt, 0, 1) = "";
+    my $evtList = "$outDir/$tmproot\_evt2.lis";
+    unlink $evtList if -e $evtList;
+    open (FILE, ">$evtList")
+	or die "\n# merge_all: ERROR: unable to create temporary file $evtList\n";
+    print FILE ("$inEvt");
+    close (FILE);
+# Using this string, merge the reprojected event files
+    print "Merging data...\n\n";
+    $t = "dmmerge";
+    `punlearn $t`;
+    if ($hrc) { # if it's an HRC observation
+	`pset $t infile="\@$evtList" outfile=$mergeOut lookupTab=$tmpfile mode=$tmode clobber=$clbr`;
+    } else { # if it's an ACIS observation
+	`pset $t infile="\@$evtList\[ccd_id=$ccdIds\]\[subspace -expno\]" outfile=$mergeOut lookupTab=$tmpfile mode=$tmode clobber=$clbr`;
+    }
+    `$t`;
+#    unlink $evtList;
+    unlink $tmpfile;
+# Check to make sure it actually created the merged file
+    $u = "dmhedit";
+    `punlearn $u`;
+    `$u infile=$mergeOut filelist=none operation=add key=DETNAM value="$ccdPure"`;
+    unless (-e "$mergeOut") {
+	print "Unable to create $mergeOut\n";
+	$e=1;
+	&cleanUp;
+    }
+    $mergeOutPure = $mergeOut;
+}
+
+sub mkAsp {
+   
+# Check the sim_z values of the evt2 files against the merged file-
+# this only applies when there is more than one input evt2 file
+# Only need to modify sim_z if the asols are from different ObsIDs
+# but this is hard to check, so to keep on the safe side check if 
+# there is more than one asol file.
+    if ($numAsol > 1) {
+	`dmkeypar $mergeOutPure SIM_Z echo-`;
+	$simRef = `pget dmkeypar value`;
+	print "SIM_Z of event file: $simRef\n";
+	$a = 1;
+
+	foreach $line (@asol) {
+	    `dmkeypar $line SIM_Z echo-`;
+	    $sim = `pget dmkeypar value`;
+	    print "SIM_Z of $line: $sim";
+	    $simDiff = $sim - $simRef;
+	    print "Difference is $simDiff mm: ";
+	    $absDiff = abs($simDiff);
+# Only modify sim_z if the difference is greater than ~ 1/4 pixel
+	    if ($absDiff >= 0.005) {
+		print "SIM_Z differs by more than ~1/4 pixel.\nModifying DZ in $line\n\n";
+                $asolMod = "$outDir/$tmproot\_asol_$a";
+
+# Use dmtcalc to change the dz value
+				
+		`dmtcalc $line $asolMod expression="dz=dz+$simDiff" mode=h`;
+
+# Check to make sure the new asol was created
+		unless (-e ($asolMod)) {
+		    print "Unable to create $asolMod\n";
+		    $e=1;
+		    &cleanUp;
+		}
+		$line = "$asolMod";
+		$a++;
+	    }
+	    else {
+		print "SIM_Z differs by less than ~1/4 pixel.\n\n";
+	    }
+	}
+    }
+    $t = "asphist";
+    `punlearn $t`;
+    @aspHist = ();
+    if (!$hrc) { # Create an aspect histogram, one per CCD, if it's ACIS
+	foreach $line (@ccds) {
+	    # If a merged aspect histogram already exists, use it instead and warn the user.
+	    $mergeAsp = "$outDir/$tmproot\_merged_asp_$line.fits";
+	    push @aspHist, $mergeAsp;
+	    if (-e "$mergeAsp") {
+		print "WARNING: Found aspect histogram $mergeAsp in working directory.\n  Using this one.  If this is not what you want, halt the script NOW.\n"; 
+	    } else {
+		print "Creating aspect histogram for CCD $line...\n";
+		$ccdid = $line;
+		$inAsol = "";
+# Create a comma-separated list of asols to feed into asphist
+		foreach $line (@asol) {
+		    $inAsol = "$inAsol\n!$line";
+		}
+		substr($inAsol, 0, 1) = "";
+                my $asolList = "$outDir/$tmproot\_$ccdid\_asol.lis";
+                unlink $asolList if -e $asolList;
+ 		open (FILE, ">$asolList")
+		  or die "\n# merge_all: ERROR: unable to create temporary file $asolList\n";
+                print FILE ("$inAsol");
+                close (FILE);
+		$mergeAsp = "$outDir/$tmproot\_merged_asp_$line.fits";
+		`pset $t infile="\@$asolList" outfile=$mergeAsp evtfile="$mergeOutPure\[ccd_id=$ccdid\]" mode=$tmode clobber=$clbr`;
+		`$t`;
+                unlink $asolList;
+		unless (-e "$mergeAsp") {
+		    print "Unable to create $mergeAsp\n";
+		    $e=1;
+		    &cleanUp;
+		}
+	    }
+	}
+    }
+    elsif ($hrc) { # Create a single merged aspect histogram if it's HRC
+	# If a merged aspect histogram already exists, use it instead and warn the user.
+ 	$mergeAsp = "$outDir/$tmproot\_merged_asp.fits";
+	if (-e "$mergeAsp") {
+	    print "WARNING: Found aspect histogram $mergeAsp in working directory.\n  Using this one.  If this is not what you want, halt the script NOW.\n"; 
+	} else {
+	    print "Creating aspect histogram...\n";
+	    $inAsol = "";
+# Create a comma-separated list of asols to feed into asphist
+	    foreach $line (@asol) {
+		$inAsol = "$inAsol\n!./$line\[\@$mergeOutPure\]";
+	    }
+	    substr($inAsol, 0, 1) = "";
+            my $asolList = "$outDir/$tmproot\_temporary_asol.lis";
+            unlink $asolList if -e $asolList;
+ 	    open (FILE, ">$asolList") or die "\n# merge_all: ERROR: unable to create temporary file $asolList\n";
+            print FILE ("$inAsol");
+	    $mergeAsp = "$outDir/$tmproot\_merged_asp.fits";
+	    `pset $t infile="\@$asolList" outfile=$mergeAsp evtfile="$mergeOutPure" dtffile="$dtffile" mode=$tmode clobber=$clbr`;
+	    `$t`;
+            unlink $asolList;
+	    unless (-e "$mergeAsp") {
+		print "Unable to create $mergeAsp\n";
+		$e=1;
+		&cleanUp;
+	    }
+	}
+    }
+    print "\n";
+}
+
+sub mkInst {
+    $t = "mkinstmap";
+   `punlearn $t`;
+    @instMaps = ();
+    if (!$hrc) { # For ACIS, create an instrument map, one per CCD
+	foreach $line (@ccds) {
+	    print "Making instrument map for CCD $line...\n";
+	    $imap = "$outDir/$tmproot\_imap_$line.fits";
+	    push @instMaps, $imap;
+	    `pset $t detsubsys=ACIS-$line outfile=$imap obsfile=$mergeOutPure pixelgrid="1:1024:#1024,1:1024:#1024" spectrumfile=$specFile monoenergy=$energy mode=$tmode clobber=$clbr`;
+	    `$t`;
+	    unless (-e "$imap") {
+		print "Unable to create $imap\n";
+		$e=1;
+		&cleanUp;
+	    }
+	}
+    }
+    if ($hrc) { # For HRC-I, create an instrument map 
+	print "Making HRC-I instrument map...\n";
+	$imap = "$outDir/$tmproot\_imap.fits";
+	`pset $t detsubsys=$ccdIds outfile=$imap obsfile=$mergeOutPure pixelgrid="1:16384:#128,1:16384:#128" spectrumfile=$specFile monoenergy=$energy mode=$tmode clobber=$clbr`;
+	`$t`;
+	unless (-e "$imap") {
+	    print "Unable to create $imap\n";
+	    $e=1;
+	    &cleanUp;
+	}
+    }
+print "\n";
+}
+
+sub mkExp {
+    $a = 0;
+    $t = "mkexpmap";
+    `punlearn $t`;
+    if (!$hrc) { # Create an exposure map, one per ACIS CCD
+	@expMaps = ();
+	foreach $line (@ccds) {
+	    print "Making exposure map for CCD $line...\n";
+	    $emap = "$outDir/$tmproot\_emap_$line.fits";
+	    push @expMaps, $emap;
+	    `pset $t instmapfile="$instMaps[$a]" outfile=$emap xygrid=$xygrid asphistfile=$aspHist[$a] normalize=no mode=$tmode clobber=$clbr`;
+	    `$t`;
+	    $a++;
+	}
+    }
+    elsif ($hrc) { # Create an exposure map for HRC-I
+	    print "Making HRC-I exposure map...\n";
+	    $emap = "$outDir/$tmproot\_emap.fits";
+	    push @expMaps, $emap;
+	    `pset $t instmapfile=$imap outfile=$emap xygrid=$xygrid asphistfile=$mergeAsp normalize=no mode=$tmode clobber=$clbr`;
+	    `$t`;
+	}
+print "\n";
+}
+
+sub mergeExp {
+# Merge the exposure maps if more than one CCD was entered
+    if ($numCCD == 1) {
+	`mv $expMaps[0] $expOut`;
+    }
+    else {
+	$inExp = "";
+	print "Merging exposure maps\n";
+	foreach $line (@expMaps) {
+	    $inExp = "$inExp,$line";
+	}
+	substr($inExp, 0, 1) = "";
+	$t = "dmregrid";
+	`punlearn $t`;
+	`pset $t infile=$inExp outfile=$expOut bin="1:$binx:1,1:$biny:1" rotangle=0 npts=1 xoffset=0 yoffset=0 rotxcenter=0 rotycenter=0 mode=$tmode clobber=$clbr`;
+	`$t`;
+	$u = "dmhedit";
+	`punlearn $u`;
+	`$u infile=$expOut filelist=none operation=add key=DETNAM value="$ccdPure"`;
+	unless (-e "$expOut") {
+	    print "Unable to create $expOut\n";
+	    $e=1;
+	    &cleanUp;
+	}
+    }
+print "\n";
+}
+
+sub mkImage {
+# Create an image that matches the binning of the exposure map
+    print "Creating image\n\n";
+    $image = "$outDir/$tmproot\_merged_image.fits";
+    $t = "dmcopy";
+    `punlearn $t`;
+    if (!$hrc) { # for ACIS observations
+	`pset $t infile="$mergeOut\[ccd_id=$ccdIds\]\[bin x=$xmin:$xmax:$binFX,y=$ymin:$ymax:$binFY\]" outfile=$image mode=$tmode clobber=$clbr`;
+    } elsif ($hrc) {
+	`pset $t infile="$mergeOut\[bin x=$xmin:$xmax:$binFX,y=$ymin:$ymax:$binFY\]" outfile=$image mode=$tmode clobber=$clbr`;
+    }
+	`$t`;
+    $u = "dmhedit";
+    `punlearn $u`;
+    `$u infile=$image filelist=none operation=add key=DETNAM value="$ccdPure"`;
+    unless (-e "$image") {
+	print "Unable to create $image\n";
+	$e=1;
+	&cleanUp;
+    }  
+}
+
+sub normImg {
+    print "Normalizing image\n\n";
+    $t = "dmimgcalc";
+    `punlearn $t`;
+    `pset $t infile=$image infile2=$expOut outfile=$normImg operation=div mode=$tmode clobber=$clbr`;
+    `$t`;
+    $u = "dmhedit";
+    `punlearn $u`;
+    `$u infile=$normImg filelist=none operation=add key=DETNAM value="$ccdPure"`;
+    unless (-e "$normImg") {
+	print "Unable to create $normImg\n";
+	$e=1;
+	&cleanUp;
+    } 
+}
+
+# Clean up /tmp space if that's where the intermediate files were written,
+# and exit. 
+
+sub cleanUp {
+   if ($outDir eq "/tmp") {
+	`rm -f /tmp/${tmproot}*.fits`;
+    }
+# Only print this if it's arrived at w/o an error message
+    print "All done!\n" unless ($e == 1);
+    exit(0);
+}
+
+## 'general purpose' routines
+
+# check4CIAO( [$version] )
+#
+# simple safety test:
+#   ensure that ASCDS_INSTALL is defined
+#   AND the directory exists
+#
+# if $version is supplied, ensure that the
+# current version is >= $version
+#
+# also sets up the GLOBAL variable $CIAO
+# which contains $ENV{ASCDS_INSTALL}/bin
+#
+sub check4CIAO (;$) {
+    my $vcheck = shift;
+
+    die "\n# merge_all: ERROR: Unable to find ASCDS_INSTALL environment variable\n       Has CIAO been started?\n"
+	unless exists $ENV{ASCDS_INSTALL};
+    my $ai = $ENV{ASCDS_INSTALL};
+    die "\n# merge_all: ERROR: directory pointed to by \$ASCDS_INSTALL does not exist.\n"
+	unless -d $ai;
+
+    # set up global variable
+    $CIAO = "${ai}/bin";
+
+    # version check - if required
+    return unless defined $vcheck;
+    my $vfile = "${ai}/VERSION";
+    croak "\n# merge_all: ERROR: Unable to find \$ASCDS_INSTALL/VERSION\n"
+	unless -e $vfile;
+    my $version = `cat $vfile`;
+    $version =~ /^CIAO ([\d.]*)/;
+    my $vnum = $1;
+    croak "\n# merge_all: ERROR: Unable to parse version info from \$ASCDS_INSTALL/VERSION.\n"
+	unless defined $vnum;
+
+    # version checks:
+    #   a1.b1.c1  versus a2.b2.c2 [c's optional]
+    #
+    # we assume that the numbers between dots are all single
+    # digits, so we can just remove the "."'s and compare
+    # as a number (taking care to include 0's for missing
+    # values
+    #
+    my @installed = split /\./, $vnum;
+    my @check     = split /\./, $vcheck;
+    # missing values in the version numbers get filled in with '0'
+    #
+    my $clen = $#check;
+    my $ilen = $#installed;
+    my $mlen = $clen > $ilen ? $clen : $ilen;
+    foreach my $i ( $clen .. $mlen ) { push @check, 0; }
+    foreach my $i ( $ilen .. $mlen ) { push @installed, 0; }
+
+    # make into a single number
+    my $check     = join "", @check;
+    my $installed = join "", @installed;
+    croak "\n# merge_all: ERROR: CIAO version is $vnum, must be at least $vcheck for this script.\n"
+	unless $installed >= $check;
+
+} # sub: check4CIAO()
+
+##
+
+##############################################################################
+##############################################################################
+
+# parameter handling
+# - essentially just wrappers around the shell commands
+#
+# punlearn( $command )
+# pset( $command, $parname, $value )
+# $filename = paccess( $command )
+# $value = pget( $command, $parname )
+# $value = pquery( $command, $parname )
+#
+
+sub punlearn ($)   { `punlearn $_[0]`; }
+sub pset     ($$$) { `pset $_[0] $_[1]=$_[2]`; }
+sub paccess  ($)   { my $s=`paccess $_[0]`; chomp $s; return $s; }
+sub pget     ($$)  { my $s=`pget $_[0] $_[1]`; chomp $s; return $s; }
+sub pquery   ($$)  { my $s=`pquery $_[0] $_[1] @ARGV`; chomp $s; return $s;} 
+# sub pquery   ($$)  { my $s=`pquery $_[0] $_[1]`; chomp $s; return $s; }
+
+##############################################################################
+##############################################################################
+

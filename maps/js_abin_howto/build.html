@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<title>Adbin build instructions</title>
+</head>
+
+<body text="#000066" bgcolor="#FFFFFF" link="#006600"
+vlink="#CC0000" alink="#FF0000">
+<h1>Adbin build instructions</h1>
+
+<p>
+Ideally I should use a tool such as GNU automake to create the make
+files for the program, but as the code is only for compilation with
+GNU gcc, I use a simple makefile. The code is intended for use on Unix
+systems. People with other operating systems are on their own!
+</p>
+
+<p>
+I've made binaries of the latest distribution. If you would prefer to
+not build your own copy, download them from <a
+href="download/binaries/">here</a>.
+</p>
+
+<ol>
+<li>Download the Adbin tar.gz distribution</li>
+<li>Extract the distribution. With GNU tar the command line is:
+<pre>
+# tar xzf AdaptiveBin-x.x.tar.gz
+</pre>
+With other tars you may need something similar to the command line:
+<pre>
+# gunzip AdaptiveBin-x.x.tar.gz | tar xf -
+</pre>
+</li>
+<li>Change to the distribution directory, i.e.
+<pre>
+# cd AdaptiveBin-x.x
+</pre>
+</li>
+<li>If necessary, add the CFITSIO include and library directories to
+the gcc search paths. See <a href="generalnotes.html">general
+notes</a> for help on how to do this.
+</li>
+<li>
+Use GNU make to build the executables. If GNU make is the standard
+make on your system, then type:
+<pre>
+# make all
+</pre>
+Other systems may use <code>gnu-make</code> or <code>gmake</code> as
+their GNU make.
+</li>
+<li>
+If there are no errors, then you can copy the executables somewhere
+handy. For example:
+<pre>
+# mkdir ~/adbin
+# cp AdaptiveBin ABPixelCopy FITSMaths ~/adbin
+</pre>
+</li>
+</ol>
+
+<h2>Notes</h2>
+<ol>
+<li>I've found one problem linking the executables on some solaris
+machines. I've manually had to add <code>-lnsl -lsocket</code> to the
+linking command, as they are not linked by default.</li>
+</ol>
+
+<hr />
+<p>
+<a href="./">Back to the adaptive-binning page</a>
+</p>
+<hr />
+<address>
+This page is maintained by <a href="mailto:jss@ast.cam.ac.uk">Jeremy
+Sanders</a>. It was last modified on 2001/2/12. This page is not an
+official page of the <a href="http://www.ast.cam.ac.uk/IoA/">Institute
+of Astronomy</a>.
+</address>
+</body>
+</html>

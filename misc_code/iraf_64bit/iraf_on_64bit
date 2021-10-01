@@ -1,0 +1,142 @@
+= IRAF Setup on Ubuntu/Debian =
+
+This page describes how to setup IRAF on a 64-bit Ubuntu/Debian machine.
+Installation of X11IRAF, DS9, Tables, and STSDAS are also included. 
+
+It will be easiest if you just copy-paste the instructions one by one.
+Please be sure to read and implement the instructions in [[brackets]] as well.
+
+(For 32-bit installation, use
+ http://geco.phys.columbia.edu/~rubab/iraf/iraf_step_by_step_installation )
+
+Please send questions or comments to:
+rubab@astro.columbia.edu
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+sudo apt-get install tcsh
+sudo apt-get install ia32-libs ia32-libs-gtk linux32
+sudo wget http://geco.phys.columbia.edu/~rubab/iraf/ldso_1.9.11-15_i386.deb
+sudo dpkg --force-architecture -i ldso_1.9.11-15_i386.deb
+sudo wget http://geco.phys.columbia.edu/~rubab/iraf/libc5_5.4.46-15_i386.deb
+sudo dpkg --force-architecture -i libc5_5.4.46-15_i386.deb
+sudo wget http://geco.phys.columbia.edu/~rubab/iraf/termcap-compat_1.2.3_i386.deb
+sudo dpkg --force-architecture -i termcap-compat_1.2.3_i386.deb
+sudo adduser --home /iraf/iraf/local --shell /bin/tcsh --disabled-password --quiet --gecos "Iraf Administrator" --no-create-home iraf
+sudo chown -R iraf:iraf /iraf
+sudo su iraf
+sudo mkdir /iraf/irafbin
+sudo mkdir /iraf/irafbin/bin.linux
+sudo mkdir /iraf/irafbin/noao.bin.linux
+sudo mkdir /iraf/x11iraf
+sudo mkdir /iraf/extern
+sudo cd /iraf/iraf
+sudo wget http://iraf.noao.edu/iraf/ftp/iraf/v214/PCIX/as.pcix.gen.gz
+sudo tar -zxvf as.pcix.gen.gz
+sudo rm as.pcix.gen.gz
+sudo cd /iraf/iraf/unix/bin.redhat/
+sudo mv * ../bin.linux/
+sudo cd /iraf/irafbin/bin.linux
+sudo wget http://iraf.noao.edu/iraf/ftp/iraf/v214/PCIX/ib.rhux.x86.gz
+sudo tar -zxpf ib.rhux.x86.gz
+sudo rm ib.rhux.x86.gz
+sudo cd /iraf/irafbin/noao.bin.linux
+sudo wget http://iraf.noao.edu/iraf/ftp/iraf/v214/PCIX/nb.rhux.x86.gz
+sudo tar -zxpf nb.rhux.x86.gz
+sudo rm nb.rhux.x86.gz
+sudo setenv iraf /iraf/iraf/
+sudo cd $iraf/unix/hlib
+sudo source irafuser.csh
+
+*******************
+*******************
+
+[[Choose default paths as will be shown in on-screen prompt parentheses.
+Type "y" only where "yes" returns "huh?".]]
+
+*******************
+*******************
+
+sudo ./install
+sudo apt-get install libncurses4
+sudo cd /iraf/x11iraf/
+sudo wget http://iraf.noao.edu/iraf/ftp/iraf/x11iraf/x11iraf-v1.3.1-bin.redhat.tar.gz
+sudo tar -zxvf x11iraf-v1.3.1-bin.redhat.tar.gz
+sudo mv lib.redhat lib.linux
+sudo mv bin.redhat bin.linux
+sudo ./install
+sudo rm x11iraf-v1.3.1-bin.redhat.tar.gz
+sudo cd /iraf/extern/
+sudo mkdir tables stsdas
+sudo cd /iraf/extern/tables/
+sudo wget ftp://ftp.stsci.edu/pub/software/stsdas/tables_v3.8/tables38.tar.gz
+sudo tar -zxvf tables38.tar.gz
+sudo rm tables38.tar.gz
+sudo cd bin.linux/
+sudo wget ftp://ftp.stsci.edu/pub/software/stsdas/tables_v3.8/tables38.bin.redhat.tar.gz
+sudo tar -zxvf tables38.bin.redhat.tar.gz
+sudo rm tables38.bin.redhat.tar.gz
+sudo cd /iraf/extern/stsdas
+sudo wget ftp://ftp.stsci.edu/pub/software/stsdas/stsdas_v3.8/stsdas38.tar.gz
+sudo tar -zxvf stsdas38.tar.gz
+sudo rm stsdas38.tar.gz
+sudo cd bin.linux
+sudo wget ftp://ftp.stsci.edu/pub/software/stsdas/stsdas_v3.8/stsdas38.bin.redhat.tar.gz
+sudo tar -zxvf stsdas38.bin.redhat.tar.gz
+sudo rm stsdas38.bin.redhat.tar.gz
+sudo cd /iraf/extern/stsdas
+sudo python python/compileall.py ./python
+sudo python python/compileall.py ./python/*
+sudo exit
+sudo cd
+sudo wget http://geco.phys.columbia.edu/~rubab/iraf/iraf
+sudo chmod u=rwx iraf
+sudo mkdir ~/IRAF
+sudo cd ~/IRAF
+sudo mkiraf
+
+[[Select "xgterm" as your IRAF shell when prompted.]]
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+The command ./iraf will now launch a complete IRAF session containing DS9,
+xgterm and ecl, based in ~/IRAF. Alternately, type "ecl" for enhanced IRAF, "cl"
+for regular IRAF, and "ds9" for standalone DS9 launch. Please note that "tables"
+and "stsdas" can only be used within IRAF.
+
+Repeat the last 5 steps for each user as needed.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+The installation freaks, so fix the file
+/iraf/iraf/unix/hlib/extern.pkg to look like the following:
+
+*****************
+*****************
+
+# External (non core-system) packages.  To install a new package, add the
+# two statements to define the package root directory and package task,
+# then add the package helpdb to the `helpdb' list.
+
+reset	noao		= iraf$noao/
+task	noao.pkg	= noao$noao.cl
+
+reset	tables		= /iraf/extern/tables/
+task	tables.pkg	= tables$tables.cl
+
+reset	stsdas		= /iraf/extern/stsdas/
+task	stsdas.pkg	= stsdas$stsdas.cl
+
+reset	helpdb		= "lib$helpdb.mip\
+			  ,noao$lib/helpdb.mip\
+			  ,tables$lib/helpdb.mip\
+			  ,stsdas$lib/helpdb.mip\
+			  "
+
+keep
+
+*****************
+*****************
+
+= END =
+

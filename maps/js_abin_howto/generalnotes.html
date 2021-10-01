@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<title>General notes about Adbin</title>
+</head>
+
+<body text="#000066" bgcolor="#FFFFFF" link="#006600"
+vlink="#CC0000" alink="#FF0000">
+<h1>General notes</h1>
+<h2>Implementation</h2>
+<p>
+The code is implemented using C++. It compiles using recent egcs and
+gcc compilers (tested using egcs-2.91.66, gcc-2.95, and RedHat
+gcc-2.96 snapshot). Other C++ compilers probably won't work
+(unfortunately the C++ standard isn't implemented by most compilers,
+even gcc), but patches to make the code compatible are welcome.
+</p>
+<p>
+The code has been found to compile on RedHat Linux 6.1 and 7, Compaq
+Tru64 (V4.0F) and Solaris. I don't have access to any other platforms.
+</p>
+
+<h2>Requirements</h2>
+<p>
+The code requires the <a
+href="http://asca.gsfc.nasa.gov/docs/software/fitsio/">CFITSIO</a>
+library to read and write FITS format files. If the library is not in
+your standard include and library paths, then you'll need to add it by
+hand before compiling the programs. If you've got <a
+href="http://asca.gsfc.nasa.gov/docs/software/ftools/ftools_menu.html">FTOOLS</a>
+installed and set-up, then the following commands should work (in
+tcsh):
+</p>
+<pre>
+setenv CPLUS_INCLUDE_PATH ${FTOOLS}/include
+setenv LIBRARY_PATH ${FTOOLS}/lib
+</pre>
+<p>
+In general, you will need add the CFITSIO include and library paths to
+these two environment variables.
+</p>
+
+<p>
+A copy of GNU make is also required.
+</p>
+
+<hr />
+<p>
+<a href="./">Back to the adaptive-binning page</a>
+</p>
+<hr />
+<address>
+This page is maintained by <a href="mailto:jss@ast.cam.ac.uk">Jeremy
+Sanders</a>. It was last modified on 2000/11/23. This page is not an
+official page of the <a href="http://www.ast.cam.ac.uk/IoA/">Institute
+of Astronomy</a>.
+</address>
+</body>
+</html>

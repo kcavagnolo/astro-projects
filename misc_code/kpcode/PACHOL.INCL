@@ -1,0 +1,33 @@
+C  INCLUDE file PACHOL.INCL
+C  This INCLUDE file contains the essential common blocks for
+C  computing aged spectra.
+ 
+C  Used by all routines:
+        DOUBLE PRECISION XT, RTX, RTINF
+        REAL GAMMI1, GAMMI2, B1K0, B1K1, B1K2, B1K3, B1K4,
+     *       B2K0, B2K1, B2K2
+        INTEGER MODE, IOPT
+        LOGICAL LOW
+        COMMON /PACHOL/ XT, RTX, RTINF, GAMMI1, GAMMI2,
+     *                  B1K0, B1K1, B1K2, B1K3, B1K4,
+     *                  B2K0, B2K1, B2K2, LOW, MODE, IOPT
+ 
+C  Used for KP calculations:
+        REAL BT1K0, BT1K1, BT1K2, BT2K0, BT2K1, BT2K2, BT2K3, BT2K4,
+     *       GKP
+        COMMON /KARPAC/ BT1K0, BT1K1, BT1K2, BT2K0, BT2K1, BT2K2,
+     *                  BT2K3, BT2K4, GKP
+ 
+C  Used for CI calculations:
+        REAL CBMIN
+        COMMON /CIDAT/  CBMIN
+
+
+
+
+
+
+
+
+
+

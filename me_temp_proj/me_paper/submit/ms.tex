@@ -1,0 +1,1405 @@
+\documentclass[12pt,preprint]{aastex}
+
+\begin{document}
+\title{Bandpass Dependence of X-ray Temperatures in Galaxy Clusters}
+\author{Kenneth W. Cavagnolo\altaffilmark{1,2}, Megan
+Donahue\altaffilmark{1}, G. Mark Voit\altaffilmark{1}, and Ming Sun\altaffilmark{1}}
+\altaffiltext{1}{Michigan State University, Department of Physics and Astronomy, BPS Building, East Lansing, MI 48824}
+\altaffiltext{2}{cavagnolo@pa.msu.edu}
+\shorttitle{X-ray Band Dependent Temperature}
+\shortauthors{K. W. Cavagnolo et al.}
+
+\received{now}
+\begin{abstract}
+
+We explore the band dependence of the inferred X-ray temperature of
+the intracluster medium (ICM) for 193 well-observed galaxy clusters
+selected from the {\it Chandra} Data Archive. If
+the hot ICM is nearly isothermal in the projected region
+of interest, the X-ray temperature inferred from a broad-band
+(0.7-7.0 keV) spectrum should be identical to the X-ray temperature
+inferred from a hard-band (2.0-7.0 keV) spectrum. However, if 
+unresolved cool lumps of gas are contributing soft X-ray emission, the
+temperature of a best-fit single-component thermal model will be
+cooler for the broad-band spectrum than for the hard-band spectrum. Using
+this difference as a diagnostic, the ratio of best-fitting hard-band
+and broad-band temperatures may indicate the presence of cooler gas even
+when the X-ray spectrum itself may not have sufficient signal-to-noise
+to resolve multiple temperature components. To test this possible
+diagnostic, we extract X-ray spectra from core-excised annular regions
+for each cluster in our archival sample. We compare the X-ray
+temperatures inferred from single-temperature fits when the energy
+range of the fit is 0.7-7.0 keV (broad) and when the energy range is
+2.0/(1+$z$)-7.0 keV (hard). We find that the hard-band temperature is
+significantly higher, on average, than the broad-band
+temperature. Upon further exploration, we find this temperature ratio
+is enhanced preferentially for clusters which are known merging
+systems. Cool-core clusters tend to have best-fit hard-band
+temperatures that are in closer agreement with their best-fit broad-band
+temperatures. We show, using simulated spectra, that this diagnostic is
+sensitive to cool components with emission measures $> 10\%$ of the
+hot component.
+\end{abstract}
+
+\keywords{catalogs -- galaxies: clusters: general -- X-rays: galaxies:
+clusters -- cosmology: observations -- methods: data analysis}
+
+\section{Introduction}\label{sec:intro}
+
+The normalization, shape, and evolution of the cluster mass function
+are useful for measuring cosmological parameters
+(e.g. \citealt{1989ApJ...341L..71E, 1998ApJ...508..483W,
+2001ApJ...553..545H,  2004PhRvD..70l3008W}). The evolution of large
+scale structure formation is a test of how dark matter and dark energy
+effect the cluster-scale evolution of dark matter halos, and therefore
+provides a complementary and distinct constraint on cosmological
+parameters to those tests which constrain them geometrically,
+such as supernovae \citep{1998AJ....116.1009R, 2007ApJ...659...98R}
+and baryon acoustic oscillations \citep{2005ApJ...633..560E}.
+
+However, clusters are a useful cosmological tool only if we can infer
+cluster masses from observable properties such as X-ray luminosity,
+X-ray temperature, lensing shear, optical luminosity, or galaxy
+velocity dispersion. Empirically, the correlation of mass to these
+observable properties is well-established
+\citep{2005RvMP...77..207V}. However, if we could identify a ``2nd
+parameter" -- possibly reflecting the degree of relaxation in the
+cluster -- we could improve the utility of clusters as cosmological
+probes by parameterizing and reducing the scatter in mass-observable
+scaling relations.
+
+Toward this end, we desire to quantify the dynamical state of a
+cluster beyond simply identifying which clusters appear relaxed and
+those which do not. Most clusters are likely to have a dynamical state
+which is somewhere in between \citep{2006ApJ...639...64O,
+2006ApJ...650..128K}. The degree to which a cluster is virialized must
+be quantified within simulations that correctly predict the observable
+properties of the cluster. Predictions for quantifying cluster
+virialization may then be tested, and possibly calibrated, with
+observations of an unbiased sample of clusters.
+
+One study that examined how relaxation might affect the observable
+properties of clusters was conducted by \citealt{2001ApJ...546..100M}
+(hereafter ME01) using the ensemble of simulations by
+\citealt{1997ApJ...491...38M}. ME01 found that most clusters which had
+experienced a recent merger were cooler than the cluster
+mass-observable scaling relations predicted. They attributed this to the
+presence of cool, spectroscopically unresolved accreting subclusters
+which introduced energy into the ICM and which have a long timescale for
+dissipation. The consequence was an under-prediction of cluster
+binding masses of $15-30\%$ \citep{2001ApJ...546..100M}.
+
+One empirical method of quantifying the degree of relaxation involves
+using ICM substructure and employs the power in ratios of X-ray surface
+brightness moments \citep{1995ApJ...452..522B, 1996ApJ...458...27B,
+2005ApJ...624..606J}. Although an excellent tool, power ratios suffer
+from being aspect-dependent \citep{2007arXiv0708.1518J, VV08}. The
+work of ME01 suggested a complementary measure of substructure which
+does not depend on projected perspective. They found hard-band
+(2.0-9.0 keV) temperatures were $\sim 20\%$ hotter than broad-band
+(0.5-9.0 keV) temperatures. This result can be interpreted in several
+ways. ME01's interpretation is that the cooler broad-band temperature is
+the result of unresolved accreting cool subclusters which are contributing
+significant amounts of line emission to the soft-band ($E < 2$
+keV). This effect has been studied and confirmed by
+\cite{2004MNRAS.354...10M} and \cite{2006ApJ...640..710V} using
+simulated {\it Chandra} and {\it{XMM-Newton}} spectra. An alternative
+view is that shock heating from accretion, a process which has a long
+timescale for thermalization of energy, results in a hotter
+hard-band temperature and thus a temperature ratio skewing.
+
+ME01 suggested that this temperature skewing, and consequently the
+fingerprint of merging, could be detected utilizing the energy
+resolution and soft-band sensitivity of {\it Chandra}. They proposed
+selecting a sufficiently large sample of clusters covering a broad
+dynamical range, fitting a single-component temperature to the
+hard-band and broad-band, and then checking for a net skew above unity
+in the hard-band to broad-band temperature ratio.
+
+In this paper we present the findings of just such a temperature-ratio
+test using {\it Chandra} archival data. We find the hard-band
+temperature exceeds the broad-band temperature, on average, by
+$\sim16\%$ in multiple flux-limited samples of X-ray clusters from the
+{\it Chandra} archive. This mean excess is somewhat weaker than the
+$20\%$ predicted by ME01, but is significant at the $12\sigma$ level
+nonetheless. Hereafter, we refer to the hard-band to broad-band
+temperature ratio as $T_{HBR}$. We also find that non-cool core
+systems and mergers tend to have higher values of $T_{HBR}$. This
+study suggests that $T_{HBR}$ is an indicator of a cluster's temporal
+proximity to the most recent merger event.
+
+This paper proceeds in the following manner:
+In \S\ref{sec:selection} we outline sample-selection criteria and {\it
+Chandra} observations selected under these criteria. Data reduction
+and handling of the X-ray background is discussed in
+\S\ref{sec:data}. Spectral extraction is discussed in
+\S\ref{sec:extraction}, while fitting and simulated spectra are
+discussed in \S\ref{sec:specan}. Results and discussion of our
+analysis are presented in \S\ref{sec:r&d}. A summary of our work is
+presented in \S\ref{sec:summary}. For this work we have assumed a flat
+$\Lambda$CDM Universe with cosmology $\Omega_{M} = 0.3$,
+$\Omega_{\Lambda} = 0.7$, and $H_{0} = 70$ km s$^{-1}$ Mpc$^{-1}$. All
+quoted uncertainties are at the 1.6$\sigma$ level (90\% confidence).
+
+\section{Sample Selection} \label{sec:selection}
+
+Our sample was selected from observations publicly available in the
+{\it Chandra} X-ray Telescope's Data Archive (CDA). Our initial
+selection pass came from the {\it{ROSAT}} Brightest Cluster Sample
+\citep{1998MNRAS.301..881E}, RBC Extended Sample
+\citep{2000MNRAS.318..333E}, and {\it{ROSAT}} Brightest 55 Sample
+\citep{1990MNRAS.245..559E, 1998MNRAS.298..416P}. The portion of our
+sample at $z \gtrsim 0.4$ can also be found in a combination of the
+{\it{Einstein}} Extended Medium Sensitivity Survey
+\citep{1990ApJS...72..567G}, North Ecliptic Pole Survey
+\citep{2006ApJS..162..304H}, {\it{ROSAT}} Deep Cluster Survey
+\citep{1995ApJ...445L..11R}, {\it{ROSAT}} Serendipitous Survey
+\citep{1998ApJ...502..558V}, and Massive Cluster Survey
+\citep{2001ApJ...553..668E}. We later extended our sample to include
+clusters found in the REFLEX Survey \citep{2004A&A...425..367B}. Once
+we had a master list of possible targets, we cross-referenced this
+list with the CDA and gathered observations where a minimum of
+$R_{5000}$ (defined below) is fully within the CCD field of
+view.
+
+$R_{\Delta_c}$ is defined as the radius at which the average cluster
+density is $\Delta_c$ times the critical density of the Universe,
+$\rho_c=3H(z)^2/8\pi G$. For our calculations of $R_{\Delta_c}$ we
+adopt the relation from \cite{2002A&A...389....1A}:
+\begin{eqnarray}
+R_{\Delta_c} &=& 2.71 \mathrm{~Mpc~}
+\beta_T^{1/2}
+\Delta_{\mathrm{z}}^{-1/2}
+(1+z)^{-3/2}
+\left(\frac{kT_X}{10 \mathrm{~keV}}\right)^{1/2}\\
+\Delta_z &=& \frac{\Delta_c \Omega_M}{18\pi^2\Omega_z} \nonumber \\
+\Omega_z &=& \frac{\Omega_M (1+z)^3}{[\Omega_M
+(1+z)^3]+[(1-\Omega_M-\Omega_{\Lambda})(1+z)^2]+\Omega_{\Lambda}} \nonumber
+\end{eqnarray}
+where $R_{\Delta_c}$ is in units of $h_{70}^{-1}$, $\Delta_c$ is
+the assumed density contrast of the cluster at $R_{\Delta_c}$, and
+$\beta_T$ is a numerically determined, cosmology-independent
+($\lesssim \pm 20\%$) normalization for the virial relation $GM/2R =
+\beta_TkT_{vir}$. We use $\beta_T = 1.05$ taken from
+\cite{1996ApJ...469..494E}.
+
+The result of our CDA search was a total of 374 observations of which
+we used 244 for 193 clusters. The bolometric ($E = 0.1-100$ keV)
+luminosities, $L_{bol}$, for our sample clusters plotted as a function of
+redshift are shown in Figure \ref{fig:lx_z}. These $L_{bol}$ values
+are calculated from our best-fit spectral models and are limited to
+the region of the spectral extraction (from $R=70$ kpc to
+$R=R_{2500}$, or $R_{5000}$ in the cases where no $R_{2500}$ fit was
+performed). Basic properties of our sample are listed in Table
+\ref{tab:sample}.
+
+\begin{figure}
+\begin{center}
+\includegraphics*[width=\textwidth, trim=0mm 0mm 0mm 0mm, clip]{f1.eps}
+\caption{
+Bolometric luminosity ($E = 0.1-100$ keV) plotted as a function of
+redshift for the full sample. $L_{bol}$ values are limited to the
+region of spectral extraction $R=R_{2500-\mathrm{CORE}}$ (or
+$R=R_{5000-\mathrm{CORE}}$ for clusters without $R_{2500-\mathrm{CORE}}$
+fits). Dotted lines represent constant fluxes of $3.0\times10^{-15}$,
+$10^{-14}$, $10^{-13}$, and $10^{-12}$ ergs sec$^{-1}$ cm$^{-2}$.
+}
+\label{fig:lx_z}
+\end{center}
+\end{figure}
+
+For the sole purpose of defining extraction regions based on fixed
+overdensities as discussed in \S\ref{sec:extraction}, fiducial
+temperatures (measured with {\it ASCA}) and redshifts were taken from
+the Ph.D. thesis of Don
+Horner\footnote{http://asd.gsfc.nasa.gov/Donald.Horner/thesis.html}
+(all redshifts confirmed with
+NED\footnote{http://nedwww.ipac.caltech.edu/}). We will show later
+that the {\it ASCA} temperatures are sufficiently close to the {\it
+Chandra} temperatures such that $R_{\Delta_c}$ is reliably estimated
+to within 20\%. Note that $R_{\Delta_c}$ is proportional to $T^{1/2}$,
+so that a 20\% error in the temperature leads to only a 10\% error in
+$R_{\Delta_c}$, which in turn affects our final results
+imperceptibly. For clusters not listed in Horner's thesis, we used a
+literature search to find previously measured temperatures. If no
+published value could be located, we measured the global temperature
+by recursively extracting a spectrum in the region 0.1 $< r <$ 0.2
+$R_{500}$ fitting a temperature and recalculating $R_{500}$. This
+process was repeated until three consecutive iterations produced
+$R_{500}$ values which differed by $\leq 1\sigma$. This method of
+temperature determination has been employed in other studies, see
+\cite{2006MNRAS.tmp.1068S} and \cite{2006ApJS..162..304H} as
+examples.
+
+\section{{\it Chandra} Data}\label{sec:data}
+
+\subsection{Reprocessing and Reduction}\label{sec:reprocessing}
+
+All datasets were reduced utilizing the {\it Chandra} Interactive Analysis of
+Observations package ({\textsc{CIAO}}) and accompanying Calibration
+Database ({\textsc{CALDB}}). Using {\textsc{CIAO v3.3.0.1}} and
+{\textsc{CALDB v3.2.2}}, standard data analysis was followed for each
+observation to apply the most up-to-date time-dependent gain
+correction and charge transfer inefficiency (CTI) correction, when
+appropriate \citep{2000ApJ...534L.139T}.
+
+Point sources were identified in an exposure-corrected events file
+using the adaptive wavelet tool {\textsc{wavdetect}}
+\citep{2002ApJS..138..185F}. All point sources were then visually
+confirmed. A $2\sigma$ region surrounding each point source was
+automatically output by {\textsc{wavdetect}} to define an exclusion
+mask. We then added regions for point sources which were missed by
+{\textsc{wavdetect}} and deleted regions for spuriously detected
+``sources''. Spurious sources are typically faint CCD features (chip
+gaps and chip edges) not fully removed after dividing by the exposure
+map. This process resulted in an events file (at "level 2") that has
+been cleaned of point sources.
+
+To check for contamination from background flares or periods of
+excessively high background, light curve analyses were performed using
+Maxim Markevitch's contributed {\textsc{CIAO}} script
+{\textsc{lc\_clean.sl}}\footnote{http://cxc.harvard.edu/contrib/maxim/acisbg/}.
+Periods with count rates $\geq 3\sigma$ and/or a factor $\geq 1.2$ of
+the mean background level of the observation were removed from the
+good time interval file. As prescribed by Markevitch's
+cookbook\footnote{http://cxc.harvard.edu/contrib/maxim/acisbg/COOKBOOK},
+ACIS front-illuminated (FI) chips were analyzed in the $0.3-12.0$ keV
+range, and for the ACIS back-illuminated (BI) chips, $2.5-7.0$ keV
+energy range.
+
+When a FI and BI chip were both active during an observation, we
+compared light curves from both chips to detect long duration,
+soft-flares which can go undetected on the FI chips but show up on the
+BI chips. While rare, this class of flare must be filtered out of the
+data, as it introduces a spectral component which artificially
+increases the best-fit temperature via a high energy tail. We find
+evidence for a long duration soft flare in the observations of Abell
+1758 \citep{2004ApJ...613..831D}, CL J2302.8+0844, and IRAS
+09104+4109. These flares were handled by removing the time period of
+the flare from the GTI file.
+
+Defining the cluster ``center'' is essential for the later purpose of
+excluding cool cores from our spectral analysis (see
+\S\ref{sec:extraction}). To determine the cluster center, we
+calculated the centroid of the flare cleaned, point-source
+free level-2 events file filtered to include only photons in the
+$0.7-7.0$ keV range. Before centroiding, the events file was
+exposure-corrected and ``holes'' created by excluding point sources
+were filled using interpolated values taken from a narrow annular region just
+outside the hole (``holes'' are not filled during spectral extraction
+discussed in \S\ref{sec:extraction}). Prior to centroiding, we defined
+the emission peak by heavily binning the image, finding the peak value
+within a circular region extending from the peak to the chip edge
+(defined by the radius $R_{max}$), reducing $R_{max}$ by 5\%,
+reducing the binning by a factor of two, and finding the peak
+again. This process was repeated until the image was unbinned (binning
+factor of one). We then returned to an unbinned image with an aperture
+centered on the emission peak with a radius $R_{max}$ and found the
+centroid using {\textsc{CIAO}}'s {\textsc{dmstat}}. The centroid, ($x_c$,$y_c$),
+for a distribution of $N$ good pixels with coordinates ($x_i$,$y_j$)
+and values f($x_i$,$y_j$) is defined as:
+\begin{eqnarray}
+Q &=& \sum_{i,j=1}^N f(x_i,y_i) \\
+x_c &=& \frac{\sum_{i,j=1}^N x_i \cdot f(x_i,y_i)}{Q} \nonumber \\
+y_c &=& \frac{\sum_{i,j=1}^N y_i \cdot f(x_i,y_i)}{Q}. \nonumber
+\end{eqnarray}
+
+If the centroid was within 70 kpc of the emission peak the emission
+peak was selected as the center, otherwise the centroid was used
+as the center. This selection was made to ensure all ``peaky'' cool
+cores coincided with the cluster center, thus maximizing their
+exclusion later in our analysis. All cluster centers were additionally
+verified by eye.
+
+\subsection{X-ray Background} \label{sec:background}
+
+Because we measured a global cluster temperature, specifically looking
+for a temperature ratio shift in energy bands which can be
+contaminated by the high-energy particle background or the soft local
+background, it was important to carefully analyze the background and
+subtract it from our resulting spectra. Below we outline three steps
+taken in handling the background: customization of blank-sky backgrounds,
+re-normalization of these backgrounds for variation of hard-particle
+count rates, and fitting of soft background residuals.
+
+We used the blank-sky observations of the X-ray background from
+\cite{2001ApJ...562L.153M} and supplied within the CXC
+{\textsc{CALDB}}. First, we compared the flux from the diffuse soft
+X-ray background of the {\it{ROSAT}} All-Sky Survey ({\it RASS})
+combined bands $R12$, $R45$, and $R67$ to the 0.7-2.0 keV flux in each
+extraction aperture for each observation. {\it RASS} combined bands
+give fluxes for energy ranges of 0.12-0.28 keV, 0.47-1.21 keV, and
+0.76-2.04 keV respectively corresponding to $R12$, $R45$, and $R67$. For
+the purpose of simplifying subsequent analysis, we discarded
+observations with an $R45$ flux $\geq 10\%$ of the total cluster X-ray
+flux.
+
+The appropriate blank-sky dataset for each observation was
+selected from the {\textsc{CALDB}}, reprocessed exactly as the
+observation was, and then reprojected using the aspect solutions provided
+with each observation. For observations on the ACIS-I array, we
+reprojected blank-sky backgrounds for chips I0-I3 plus chips S2 and/or
+S3. For ACIS-S observations, we created blank-sky backgrounds for
+the target chip, plus chips I2 and/or I3. The additional off-aimpoint
+chips were included only if they were active during the observation
+and had available blank-sky data sets for the observation time
+period. Off-aimpoint chips were cleaned for point sources and diffuse
+sources using the method outlined in \S\ref{sec:reprocessing}.
+
+The additional off-aimpoint chips were included in data reduction
+since they contain data which is farther from the cluster center, and
+are therefore more useful in analyzing the observation background. For
+observations which did not have a matching off-aimpoint blank-sky
+background, a source-free region of the active chips is
+located and used for background normalization. To normalize the hard
+particle component we measured fluxes for identical regions in the
+blank-sky field and target field in the 9.5-12.0 keV range. The
+effective area of the ACIS arrays above 9.5 keV is zero, and thus the
+collected photons there are exclusively from the particle background.
+
+A histogram of the ratios of the 9.5-12.0 keV count rate from an
+observation's off-aimpoint chip to that of the observation specific
+blank-sky background are presented in Figure \ref{fig:bgd}. The
+majority of the observations are in agreement to $\lesssim 20\%$ of
+the blank-sky background rate, which is small enough to not affect our
+analysis. Even so, we re-normalized all blank-sky backgrounds to match
+the observed background.
+
+\begin{figure}
+\begin{center}
+\includegraphics*[width=\textwidth, trim=5mm 0mm 0mm 0mm, clip]{f2.eps}
+\caption{
+Ratio of target field and blank-sky field count rates in the 9.5-12.0
+keV band for each observation. Vertical dashed lines represent $\pm
+20\%$ of unity.
+}
+\label{fig:bgd}
+\end{center}
+\end{figure}
+
+Normalization brings the observation background and blank-sky
+background into agreement for $E > 2$ keV, but even after
+normalization, typically, there may exist a soft excess/deficit
+associated with the spatially varying soft Galactic
+background. Following the technique detailed in
+\cite{2005ApJ...628..655V} we constructed and fit soft residuals for
+this component. For each observation we subtracted a spectrum of the
+blank-sky field from a spectrum of the off-aimpoint field to create a
+soft residual. The residual was fit with a solar abundance, zero
+redshift {\textsc{MeKaL}} model \citep{1985A&AS...62..197M,
+1986A&AS...65..511M, 1992SRON, 1995ApJ...438L.115L} where the
+normalization was allowed to be negative. The resulting best-fit
+temperatures for all of the soft residuals identified here were
+between 0.2-1.0 keV, which is in agreement with results of
+\cite{2005ApJ...628..655V}. The model normalization of this background
+component was then scaled to the cluster sky area. The re-scaled
+component was included as a fixed background component during fitting
+of a cluster's spectra.
+
+\section{Spectral Extraction} \label{sec:extraction}
+
+The simulated spectra calculated by ME01 were analyzed in the energy
+ranges $0.5-9.0$ keV and $2.0_{rest}-9.0$ keV, but to make a reliable
+comparison with {\it Chandra} data we restricted our focus to a
+broad energy band (0.7-7.0 keV) and a hard energy band
+($2.0_{rest}-7.0$ keV). We excluded data below $0.7$ keV to avoid the
+effective area and quantum efficiency variations of the ACIS
+detectors, and excluded energies above $7.0$ keV in which diffuse source
+emission is dominated by the background and {\it Chandra}'s
+effective area is small. We also accounted for cosmic redshift by
+shifting the lower energy boundary of the hard-band from 2.0 keV to
+$2.0/(1+z)$ keV (henceforth, assume the 2.0 keV cut is in the rest
+frame).
+
+ME01 calculated the relation between $T_{0.5-9.0}$ and $T_{2.0-9.0}$
+using apertures of $R_{200}$ and $R_{500}$ in size. While it is
+trivial to calculate a temperature out to $R_{200}$ or $R_{500}$ for
+a simulation, such a measurement at these scales is extremely
+difficult with {\it Chandra} observations (see \cite{2005ApJ...628..655V} for
+a detailed example). Thus, we chose to extract spectra from regions
+with radius $R_{5000}$ and $R_{2500}$ when possible. Clusters analyzed
+only within $R_{5000}$ are denoted in Table \ref{tab:sample} by a
+dagger.
+
+The cores of some clusters are dominated by gas at $< T_{vir}/2$ which
+can greatly affect the global temperature: therefore, we excised the
+central 70 kpc of each aperture. These excised apertures are denoted
+by ``-CORE'' in the text. Recent work by \citealt{2007astro.ph..3504M}
+has shown excising 0.15 $R_{500}$ rather than a static 70 kpc reduces
+scatter in mass-observable scaling relations. But such a reduction
+does not affect this work as the conclusions drawn from our spectral
+analysis are strongly correlated with the uncertainties of $T_{2.0-7.0}$
+and not on the best-fit value of $T_{0.7-7.0}$, where the effect of a
+cool core is the strongest.
+
+Although some clusters are not circular in projection, but rather are
+elliptical or asymmetric, we found that assuming sphericity and
+extracting spectra from a circular annulus did not significantly
+change the best-fit values. For another such example see
+\cite{2005MNRAS.359.1481B}.
+
+After defining annular apertures, we extracted source spectra from the
+target cluster and background spectra from the corresponding
+normalized blank-sky dataset. By standard {\textsc{CIAO}} means we created
+effective area functions (ARF files) and redistribution matrices (RMF
+files) for each cluster using a flux-weighted map (WMAP) across the
+entire extraction region. The WMAP was calculated over the energy
+range 0.3-2.0 keV to weight calibrations that vary as a function of
+position on the chip. Each spectrum was then binned to contain a
+minimum of 25 counts per channel.
+
+\section{Spectral Analysis} \label{sec:specan}
+
+\subsection{Fitting} \label{sec:fitting}
+
+Spectra were fit with {\textsc{XSPEC 11.3.2ag}} \citep{1996ASPC..101...17A}
+using a single-temperature {\textsc{MeKaL}} model in combination with the
+photoelectric absorption model {\textsc{WABS}} \citep{1983ApJ...270..119M}
+to account for Galactic absorption. Galactic absorption values,
+$N_{HI}$, are taken from \cite{1990ARA&A..28..215D}. The potentially
+free parameters of the absorbed thermal model are
+$N_{HI}$, X-ray temperature ($T_{X}$), metal abundance normalized to Solar
+(elemental ratios taken from \cite{1989GeCoA..53..197A}), and a
+normalization proportional to the integrated emission measure of the
+cluster. Results from the fitting are presented in Table
+\ref{tab:r2500specfits} and Table \ref{tab:r5000specfits}. No
+systematic error is added during fitting, and thus all quoted errors
+are statistical only. Clusters with multiple independent observations
+had their spectra fit simultaneously and are denoted by a dagger.
+
+Additional statistical error was introduced into the fits because of
+uncertainty associated with the soft local background component
+discussed in \S\ref{sec:background}. To estimate the sensitivity of
+our best-fit temperatures to this uncertainty, we used the differences
+between $T_{X}$ for a model using the best-fit soft background
+normalization and $T_{X}$ for models using $\pm1\sigma$ of the soft
+background normalization. The statistical uncertainty of the original
+fit and the additional uncertainty inferred from the range of
+normalizations to the soft X-ray background component were then added
+in quadrature to produce a final error. In all cases this additional
+background error on the temperature was less than 10\% of the total
+statistical error, and therefore represents a minor inflation of the
+error budget.
+
+When comparing fits with fixed Galactic column density with those
+where it was a free parameter, we found that neither the goodness of
+fit per free parameter nor the best-fit $T_{X}$ were significantly
+different. Thus, $N_{HI}$ was fixed at the Galactic value with the
+exception of three cases: Abell 399 \citep{2004MNRAS.351.1439S}, Abell
+520, and Hercules A. For these three clusters $N_{HI}$ is a free
+parameter. In all fits the metal abundance was a free parameter.
+
+After fitting we rejected several datasets as their best-fit $T_{2.0-7.0}$
+had no upper bound in the 90\% confidence interval and thus were
+insufficient for our analysis. All fits for the clusters Abell 781,
+Abell 1682, CL J1213+0253, CL J1641+4001, IRAS 09104+4109, Lynx E,
+MACS J1824.3+4309, MS 0302.7+1658, and RX J1053+5735 were rejected. We
+also removed Abell 2550 from our sample after finding it to be an
+anomalously cool ($T_{X} \sim$ 2 keV) ``cluster''. In fact, Abell 2550
+is a line-of-sight set of groups, as discussed by
+\cite{2004cgpc.sympE..31M}.
+
+\subsection{Simulated Spectra}\label{sec:simulated}
+
+To quantify the effect a second, cooler gas component would have on the fit
+of a single-component spectral model, we created an ensemble of simulated
+spectra for each real spectrum in our entire sample using
+{\textsc{XSPEC}}. With these simulated spectra we sought to answer the
+question: Given the count level in each observation of our sample, how bright
+must a second temperature component be for it to affect the observed
+temperature ratio, $T_{HBR}$? Put another way, we asked at what flux
+ratio a second gas phase produces a temperature ratio, $T_{HBR}$, of
+greater than unity with 1$\sigma$ significance.
+
+We began by adding the observation-specific background to a convolved,
+absorbed thermal model with two temperature components for a time
+period equal to the observation exposure time and adding Poisson
+noise. For each realization of an observation's simulated spectrum, we
+defined the primary component to have the best-fit temperature and
+metallicity of the $R_{2500-\mathrm{CORE}}$ (or $R_{5000-\mathrm{CORE}}$
+if no $R_{2500-\mathrm{CORE}}$ fit was performed), 0.7-7.0 keV fit, and
+we stepped the secondary component temperature over the values 0.5,
+0.75, and 1.0 keV. The metallicity of the secondary component was
+fixed and set equal to the metallicity of the primary component.
+
+We adjusted the normalization of the simulated two-component spectra to
+achieve equivalent count rates to those in the real spectra. We set
+the primary component normalization to $K_1 = \xi \cdot K_{bf}$ where
+$K_{bf}$ is the best-fit normalization of the appropriate
+0.7-7.0 keV fit and $\xi$ is a preset factor having the values 0.8,
+0.85, 0.9, 0.95, 0.96, 0.97, 0.98, and 0.99. The secondary component
+normalization was determined through an iterative process to make real
+and simulated spectral count rates match.
+
+We also simulated a control sample of single-temperature models. The
+control sample is simply a simulated version of the best-fit model. This
+control provides us with a statistical test of how often the actual
+hard-component temperature might differ from a broad-band temperature
+fit if calibration effects are under control.
+
+For each observation, we have 59 total simulated spectra: 35
+single-temperature control spectra and 24 two-component simulated
+spectra (three second temperatures, each with 8 different $\xi$). Our
+resulting ensemble of simulated spectra contains $11,387$
+spectra. After generating all the spectra we followed the same fitting
+routine detailed in \S\ref{sec:fitting}.
+
+There are three important results from the analysis of these simulated
+spectra:
+\begin{enumerate}
+\item In the control sample, a single-temperature model rarely
+($\sim 2\%$ of the time) gives a significantly different $T_{0.7-7.0}$ and
+$T_{2.0-7.0}$. The weighted average for the control sample is 1.001$\pm
+0.002$ and the standard deviation is $\pm0.06$. The $T_{HBR}$
+distribution for the control sample appears to have an intrinsic width
+which is likely associated with statistical noise of fitting in
+{\textsc{XSPEC}} (Dupke, private communication). This result indicates
+that our remaining set of observations is statistically sound: our finding that
+$T_{HBR}$ significantly differs from 1.0 cannot result from
+statistical fluctuations alone.
+\item A second temperature component representing $> 10\%$ of the total
+emission must be present in order to obtain $T_{HBR} > 1.1$, as we find
+in the real data.
+\item As redshift increases, gas cooler than 1.0 keV is slowly
+redshifted out of the observable X-ray band. As expected, we find from
+our simulated spectra that for $z \geq 0.6$, $T_{HBR}$ is no longer
+statistically distinguishable from unity. For the 14 clusters with $z
+\geq 0.6$ in our real sample we can safely conclude we are not
+overestimating the contribution of cool gas to the spectra and we are
+most likely underestimating the temperature inhomogeneity.
+\end{enumerate}
+
+\section{Results and Discussion} \label{sec:r&d}
+
+\subsection{Temperature Ratios} \label{sec:tfresults}
+
+For each cluster we have measured a temperature ratio $T_{HBR}$ =
+$T_{2.0-7.0}$/$T_{0.7-7.0}$. We find that the mean $T_{HBR}$ for our
+entire sample is greater than unity at more than $12\sigma$
+significance. The weighted mean values for our sample are shown in
+Table \ref{tab:wavg}. Presented in Figure  \ref{fig:ftx} are the binned
+weighted means and raw $T_{HBR}$ values for $R_{2500-\mathrm{CORE}}$,
+$R_{5000-\mathrm{CORE}}$, and the simulated control sample. The peculiar
+points with $T_{HBR} <$ 1 are all statistically consistent with
+$T_{HBR}$ = 1. The presence of clusters with $T_{HBR}$ = 1 suggests
+that systematic calibration uncertainties are not the sole reason for
+deviations of $T_{HBR}$ from 1. We also find that the temperature
+ratio does not depend on the best-fit broad-band temperature, and that
+the observed dispersion of $T_{HBR}$ is greater than the predicted
+dispersion arising from systematic uncertainties.
+
+\begin{figure}
+\begin{center}
+\includegraphics*[width=\textwidth, trim=0mm 0mm 0mm 0mm, clip]{f3.eps}
+\caption{
+Best-fit temperatures for the hard-band, $T_{2.0-7.0}$, divided by the
+broad-band, $T_{0.7-7.0}$, and plotted against the broad-band
+temperature. For binned data, each bin contains 25 clusters, with the
+exception of the highest temperature bins which contain 16 and 17 for
+$R_{2500-\mathrm{CORE}}$ and $R_{5000-\mathrm{CORE}}$, respectively. The
+simulated data bins contain 1000 clusters with the last bin having 780
+clusters. The line of equality is shown as a dashed line and the
+weighted mean for the full sample is shown as a dashed-dotted
+line. Error bars are omitted in the unbinned data for clarity. Note
+the net skewing of $T_{HBR}$ to greater than unity for both apertures
+with no such trend existing in the simulated data. The dispersion of
+$T_{HBR}$ for the real data is also much larger than the dispersion of
+the simulated data.
+}
+\label{fig:ftx}
+\end{center}
+\end{figure}
+
+The uncertainty associated with each value of $T_{HBR}$ is dominated by
+the larger error in $T_{2.0-7.0}$, and on average, $\Delta T_{2.0-7.0} \approx
+2.3\Delta T_{0.7-7.0}$. This error interval discrepancy naturally results
+from excluding the bulk of a cluster's emission which occurs below 2
+keV. While choosing a temperature-sensitive cut-off energy for the
+hard-band (other than 2.0 keV) might maintain a more consistent
+error budget across our sample, we do not find any systematic trend in
+$T_{HBR}$ or the associated errors with cluster temperature.
+
+\subsection{Systematics} \label{sec:sys}
+
+In this study we have found the average value of $T_{HBR}$ is significantly
+greater than one and that $\sigma_{HBR} > \sigma_{control}$, with the
+latter result being robust against systematic uncertainties. As
+predicted by ME01, both of these results are expected to arise
+naturally from hierarchical formation of clusters. But systematic
+uncertainty related to {\it Chandra} instrumentation or other sources could
+shift the average value of $T_{HBR}$ one would get from ``perfect'' data. In
+this section we consider some additional sources of uncertainty.
+
+First, the disagreement between {\it XMM-Newton} and {\it Chandra}
+cluster temperatures has been noted in several independent studies,
+i.e. \citealt{2005ApJ...628..655V,chanxmmdis}. But the source of this
+discrepancy is not well understood and efforts to perform
+cross-calibration between {\it XMM-Newton} and {\it Chandra} have thus
+far not been conclusive. One possible explanation is poor calibration
+of {\it Chandra} at soft X-ray energies which may arise from a
+hydrocarbon contaminant on the High Resolution Mirror Assembly (HRMA),
+similar in nature to the contaminant on the ACIS detectors
+\citep{aciscontaminant}. We have assessed this possibility by looking
+for systematic trends in $T_{HBR}$ with time or temperature, as such a
+contaminant would most likely have a temperature and/or time
+dependence.
+
+As noted in \S\ref{sec:tfresults} and seen in Figure \ref{fig:ftx} we
+find no systematic trend with temperature either for the full sample
+or for a sub-sample of single-observation clusters with $> 75\%$ of
+the observed flux attributable to the source (higher signal-to-noise
+observations will be more affected by calibration
+uncertainty). Plotted in Figure \ref{fig:sys} is $T_{HBR}$ versus time
+for single observation clusters (clusters with multiple observations
+are fit simultaneously and any time effect would be washed out) and
+where the spectral flux is $> 75\%$ from the source. We find no
+systematic trend in $T_{HBR}$ with time, which suggests that if
+$T_{HBR}$ is affected by any contamination of {\it Chandra}'s HRMA,
+then the contaminant is not changing with time. Our conclusion on this
+matter is that the soft calibration uncertainty is not playing a
+dominant role in our results.
+
+
+Aside from instrumental and calibration effects, some other possible
+sources of systematic error are signal-to-noise (S/N), redshift
+selection, and Galactic absorption. Presented in Figure \ref{fig:sys}
+are these three parameters versus $T_{HBR}$. The trend in $T_{HBR}$ with redshift
+is expected as the 2.0/(1+$z$) keV hard-band lower boundary nears
+convergence with the 0.7 keV broad-band lower boundary at
+$z \approx 1.85$. We find no systematic trends with S/N or Galactic
+absorption, which might occur if the skew in $T_{HBR}$ were a consequence of
+poor count statistics, inaccurate Galactic absorption, or very poor
+calibration. Also shown in panel four of Fig. \ref{fig:sys} is the
+ratio of $T_{HBR}$ for $R_{2500-\mathrm{CORE}}$ and
+$R_{5000-\mathrm{CORE}}$. For every cluster in our sample, both apertures
+result in $T_{HBR}$ values which are not significantly different from
+one another. Our results are robust to changes in aperture size.
+
+\begin{figure}
+\begin{center}
+\includegraphics*[width=\textwidth, trim=0mm 0mm 0mm 0mm, clip]{f4.eps}
+\caption{
+Plotted here are a few possible sources of systematic uncertainty.
+Error bars have been omitted in several plots for clarity. The line of
+equality is shown as a dashed line in all
+plots. {\bfseries\em{(Upper-left:)}} $T_{HBR}$ versus redshift for the
+entire sample. The trend in $T_{HBR}$ with redshift is expected as the
+$T_{2.0-7.0}$ lower boundary nears convergence with the $T_{0.7-7.0}$
+lower boundary at $z \approx 1.85$. Weighted values of $T_{HBR}$ are
+consistent with unity starting at $z \sim
+0.6$. {\bfseries\em{(Upper-right:)}} $T_{HBR}$ versus percentage of
+spectrum flux which is attributed to the source. We find no trend with
+signal-to-noise which would suggest calibration uncertainty is playing
+a major role in our results. {\bfseries\em{(Middle-left:)}} $T_{HBR}$
+versus Galactic column density. We find no trend in absorption which
+would result if $N_{HI}$ values are inaccurate or if we had improperly
+accounted for local soft
+contamination. {\bfseries\em{(Middle-right:)}} Ratio of $T_{HBR}$ for
+our two physically motivated apertures, $R_{2500-\mathrm{CORE}}$ and
+$R_{5000-\mathrm{CORE}}$. Error bars are omitted for clarity as they all
+cross the line of equality. Different sized apertures do not result in
+significantly different values of $T_{HBR}$ which indicates $T_{HBR}$
+is insensitive to our definition of aperture
+size. {\bfseries\em{(Lower-left:)}} $T_{HBR}$ plotted versus
+observation start date. The plotted points are culled from the full
+sample and represent only clusters which have a single observation and
+where the spectral flux is $> 75\%$ from the source. We note no
+systematic trend with time which suggests any contamination of {\it
+Chandra}'s HRMA may not be changing with
+time. {\bfseries\em{(Lower-right:)}} Ratio of {\it Chandra}
+temperatures derived in this work to {\it ASCA} temperatures taken
+from Don Horner's thesis. We note a trend of comparatively hotter {\it
+Chandra} temperatures for clusters $> 10$ keV, otherwise our derived
+temperatures are in good agreement with those of {\it ASCA}.
+}
+\label{fig:sys}
+\end{center}
+\end{figure}
+
+Also shown in Figure \ref{fig:sys} is the ratio of {\it ASCA}
+temperatures taken from Don Horner's thesis to {\it Chandra}
+temperatures derived in this work. The spurious point below 0.5 with
+very large error bars is MS 2053.7-0449, which has a poorly
+constrained {\it ASCA} temperature of $10.03^{+8.73}_{-3.52}$. Our value of
+$\sim 3.5$ keV for this cluster is in agreement with the recent work of
+\cite{2007astro.ph..3156M}. Not all our sample clusters have an {\it ASCA}
+temperature, but a sufficient number (53) are available to make this
+comparison reliable. Apertures used in the extraction of {\it ASCA} spectra
+had no core region removed and were substantially larger than
+$R_{2500}$. {\it ASCA} spectra were also fit over a broader energy range
+(0.6-10 keV) than we use here. Thus, we make the temperature
+comparison using our unexcised $R_{2500}$, 0.7-7.0 keV fits as
+these get us the closest to replicating the {\it ASCA} apertures and energy
+range. Our temperatures are in good agreement with those from {\it ASCA},
+but we do note a trend of comparatively hotter {\it Chandra} temperatures for
+$T_{Chandra} > 10$ keV. The clusters with $T_{Chandra} > 10$ keV are
+Abell 1758, Abell 2163, Abell 2255, and RX J1347.5-1145.
+
+Based on this trend, we test excluding the hottest clusters
+($T_{Chandra} > 10$ keV where {\it ASCA} and {\it Chandra} disagree) from our sample.
+The mean temperature ratio for $R_{2500-\mathrm{CORE}}$ remains $1.16$ and the error
+of the mean increases from $\pm 0.014$ to $\pm 0.015$, while for $R_{5000-\mathrm{CORE}}$
+$T_{HBR}$ increases by a negligible $0.9\%$ to $1.15\pm 0.014$. Our results
+are not being influenced by the inclusion of hot clusters.
+
+\subsection{Using $T_{HBR}$ to Select for Relaxation} \label{sec:relax}
+
+\subsubsection{Cool Core Versus Non-Cool Core}\label{sec:ccncc}
+
+The process of cluster formation and virialization may robustly result
+in the formation of a cool core
+\citep{2006ApJ...640..673O,2007arXiv0708.1954B}. Flux-limited surveys
+have found the prevalence of CCs to be $34-60\%$ \citep{1997MNRAS.292..419W,
+1998MNRAS.298..416P, 2005MNRAS.359.1481B, 2007A&A...466..805C}
+depending upon classification criteria, completeness, and possible
+selection biases. As discussed in \S\ref{sec:intro}, ME01 gives us
+reason to believe the observed skewing of $T_{HBR}$ to greater than unity is
+related to the dynamic state of a cluster. We thus sought to identify
+which clusters in our sample have cool cores (CC), which do not (NCC),
+and if the presence or absence of a cool core is correlated to $T_{HBR}$. We
+also asked about the number of CC and NCC clusters as a function of
+$T_{HBR}$. Recall that we excluded the cool core itself during spectral
+extraction.
+
+To identify a CC we extracted spectra for the 50 kpc region
+surrounding the cluster center and then defined a temperature
+decrement 
+\begin{equation}
+T_{dec} = T_{50}/T_{cluster}
+\label{eqn:tdec}
+\end{equation}
+where $T_{50}$ is the temperature of the inner 50 kpc and
+$T_{cluster}$ is the $R_{2500-\mathrm{CORE}}$ temperature (clusters
+without $R_{2500-\mathrm{CORE}}$ fits were excluded from this
+analysis). If $T_{dec}$ was 2$\sigma$ less than unity, we defined the
+cluster as having a CC, otherwise the cluster was defined as NCC. We
+find CCs in 35\% of our sample and when we lessen the significance
+needed for CC classification from 2$\sigma$ to 1$\sigma$, we find 46\%
+of our sample clusters have CCs. It is important to note that the
+frequency of CCs in our study is consistent with other more detailed
+studies of CC/NCC populations.
+
+When fitting for $T_{50}$, we altered the method outlined in
+\S\ref{sec:fitting} to use {\textsc{XSPEC}}'s modified Cash statistic
+\citep{1979ApJ...228..939C}, {\textsc{cstat}}, on ungrouped
+spectra. This choice was made because the distribution of counts per
+bin in low count spectra is not Gaussian but instead Poisson. As a
+result, the best-fit temperature using $\chi^2$ is typically cooler
+\citep{1989ApJ...342.1207N, 2007A&A...462..429B}. We have explored
+this systematic in {\bfseries\em{all}} of our fits and found it to be
+significant only in the lowest count spectra of the inner 50 kpc
+apertures discussed here. But, for consistency, we fit all inner 50
+kpc spectra using the modified Cash statistic.
+
+With each cluster classified, we then took cuts in $T_{HBR}$ and asked
+how many CC and NCC clusters were above these cuts.  Figure
+\ref{fig:cc_ncc_bin} shows the normalized number of CC and NCC
+clusters as a function of cuts in $T_{HBR}$. If $T_{HBR}$ were
+insensitive to the dynamical state of a cluster, we expect, for
+normally distributed $T_{HBR}$ values, to see the number of CC and NCC
+clusters decreasing in the same way. However, the number of CC
+clusters falls off more rapidly than the number of NCC clusters. This
+effect is dramatically reduced -- as expected -- if the core is
+included.  If the presence of a CC is indicative of a cluster's
+advancement towards complete virialization, then the significantly
+steeper decline of CC clusters as a function of $T_{HBR}$ that we
+observe indicates higher values of $T_{HBR}$ are associated with a
+less relaxed state. This result is insensitive to our choice of
+significance level in the core classification.
+
+\begin{figure}
+\begin{center}
+\includegraphics*[width=\textwidth, trim=15mm 10mm 0mm 0mm, clip]{f5.eps}
+\caption{
+Plotted here is the normalized number of cool core (CC) and non-cool core
+(NCC) clusters as a function of cuts in $T_{HBR}$. We have defined a
+cluster as having a cool core (CC) when the temperature for the 50 kpc
+region around the cluster center divided by the temperature for
+$R_{2500-\mathrm{CORE}}$ is less than 1 at the $2\sigma$ level. We then
+take cuts in $T_{HBR}$ at the $1\sigma$ level and ask how many CC and
+NCC clusters are above these cuts. The number of CC clusters falls off
+more rapidly than NCC clusters in this classification scheme
+suggesting higher values of $T_{HBR}$ prefer less relaxed systems
+which do not have cool cores. This result is insensitive to our choice
+of significance level in both the core classification and $T_{HBR}$
+cuts.
+}
+\label{fig:cc_ncc_bin}
+\end{center}
+\end{figure}
+
+Because of the CC/NCC definition we selected, our identification of
+CCs and NCCs was only as robust as the errors on $T_{50}$ allowed. One can
+thus ask the question, did our loose definition bias us towards
+finding more NCCs than CCs? To explore this question we simulated 20
+spectra for each observation following the method outlined in
+\S\ref{sec:simulated} for the control sample but using the inner 50
+kpc spectral best-fit values as input. For each simulated spectrum, we
+calculated a temperature decrement (Eq. \ref{eqn:tdec}) and
+re-classified the cluster as having a CC or NCC. Using the new set of
+mock classifications we assigned a reliability factor, $\psi$, to each
+real classification, which is simply the fraction of mock
+classifications which agree with the real classification. A value of
+$\psi = 1.0$ indicates complete agreement, and $\psi = 0.0$ indicating no
+agreement. When we removed clusters with $\psi < 0.9$ and repeated the
+analysis above, we found no significant change in the number of CC
+clusters as a function of $T_{HBR}$.
+
+Recall that the coolest ICM gas is being redshifted out of the
+observable band as $z$ increases and becomes a significant effect at
+$z \geq 0.6$ (\S\ref{sec:simulated}). Thus, we are likely not detecting
+``weak'' CCs in the highest redshift clusters of our sample and
+consequently these cores are classified as NCCs artificially increasing
+the NCC population. When we excluded the 14 clusters at $z \geq 0.6$
+from this core classification analysis we found no significant change
+in our results.
+
+\subsubsection{Mergers Versus Non-Mergers}\label{sec:merge}
+
+To further investigate trends in $T_{HBR}$ we now examine a subclass of
+clusters which have $T_{HBR} > 1.1$ at the 1$\sigma$ level and which are
+identified in Table \ref{tab:tf11}. $T_{HBR} > 1.1$ is an arbitrary
+threshold selected to limit the number of clusters to which we pay
+individual attention, but which is still representative of mid- to
+high-$T_{HBR}$ values. All of these 29 clusters have core classifications 
+with $\psi > 0.9$. We define a further subclass of these culled
+clusters which have been identified as mergers in the literature. From Figure
+\ref{fig:ftx_tx} and Table \ref{tab:tf11} we can see clusters
+exhibiting the highest significant values of $T_{HBR}$ tend to be ongoing or
+recent mergers. At the 2$\sigma$ level, we find increasing values of
+$T_{HBR}$ favor merger systems with NCCs over relaxed, CC clusters. Mergers
+have left a spectroscopic imprint on the ICM which was predicted by
+ME01 and which we observe in our sample.
+
+\begin{figure}
+\begin{center}
+\includegraphics*[width=\textwidth, trim=5mm 0mm 0mm 0mm, clip]{f6.eps}
+\caption{
+$T_{HBR}$ plotted against $T_{0.7-7.0}$ for our sample. The dashed line
+is the line of equivalence. Symbols and color coding are based on two
+criteria: 1) presence of a cool core
+(CC) and 2) value of $T_{HBR}$ value. Black stars are clusters with a
+CC and $T_{HBR}$ significantly greater than 1.1. Green
+upright-triangles are NCC clusters with $T_{HBR}$ significantly
+greater than 1.1. Blue down-facing triangles are CC clusters and red
+squares are NCC clusters. We have found most, if not all, of the
+clusters with $T_{HBR} \gtrsim 1.1$ are merger systems. Note that the
+cut at $T_{HBR} > 1.1$ is arbitrary and there are more merger systems
+in our sample then just those highlighted in this figure. However it
+is rather suggestive that clusters with the highest values of $T_{HBR}$
+share a common dynamic state.
+}
+\label{fig:ftx_tx}
+\end{center}
+\end{figure}
+
+Of the 29 clusters with $T_{HBR}$ significantly $> 1.1$, only six have
+CCs. Three of those, MKW3S, 3C 28.0, and RX J1720.1+2638 have their
+apertures centered on the bright, dense cores in confirmed
+mergers. Two more clusters, Abell 2384 and RX J1525+0958, while
+not confirmed mergers, have morphologies which are consistent with
+powerful ongoing mergers. Abell 2384 has a long gas tail extending toward
+a gaseous clump which we assume has recently passed through the cluster.
+RXJ1525 has a core shaped like an arrowhead and is reminiscent of the
+bow shock seen in 1E0657-56. Abell 907 is the remaining CC of the six
+listed. It has no signs of being a merger system, but the highly
+compressed surface brightness contours to the west of the core are
+indicative of a prominent cold front, which is a tell-tale sign of a
+subcluster merger event \citep{2007PhR...443....1M}.
+
+The unclassified systems -- RX J0439.0+0715, MACS J2243.3-0935, MACS
+J0547.0-3904, ZWCL 1215, MACS J2311+0338, and Abell 267 -- have NCCs and
+X-ray morphologies consistent with an ongoing or post-merger
+scenario. Two clusters, Abell 1204 and MACS J1427.6-2521, show no
+signs of recent or ongoing merger activity; however, they reside at
+the bottom of the arbitrary $T_{HBR}$ cut, and as evidenced by Abell 401 and
+Abell 1689, exceptional spherical symmetry is no guarantee of
+relaxation.
+
+\section{Summary and Conclusions}\label{sec:summary}
+
+We have explored the band dependence of the inferred X-ray temperature
+of the ICM for 193 well-observed ($N_{counts} > 1500$) clusters of
+galaxies selected from the {\it Chandra} Data Archive.
+
+We extracted spectra from the annulus between $R=70$ kpc and
+$R=R_{2500}$, $R_{5000}$ for each cluster. We compared the X-ray
+temperatures inferred for single-component fits to global spectra
+when the energy range of the fit was 0.7-7.0 keV (broad) and when the
+energy range was $2.0/(1+z)$-7.0 keV (hard). We found that, on
+average, the hard-band temperature is significantly higher than
+the broad-band temperature. For the $R_{2500-\mathrm{CORE}}$ aperture we measured a
+weighted average of $T_{HBR} = 1.16$ with $\sigma = \pm 0.10$ and
+$\sigma_{mean} = \pm 0.01$, for the $R_{5000-\mathrm{CORE}}$ aperture,
+$T_{HBR} = 1.14$ with $\sigma = \pm 0.12$ and $\sigma_{mean} = \pm
+0.01$. We also found no systematic trends with signal-to-noise,
+redshift selection, or Galactic absorption in the value of $T_{HBR}$
+or the dispersion of $T_{HBR}$.
+
+In addition, we simulated an ensemble of $11,387$ observation-specific
+control spectra and spectra with two thermal components. From analysis
+of these simulations we found the observed scatter, $\sigma_{HBR}$, is
+consistent with the presence of unresolved cool ($T_X < 1.0$ keV) gas,
+and we also found the observational scatter is greater than the
+statistical scatter, $\sigma_{control}$. As discussed in ME01, both of
+these results are consistent with the process of hierarchical cluster
+formation.
+
+Upon further exploration, we found that $T_{HBR}$ is enhanced
+preferentially for clusters which are known merger systems and for
+clusters without cool cores. Clusters with temperature decrements in
+their cores (known as cool-core clusters) tend to have best-fit
+hard-band temperatures that are consistently closer to their
+best-fit broad-band temperatures. The correlation of $T_{HBR}$ with
+the type of cluster core is insensitive to our choice of
+classification scheme and is robust against redshift effects. Our
+results qualitatively support the finding by ME01 that the temperature
+ratio $T_{HBR}$ might therefore be useful for statistically
+quantifying the degree of cluster relaxation/virialization.
+
+An additional robust test of the ME01 finding should be made with
+simulations by tracking $T_{HBR}$ during hierarchical assembly of a
+cluster. If $T_{HBR}$ is tightly correlated with a cluster's degree of
+relaxation, then it, along with other methods of substructure measure,
+may provide a powerful metric for predicting (and therefore reducing)
+a cluster's deviation from mean mass-scaling relations. The
+task of reducing scatter in scaling relations will be very important
+if we are to reliably and accurately measure the mass of clusters.
+
+\acknowledgements
+Kenneth Cavagnolo was supported in this work by the National
+Aeronautics and Space Administration through {\it Chandra} X-ray
+Observatory Archive grants AR-6016X and AR-4017A, with additional
+support from a start-up grant for Megan Donahue from Michigan State
+University. Megan Donahue and Michigan State University acknowledge
+support from the NASA LTSA program NNG-05GD82G. The {\it Chandra}
+X-ray Observatory Center is operated by the Smithsonian Astrophysical
+Observatory for and on behalf of the National Aeronautics Space
+Administration under contract NAS8-03060. This research has made use
+of software provided by the {\it Chandra} X-ray Center (CXC) in the
+application packages {\textsc{CIAO}}, {\textsc{ChIPS}}, and
+{\textsc{Sherpa}}. We thank Alexey Vikhlinin for helpful insight and
+expert advice, attendees of the ``Eight Years of Science with {\it Chandra}
+Calibration Workshop'' for stimulating discussion regarding {\it
+XMM}-{\it Chandra} cross-calibration, and especially Keith Arnaud for
+personally providing support/advice for using {\textsc{XSPEC}}. This
+research has made use of the NASA/IPAC Extragalactic Database (NED)
+which is operated by the Jet Propulsion Laboratory, California
+Institute of Technology, under contract with the National Aeronautics
+and Space Administration. This research has also made use of NASA's
+Astrophysics Data System. {\it ROSAT} data and software were obtained
+from the High Energy Astrophysics Science Archive Research Center
+(HEASARC), provided by NASA's Goddard Space Flight Center.
+
+\begin{thebibliography}{83}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{{Anders} \& {Grevesse}(1989)}]{1989GeCoA..53..197A}
+{Anders}, E., \& {Grevesse}, N. 1989, \gca, 53, 197
+
+\bibitem[{{Andersson} \& {Madejski}(2004)}]{2004ApJ...607..190A}
+{Andersson}, K.~E., \& {Madejski}, G.~M. 2004, \apj, 607, 190
+
+\bibitem[{{Arnaud}(1996)}]{1996ASPC..101...17A}
+{Arnaud}, K.~A. 1996, in ASP Conf. Ser. 101: Astronomical Data Analysis
+  Software and Systems V, ed. G.~H. {Jacoby} \& J.~{Barnes}, 17--+
+
+\bibitem[{{Arnaud} {et~al.}(2002){Arnaud}, {Aghanim}, \&
+  {Neumann}}]{2002A&A...389....1A}
+{Arnaud}, M., {Aghanim}, N., \& {Neumann}, D.~M. 2002, \aap, 389, 1
+
+\bibitem[{{Bagchi} {et~al.}(2006){Bagchi}, {Durret}, {Neto}, \&
+  {Paul}}]{2006Sci...314..791B}
+{Bagchi}, J., {Durret}, F., {Neto}, G.~B.~L., \& {Paul}, S. 2006, Science, 314,
+  791
+
+\bibitem[{{Balestra} {et~al.}(2007){Balestra}, {Tozzi}, {Ettori}, {Rosati},
+  {Borgani}, {Mainieri}, {Norman}, \& {Viola}}]{2007A&A...462..429B}
+{Balestra}, I., {Tozzi}, P., {Ettori}, S., {Rosati}, P., {Borgani}, S.,
+  {Mainieri}, V., {Norman}, C., \& {Viola}, M. 2007, \aap, 462, 429
+
+\bibitem[{{Bauer} {et~al.}(2005){Bauer}, {Fabian}, {Sanders}, {Allen}, \&
+  {Johnstone}}]{2005MNRAS.359.1481B}
+{Bauer}, F.~E., {Fabian}, A.~C., {Sanders}, J.~S., {Allen}, S.~W., \&
+  {Johnstone}, R.~M. 2005, \mnras, 359, 1481
+
+\bibitem[{{Bliton} {et~al.}(1998){Bliton}, {Rizza}, {Burns}, {Owen}, \&
+  {Ledlow}}]{1998MNRAS.301..609B}
+{Bliton}, M., {Rizza}, E., {Burns}, J.~O., {Owen}, F.~N., \& {Ledlow}, M.~J.
+  1998, \mnras, 301, 609
+
+\bibitem[{{B{\"o}hringer} {et~al.}(2004){B{\"o}hringer}, {Schuecker}, {Guzzo},
+  {Collins}, {Voges}, {Cruddace}, {Ortiz-Gil}, {Chincarini}, {De Grandi},
+  {Edge}, {MacGillivray}, {Neumann}, {Schindler}, \&
+  {Shaver}}]{2004A&A...425..367B}
+{B{\"o}hringer}, H., {Schuecker}, P., {Guzzo}, L., {Collins}, C.~A., {Voges},
+  W., {Cruddace}, R.~G., {Ortiz-Gil}, A., {Chincarini}, G., {De Grandi}, S.,
+  {Edge}, A.~C., {MacGillivray}, H.~T., {Neumann}, D.~M., {Schindler}, S., \&
+  {Shaver}, P. 2004, \aap, 425, 367
+
+\bibitem[{{Buote} \& {Tsai}(1995)}]{1995ApJ...452..522B}
+{Buote}, D.~A., \& {Tsai}, J.~C. 1995, \apj, 452, 522
+
+\bibitem[{{Buote} \& {Tsai}(1996)}]{1996ApJ...458...27B}
+---. 1996, \apj, 458, 27
+
+\bibitem[{{Burns} {et~al.}(2007){Burns}, {Hallman}, {Gantner}, {Motl}, \&
+  {Norman}}]{2007arXiv0708.1954B}
+{Burns}, J.~O., {Hallman}, E.~J., {Gantner}, B., {Motl}, P.~M., \& {Norman},
+  M.~L. 2007, ArXiv e-prints, 708
+
+\bibitem[{{Burns} {et~al.}(1995){Burns}, {Roettiger}, {Pinkney}, {Perley},
+  {Owen}, \& {Voges}}]{1995ApJ...446..583B}
+{Burns}, J.~O., {Roettiger}, K., {Pinkney}, J., {Perley}, R.~A., {Owen}, F.~N.,
+  \& {Voges}, W. 1995, \apj, 446, 583
+
+\bibitem[{{Cash}(1979)}]{1979ApJ...228..939C}
+{Cash}, W. 1979, \apj, 228, 939
+
+\bibitem[{{Chen} {et~al.}(2007){Chen}, {Reiprich}, {B{\"o}hringer}, {Ikebe}, \&
+  {Zhang}}]{2007A&A...466..805C}
+{Chen}, Y., {Reiprich}, T.~H., {B{\"o}hringer}, H., {Ikebe}, Y., \& {Zhang},
+  Y.-Y. 2007, \aap, 466, 805
+
+\bibitem[{{Dahle} {et~al.}(2002){Dahle}, {Kaiser}, {Irgens}, {Lilje}, \&
+  {Maddox}}]{2002ApJS..139..313D}
+{Dahle}, H., {Kaiser}, N., {Irgens}, R.~J., {Lilje}, P.~B., \& {Maddox}, S.~J.
+  2002, \apjs, 139, 313
+
+\bibitem[{{David} \& {Kempner}(2004)}]{2004ApJ...613..831D}
+{David}, L.~P., \& {Kempner}, J. 2004, \apj, 613, 831
+
+\bibitem[{{Dickey} \& {Lockman}(1990)}]{1990ARA&A..28..215D}
+{Dickey}, J.~M., \& {Lockman}, F.~J. 1990, \araa, 28, 215
+
+\bibitem[{{Ebeling} {et~al.}(2000){Ebeling}, {Edge}, {Allen}, {Crawford},
+  {Fabian}, \& {Huchra}}]{2000MNRAS.318..333E}
+{Ebeling}, H., {Edge}, A.~C., {Allen}, S.~W., {Crawford}, C.~S., {Fabian},
+  A.~C., \& {Huchra}, J.~P. 2000, \mnras, 318, 333
+
+\bibitem[{{Ebeling} {et~al.}(1998){Ebeling}, {Edge}, {Bohringer}, {Allen},
+  {Crawford}, {Fabian}, {Voges}, \& {Huchra}}]{1998MNRAS.301..881E}
+{Ebeling}, H., {Edge}, A.~C., {Bohringer}, H., {Allen}, S.~W., {Crawford},
+  C.~S., {Fabian}, A.~C., {Voges}, W., \& {Huchra}, J.~P. 1998, \mnras, 301,
+  881
+
+\bibitem[{{Ebeling} {et~al.}(2001){Ebeling}, {Edge}, \&
+  {Henry}}]{2001ApJ...553..668E}
+{Ebeling}, H., {Edge}, A.~C., \& {Henry}, J.~P. 2001, \apj, 553, 668
+
+\bibitem[{{Edge} {et~al.}(1990){Edge}, {Stewart}, {Fabian}, \&
+  {Arnaud}}]{1990MNRAS.245..559E}
+{Edge}, A.~C., {Stewart}, G.~C., {Fabian}, A.~C., \& {Arnaud}, K.~A. 1990,
+  \mnras, 245, 559
+
+\bibitem[{{Eisenstein} {et~al.}(2005){Eisenstein}, {Zehavi}, {Hogg},
+  {Scoccimarro}, {Blanton}, {Nichol}, {Scranton}, {Seo}, {Tegmark}, {Zheng},
+  {Anderson}, {Annis}, {Bahcall}, {Brinkmann}, {Burles}, {Castander},
+  {Connolly}, {Csabai}, {Doi}, {Fukugita}, {Frieman}, {Glazebrook}, {Gunn},
+  {Hendry}, {Hennessy}, {Ivezi{\'c}}, {Kent}, {Knapp}, {Lin}, {Loh}, {Lupton},
+  {Margon}, {McKay}, {Meiksin}, {Munn}, {Pope}, {Richmond}, {Schlegel},
+  {Schneider}, {Shimasaku}, {Stoughton}, {Strauss}, {SubbaRao}, {Szalay},
+  {Szapudi}, {Tucker}, {Yanny}, \& {York}}]{2005ApJ...633..560E}
+{Eisenstein}, D.~J., {Zehavi}, I., {Hogg}, D.~W., {Scoccimarro}, R., {Blanton},
+  M.~R., {Nichol}, R.~C., {Scranton}, R., {Seo}, H.-J., {Tegmark}, M., {Zheng},
+  Z., {Anderson}, S.~F., {Annis}, J., {Bahcall}, N., {Brinkmann}, J., {Burles},
+  S., {Castander}, F.~J., {Connolly}, A., {Csabai}, I., {Doi}, M., {Fukugita},
+  M., {Frieman}, J.~A., {Glazebrook}, K., {Gunn}, J.~E., {Hendry}, J.~S.,
+  {Hennessy}, G., {Ivezi{\'c}}, Z., {Kent}, S., {Knapp}, G.~R., {Lin}, H.,
+  {Loh}, Y.-S., {Lupton}, R.~H., {Margon}, B., {McKay}, T.~A., {Meiksin}, A.,
+  {Munn}, J.~A., {Pope}, A., {Richmond}, M.~W., {Schlegel}, D., {Schneider},
+  D.~P., {Shimasaku}, K., {Stoughton}, C., {Strauss}, M.~A., {SubbaRao}, M.,
+  {Szalay}, A.~S., {Szapudi}, I., {Tucker}, D.~L., {Yanny}, B., \& {York},
+  D.~G. 2005, \apj, 633, 560
+
+\bibitem[{{Ettori} \& {Lombardi}(2003)}]{2003A&A...398L...5E}
+{Ettori}, S., \& {Lombardi}, M. 2003, \aap, 398, L5
+
+\bibitem[{{Evrard}(1989)}]{1989ApJ...341L..71E}
+{Evrard}, A.~E. 1989, \apjl, 341, L71
+
+\bibitem[{{Evrard} {et~al.}(1996){Evrard}, {Metzler}, \&
+  {Navarro}}]{1996ApJ...469..494E}
+{Evrard}, A.~E., {Metzler}, C.~A., \& {Navarro}, J.~F. 1996, \apj, 469, 494
+
+\bibitem[{{Feretti} {et~al.}(1997){Feretti}, {Boehringer}, {Giovannini}, \&
+  {Neumann}}]{1997A&A...317..432F}
+{Feretti}, L., {Boehringer}, H., {Giovannini}, G., \& {Neumann}, D. 1997, \aap,
+  317, 432
+
+\bibitem[{{Freeman} {et~al.}(2002){Freeman}, {Kashyap}, {Rosner}, \&
+  {Lamb}}]{2002ApJS..138..185F}
+{Freeman}, P.~E., {Kashyap}, V., {Rosner}, R., \& {Lamb}, D.~Q. 2002, \apjs,
+  138, 185
+
+\bibitem[{{Gioia} {et~al.}(1982){Gioia}, {Maccacaro}, {Geller}, {Huchra},
+  {Stocke}, \& {Steiner}}]{1982ApJ...255L..17G}
+{Gioia}, I.~M., {Maccacaro}, T., {Geller}, M.~J., {Huchra}, J.~P., {Stocke},
+  J., \& {Steiner}, J.~E. 1982, \apjl, 255, L17
+
+\bibitem[{{Gioia} {et~al.}(1990){Gioia}, {Maccacaro}, {Schild}, {Wolter},
+  {Stocke}, {Morris}, \& {Henry}}]{1990ApJS...72..567G}
+{Gioia}, I.~M., {Maccacaro}, T., {Schild}, R.~E., {Wolter}, A., {Stocke},
+  J.~T., {Morris}, S.~L., \& {Henry}, J.~P. 1990, \apjs, 72, 567
+
+\bibitem[{{Girardi} {et~al.}(1997){Girardi}, {Fadda}, {Escalera}, {Giuricin},
+  {Mardirossian}, \& {Mezzetti}}]{1997ApJ...490...56G}
+{Girardi}, M., {Fadda}, D., {Escalera}, E., {Giuricin}, G., {Mardirossian}, F.,
+  \& {Mezzetti}, M. 1997, \apj, 490, 56
+
+\bibitem[{{G{\'o}mez} {et~al.}(2000){G{\'o}mez}, {Hughes}, \&
+  {Birkinshaw}}]{2000ApJ...540..726G}
+{G{\'o}mez}, P.~L., {Hughes}, J.~P., \& {Birkinshaw}, M. 2000, \apj, 540, 726
+
+\bibitem[{{Govoni} {et~al.}(2001){Govoni}, {Taylor}, {Dallacasa}, {Feretti}, \&
+  {Giovannini}}]{2001A&A...379..807G}
+{Govoni}, F., {Taylor}, G.~B., {Dallacasa}, D., {Feretti}, L., \& {Giovannini},
+  G. 2001, \aap, 379, 807
+
+\bibitem[{{Gutierrez} \& {Krawczynski}(2005)}]{2005ApJ...619..161G}
+{Gutierrez}, K., \& {Krawczynski}, H. 2005, \apj, 619, 161
+
+\bibitem[{{Haiman} {et~al.}(2001){Haiman}, {Mohr}, \&
+  {Holder}}]{2001ApJ...553..545H}
+{Haiman}, Z., {Mohr}, J.~J., \& {Holder}, G.~P. 2001, \apj, 553, 545
+
+\bibitem[{{Hallman} \& {Markevitch}(2004)}]{2004ApJ...610L..81H}
+{Hallman}, E.~J., \& {Markevitch}, M. 2004, \apjl, 610, L81
+
+\bibitem[{{Henry} {et~al.}(2006){Henry}, {Mullis}, {Voges}, {B{\"o}hringer},
+  {Briel}, {Gioia}, \& {Huchra}}]{2006ApJS..162..304H}
+{Henry}, J.~P., {Mullis}, C.~R., {Voges}, W., {B{\"o}hringer}, H., {Briel},
+  U.~G., {Gioia}, I.~M., \& {Huchra}, J.~P. 2006, \apjs, 162, 304
+
+\bibitem[{{Jeltema} {et~al.}(2005){Jeltema}, {Canizares}, {Bautz}, \&
+  {Buote}}]{2005ApJ...624..606J}
+{Jeltema}, T.~E., {Canizares}, C.~R., {Bautz}, M.~W., \& {Buote}, D.~A. 2005,
+  \apj, 624, 606
+
+\bibitem[{{Jeltema} {et~al.}(2007){Jeltema}, {Hallman}, {Burns}, \&
+  {Motl}}]{2007arXiv0708.1518J}
+{Jeltema}, T.~E., {Hallman}, E.~J., {Burns}, J.~O., \& {Motl}, P.~M. 2007,
+  ArXiv e-prints, 708
+
+\bibitem[{{Kaastra}(1992)}]{1992SRON}
+{Kaastra}, J.~S. 1992
+
+\bibitem[{{Kempner} {et~al.}(2003){Kempner}, {Sarazin}, \&
+  {Markevitch}}]{2003ApJ...593..291K}
+{Kempner}, J.~C., {Sarazin}, C.~L., \& {Markevitch}, M. 2003, \apj, 593, 291
+
+\bibitem[{{Kravtsov} {et~al.}(2006){Kravtsov}, {Vikhlinin}, \&
+  {Nagai}}]{2006ApJ...650..128K}
+{Kravtsov}, A.~V., {Vikhlinin}, A., \& {Nagai}, D. 2006, \apj, 650, 128
+
+\bibitem[{{Krempec-Krygier} \& {Krygier}(1999)}]{1999AcA....49..403K}
+{Krempec-Krygier}, J., \& {Krygier}, B. 1999, Acta Astronomica, 49, 403
+
+\bibitem[{{Liedahl} {et~al.}(1995){Liedahl}, {Osterheld}, \&
+  {Goldstein}}]{1995ApJ...438L.115L}
+{Liedahl}, D.~A., {Osterheld}, A.~L., \& {Goldstein}, W.~H. 1995, \apjl, 438,
+  L115
+
+\bibitem[{{Markevitch} {et~al.}(1998){Markevitch}, {Forman}, {Sarazin}, \&
+  {Vikhlinin}}]{1998ApJ...503...77M}
+{Markevitch}, M., {Forman}, W.~R., {Sarazin}, C.~L., \& {Vikhlinin}, A. 1998,
+  \apj, 503, 77
+
+\bibitem[{{Markevitch} \& {Vikhlinin}(2007)}]{2007PhR...443....1M}
+{Markevitch}, M., \& {Vikhlinin}, A. 2007, \physrep, 443, 1
+
+\bibitem[{{Markevitch} {et~al.}(2001){Markevitch}, {Vikhlinin}, \&
+  {Mazzotta}}]{2001ApJ...562L.153M}
+{Markevitch}, M., {Vikhlinin}, A., \& {Mazzotta}, P. 2001, \apjl, 562, L153
+
+\bibitem[{{Marshall} {et~al.}(2004){Marshall}, {Tennant}, {Grant}, {Hitchcock},
+  {O'Dell}, \& {Plucinsky}}]{aciscontaminant}
+{Marshall}, H.~L., {Tennant}, A., {Grant}, C.~E., {Hitchcock}, A.~P., {O'Dell},
+  S.~L., \& {Plucinsky}, P.~P. 2004, in Presented at the Society of
+  Photo-Optical Instrumentation Engineers (SPIE) Conference, Vol. 5165, X-Ray
+  and Gamma-Ray Instrumentation for Astronomy XIII. Edited by Flanagan, Kathryn
+  A.; Siegmund, Oswald H. W. Proceedings of the SPIE, Volume 5165, pp. 497-508
+  (2004)., ed. K.~A. {Flanagan} \& O.~H.~W. {Siegmund}, 497--508
+
+\bibitem[{{Martini} {et~al.}(2004){Martini}, {Kelson}, {Mulchaey}, \&
+  {Athey}}]{2004cgpc.sympE..31M}
+{Martini}, P., {Kelson}, D.~D., {Mulchaey}, J.~S., \& {Athey}, A. 2004, in
+  Clusters of Galaxies: Probes of Cosmological Structure and Galaxy Evolution,
+  ed. J.~S. {Mulchaey}, A.~{Dressler}, \& A.~{Oemler}
+
+\bibitem[{{Mathiesen} \& {Evrard}(2001)}]{2001ApJ...546..100M}
+{Mathiesen}, B.~F., \& {Evrard}, A.~E. 2001, \apj, 546, 100
+
+\bibitem[{{Maughan}(2007)}]{2007astro.ph..3504M}
+{Maughan}, B.~J. 2007, ArXiv Astrophysics e-prints
+
+\bibitem[{{Maughan} {et~al.}(2007){Maughan}, {Jones}, {Forman}, \& {Van
+  Speybroeck}}]{2007astro.ph..3156M}
+{Maughan}, B.~J., {Jones}, C., {Forman}, W., \& {Van Speybroeck}, L. 2007,
+  ArXiv Astrophysics e-prints
+
+\bibitem[{{Mazzotta} {et~al.}(2001){Mazzotta}, {Markevitch}, {Vikhlinin},
+  {Forman}, {David}, \& {VanSpeybroeck}}]{2001ApJ...555..205M}
+{Mazzotta}, P., {Markevitch}, M., {Vikhlinin}, A., {Forman}, W.~R., {David},
+  L.~P., \& {VanSpeybroeck}, L. 2001, \apj, 555, 205
+
+\bibitem[{{Mazzotta} {et~al.}(2004){Mazzotta}, {Rasia}, {Moscardini}, \&
+  {Tormen}}]{2004MNRAS.354...10M}
+{Mazzotta}, P., {Rasia}, E., {Moscardini}, L., \& {Tormen}, G. 2004, \mnras,
+  354, 10
+
+\bibitem[{{Mercurio} {et~al.}(2003){Mercurio}, {Massarotti}, {Merluzzi},
+  {Girardi}, {La Barbera}, \& {Busarello}}]{2003A&A...408...57M}
+{Mercurio}, A., {Massarotti}, M., {Merluzzi}, P., {Girardi}, M., {La Barbera},
+  F., \& {Busarello}, G. 2003, \aap, 408, 57
+
+\bibitem[{{Mewe} {et~al.}(1985){Mewe}, {Gronenschild}, \& {van den
+  Oord}}]{1985A&AS...62..197M}
+{Mewe}, R., {Gronenschild}, E.~H.~B.~M., \& {van den Oord}, G.~H.~J. 1985,
+  \aaps, 62, 197
+
+\bibitem[{{Mewe} {et~al.}(1986){Mewe}, {Lemen}, \& {van den
+  Oord}}]{1986A&AS...65..511M}
+{Mewe}, R., {Lemen}, J.~R., \& {van den Oord}, G.~H.~J. 1986, \aaps, 65, 511
+
+\bibitem[{{Mohr} \& {Evrard}(1997)}]{1997ApJ...491...38M}
+{Mohr}, J.~J., \& {Evrard}, A.~E. 1997, \apj, 491, 38
+
+\bibitem[{{Morrison} \& {McCammon}(1983)}]{1983ApJ...270..119M}
+{Morrison}, R., \& {McCammon}, D. 1983, \apj, 270, 119
+
+\bibitem[{{Nousek} \& {Shue}(1989)}]{1989ApJ...342.1207N}
+{Nousek}, J.~A., \& {Shue}, D.~R. 1989, \apj, 342, 1207
+
+\bibitem[{{O'Hara} {et~al.}(2006){O'Hara}, {Mohr}, {Bialek}, \&
+  {Evrard}}]{2006ApJ...639...64O}
+{O'Hara}, T.~B., {Mohr}, J.~J., {Bialek}, J.~J., \& {Evrard}, A.~E. 2006, \apj,
+  639, 64
+
+\bibitem[{{Ota} {et~al.}(2006){Ota}, {Kitayama}, {Masai}, \&
+  {Mitsuda}}]{2006ApJ...640..673O}
+{Ota}, N., {Kitayama}, T., {Masai}, K., \& {Mitsuda}, K. 2006, \apj, 640, 673
+
+\bibitem[{{Peres} {et~al.}(1998){Peres}, {Fabian}, {Edge}, {Allen},
+  {Johnstone}, \& {White}}]{1998MNRAS.298..416P}
+{Peres}, C.~B., {Fabian}, A.~C., {Edge}, A.~C., {Allen}, S.~W., {Johnstone},
+  R.~M., \& {White}, D.~A. 1998, \mnras, 298, 416
+
+\bibitem[{{Riess} {et~al.}(1998){Riess}, {Filippenko}, {Challis},
+  {Clocchiatti}, {Diercks}, {Garnavich}, {Gilliland}, {Hogan}, {Jha},
+  {Kirshner}, {Leibundgut}, {Phillips}, {Reiss}, {Schmidt}, {Schommer},
+  {Smith}, {Spyromilio}, {Stubbs}, {Suntzeff}, \&
+  {Tonry}}]{1998AJ....116.1009R}
+{Riess}, A.~G., {Filippenko}, A.~V., {Challis}, P., {Clocchiatti}, A.,
+  {Diercks}, A., {Garnavich}, P.~M., {Gilliland}, R.~L., {Hogan}, C.~J., {Jha},
+  S., {Kirshner}, R.~P., {Leibundgut}, B., {Phillips}, M.~M., {Reiss}, D.,
+  {Schmidt}, B.~P., {Schommer}, R.~A., {Smith}, R.~C., {Spyromilio}, J.,
+  {Stubbs}, C., {Suntzeff}, N.~B., \& {Tonry}, J. 1998, \aj, 116, 1009
+
+\bibitem[{{Riess} {et~al.}(2007){Riess}, {Strolger}, {Casertano}, {Ferguson},
+  {Mobasher}, {Gold}, {Challis}, {Filippenko}, {Jha}, {Li}, {Tonry}, {Foley},
+  {Kirshner}, {Dickinson}, {MacDonald}, {Eisenstein}, {Livio}, {Younger}, {Xu},
+  {Dahl{\'e}n}, \& {Stern}}]{2007ApJ...659...98R}
+{Riess}, A.~G., {Strolger}, L.-G., {Casertano}, S., {Ferguson}, H.~C.,
+  {Mobasher}, B., {Gold}, B., {Challis}, P.~J., {Filippenko}, A.~V., {Jha}, S.,
+  {Li}, W., {Tonry}, J., {Foley}, R., {Kirshner}, R.~P., {Dickinson}, M.,
+  {MacDonald}, E., {Eisenstein}, D., {Livio}, M., {Younger}, J., {Xu}, C.,
+  {Dahl{\'e}n}, T., \& {Stern}, D. 2007, \apj, 659, 98
+
+\bibitem[{{Rosati} {et~al.}(1995){Rosati}, {della Ceca}, {Burg}, {Norman}, \&
+  {Giacconi}}]{1995ApJ...445L..11R}
+{Rosati}, P., {della Ceca}, R., {Burg}, R., {Norman}, C., \& {Giacconi}, R.
+  1995, \apjl, 445, L11
+
+\bibitem[{{Sakelliou} \& {Ponman}(2004)}]{2004MNRAS.351.1439S}
+{Sakelliou}, I., \& {Ponman}, T.~J. 2004, \mnras, 351, 1439
+
+\bibitem[{{Sanderson} {et~al.}(2006){Sanderson}, {Ponman}, \&
+  {O'Sullivan}}]{2006MNRAS.tmp.1068S}
+{Sanderson}, A.~J.~R., {Ponman}, T.~J., \& {O'Sullivan}, E. 2006, \mnras, 1068
+
+\bibitem[{{Smith} {et~al.}(2005){Smith}, {Kneib}, {Smail}, {Mazzotta},
+  {Ebeling}, \& {Czoske}}]{2005MNRAS.359..417S}
+{Smith}, G.~P., {Kneib}, J.-P., {Smail}, I., {Mazzotta}, P., {Ebeling}, H., \&
+  {Czoske}, O. 2005, \mnras, 359, 417
+
+\bibitem[{{Snowden} {et~al.}(2007){Snowden}, {Mushotzky}, {Kuntz}, \&
+  {Davis}}]{chanxmmdis}
+{Snowden}, S.~L., {Mushotzky}, R.~M., {Kuntz}, K.~D., \& {Davis}, D.~S. 2007,
+  ArXiv e-prints, 710
+
+\bibitem[{{Teague} {et~al.}(1990){Teague}, {Carter}, \&
+  {Gray}}]{1990ApJS...72..715T}
+{Teague}, P.~F., {Carter}, D., \& {Gray}, P.~M. 1990, \apjs, 72, 715
+
+\bibitem[{{Townsley} {et~al.}(2000){Townsley}, {Broos}, {Garmire}, \&
+  {Nousek}}]{2000ApJ...534L.139T}
+{Townsley}, L.~K., {Broos}, P.~S., {Garmire}, G.~P., \& {Nousek}, J.~A. 2000,
+  \apjl, 534, L139
+
+\bibitem[{{Tucker} {et~al.}(1998){Tucker}, {Blanco}, {Rappoport}, {David},
+  {Fabricant}, {Falco}, {Forman}, {Dressler}, \&
+  {Ramella}}]{1998ApJ...496L...5T}
+{Tucker}, W., {Blanco}, P., {Rappoport}, S., {David}, L., {Fabricant}, D.,
+  {Falco}, E.~E., {Forman}, W., {Dressler}, A., \& {Ramella}, M. 1998, \apjl,
+  496, L5+
+
+\bibitem[{{Ventimiglia} {et~al.}(2008){Ventimiglia}, {Voit}, {Borgani}, \&
+  {Donahue}}]{VV08}
+{Ventimiglia}, D., {Voit}, G.~M., {Borgani}, S., \& {Donahue}, M. 2008, ApJ
+  Submitted
+
+\bibitem[{{Vikhlinin}(2006)}]{2006ApJ...640..710V}
+{Vikhlinin}, A. 2006, \apj, 640, 710
+
+\bibitem[{{Vikhlinin} {et~al.}(2005){Vikhlinin}, {Markevitch}, {Murray},
+  {Jones}, {Forman}, \& {Van Speybroeck}}]{2005ApJ...628..655V}
+{Vikhlinin}, A., {Markevitch}, M., {Murray}, S.~S., {Jones}, C., {Forman}, W.,
+  \& {Van Speybroeck}, L. 2005, \apj, 628, 655
+
+\bibitem[{{Vikhlinin} {et~al.}(1998){Vikhlinin}, {McNamara}, {Forman}, {Jones},
+  {Quintana}, \& {Hornstrup}}]{1998ApJ...502..558V}
+{Vikhlinin}, A., {McNamara}, B.~R., {Forman}, W., {Jones}, C., {Quintana}, H.,
+  \& {Hornstrup}, A. 1998, \apj, 502, 558
+
+\bibitem[{{Voit}(2005)}]{2005RvMP...77..207V}
+{Voit}, G.~M. 2005, Reviews of Modern Physics, 77, 207
+
+\bibitem[{{Wang} \& {Steinhardt}(1998)}]{1998ApJ...508..483W}
+{Wang}, L., \& {Steinhardt}, P.~J. 1998, \apj, 508, 483
+
+\bibitem[{{Wang} {et~al.}(2004){Wang}, {Khoury}, {Haiman}, \&
+  {May}}]{2004PhRvD..70l3008W}
+{Wang}, S., {Khoury}, J., {Haiman}, Z., \& {May}, M. 2004, \prd, 70, 123008
+
+\bibitem[{{White} {et~al.}(1997){White}, {Jones}, \&
+  {Forman}}]{1997MNRAS.292..419W}
+{White}, D.~A., {Jones}, C., \& {Forman}, W. 1997, \mnras, 292, 419
+
+\bibitem[{{Yang} {et~al.}(2004){Yang}, {Huo}, {Zhou}, {Xue}, {Mao}, {Ma}, \&
+  {Chen}}]{2004ApJ...614..692Y}
+{Yang}, Y., {Huo}, Z., {Zhou}, X., {Xue}, S., {Mao}, S., {Ma}, J., \& {Chen},
+  J. 2004, \apj, 614, 692
+
+\bibitem[{{Yuan} {et~al.}(2005){Yuan}, {Yan}, {Yang}, \&
+  {Zhou}}]{2005ChJAA...5..126Y}
+{Yuan}, Q.-R., {Yan}, P.-F., {Yang}, Y.-B., \& {Zhou}, X. 2005, Chinese Journal
+  of Astronomy and Astrophysics, 5, 126
+
+\end{thebibliography}
+
+\clearpage
+\input{sample.tex}
+
+\clearpage
+\input{tfwav.tex}
+\input{cc_nccdesc.tex}
+
+\clearpage
+\input{r2500.tex}
+
+\clearpage
+\input{r5000.tex}
+
+\end{document}
+

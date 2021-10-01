@@ -1,0 +1,604 @@
+XIM 1.1: An IDL X-ray spectro-imaging simulator
+
+Sebastian Heinz, 02/26/2009
+
+Please send comments and questions to heinzs@astro.wisc.edu
+
+
+---------------------------------------------------------------------------
+
+
+Introduction:
+
+  XIM is a set of IDL tools designed to turn standard gridded output
+  from a hydrodynamical simulation into a virtual X-ray
+  observation. The output from XIM is a spectral data cube.
+
+  This package contains the modules necessary to perform X-ray
+  spectral simulations:
+
+  * IXO and Chandra on-axis response matrices 
+  * an interface to the APEC/APED thermal emission code
+  * an interface to MARX for sophisticated Chandra ray tracing
+    simulations
+  * an interface for spectral models other than thermal
+  * output as IDL data files and fits events files
+
+
+---------------------------------------------------------------------------
+
+
+Installation / requirements:
+
+  In order to execute XIM, the following components need to be installed
+  and in the IDL path:
+
+
+  a) IDL version 6.0 (not tested on earlier versions)
+
+     Please set the environment variable $XIMPATH=/path/to/XIM-directory
+     and add $XIMPATH to the IDL path. 
+
+
+  b) APED/APEC_IDL (IDL thermal emission code)
+
+     APED/APEC_IDL is available at
+
+        http://cxc.harvard.edu/atomdb/index.html 
+
+     Please follow the installation instructions at that site.
+     Currently, you must run the commant @init_atomdb_idl from the
+     command line in IDL before using XIM (this implies that XIM can
+     currently only be run from the command line).
+
+
+  c) IXO or Chandra response files (unless MARX is used
+     exclusively or user-supplied response files are used (e.g., for other telescopes). 
+
+     Download the following files into the $XIMPATH/README directory:
+     
+     http://ixo.gsfc.nasa.gov/documents/science/response_matrices/ixo_ucal_0p5_081030.rsp
+     http://ixo.gsfc.nasa.gov/documents/science/response_matrices/ixo_ucal_0p2_081030.rsp
+     http://ixo.gsfc.nasa.gov/documents/science/response_matrices/ixo_ucal_5p0_081030.rsp
+     http://cxc.harvard.edu/caldb/prop_plan/imaging/CY11/acisi_aimpt_cy11.rmf
+     http://cxc.harvard.edu/caldb/prop_plan/imaging/CY11/acisi_aimpt_cy11.arf
+     http://cxc.harvard.edu/caldb/prop_plan/imaging/CY11/aciss_aimpt_cy11.rmf
+     http://cxc.harvard.edu/caldb/prop_plan/imaging/CY11/aciss_aimpt_cy11.arf
+   
+
+  d) IDL Astrolib (version 11-11-2008 or later)
+
+     available at
+
+        http://idlastro.gsfc.nasa.gov/
+
+     Please follow installation instructions at that site and make sure
+     that the astrolib is in you $IDL_PATH
+
+
+  e) MARX 4.3 (for MARX simulations only) available at
+
+        http://space.mit.edu/ASC/MARX/  
+
+     Please follow the installation instructions at that site and make
+     sure marx is in the $PATH.
+
+
+----------------------------------------------------------------------------
+
+
+Setting up the XIM environment
+
+   In Bourne shell, execute (or add to you .bashrc) the following
+   commands (with the proper paths):
+
+   export ATOMDB_IDL="/path/to/atomdb_idl-2.00"
+   export XIMPATH="/path/to/XIM-directory"
+   export IDL_ASTROLIB="/path/to/IDL_ASTROLIB"
+   export IDL_PATH="$IDL_PATH:$XIMPATH//:$ATOMDB_IDL//:$IDL_ASTROLIB//"
+
+   In CSH or TCSH, execute (or add to your .cshrc or .tcshrc)
+
+   setenv ATOMDB_IDL /path/to/atomdb_idl_2.00
+   setenv XIMPATH /path/to/XIM-directory
+   setenv IDL_ASTROLIB /path/to/IDL_ASTROLIB
+   setenv IDL_PATH {$IDL_PATH}:{$XIMPATH}:{$ATOMDB_IDL}:{$IDL_ASTROLIB}
+
+
+---------------------------------------------------------------------------
+
+
+The general process of the code:
+
+  a) (pro xim): User passes 3D data cubes of particle density,
+     temperature, and line-of-sight velocity, along with spatial
+     dimensions of the grid, the direcion of the line of sight, and
+     the desired energy grid for the output spectrum. Further input is
+     the exposure time and the filename for the output to be written
+     to. This script then executes the following sub-scripts:
+
+  b) (pro apecgrid) Code reads in thermal emission model grid for
+     the temperature range and energy grid.  This step can be replaced
+     by a user defined procedure
+
+  c) (pro line_image): Code will integrate Doppler-shifted spectra (based on
+     line-of-sight velocity data) along the line of sight into a 3D
+     spectro-image.
+
+  d) (pro xray_proj): Code will re-grid this image to instrument pixel
+     scale, then re-grid the originally logarithmic energy grid (for
+     easy Doppler-shifting) to the user-specified grid, convolve this
+     grid with the instrument response, and convolve it with a
+     Gaussian PSF of appropriate width in the spatial dimensions.
+
+  e) (pro poissonspec): Apply Poisson noise to grid
+
+  f) (pro make_evts): Create a FITS events file for standard data processing
+
+  g) (pro make_pi): Create a FITS X-ray spectrum (pi-file)
+
+  h) (pro marxxim): Interface to MARX simulator
+
+  Output is written into filename.dat, filename.fits, and filename.pi, and the
+  information egrid and xrayspec can be used as input to poissonspec to
+  produce exposures of different length without having to do the entire
+  calculation again (which, depending on the size of the grid and the desired
+  energy resolution, can be lengthy).
+
+
+---------------------------------------------------------------------------
+
+
+Splitting calculations up for large simulations:
+
+For very large computational grids the spectral projection along the
+line of sight can be very computationally intensive (nx*ny*nz*ne
+steps). In such cases, it is beneficial to split the computation up
+into smaller chunks. 
+
+(a) A simple parallelization for this case in included in XIM.  This
+    can be accomplished by using the split and splice keywords. Note
+    that the final array size in the output image (which depens on the
+    output pixel scale and spectral resolution) should not use more
+    than about a quarter of the total accessible ram in order to avoid
+    excessive virtual memory access.
+
+    Set split=[proc,nprocs] to split the grid into nproc sub-grids,
+    i.e.,
+
+         x_ray_sim,...,split=[proc,nprocs]
+
+    This should be run in parallel on different processors, with proc
+    running from 1 to nprocs (this will have to be launched manually
+    on each processor in the absence of any MPI implementations in
+    IDL).
+
+    After running x_ray_sim with the split keyword set on nprocs
+    processor, add all sub-grid computations back together by running
+    x_ray_sim with the splice keyword set to 1 and all other keywords
+    identical (do not set the split keyword here), i.e.,
+
+        x_ray_sim,...,splice=1
+
+    This will produce one spectral cube.
+
+    It will be best to create a wrapper script (say, wrapper.pro) that
+    loads the data from your simulation, then executes
+    @init_atomdb_idl, and finally calls xim with the proper split
+    keyword set for the processor you are running it on.  This should
+    not be a procedure or function but an IDL batch script.  Call this
+    script from the command line using the nohup command like
+
+        nohup idl -e "@wrapper.pro" > nohup.out &
+
+    to run IDL in the background.
+
+(b) This can be accomplished manually by setting a fixed reference
+    point by using the keyword center in xim (this will reference all
+    coordinates to the same physical point) and assigning a reference
+    sky coordinate to that point by using the keyword rdcenter in xim
+    (in RA--DEC, which fixes the astrometry for all data cubes).
+    These data files will have to be combined manually.
+
+
+---------------------------------------------------------------------------
+
+
+Re-running for different instrument setups but identical simulation data
+
+Because the spectral projection can be computationally expensive, use
+the projfile keyword to re-run the final instrument convolutions on an
+existing spectral projection file.  This file is named
+filename_spec_data.dat, where filename is the filename specified when
+running x_ray_sim on the original data cube.
+
+
+---------------------------------------------------------------------------
+
+
+The limitations of this package are as follows:
+
+a) Only non-relativistic velocities are allowed
+
+b) Only rectilinear grids are allowed (though the pixel size is allowed to
+   vary from row to row and column to colum).
+
+d) Only Chandra and IXO are supported actively (other instrument responses can
+   be specified at the command line, but are not tested).
+
+e) Outside of MARX, only on-axis responses are included.
+
+f) Outside of MARX, only on-axis PSFs are supported (no vignetting or off-axis
+   PSF effects).
+
+g) Currently, only glass optics and the core XMS calorimeter array are
+   supported natively (download other response matrices from the IXO web site
+   to simulate other instruments and set the appropriate keywords when running
+   xim)
+
+---------------------------------------------------------------------------
+
+
+Notes on running the script:
+ 
+ Before running xim, you must execute the command 
+
+    @init_atomdb_idl
+
+ from the IDL command line (to set up the APEC/APED routines)
+
+
+ CALLING SEQUENCE:
+
+
+ Sebastian Heinz, 12/15/2008
+
+ con_x initializes cosmology and calls relevant routines to calculate
+ simulated X-ray spectrum
+
+
+ CALLING SEQUENCE:
+
+ pro xim,d,t,v,x,y,z,dir,redshift,$
+         egrid,exptime,filename,cosmo=cosmo,$
+         telescope=telescope,instrument=instrument,$
+         x_pix=x_pix,y_pix=y_pix,ang_res=ang_res,$
+         response=response,arf=arf,metallicity=metallicity,$
+         fillingfactor=fillingfactor,nh=nh,$
+         spec_model=spec_model,tbins=tbins,$
+         splice=splice,split=split,projfile=projfile,$
+         overwrite=overwrite,verbose=verbose,$
+         vturb=vturb,center=center,rdcenter=rdcenter,$
+         aimpoint=aimpoint,marx=marx,$
+         gratings=gratings,pileup=pileup
+
+ input:  
+         d:    density array in cm^(-3) is defined as sqrt(n_H*n_e), i.e., the
+               square root of the product of electron and hydrogen density.
+
+         t:    temperature array in Kelvin (same dimensions as d).
+
+         vx:   x-component of the velocity in cm/s (same dimensions as d).
+
+         vy:   y-component of the velocity in cm/s (same dimensions as d).
+
+         vz:   z-component of the velocity in cm/s (same dimensions as d).
+
+         x:    x-coordinate of array (edge values) in cm
+               must have dimension d(*,0,0)+1, e.g., if d=[1,2,3],
+               x=[0.3,0.8,1.1,5.0]; must be monotonically increasing.
+
+         y:    y-coordinate of array (in cm), must have dimension of
+               d(0,*,0)+1.
+
+         z:    z-coordinate of array (in cm), must have dimension of
+               d(0,0,*)+1.
+
+         dir:  line-of-sight projection direction, either as scalar (x:1,
+               y:2, z:3) or 3D vector of line-of-sight direction.
+
+         redshift: proper redshift to source (for distance calculation and
+               proper cosmological red-shifting, angular size, and dimming),
+               using Hubble constant (70 km/s/Mpc is default, or as provided
+               by keyword cosmo).
+
+         egrid: spectral energy grid (edge values) for which spectrum should
+               be calculated for; in keV. Output spectrum will have dimensions
+               of egrid minus one.
+
+         exptime: exposure time in ksec (i.e., 10^3 sec)
+
+         filename: basename of file for output to be written in (with suffix
+               *.dat added) and specral grid file will be written with suffix
+               *_spec_model.dat added
+
+ output:
+         all output will be written into three output files: a raw
+         image-spectral cube (not convolved with telescope response)
+         is written out in filename_spec_data.dat. The virtual
+         observation is written into filename.dat.  These are IDL
+         data files and can be loaded into IDL using the
+         restore,filename.dat command.  The third file is a FITS
+         events file of the virtual observation.
+
+         The first file contains the spectral cube (img), the image
+         sky coordinates imx and imy (in degrees) relative to center,
+         the file redshift, image coordinate axis size (n1, n2), the
+         energy grid of the raw spectral cube (logegrid), the output
+         energy grid (egrid), the three cosmological distance
+         measures (proper, angular, luminosity distance as pdist,
+         adist, ldist), and the coordinates of the reference point
+         (center, rdcenter).
+
+         The second file contains the spectral cube folded through
+         the telescope response with Poisson noise (simspec) and
+         without Poisson noise (xrayspec), the energy grid of the
+         array (egrid), the image coordinates in detector (imx,imy)
+         and sky coordiantes (ra,dec in degrees), the cosmological
+         parameters used, exposure time, and telescope information.
+         
+         The FITS events file filename.fits conforms to the OGIP
+         convention for binary events files and can be read into
+         tools like ds9.
+
+ keywords:
+
+         native: If set, the output energy grid will be the native instrument
+                resolution (from the channel map in the response matrix),
+                using the upper and lower bound of egrid to bound the
+                channels for which the calculation will be performed
+
+         metallicity: metal abundance for elements with Z>2. format: array
+                (same dimensions as d) or scalar, in solar units (default is
+                unity)
+
+         fillingfactor: array (same dimensions as s) or scalar, indicating the
+                volume filling factor of the emitting material (default is
+                unity)
+
+         nh:    scalar absorbing hydrogen column density in units of 1e20
+                cm^-2 (default is zero).
+
+         cosmo: cosmological parameters (if not specified, concordance values
+                are assumed:
+                cosmo=[omega_lambda,omega_matter,omega_naught,H_naught],
+                default values are [0.7,0.3,1.0,70]
+
+         telescope: string containing the name of the telescope. Currently,
+                supported values are "IXO", "Chandra", and
+                "CUSTOM"
+
+         instrument: detector to be used. Currently supported values are
+                "XMS" for IXO and "ACIS-S" and "ACIS-I" for Chandra
+                (if the MARX keyword is set, "HRC-S" and "HRC-I" are also
+                available) "TES" and "WFI" for XEUS
+
+         x_pix: x pixel size (x-dir) in arcsec (default is 5.0" for IXO and
+                0.492" for Chandra)
+
+         y_pix: y pixel size (y-dir) in arcsec (default is 5.0" for IXO and
+                0.492" for Chandra)
+
+         ang_res: Angular resolution of telescope (default is 5" for IXO
+                and 0.5" for Chandra)
+
+         response: filename for user-provided response file (CAL/GEN/92-002 
+                format), default are the appropriate responses for the
+                respective instruments (using the cycle 10 responses for 
+                Chandra). The option "dummy" (default for "CUSTOM" telescope)
+                uses the identity matrix
+
+         arf:   optional filename for user provided ancilliary response file
+                (CAL/GEN/92-002 format), default are the appropriate arfs for
+                the respective instruments (using the cycle 10 responses for
+                Chandra).
+
+         spec_model: name of procedure to return spectral model grid;
+                default is the APEC code procedure apecgrid.  For
+                specifications of this procedure, see the README file
+
+         spec_pars: arbitrary variable or structure that can be passed to
+                spec_model via the common block "spec" for user-defined
+                spectral models.
+
+         background: name of procedure to return backgroun spectrum (sky and
+                instrumental background) for energy grid used in calculation
+
+         tbins: Number of logarithmic bins per decade in temperature
+                for spectral model. Default: 200 bins over 3 decades
+                in temperature. 
+ 
+         splice: If data were split in prior step, set splice=1 and xim will
+                read in the previously split data files and combine them (the
+                information necessary is contained in the filename_info.dat
+                file). Default is splice=0
+
+         split: for large grids and many spectral bins, computation
+                can be split up by spectral range; set to
+                split=[proc,Procs], where proc is the processor
+                number and Procs the total number of
+                processor. Computation will proceed only through
+                spectral projection. To convolve the combined spectra
+                with the instrument response, run x_ray_sim with
+                keyword splice set to the total number of processors.
+
+         projfile: name of line-of-sight projection saved by previous
+                run to convolve with telescope response (avoids
+                re-running expesnsive spatial projection)
+
+         overwrite: set this keyword to overwrite the input variables with
+                rotated and/or rescaled arrays, rather than restoring the
+                original input variables upon completion (default is
+                overwrite=0)
+
+         verbose: if set, spit out running info on progress
+                (default); NOTE: set this to verbose=0 or verbose=1
+                if screen output is piped to disk file (for verbose >
+                1, performance will be seriously degraded).
+
+         vturb: turbulent Gaussian velocity broadening
+
+         center: reference coordinate point for calculating image
+                coordinates; default is lower-left corner of image;
+                two-element vector, units: cm
+
+         rdcenter: right-ascention (RA) and declination (DEC) of
+                reference point center; used for calculating sky
+                coordinates of image; two-element vector, units: degrees
+
+         aimpoint: Specifies the aimpoint of the telescope as a
+                vector (RA,DEC) in degrees. Default is [0,0]
+
+         marx:  only available in conjunction with telescope
+                "Chandra". Specifies that MARX ray tracing simulation should
+                be performed (default is marx=0, set to marx=1 to perform a
+                ximulation with MARX). Requires that MARX is set up
+                on the system and in the path.
+
+         gratings: only available in conjunction with MARX keyword. Specifies
+                whether and which gratings are supposed to be used. Supported
+                values are "HETG", "LETG", or "NONE"; default: "NONE".
+
+         roll:  only available in conjunction with MARX keyword. Specifies
+                roll angle in degrees (float scalar, default: 0)
+
+         pileup: only available in conjunction with MARX keyword. Specifies
+                that pileup effects should be taken into account in the MARX
+                simulation; default is pileup=1, to turn of, set pileup=0
+
+         evts:  if set, an events FITS file will be written (default is
+                evts=0); This can be very computationally expensive.
+
+         psf:   string containing the name of a procedure to provide
+                user-supplied energy dependent psf model
+
+
+---------------------------------------------------------------------------
+
+
+Supplying a spectral model:
+
+  XIM can accept a user-specified spectral model by passing the name
+  of the procedure as a keyword to XIM: xim,...,spec_model='spec_proc',...
+
+  This procedure must conform to the following calling sequence:
+
+         spec_proc,tgrid,egrid,redshift,specgrid,$
+		   specgridzero,verbose=verbose
+
+  input:
+
+         tgrid: Temperature grid for which spectra are to be returned;
+                units: Kelvin; dimension is nt
+
+         egrid: Energy grid for which spectral are to be returned;
+                units: keV; dimension is ne
+
+  output:
+
+         specgrid: emissivity matrix for metals heavier than helium as
+                a function of energy (rows) and temperature (columns);
+
+                Dimensions must be (ne-1)#(nt-1), with the (i,j)
+                element returning the integrated emissivity in the
+                energy range (egrid(i):egrid(i+1)) and in the
+                temperature range (tgrid(j):tgrid(j+1)); 
+  
+                Units: photons*cm^3/s
+
+         specgridzero: emissivity matrix for helium and hydrogen as a
+		function of energy (rows) and temperature (columns);
+
+                Dimensions must be (ne-1)#(nt-1), with the (i,j)
+                element returning the integrated emissivity in the
+                energy range (egrid(i):egrid(i+1)) and in the
+                temperature range (tgrid(j):tgrid(j+1)); 
+  
+                Units: photons*cm^3/s
+
+  keywords:
+
+         verbose: if set to larger than zero, print information to
+                stdout.
+
+
+---------------------------------------------------------------------------
+
+
+Supplying a PSF model:
+
+  XIM can accept a user-specified PSF model by passing the name
+  of the procedure as a keyword to XIM: xim,...,psf='psf_proc',...
+
+  This procedure must conform to the following calling sequence:
+
+         psf_proc,e,x,y,psf
+
+  input:
+
+         e:     Energy at which PSF is evaluated (in keV)
+         x:     x-axis of PSF image (in arcsec)
+         y:     y-axis of PSF image (in arcsec)
+
+  output:
+
+         psf:   2D image of the PSF. Must have dimensions (nx-1)*(ny-1) where
+                nx=n_elements(x) and ny=n_elements(ny), since x and y are
+                pixel boundaries, and should be centered on the array and
+                normalized so that total(psf)=1.
+
+
+---------------------------------------------------------------------------
+
+
+Supplying a background spectral model:
+
+  XIM can accept a user-specified background spectral models by passing the name
+  of the procedure as a keyword to XIM: xim,...,background='background_proc',...
+
+  This procedure must conform to the following calling sequence:
+
+         psf_proc,sky_e,sky_bg,inst_e,inst_bg
+
+  input:
+
+         sky_e:  Energy grid on which sky background is calculated as counts
+                 between e(n) and e(n+1)
+
+         inst_e: Energy grid on which instrument background is calculated.
+
+  output:
+
+         sky_bg: background sky spectrum on energy grid sky_e with dimension
+                 [n_elements(sky_e)-1]. I.e., flux between sky_e(n) and
+                 sky_e(n+1) will be returned in sky_bg(b). This is treated as
+                 photon flux onto the mirrors, just like sources flux and will
+                 be folded through the detector response.
+
+         inst_bg: particle/instrument background on energy grid inst_e with
+                 dimension [n_elements(inst_e)-1]. I.e., flux between
+                 inst_e(n) and inst_e(n+1) is returned in inst_bg(n). The
+                 instrument background will not be folded through the
+                 telescope response and will be added to the final detector
+                 counts directly.
+
+
+
+         psf:   2D image of the PSF. Must have dimensions (nx-1)*(ny-1) where
+                nx=n_elements(x) and ny=n_elements(ny), since x and y are
+                pixel boundaries, and should be centered on the array and
+                normalized so that total(psf)=1.
+
+
+---------------------------------------------------------------------------
+
+
+Ongoing Development:
+
+a) More memory efficient data-splitting for multi-processor execution
+
+b) More telescopes and instrument to be supported (e.g., SWIFT, IXO-wide field
+   imager, IXO high energy imager).
+
+c) Long term: Fortran port and implementation of direct HDF5 data input if
+   requested by users.

@@ -1,0 +1,1030 @@
+#!/usr/bin/env slsh
+
+%%**********************************************************************%%
+%%     Copyrights:                                                      %%
+%%                                                                      %%
+%%     Copyright (c) 2005 Smithsonian Astrophysical Observatory         %%
+%%                                                                      %%
+%%     Permission to use, copy, modify, distribute, and  sell  this     %%
+%%     software  and  its  documentation  for any purpose is hereby     %%
+%%     granted without  fee,  provided  that  the  above  copyright     %%
+%%     notice  appear  in  all  copies and that both that copyright     %%
+%%     notice and this permission notice appear in supporting docu-     %%
+%%     mentation,  and  that  the  name  of the  Smithsonian Astro-     %%
+%%     physical Observatory not be used in advertising or publicity     %%
+%%     pertaining to distribution of the software without specific,     %%
+%%     written  prior  permission.   The Smithsonian  Astrophysical     %%
+%%     Observatory makes no representations about  the  suitability     %%
+%%     of  this  software for any purpose.  It is provided  "as is"     %%
+%%     without express or implied warranty.                             %%
+%%     THE  SMITHSONIAN  ASTROPHYSICAL  OBSERVATORY  DISCLAIMS  ALL     %%
+%%     WARRANTIES  WITH  REGARD  TO  THIS  SOFTWARE,  INCLUDING ALL     %%
+%%     IMPLIED  WARRANTIES  OF  MERCHANTABILITY AND FITNESS, IN  NO     %%
+%%     EVENT SHALL THE  SMITHSONIAN  ASTROPHYSICAL  OBSERVATORY  BE     %%
+%%     LIABLE FOR  ANY SPECIAL, INDIRECT  OR  CONSEQUENTIAL DAMAGES     %%
+%%     OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS  OF USE,  DATA     %%
+%%     OR  PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR     %%
+%%     OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION  WITH     %%
+%%     THE  USE OR PERFORMANCE OF THIS SOFTWARE.                        %%
+%%                                                                      %%
+%%**********************************************************************%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This script requires a parameter file for itself and for its underlying
+%  tools:   dmextract, mkrmf, mkacisrmf, mkwarf, dmgroup & dmhedit
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% load the necessary libraries
+
+require("paramio");
+require("stackio");
+require("caldb");
+require("cxcdm");
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%   domsg( verbose:i, value:i, msg:s )
+%
+% Aim:
+%   echo msg to STDOUT if the global verbose variable
+%   (verbose) is >= value
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define domsg( verbose, vval, msg )
+{
+ if ( int(verbose) >= vval )
+   message( msg );
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Usage:
+%  docommand ( cmd:s )
+%
+%
+% Aim:
+%   run the command and check the return value
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define docommand ( cmd ) {
+
+  if ( 0 == system(cmd) )
+    return(0);
+  else
+  {
+     domsg( "0", 0, cmd + "  failed.");
+     return(1);
+  }
+
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%  get_keyword( block:s, keyword:s )
+%
+% Aim:
+%   Retrieve keyword value from input
+%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define get_keyword( block, keyword )
+{
+  variable kd;     % keyword descriptor
+
+  ( kd, keyword ) = dmKeyRead( block, keyword );
+  return( keyword );
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%  extract_spectra( full_outroot:s, infile:s, ptype:s, ewmap:s,
+%                   binwmap:s, clobber:s, verbose:i )
+%
+% Aim:
+%   Create spectrum from input file.
+%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define extract_spectra( full_outroot, infile, ptype, ewmap, binwmap, 
+			clobber, verbose )
+{
+
+  variable cmd;           % command string
+
+  % output spectrum filename
+  variable specfile = full_outroot + "." + strlow(ptype);
+
+  punlearn( "dmextract" );
+
+  cmd = "dmextract ";
+  cmd += "infile=\"" + infile + "[bin " + ptype + "]\" ";
+  cmd += "outfile=" + specfile + " ";
+  cmd += "opt=pha1 ";
+  cmd += "wmap=\"[energy=" + ewmap + "][bin " + binwmap + "]\" " ;
+  cmd += "clobber=" + clobber + " ";
+  cmd += "verbose=" + string(verbose) + " ";
+  cmd += "mode=h";
+  
+  domsg( verbose, 2, "\n" + cmd + "\n" );
+
+  return( docommand(cmd), specfile );
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%   build_rmf( rmftool:s, ptype:s, full_outroot:s, ebin:s,
+%              rmfbin:s, clobber:s, verbose:i, specfile:s, weightfile:s )
+%
+% Aim:
+%   Run either mkrmf or mkacisrmf depending on input conditions.
+%   For mkrmf:  input CALDB and weight file and return RMF name.
+%   For mkacisrmf:  input CALDB and WMAP and return RMF name.
+%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define  build_rmf( rmftool, ptype, full_outroot, ebin,
+                   rmfbin, clobber, verbose, specfile, weightfile )
+{
+  variable cmd;                 % command string
+
+  % RMF filename to return
+  variable rmffile = full_outroot + ".wrmf";
+
+  if ( "mkrmf" == rmftool )
+  {
+     punlearn("mkrmf");
+
+     cmd = "mkrmf ";
+     cmd += "infile=CALDB ";
+     cmd += "outfile=" + rmffile + " ";
+     cmd += "logfile= ";
+     cmd += "weights=" + weightfile + " ";
+     cmd += "axis1=\"energy=" + ebin + "\" ";
+     cmd += "axis2=\"" + rmfbin + "\" ";
+     cmd += "clobber=" + clobber + " ";
+     cmd += "verbose=" + string(verbose) + " ";
+     cmd += "mode=h";
+
+     domsg(verbose,2,"\n" + cmd);
+     return( docommand(cmd), rmffile );
+  }
+ else if ( "mkacisrmf" == rmftool )
+  {
+      punlearn("mkacisrmf");
+
+      variable channel = strchopr(rmfbin,'=',0);
+
+      cmd = "mkacisrmf ";
+      cmd += "infile=CALDB ";
+      cmd += "outfile=" + rmffile + " ";
+      cmd += "energy=\"" + ebin + "\" ";
+      cmd += "channel=\"" + channel[0] + "\" ";
+      cmd += "chantype=" + strup(ptype) + " ";
+      cmd += "wmap=" + specfile + "\"[WMAP]\" ";
+      cmd += "gain=CALDB ";
+      cmd += "clobber=" + clobber + " ";
+      cmd += "verbose=" + string(verbose) + " ";
+      cmd += "mode=h";
+
+      domsg(verbose,2,"\n" + cmd);
+      return( docommand(cmd), rmffile );
+  }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%  create_arf( outtype:s, outroot:s, ebin:s, clobber:s, verbose:i, specfile:s )
+%
+% Aim:
+%   Run mkwarf to create a weighted ARF.  Input the WMAP to create
+%   an ARF and weight file (to be used for creating a RMF, if using mkrmf).
+%   Return the name of the ARF.
+%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define create_arf( full_outroot, ebin, clobber, verbose, specfile )
+{
+  variable cmd;                 % command string
+
+  % ARF output file
+  variable arffile = full_outroot + ".warf";
+
+  % output weight file used in mkrmf
+  variable weightfile = full_outroot + ".wfef";
+
+%  punlearn("mkwarf");
+  cmd = "mkwarf ";
+  cmd += "infile=" + specfile + "\"[WMAP]\" ";
+  cmd += "outfile=" + arffile + " ";
+  cmd += "weightfile=" + weightfile + " ";
+  cmd += "spectrumfile= ";
+  cmd += "egridspec=\"" + ebin + "\" ";
+  cmd += "clobber=" + clobber + " ";
+  cmd += "verbose=" + string(verbose) + " ";
+  cmd += "mode=h";
+
+  domsg(verbose,2,"\n" + cmd);
+
+  return( docommand(cmd), arffile, weightfile );
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%   group_spectrum( ptype:s, full_outroot:s, val:s, spec:s, gtype:s,
+%		    clobber:s, verbose:i, phafile:s )
+%
+% Aim:
+%   Optionally group output spectrum.
+%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define group_spectrum( ptype, full_outroot, val, spec, gtype,
+		       clobber, verbose, phafile )
+{
+  variable cmd;                                      % command string
+
+  % grouped spectrum name
+  variable grpout = full_outroot + "_grp." + strlow(ptype);
+
+  punlearn("dmgroup");
+
+  cmd = "dmgroup ";
+  cmd += "infile=" + phafile + "\"[SPECTRUM\]\" ";
+  cmd += "outfile=" + grpout + " ";
+  cmd += "binspec=" + string(spec) + " ";
+  cmd += "grouptype=" + gtype + " ";
+  cmd += "grouptypeval=" + string(val) + " ";
+  cmd += "ycolumn=counts ";
+  cmd += "xcolumn=channel ";
+  cmd += "tabcolumn= ";
+  cmd += "clobber=" + clobber + " ";
+  cmd += "verbose=" + string(verbose) + " ";
+  cmd += "mode=h";
+
+  domsg(verbose,2,"\n" + cmd);
+
+  return( docommand(cmd), grpout );
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%   edit_headers( verbose:i, infile:s, key:s, val:s )
+%
+% Aim:
+%   Update/add the infile header key with a certain value.
+%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define edit_headers( verbose, infile, key, val )
+{
+  variable cmd;                            % command string
+  punlearn("dmhedit");
+
+  cmd = "dmhedit ";
+  cmd += "infile=" + infile + " ";
+  cmd += "filelist=none ";
+  cmd += "operation=add ";
+  cmd += "key=" + key + " ";
+  cmd += "value=\"\'" + string(val) + "\'\" ";
+  cmd += "verbose=" + string(verbose) + " ";
+  cmd += "mode=h";
+
+  domsg(verbose,2,"\n" + cmd);
+
+  return( docommand(cmd) );
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%   get_filename( full_filename:s )
+%
+% Aim:
+%  Pass in the full filename
+%     ie.  dir/source.fits[sky=region(dir/source.reg)]
+%  and return the filename w/o filter
+%     ie.  filename = dir/source.fits
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define get_filename( full_filename )
+{
+ variable filename="";   % filename w/o filter
+
+ %
+ % strip off the filter by scanning the string until the first "["
+ %
+ sscanf( full_filename, "%[^[]", &filename );
+
+ if (andelse { filename != NULL }
+             { filename != ""   } )
+   return( filename );
+ else
+    return( NULL );
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%   determine_rmf_tool( infile:s, verbose:i )
+%
+% Aim:
+%  Decide whether to run mkrmf or mkacisrmf
+%  
+%  Return the name of the tool to run.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define determine_rmf_tool(infile,verbose)
+{
+
+  variable fptemp;                 % FP_TEMP keyword
+  variable cticorr;                % CTI_CORR keyword
+  variable ctiapp;                 % CTI_APP keyword
+  variable tgaincor;               % TGAINCOR keyword
+  variable gainfile;               % GAINFILE keyword
+  variable gainfile_tmp;
+  variable caldb_gainfile;         % full current CALDB gainfile
+  variable caldb_gainf_tmp;
+  variable rmftool;                % rmf tool to use: 'mkrmf' or 'mkacisrmf'
+
+  variable block = dmTableOpen(infile);  
+
+  %
+  % see if the infile gainfile matches the gainfile from the CALDB  
+  %
+  tgaincor = get_keyword( block, "TGAINCOR" );
+  if ( "T" != tgaincor )
+  {
+     domsg( verbose, 2, "Cannot use mkacisrmf because " + infile +
+                        " not corrected for time-dependent gain.");
+     domsg( verbose, 1, "Using mkrmf...\n");
+     rmftool = "mkrmf";
+     return( rmftool );
+  }
+
+  %
+  % check a few input keywords
+  %
+  gainfile     = get_keyword( block, "GAINFILE" );
+  fptemp       = get_keyword( block, "FP_TEMP"  );
+  cticorr      = get_keyword( block, "CTI_CORR" );
+  ctiapp       = get_keyword( block, "CTI_APP" );
+
+  variable query;
+  if ( NULL != ctiapp ) {
+    query="cti_app.eq."+ctiapp;
+  } else {
+    if ( 1 == cticorr ) {
+      query="cti_app.eq.pppppnpnpp.and.cti_corr.eq.yes";
+      ctiapp="pppppnpnpp (default)";
+    } else {
+      query="cti_corr.eq.no";
+      ctiapp="nnnnnnnnnn (default)";
+    }
+
+  }  
+
+
+  dmTableClose(block);
+
+  %
+  % remove filter and path from gainfile string
+  %  by scanning all characters until the first "[",
+  %  then removing the path
+  %
+  sscanf( gainfile, "%[^[]", &gainfile_tmp );
+  gainfile = path_basename( gainfile_tmp );
+
+  %
+  %% query the CALDB for the current gainfile
+  %
+  variable cal = calCreateInfo( infile );
+
+  calSetExpression( cal, query+".and.fp_temp.eq."  + string(fptemp) );
+
+  calSetData( cal, "DET_GAIN" );
+
+  domsg( verbose, 2, "Searching for current GAIN calibration file...");
+  if (verbose > 2) calPrintInfo(cal);
+
+  caldb_gainfile = calFindFile( cal );
+
+  %
+  % remove filter and path from gainfile string
+  %  by scanning all characters until the first "[",
+  %  then removing the path
+  %
+  sscanf(caldb_gainfile,"%[^[]",&caldb_gainf_tmp);
+  caldb_gainfile = path_basename( caldb_gainf_tmp );
+
+  domsg( verbose, 3, "");
+  domsg( verbose, 3, "caldb_gainfile = " + caldb_gainfile );
+  domsg( verbose, 3, "gainfile       = " + gainfile       );
+  domsg( verbose, 3, "temperature    = " + string(fptemp) );
+  domsg( verbose, 3, "cticorr        = " + string(cticorr));
+  domsg( verbose, 3, "cti_app        = " + string(ctiapp));
+  domsg( verbose, 3, "tgaincor       = " + tgaincor       );
+
+  %
+  % see if a Phase 2 response calibration file is available
+  %
+  domsg( verbose, 2, "\nSearching for phase 2 response calibration file...");
+  calSetData( cal, "GAIN_CORR" );
+
+  if (verbose > 2) calPrintInfo(cal);
+
+  if ( NULL == calFindFile(cal) )
+  {
+     domsg(verbose,2,"Phase 2 response calibration file not available for:\n" +
+                     infile);
+     domsg(verbose,1,"Using mkrmf...\n");
+     rmftool = "mkrmf";
+  }
+  %
+  % see if the infile gainfile matches the gainfile from the CALDB  
+  %
+  else if ( gainfile != caldb_gainfile )
+  {
+     domsg(verbose,2,"Cannot use mkacisrmf because last applied gainfile does not match current CALDB gainfile: " + gainfile + " != " + caldb_gainfile);
+     domsg(verbose,1,"Please reprocess " + infile +
+                     " with acis_process_events if you wish to use mkacisrmf");
+     domsg(verbose,1,"Using mkrmf...\n");
+     rmftool = "mkrmf";
+  }
+  else
+  {
+     domsg(verbose,1,"Using mkacisrmf...\n");
+     rmftool = "mkacisrmf";
+  }
+
+  return( rmftool );
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Usage:
+%   doexit( message:s, outroot:s, srcbkg:s, ii:i )
+%
+% Aim:
+%   Print a warning when a tool fails. 
+%   Remove the products for the current list entry.
+%   Exit with a non-zero return value.
+%   
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+define doexit( message, outroot, srcbkg, ii )
+{
+  variable cmd;                % command string
+
+  domsg( "0", 0, message + "\n");
+  domsg( "0", 0, "Removing products related to current input file only.");
+  domsg( "0", 0, "Please check " + path_dirname(outroot) + "/");
+  cmd = "rm -f " + outroot + "_" + srcbkg + string(ii) + ".*";
+  system(cmd);
+  exit(-1);
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% Main Code
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%
+% get the tool parameters
+%
+variable progname = path_basename( __argv[0] );   % tool name
+variable param = paramopen( NULL, "r", __argv );  % parameter file pointer
+
+if ( NULL == param )
+{
+  domsg( "0", 0, "Unable to process the parameter file" );
+  exit(1);
+}
+
+variable infile     = pget( param, "infile" );
+variable outroot    = pget( param, "outroot" );
+variable bkgfile    = pget( param, "bkgfile" );
+variable ptype      = pget( param, "ptype" );
+variable gtype      = pget( param, "grouptype" );
+variable gspec      = pget( param, "binspec" );
+variable bggtype    = pget( param, "bkg_grouptype" );
+variable bggspec    = pget( param, "bkg_binspec" );
+variable ebin       = pget( param, "energy" );
+variable channel    = pget( param, "channel" );
+variable ewmap      = pget( param, "energy_wmap" );
+variable binwmap    = pget( param, "binwmap" );
+variable clobber    = pget( param, "clobber" );
+variable verbose    = pgeti( param, "verbose" );
+variable mode       = pget( param, "mode" );
+
+paramclose( param );
+
+domsg( verbose, 1, "Running: "       + progname );
+domsg( verbose, 3, "  infile="       + infile );
+domsg( verbose, 3, "  outroot="      + outroot );
+domsg( verbose, 3, "  bkgfile="      + bkgfile );
+domsg( verbose, 3, "  ptype="        + ptype );
+domsg( verbose, 3, "  grouptype="    + gtype );
+domsg( verbose, 3, "  binspec="      + gspec );
+domsg( verbose, 3, "  bkg_grouptype="+ bggtype );
+domsg( verbose, 3, "  bkg_binspec="  + bggspec );
+domsg( verbose, 3, "  energy="       + ebin );
+domsg( verbose, 3, "  channel="      + channel );
+domsg( verbose, 3, "  energy_wmap="  + ewmap );
+domsg( verbose, 3, "  binwmap="      + binwmap );
+domsg( verbose, 3, "  clobber="      + clobber );
+domsg( verbose, 3, "  verbose="      + string(verbose) );
+domsg( verbose, 3, "  mode="         + mode );
+
+%*****************************************************************************
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Do some initial setup and check the input values
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+variable rmfbin;                   % binning spec for RMFs
+
+if ( 0 == strcmp(ptype,"PI") )
+  rmfbin = "pi=" + channel;
+else
+  rmfbin = "pha=" + channel;
+
+%
+% make sure infile and outroot are set, otherwise error out
+%
+domsg( verbose,1, " " );
+domsg( verbose,1, "Checking initial status and initializing variables..." );
+
+
+if ( orelse { ""     == outroot }
+            { "NONE" == outroot }
+            { "none" == outroot } )
+{
+    domsg( verbose, 0, " " );
+    domsg( verbose, 0,
+          "Error: A root name for the output files must be supplied." );
+    exit(4);
+}
+
+if ( orelse { ""     == infile }
+            { "NONE" == infile }
+            { "none" == infile } ) 
+{
+    domsg( verbose, 0, " " );
+    domsg( verbose, 0, "Error: A source file must be supplied" );
+    exit(5);
+}
+
+variable dobg = 0;                 % Create background products?
+variable src_stk;                  % stack of source files
+
+%
+% build the source infile stack.
+% make sure it's readable and not empty
+%
+src_stk = stk_build( infile );
+if ( NULL == src_stk )
+ {
+   domsg( verbose,0,"Error: Input file " + infile + " is not readable." );
+   exit(8);
+ }
+
+variable src_count = stk_count( src_stk );
+if ( 1 == src_count )
+{
+   if ( 0 == strlen(stk_read_next( src_stk )) )
+   {
+     domsg( verbose,0,"Error: Source stack is empty." );
+     exit(10);
+   }
+   else
+     stk_rewind( src_stk );
+}
+
+%
+% build the output stack.
+% make sure it's readable and not empty
+%
+variable isoutstack = 1;
+variable outroot_tmp = outroot;
+
+variable out_stk = stk_build( outroot );
+if ( NULL == out_stk )
+ {
+   domsg( verbose,0,"Error: Output stack " + outroot + " is not readable." );
+   exit(8);
+ }
+
+variable out_count = stk_count( out_stk );
+if ( 1 == out_count )
+{
+   % if the output stack count =1 but the source stack count
+   %   isn't =1, treat the outroot parameter as the only root
+   %   and append "src1", "src2", etc. to the output files
+
+   if ( src_count > 1 )
+      isoutstack = 0;
+
+   if ( 0 == strlen(stk_read_next( out_stk )) )
+   {
+     domsg( verbose,0,"Error: Output stack is empty." );
+     exit(12);
+   }
+   else
+     stk_rewind( out_stk );
+}
+
+if ( bkgfile != "" ) {
+
+   %
+   % build the background stack.
+   % make sure it's readable, not empty, and has the same
+   %   number of elements as the source stack.
+   %
+   variable bkg_stk;               % stack of background files
+
+   bkg_stk = stk_build( bkgfile );
+   if ( NULL == bkg_stk )
+   {
+     domsg( verbose,0,"Error: Input file " + bkgfile + " is not readable." );
+     exit(9);
+   }
+
+   variable bg_count = stk_count( bkg_stk );
+   if ( 1 == bg_count )
+   {
+     if ( 0 == strlen(stk_read_next( bkg_stk )) )
+     {
+       domsg( verbose,0,"Error: Background stack is empty." );
+       exit(11);
+     }
+     else
+       stk_rewind( bkg_stk );
+   }
+
+   if ( src_count != bg_count )
+   {
+      domsg( verbose,0,"Error: Source and background stacks must contain the same number of elements.  Source stack= " + string(src_count) + "    Background stack= " + string(bg_count) );
+      exit(6);
+   }
+   else
+   {
+      dobg = 1;
+      variable fcount = src_count;
+   }
+}
+else {
+   dobg = 0;
+   variable fcount = src_count;
+}
+
+%
+% Determine whether or not to group source output spectrum
+%  and set appropriate grouping values
+%
+variable dogroup;           % flag set if grouping
+variable binspec;           % grouping spec
+variable gval;              % grouping value
+
+if ( "NONE" == gtype )
+    dogroup = 0;
+else
+{
+    dogroup = 1;
+    if ( "BIN" == gtype )
+    {
+	binspec = gspec;
+	gval = "";
+    }
+    else
+    {
+	binspec = "";
+	gval = gspec;
+    }
+}
+
+%
+% Determine whether or not to group background output spectrum
+%  and set appropriate grouping values
+%
+variable bgdogroup;           % flag set if grouping
+variable bgbinspec;           % grouping spec
+variable bggval;              % grouping value
+
+if ( "NONE" == bggtype )
+    bgdogroup = 0;
+else
+{
+    bgdogroup = 1;
+    if ( "BIN" == bggtype )
+    {
+	bgbinspec = bggspec;
+	bggval = "";
+    }
+    else
+    {
+	bgbinspec = "";
+	bggval = bggspec;
+    }
+}
+
+variable ii = 0;                % counter
+variable fullfile;              % infile string
+variable filename;              % infile string w/o filter
+
+variable ret;                   % function return value
+variable ancrfile;              % ARF filename returned from create_arf
+variable weightfile;            % weight file from create_arf
+variable phafile;               % extracted spectrum filename 
+variable grpfile;               % grouped spectrum filename
+variable rmftool;               % rmf tool to use: 'mkrmf' or 'mkacisrmf'
+variable respfile;              % RMF filename returned from build_rmf
+variable otype;                 % which filetypes to process ("src", "bkg")
+variable cur_stack;             % current stack - bkg or src
+
+%
+% determine the output types
+%
+
+if ( 1 == dobg )
+  otype = [ "src", "bkg" ];
+else
+  otype = [ "src" ];
+
+variable srcbkg;                % the current output type
+
+%
+% Check all of the input files up front and make sure they are
+%   readable. If not, notify the user of each bad file and exit.
+%
+
+variable inputfile;             % current input file to test
+variable table;                 % is the infile readable (!NULL)?
+variable badfile = 0;           % is at least one of the input files bad?
+
+% do for each output type we are processing
+%  ie. "src" or ( "src" and "bkg" )
+
+foreach ( otype )
+{
+  % set srcbkg to the current member of otype
+  srcbkg = ();
+
+  %
+  % determine which stack to use
+  %
+  if ( "bkg" == srcbkg )
+  {
+    domsg( verbose,1,"\nChecking background input files for readability..." );
+    cur_stack = bkg_stk;
+  }
+  else
+  {
+    domsg( verbose,1,"\nChecking source input files for readability..." );
+    cur_stack = src_stk;
+  }
+
+  %
+  % look at each file in the stack and check for readability.
+  %
+  for (ii = 1; ii <= fcount; ii++)
+  {
+
+   inputfile = stk_read_num( cur_stack, ii );
+   table = dmTableOpen( inputfile );
+
+   if ( NULL == table )
+    {
+      domsg( verbose,0,"Error: Input file " + inputfile +
+        " is not readable.  Please check dataset (and region, if supplied)." );
+      badfile = 1;
+    }
+   else
+     dmTableClose( table );
+  }
+}
+
+% If at least one of the input files was not readable, then exit.
+
+if ( 1 == badfile )
+  exit(7);
+
+
+%
+% For each stack item in the source and background lists:
+%    ) extract the spectrum
+%    ) create an ARF
+%    ) create a RMF
+%    ) optionally group the spectrum
+%    ) add header keywords
+%
+
+% do for each output type we are processing
+%  ie. "src" or ( "src" and "bkg" )
+
+foreach ( otype )
+{
+
+ % set srcbkg to the current member of otype
+ srcbkg = ();
+
+ %
+ % determine which stack to use
+ %
+ if ( "bkg" == srcbkg )
+   cur_stack = bkg_stk;
+ else
+   cur_stack = src_stk;
+
+ % outroot + src/bkg + output number; ie. 'outroot_src1'
+ variable full_outroot;
+
+ %
+ % run tools for each item in the current stack
+ %
+ for (ii = 1; ii <= fcount; ii++)
+ {
+  fullfile = stk_read_num( cur_stack, ii );
+  filename = get_filename( stk_read_num( cur_stack, ii ) );
+
+  % if we're using an output stack, then grab an item off of the stack
+  %  but if not, then append "src1", "src2", etc. to the outroot
+  %  parameter for each output file
+
+  if ( 1 == isoutstack )
+  {
+     if ( "bkg" == srcbkg )
+        full_outroot = stk_read_num( out_stk, ii ) + "_bkg";
+     else
+%%
+%% Ken Cavagnolo made this change Mar 24 2007 to adhere to prev
+%% versions of CIAO which appended the src# designation to outspec
+%%
+        full_outroot = outroot + "_" + srcbkg + string(ii);
+%%
+%% original code
+%%      full_outroot = stk_read_num( out_stk, ii );
+  }
+  else
+     full_outroot = outroot + "_" + srcbkg + string(ii);
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %
+  % extract spectrum
+  %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  domsg( verbose,1,"\nExtracting " + srcbkg + " spectra for item " +
+        string(ii) + " of " + string(fcount) + " in input list\n" );
+
+  ( ret, phafile )= extract_spectra( full_outroot, fullfile,
+                      ptype, ewmap, binwmap, clobber, verbose );
+  if ( 0 != ret )
+    doexit("\nError: Failed to extract spectrum for " + fullfile,
+           outroot, srcbkg, ii );
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %
+  % create ARF
+  %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  domsg( verbose,1,"\nCreating " + srcbkg + " ARF for item " + 
+        string(ii) + " of " + string(fcount) + " in input list\n");
+
+  ( ret, ancrfile, weightfile ) =  create_arf( full_outroot,
+                                          ebin, clobber, verbose, phafile );
+  if ( 0 != ret )
+    doexit("\nError: Failed to create ARF for " + fullfile, outroot,
+           srcbkg, ii );
+
+  domsg( verbose,1,"\nCreating " + srcbkg + " RMF for item " + 
+        string(ii) + " of " + string(fcount) + " in input list\n");
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %
+  % create RMF
+  %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  rmftool = determine_rmf_tool(filename,verbose);
+
+  ( ret, respfile ) = build_rmf( rmftool, ptype, full_outroot,
+                        ebin, rmfbin, clobber, verbose, phafile, weightfile );
+  if ( 0 != ret )
+    doexit("\nError: Failed to create RMF for " + fullfile, outroot,
+           srcbkg, ii );
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %
+  % optionally group spectrum
+  %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  if ( andelse { "bkg" == srcbkg }
+               { 1 == bgdogroup })
+  {
+    domsg( verbose, 1, "\nGrouping " + srcbkg + " spectrum for item " +
+          string(ii) + " of " + string(fcount) + " in input list\n");
+
+    (ret, grpfile) = group_spectrum( ptype, full_outroot,
+			bggval, bgbinspec, bggtype, clobber, verbose, phafile);
+    if ( 0 != ret )
+      doexit("\nError: Failed to group spectrum for " + fullfile,
+             outroot, srcbkg, ii );
+  }
+  else if ( andelse { "src" == srcbkg }
+                    { 1 == dogroup   } )
+  {
+    domsg( verbose, 1, "\nGrouping " + srcbkg + " spectrum for item " +
+          string(ii) + " of " + string(fcount) + " in input list\n");
+
+    (ret, grpfile) = group_spectrum( ptype, full_outroot,
+                           gval, binspec, gtype, clobber, verbose, phafile);
+    if ( 0 != ret )
+      doexit("\nError: Failed to group spectrum for " + fullfile,
+             outroot, srcbkg, ii );
+  }
+
+
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %
+  % add header keys
+  %
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%
+  domsg( verbose, 1, "\Updating header of " + phafile +
+                     " with RESPFILE and ANCRFILE keywords.");
+
+  edit_headers( verbose, phafile, "RESPFILE", path_basename(respfile) );
+  edit_headers( verbose, phafile, "ANCRFILE", path_basename(ancrfile) );
+
+  %
+  % if the source or background spectrum was grouped, add the respfile
+  %   and ancrfile keys there too.
+  %
+
+  if ( andelse { 1 == bgdogroup }
+               { "bkg" == srcbkg  } )
+  {
+    domsg( verbose, 1, "\Updating header of " + grpfile +
+                       " with RESPFILE and ANCRFILE keywords.");
+
+    edit_headers( verbose, grpfile, "RESPFILE", path_basename(respfile) );
+    edit_headers( verbose, grpfile, "ANCRFILE", path_basename(ancrfile) );
+  }
+  else if ( andelse { 1 == dogroup }
+                    { "src" == srcbkg } )
+  {
+    domsg( verbose, 1, "\Updating header of " + grpfile +
+                       " with RESPFILE and ANCRFILE keywords.");
+
+    edit_headers( verbose, grpfile, "RESPFILE", path_basename(respfile) );
+    edit_headers( verbose, grpfile, "ANCRFILE", path_basename(ancrfile) );
+  }
+
+  if ( "bkg" == srcbkg )
+  {
+      %
+      % add the backfile key to the ungrouped source spectrum.
+      %  use the ungrouped background spectrum filename.
+      %
+
+      if ( 1 == isoutstack )
+         full_outroot = stk_read_num( out_stk, ii );
+      else
+         full_outroot = outroot + "_src" + string(ii);
+
+      variable sourcefile  = full_outroot +     "." + strlow(ptype);
+      variable src_grpfile = full_outroot + "_grp." + strlow(ptype);
+
+      domsg( verbose, 1,"\Updating header of " + sourcefile +
+             " with BACKFILE keyword.");
+      edit_headers( verbose, sourcefile, "BACKFILE", path_basename(phafile) );
+
+      %
+      % if the source spectrum was grouped
+      %  add the backfile key to the grouped source spectrum.
+      %
+
+      if ( 1 == dogroup )
+      {
+        %  if the background is grouped,
+        %   use the grouped background spectrum filename.
+
+        if ( 1 == bgdogroup )
+        {
+          domsg( verbose, 1,"\Updating header of " + src_grpfile +
+                 " with BACKFILE keyword.");
+          edit_headers( verbose, src_grpfile, "BACKFILE",
+                        path_basename( grpfile ) );
+        }
+        else
+
+        %  if the background is not grouped,
+        %    use the ungrouped background spectrum filename.
+
+        {
+          domsg( verbose, 1,"\Updating header of " + src_grpfile +
+                 " with BACKFILE keyword.");
+          edit_headers( verbose, src_grpfile, "BACKFILE", 
+                        path_basename( phafile ) );
+        }
+      } % end if dogroup
+
+  } % end if bkg
+
+ } % end for ii loop
+} % end foreach otype loop
+
+exit(0);

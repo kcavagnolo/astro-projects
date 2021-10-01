@@ -1,0 +1,20 @@
+From bonifaci@oat.ts.astro.it Mon May  6 04:40:42 1996
+Return-Path: <bonifaci@oat.ts.astro.it>
+Received: from nexus.astro.psu.edu by juakali.astro.psu.edu (4.1/Client-1.3)
+	id AA18504; Mon, 6 May 96 04:40:41 EDT
+Received: from freya.oat.ts.astro.it by nexus.astro.psu.edu (4.1/Nexus-1.3)
+	id AA21997; Mon, 6 May 96 04:40:15 EDT
+Message-Id: <9605060840.AA21997@nexus.astro.psu.edu>
+Received: by freya.oat.ts.astro.it
+	(1.38.193.4/16.2) id AA07106; Mon, 6 May 1996 10:33:02 +0200
+From: bonifaci@oat.ts.astro.it (Piercarlo Bonifacio)
+Subject: shell script which I use to compile and link, needs ESO preprocessor -- modify to match the directories of your system
+To: mab@astro.astro.psu.edu (Matthew A. Bershady)
+Date: Mon, 6 May 96 10:33:02 METDST
+In-Reply-To: <9605031202.AA15665@juakali.astro.psu.edu>; from "Matthew A. Bershady" at May 3, 96 8:02 am
+Mailer: Elm [revision: 70.85]
+Status: R
+
+/midas/94NOV/system/exec/esoext.exe -I/midas/94NOV/incl -f bcestbl.for
+f77 -o bcestbl.exe bcestbl.f /midas/94NOV/lib/libmidas.sl
+

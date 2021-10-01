@@ -1,0 +1,92 @@
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Contour binning</title>
+<link rel="stylesheet" type="text/css" href="new.css" />
+
+<!-- Fix transparent PNG on IE -->
+<!--[if gte IE 5.5000]>
+<script type="text/javascript" src="pngfix.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+
+<p class="navbar">
+ <a href="/~jss/">Homepage</a>
+ <a href="/~jss/research/">Research</a>
+ <a href="/~jss/code/">Misc.&nbsp;Code</a>
+ <a href="http://home.gna.org/veusz/">Veusz&nbsp;plotting</a>
+ <a href="/~jss/adbin/">Adaptive&nbsp;binning</a>
+</p>
+
+<h1><img src="logo2.png" alt="Contour binning" /></h1>
+
+<p>This page provides support for the <em>contour binning</em>
+algorithm, which is published in Sanders&nbsp;(2006; MNRAS, preprint
+<a href="contbin_col.pdf">colour</a> <a
+href="contbin_bw.pdf">B&amp;W</a>, <a
+href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?doi=10.1111%2Fj.1365-2966.2006.10716.x">final
+version</a>). It is an algorithm for binning X-ray data using contours
+on an adaptively smoothed map. The generated bins closely follow the
+surface brightness, and are ideal where the surface brightness
+distribution is not smooth, or the spectral properties are expected to
+follow surface brightness. Colour maps can be used instead of surface
+brightness maps.
+</p>
+
+<h2>Release 1.2</h2>
+<ul>
+
+<li><a href="dist/README">README</a></li>
+
+<li>Download source <a href="dist/contbin-1.2.tar.gz">contbin-1.2.tar.gz</a></li>
+
+<li>Download binaries <a href="dist/contbin-1.2-linux-static.tar.gz">Linux (static)</a>,
+<a href="dist/contbin-1.2-solaris9-static.tar.gz">Solaris 9/10
+(static)</a> (source recommended)
+</li>
+
+<li><a href="example/">Example walkthrough</a></li>
+
+<li><a href="contbin_col.pdf">Accepted version (colour PDF; 4.2MB)</a></li>
+<li><a href="contbin_bw.pdf">Accepted version (black and white PDF; 3.5MB)</a></li>
+
+</ul>
+
+<p>Update (2008-01-09): 64-bit users should change "unsigned" to
+  "size_t" on line 166 of parammm/param.cc to avoid a parameter
+  handling bug.</p>
+
+<h2>Examples</h2>
+
+<div class="figure">
+<p><img src="per_mega_T.png" alt="Perseus cluster temperature map" />
+<img src="per_B.png" alt="Perseus cluster magnetic field map" /></p>
+
+<p>Perseus cluster temperature and magnetic field maps, see <a
+href="http://arxiv.org/abs/astro-ph/0510476">Fabian et al
+(2006)</a> and <a href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2005MNRAS.360..133S&amp;db_key=AST">Sanders et al (2005)</a></p>
+</div>
+
+<div class="figure">
+<p><img src="cen_TZ.png" alt="Centaurus cluster temperature and abundance maps" /></p>
+<p>Centaurus cluster temperature and abundances, see <a
+href="http://adsabs.harvard.edu/cgi-bin/nph-bib_query?bibcode=2005MNRAS.360L..20F&amp;db_key=AST">Fabian
+et al (2005)</a></p>
+</div>
+
+<address>
+This is not an official page of the Institute of Astronomy. Page was
+last updated on 
+
+2008-01-09
+by Jeremy Sanders.
+</address>
+
+</body>
+</html>

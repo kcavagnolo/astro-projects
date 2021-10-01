@@ -1,0 +1,3416 @@
+%!PS-Adobe-3.0
+%%BoundingBox: 24 24 588 768
+%%Title: Enscript Output
+%%For: cavagnolo
+%%Creator: GNU enscript 1.6.1
+%%CreationDate: Mon Aug 21 15:07:25 2006
+%%Orientation: Landscape
+%%Pages: (atend)
+%%DocumentMedia: Letter 612 792 0 () ()
+%%DocumentNeededResources: (atend)
+%%EndComments
+%%BeginProlog
+%%BeginResource: procset Enscript-Prolog 1.6 1
+%
+% Procedures.
+%
+
+/_S {	% save current state
+  /_s save def
+} def
+/_R {	% restore from saved state
+  _s restore
+} def
+
+/S {	% showpage protecting gstate
+  gsave
+  showpage
+  grestore
+} bind def
+
+/MF {	% fontname newfontname -> -	make a new encoded font
+  /newfontname exch def
+  /fontname exch def
+
+  /fontdict fontname findfont def
+  /newfont fontdict maxlength dict def
+
+  fontdict {
+    exch
+    dup /FID eq {
+      % skip FID pair
+      pop pop
+    } {
+      % copy to the new font dictionary
+      exch newfont 3 1 roll put
+    } ifelse
+  } forall
+
+  newfont /FontName newfontname put
+
+  % insert only valid encoding vectors
+  encoding_vector length 256 eq {
+    newfont /Encoding encoding_vector put
+  } if
+
+  newfontname newfont definefont pop
+} def
+
+/SF { % fontname width height -> -	set a new font
+  /height exch def
+  /width exch def
+
+  findfont
+  [width 0 0 height 0 0] makefont setfont
+} def
+
+/SUF { % fontname width height -> -	set a new user font
+  /height exch def
+  /width exch def
+
+  /F-gs-user-font MF
+  /F-gs-user-font width height SF
+} def
+
+/M {moveto} bind def
+/s {show} bind def
+
+/Box {	% x y w h -> -			define box path
+  /d_h exch def /d_w exch def /d_y exch def /d_x exch def
+  d_x d_y  moveto
+  d_w 0 rlineto
+  0 d_h rlineto
+  d_w neg 0 rlineto
+  closepath
+} def
+
+/bgs {	% x y height blskip gray str -> -	show string with bg color
+  /str exch def
+  /gray exch def
+  /blskip exch def
+  /height exch def
+  /y exch def
+  /x exch def
+
+  gsave
+    x y blskip sub str stringwidth pop height Box
+    gray setgray
+    fill
+  grestore
+  x y M str s
+} def
+
+% Highlight bars.
+/highlight_bars {	% nlines lineheight output_y_margin gray -> -
+  gsave
+    setgray
+    /ymarg exch def
+    /lineheight exch def
+    /nlines exch def
+
+    % This 2 is just a magic number to sync highlight lines to text.
+    0 d_header_y ymarg sub 2 sub translate
+
+    /cw d_output_w cols div def
+    /nrows d_output_h ymarg 2 mul sub lineheight div cvi def
+
+    % for each column
+    0 1 cols 1 sub {
+      cw mul /xp exch def
+
+      % for each rows
+      0 1 nrows 1 sub {
+        /rn exch def
+        rn lineheight mul neg /yp exch def
+        rn nlines idiv 2 mod 0 eq {
+	  % Draw highlight bar.  4 is just a magic indentation.
+	  xp 4 add yp cw 8 sub lineheight neg Box fill
+	} if
+      } for
+    } for
+
+  grestore
+} def
+
+% Line highlight bar.
+/line_highlight {	% x y width height gray -> -
+  gsave
+    /gray exch def
+    Box gray setgray fill
+  grestore
+} def
+
+% Column separator lines.
+/column_lines {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h translate
+    /cw d_output_w cols div def
+    1 1 cols 1 sub {
+      cw mul 0 moveto
+      0 d_output_h rlineto stroke
+    } for
+  grestore
+} def
+
+% Column borders.
+/column_borders {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h moveto
+    0 d_output_h rlineto
+    d_output_w 0 rlineto
+    0 d_output_h neg rlineto
+    closepath stroke
+  grestore
+} def
+
+% Do the actual underlay drawing
+/draw_underlay {
+  ul_style 0 eq {
+    ul_str true charpath stroke
+  } {
+    ul_str show
+  } ifelse
+} def
+
+% Underlay
+/underlay {	% - -> -
+  gsave
+    0 d_page_h translate
+    d_page_h neg d_page_w atan rotate
+
+    ul_gray setgray
+    ul_font setfont
+    /dw d_page_h dup mul d_page_w dup mul add sqrt def
+    ul_str stringwidth pop dw exch sub 2 div ul_h_ptsize -2 div moveto
+    draw_underlay
+  grestore
+} def
+
+/user_underlay {	% - -> -
+  gsave
+    ul_x ul_y translate
+    ul_angle rotate
+    ul_gray setgray
+    ul_font setfont
+    0 0 ul_h_ptsize 2 div sub moveto
+    draw_underlay
+  grestore
+} def
+
+% Page prefeed
+/page_prefeed {		% bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} def
+
+% Wrapped line markers
+/wrapped_line_mark {	% x y charwith charheight type -> -
+  /type exch def
+  /h exch def
+  /w exch def
+  /y exch def
+  /x exch def
+
+  type 2 eq {
+    % Black boxes (like TeX does)
+    gsave
+      0 setlinewidth
+      x w 4 div add y M
+      0 h rlineto w 2 div 0 rlineto 0 h neg rlineto
+      closepath fill
+    grestore
+  } {
+    type 3 eq {
+      % Small arrows
+      gsave
+        .2 setlinewidth
+        x w 2 div add y h 2 div add M
+        w 4 div 0 rlineto
+        x w 4 div add y lineto stroke
+
+        x w 4 div add w 8 div add y h 4 div add M
+        x w 4 div add y lineto
+	w 4 div h 8 div rlineto stroke
+      grestore
+    } {
+      % do nothing
+    } ifelse
+  } ifelse
+} def
+
+% EPSF import.
+
+/BeginEPSF {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack
+  userdict begin
+  /showpage { } def
+  0 setgray 0 setlinecap
+  1 setlinewidth 0 setlinejoin
+  10 setmiterlimit [ ] 0 setdash newpath
+  /languagelevel where {
+    pop languagelevel
+    1 ne {
+      false setstrokeadjust false setoverprint
+    } if
+  } if
+} bind def
+
+/EndEPSF {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+%%EndResource
+%%BeginResource: procset Enscript-Encoding-88591 1.6 1
+/encoding_vector [
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclam       	/quotedbl     	/numbersign   	
+/dollar       	/percent      	/ampersand    	/quoteright   	
+/parenleft    	/parenright   	/asterisk     	/plus         	
+/comma        	/hyphen       	/period       	/slash        	
+/zero         	/one          	/two          	/three        	
+/four         	/five         	/six          	/seven        	
+/eight        	/nine         	/colon        	/semicolon    	
+/less         	/equal        	/greater      	/question     	
+/at           	/A            	/B            	/C            	
+/D            	/E            	/F            	/G            	
+/H            	/I            	/J            	/K            	
+/L            	/M            	/N            	/O            	
+/P            	/Q            	/R            	/S            	
+/T            	/U            	/V            	/W            	
+/X            	/Y            	/Z            	/bracketleft  	
+/backslash    	/bracketright 	/asciicircum  	/underscore   	
+/quoteleft    	/a            	/b            	/c            	
+/d            	/e            	/f            	/g            	
+/h            	/i            	/j            	/k            	
+/l            	/m            	/n            	/o            	
+/p            	/q            	/r            	/s            	
+/t            	/u            	/v            	/w            	
+/x            	/y            	/z            	/braceleft    	
+/bar          	/braceright   	/tilde        	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclamdown   	/cent         	/sterling     	
+/currency     	/yen          	/brokenbar    	/section      	
+/dieresis     	/copyright    	/ordfeminine  	/guillemotleft	
+/logicalnot   	/hyphen       	/registered   	/macron       	
+/degree       	/plusminus    	/twosuperior  	/threesuperior	
+/acute        	/mu           	/paragraph    	/bullet       	
+/cedilla      	/onesuperior  	/ordmasculine 	/guillemotright	
+/onequarter   	/onehalf      	/threequarters	/questiondown 	
+/Agrave       	/Aacute       	/Acircumflex  	/Atilde       	
+/Adieresis    	/Aring        	/AE           	/Ccedilla     	
+/Egrave       	/Eacute       	/Ecircumflex  	/Edieresis    	
+/Igrave       	/Iacute       	/Icircumflex  	/Idieresis    	
+/Eth          	/Ntilde       	/Ograve       	/Oacute       	
+/Ocircumflex  	/Otilde       	/Odieresis    	/multiply     	
+/Oslash       	/Ugrave       	/Uacute       	/Ucircumflex  	
+/Udieresis    	/Yacute       	/Thorn        	/germandbls   	
+/agrave       	/aacute       	/acircumflex  	/atilde       	
+/adieresis    	/aring        	/ae           	/ccedilla     	
+/egrave       	/eacute       	/ecircumflex  	/edieresis    	
+/igrave       	/iacute       	/icircumflex  	/idieresis    	
+/eth          	/ntilde       	/ograve       	/oacute       	
+/ocircumflex  	/otilde       	/odieresis    	/divide       	
+/oslash       	/ugrave       	/uacute       	/ucircumflex  	
+/udieresis    	/yacute       	/thorn        	/ydieresis    	
+] def
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Courier
+/HFpt_w 10 def
+/HFpt_h 10 def
+/Courier-Bold /HF-gs-font MF
+/HF /HF-gs-font findfont [HFpt_w 0 0 HFpt_h 0 0] makefont def
+/Courier /F-gs-font MF
+/F-gs-font 7 7 SF
+/#copies 1 def
+% Pagedevice definitions:
+gs_languagelevel 1 gt {
+  <<
+    /PageSize [612 792] 
+  >> setpagedevice
+} if
+%%BeginResource: procset Enscript-Header-simple 1.6 1
+
+/do_header {	% print default simple header
+  gsave
+    d_header_x d_header_y HFpt_h 3 div add translate
+
+    HF setfont
+    user_header_p {
+      5 0 moveto user_header_left_str show
+
+      d_header_w user_header_center_str stringwidth pop sub 2 div
+      0 moveto user_header_center_str show
+
+      d_header_w user_header_right_str stringwidth pop sub 5 sub
+      0 moveto user_header_right_str show
+    } {
+      5 0 moveto fname show
+      45 0 rmoveto fmodstr show
+      45 0 rmoveto pagenumstr show
+    } ifelse
+
+  grestore
+} def
+%%EndResource
+/d_page_w 744 def
+/d_page_h 564 def
+/d_header_x 0 def
+/d_header_y 549 def
+/d_header_w 744 def
+/d_header_h 15 def
+/d_footer_x 0 def
+/d_footer_y 0 def
+/d_footer_w 744 def
+/d_footer_h 0 def
+/d_output_w 744 def
+/d_output_h 549 def
+/cols 3 def
+%%EndSetup
+%%Page: (1) 1
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 1 def
+/fname (make_source_reg.log) def
+/fdir () def
+/ftail (make_source_reg.log) def
+% User defined strings:
+/fmodstr (Mon Aug 21 15:06:04 2006) def
+/pagenumstr (1) def
+/user_header_p false def
+%%EndPageSetup
+5 8.000000 2 0.900000 highlight_bars
+do_header
+5 539 M
+(ObsID: 839) s
+5 531 M
+(Name: 3C_220.1) s
+5 523 M
+(Chip: s3) s
+5 515 M
+(Rmax \(pix\): 290.000) s
+5 507 M
+(r2500 \(kpc\): 589.336) s
+5 499 M
+(r2500 \(pix\): 177.807) s
+5 491 M
+(r5000 \(kpc\): 417.229) s
+5 483 M
+(r5000 \(pix\): 125.881) s
+5 475 M
+(#------------------------------#) s
+5 467 M
+(#------------------------------#) s
+5 459 M
+(ObsID: 3233) s
+5 451 M
+(Name: 3C_28.0) s
+5 443 M
+(Chip: i3) s
+5 435 M
+(Rmax \(pix\): 818.000) s
+5 427 M
+(r500 \(kpc\): 997.295) s
+5 419 M
+(r500 \(pix\): 626.137) s
+5 411 M
+(50kpc \(pix\): 31; 5% of r500) s
+5 403 M
+(100kpc \(pix\): 63; 10% of r500) s
+5 395 M
+(r2500 \(kpc\): 446.314) s
+5 387 M
+(r2500 \(pix\): 280.212) s
+5 379 M
+(r5000 \(kpc\): 315.975) s
+5 371 M
+(r5000 \(pix\): 198.380) s
+5 363 M
+(#------------------------------#) s
+5 355 M
+(#------------------------------#) s
+5 347 M
+(ObsID: 3129) s
+5 339 M
+(Name: 3C_346) s
+5 331 M
+(Chip: s3) s
+5 323 M
+(Rmax \(pix\): 120.000) s
+5 315 M
+(r2500 \(kpc\): 457.615) s
+5 307 M
+(r2500 \(pix\): 333.819) s
+5 299 M
+(r5000 \(kpc\): 323.975) s
+5 291 M
+(r5000 \(pix\): 236.332) s
+5 283 M
+(#------------------------------#) s
+5 275 M
+(#------------------------------#) s
+5 267 M
+(ObsID: 4940) s
+5 259 M
+(Name: 4C_55.16) s
+5 251 M
+(Chip: s3) s
+5 243 M
+(Rmax \(pix\): 360.000) s
+5 235 M
+(r2500 \(kpc\): 463.713) s
+5 227 M
+(r2500 \(pix\): 246.913) s
+5 219 M
+(r5000 \(kpc\): 328.293) s
+5 211 M
+(r5000 \(pix\): 174.805) s
+5 203 M
+(#------------------------------#) s
+5 195 M
+(#------------------------------#) s
+5 187 M
+(ObsID: 3250) s
+5 179 M
+(Name: ABELL_0068) s
+5 171 M
+(Chip: i3) s
+5 163 M
+(Rmax \(pix\): 590.000) s
+5 155 M
+(r2500 \(kpc\): 714.675) s
+5 147 M
+(r2500 \(pix\): 366.548) s
+5 139 M
+(r5000 \(kpc\): 505.964) s
+5 131 M
+(r5000 \(pix\): 259.503) s
+5 123 M
+(#------------------------------#) s
+5 115 M
+(#------------------------------#) s
+5 107 M
+(ObsID: 2203) s
+5 99 M
+(Name: ABELL_0133) s
+5 91 M
+(Chip: s3) s
+5 83 M
+(Rmax \(pix\): 313.000) s
+5 75 M
+(r2500 \(kpc\): 435.307) s
+5 67 M
+(r2500 \(pix\): 816.618) s
+5 59 M
+(r5000 \(kpc\): 308.182) s
+5 51 M
+(r5000 \(pix\): 578.136) s
+5 43 M
+(#------------------------------#) s
+5 35 M
+(#------------------------------#) s
+5 27 M
+(ObsID: 3580) s
+5 19 M
+(Name: ABELL_0267) s
+5 11 M
+(Chip: i3) s
+5 3 M
+(Rmax \(pix\): 590.000) s
+253 539 M
+(r2500 \(kpc\): 588.902) s
+253 531 M
+(r2500 \(pix\): 325.756) s
+253 523 M
+(r5000 \(kpc\): 416.922) s
+253 515 M
+(r5000 \(pix\): 230.623) s
+253 507 M
+(#------------------------------#) s
+253 499 M
+(#------------------------------#) s
+253 491 M
+(ObsID: 515) s
+253 483 M
+(Name: ABELL_0370) s
+253 475 M
+(Chip: s3) s
+253 467 M
+(Rmax \(pix\): 290.000) s
+253 459 M
+(r2500 \(kpc\): 606.422) s
+253 451 M
+(r2500 \(pix\): 238.867) s
+253 443 M
+(r5000 \(kpc\): 429.325) s
+253 435 M
+(r5000 \(pix\): 169.109) s
+253 427 M
+(#------------------------------#) s
+253 419 M
+(#------------------------------#) s
+253 411 M
+(ObsID: 2321) s
+253 403 M
+(Name: ABELL_0383) s
+253 395 M
+(Chip: s3) s
+253 387 M
+(Rmax \(pix\): 359.000) s
+253 379 M
+(r2500 \(kpc\): 448.028) s
+253 371 M
+(r2500 \(pix\): 290.890) s
+253 363 M
+(r5000 \(kpc\): 317.188) s
+253 355 M
+(r5000 \(pix\): 205.940) s
+253 347 M
+(#------------------------------#) s
+253 339 M
+(#------------------------------#) s
+253 331 M
+(ObsID: 3230) s
+253 323 M
+(Name: ABELL_0399) s
+253 315 M
+(Chip: i0) s
+253 307 M
+(Rmax \(pix\): 1016.00) s
+253 299 M
+(r2500 \(kpc\): 544.280) s
+253 291 M
+(r2500 \(pix\): 810.631) s
+253 283 M
+(r5000 \(kpc\): 385.331) s
+253 275 M
+(r5000 \(pix\): 573.898) s
+253 267 M
+(#------------------------------#) s
+253 259 M
+(#------------------------------#) s
+253 251 M
+(ObsID: 518) s
+253 243 M
+(Name: ABELL_0401) s
+253 235 M
+(Chip: i3) s
+253 227 M
+(Rmax \(pix\): 990.000) s
+253 219 M
+(r2500 \(kpc\): 631.184) s
+253 211 M
+(r2500 \(pix\): 906.532) s
+253 203 M
+(r5000 \(kpc\): 446.856) s
+253 195 M
+(r5000 \(pix\): 641.792) s
+253 187 M
+(#------------------------------#) s
+253 179 M
+(#------------------------------#) s
+253 171 M
+(ObsID: 1669) s
+253 163 M
+(Name: ABELL_0478) s
+253 155 M
+(Chip: s3) s
+253 147 M
+(Rmax \(pix\): 414.000) s
+253 139 M
+(r2500 \(kpc\): 600.922) s
+253 131 M
+(r2500 \(pix\): 739.944) s
+253 123 M
+(r5000 \(kpc\): 425.432) s
+253 115 M
+(r5000 \(pix\): 523.854) s
+253 107 M
+(#------------------------------#) s
+253 99 M
+(#------------------------------#) s
+253 91 M
+(ObsID: 6102) s
+253 83 M
+(Name: ABELL_0478) s
+253 75 M
+(Chip: i3) s
+253 67 M
+(Rmax \(pix\): 812.000) s
+253 59 M
+(r2500 \(kpc\): 589.336) s
+253 51 M
+(r2500 \(pix\): 725.677) s
+253 43 M
+(r5000 \(kpc\): 417.229) s
+253 35 M
+(r5000 \(pix\): 513.754) s
+253 27 M
+(#------------------------------#) s
+253 19 M
+(#------------------------------#) s
+253 11 M
+(ObsID: 4215) s
+253 3 M
+(Name: ABELL_0520) s
+501 539 M
+(Chip: i3) s
+501 531 M
+(Rmax \(pix\): 468.000) s
+501 523 M
+(r2500 \(kpc\): 614.786) s
+501 515 M
+(r2500 \(pix\): 375.749) s
+501 507 M
+(r5000 \(kpc\): 435.247) s
+501 499 M
+(r5000 \(pix\): 266.017) s
+501 491 M
+(#------------------------------#) s
+501 483 M
+(#------------------------------#) s
+501 475 M
+(ObsID: 430) s
+501 467 M
+(Name: ABELL_0521) s
+501 459 M
+(Chip: s3) s
+501 451 M
+(Rmax \(pix\): 423.000) s
+501 443 M
+(r2500 \(kpc\): 586.730) s
+501 435 M
+(r2500 \(pix\): 302.058) s
+501 427 M
+(r5000 \(kpc\): 415.384) s
+501 419 M
+(r5000 \(pix\): 213.846) s
+501 411 M
+(#------------------------------#) s
+501 403 M
+(#------------------------------#) s
+501 395 M
+(ObsID: 3289) s
+501 387 M
+(Name: ABELL_0576) s
+501 379 M
+(Chip: s3) s
+501 371 M
+(Rmax \(pix\): 469.000) s
+501 363 M
+(r2500 \(kpc\): 457.057) s
+501 355 M
+(r2500 \(pix\): 1217.45) s
+501 347 M
+(r5000 \(kpc\): 323.580) s
+501 339 M
+(r5000 \(pix\): 861.911) s
+501 331 M
+(#------------------------------#) s
+501 323 M
+(#------------------------------#) s
+501 315 M
+(ObsID: 530) s
+501 307 M
+(Name: ABELL_0586) s
+501 299 M
+(Chip: i3) s
+501 291 M
+(Rmax \(pix\): 590.000) s
+501 283 M
+(r2500 \(kpc\): 666.604) s
+501 275 M
+(r2500 \(pix\): 465.276) s
+501 267 M
+(r5000 \(kpc\): 471.932) s
+501 259 M
+(r5000 \(pix\): 329.399) s
+501 251 M
+(#------------------------------#) s
+501 243 M
+(#------------------------------#) s
+501 235 M
+(ObsID: 2211) s
+501 227 M
+(Name: ABELL_0644) s
+501 219 M
+(Chip: i3) s
+501 211 M
+(Rmax \(pix\): 778.000) s
+501 203 M
+(r2500 \(kpc\): 580.604) s
+501 195 M
+(r2500 \(pix\): 885.166) s
+501 187 M
+(r5000 \(kpc\): 411.047) s
+501 179 M
+(r5000 \(pix\): 626.667) s
+501 171 M
+(#------------------------------#) s
+501 163 M
+(#------------------------------#) s
+501 155 M
+(ObsID: 3586) s
+501 147 M
+(Name: ABELL_0665) s
+501 139 M
+(Chip: i3) s
+501 131 M
+(Rmax \(pix\): 577.000) s
+501 123 M
+(r2500 \(kpc\): 651.100) s
+501 115 M
+(r2500 \(pix\): 434.083) s
+501 107 M
+(r5000 \(kpc\): 460.956) s
+501 99 M
+(r5000 \(pix\): 307.316) s
+501 91 M
+(#------------------------------#) s
+501 83 M
+(#------------------------------#) s
+501 75 M
+(ObsID: 4217) s
+501 67 M
+(Name: ABELL_0697) s
+501 59 M
+(Chip: i3) s
+501 51 M
+(Rmax \(pix\): 600.000) s
+501 43 M
+(r2500 \(kpc\): 680.256) s
+501 35 M
+(r2500 \(pix\): 324.134) s
+501 27 M
+(r5000 \(kpc\): 481.597) s
+501 19 M
+(r5000 \(pix\): 229.475) s
+501 11 M
+(#------------------------------#) s
+501 3 M
+(#------------------------------#) s
+_R
+S
+%%Page: (2) 2
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 2 def
+/fname (make_source_reg.log) def
+/fdir () def
+/ftail (make_source_reg.log) def
+% User defined strings:
+/fmodstr (Mon Aug 21 15:06:04 2006) def
+/pagenumstr (2) def
+/user_header_p false def
+%%EndPageSetup
+5 8.000000 2 0.900000 highlight_bars
+do_header
+5 539 M
+(ObsID: 5006) s
+5 531 M
+(Name: ABELL_0773) s
+5 523 M
+(Chip: i3) s
+5 515 M
+(Rmax \(pix\): 607.000) s
+5 507 M
+(r2500 \(kpc\): 660.059) s
+5 499 M
+(r2500 \(pix\): 381.650) s
+5 491 M
+(r5000 \(kpc\): 467.299) s
+5 483 M
+(r5000 \(pix\): 270.194) s
+5 475 M
+(#------------------------------#) s
+5 467 M
+(#------------------------------#) s
+5 459 M
+(ObsID: 534) s
+5 451 M
+(Name: ABELL_0781) s
+5 443 M
+(Chip: i3) s
+5 435 M
+(Rmax \(pix\): 560.000) s
+5 427 M
+(r2500 \(kpc\): 742.712) s
+5 419 M
+(r2500 \(pix\): 340.152) s
+5 411 M
+(r5000 \(kpc\): 525.814) s
+5 403 M
+(r5000 \(pix\): 240.815) s
+5 395 M
+(#------------------------------#) s
+5 387 M
+(#------------------------------#) s
+5 379 M
+(ObsID: 3185) s
+5 371 M
+(Name: ABELL_0907) s
+5 363 M
+(Chip: i3) s
+5 355 M
+(Rmax \(pix\): 702.000) s
+5 347 M
+(r2500 \(kpc\): 507.369) s
+5 339 M
+(r2500 \(pix\): 388.625) s
+5 331 M
+(r5000 \(kpc\): 359.199) s
+5 323 M
+(r5000 \(pix\): 275.133) s
+5 315 M
+(#------------------------------#) s
+5 307 M
+(#------------------------------#) s
+5 299 M
+(ObsID: 903) s
+5 291 M
+(Name: ABELL_0963) s
+5 283 M
+(Chip: s3) s
+5 275 M
+(Rmax \(pix\): 363.000) s
+5 267 M
+(r2500 \(kpc\): 580.604) s
+5 259 M
+(r2500 \(pix\): 350.003) s
+5 251 M
+(r5000 \(kpc\): 411.047) s
+5 243 M
+(r5000 \(pix\): 247.790) s
+5 235 M
+(#------------------------------#) s
+5 227 M
+(#------------------------------#) s
+5 219 M
+(ObsID: 1652) s
+5 211 M
+(Name: ABELL_1068) s
+5 203 M
+(Chip: s3) s
+5 195 M
+(Rmax \(pix\): 375.000) s
+5 187 M
+(r2500 \(kpc\): 444.594) s
+5 179 M
+(r2500 \(pix\): 371.821) s
+5 171 M
+(r5000 \(kpc\): 314.757) s
+5 163 M
+(r5000 \(pix\): 263.236) s
+5 155 M
+(#------------------------------#) s
+5 147 M
+(#------------------------------#) s
+5 139 M
+(ObsID: 2205) s
+5 131 M
+(Name: ABELL_1204) s
+5 123 M
+(Chip: i3) s
+5 115 M
+(Rmax \(pix\): 682.000) s
+5 107 M
+(r2500 \(kpc\): 439.394) s
+5 99 M
+(r2500 \(pix\): 307.272) s
+5 91 M
+(r5000 \(kpc\): 311.076) s
+5 83 M
+(r5000 \(pix\): 217.538) s
+5 75 M
+(#------------------------------#) s
+5 67 M
+(#------------------------------#) s
+5 59 M
+(ObsID: 2200) s
+5 51 M
+(Name: ABELL_1361) s
+5 43 M
+(Chip: s3) s
+5 35 M
+(Rmax \(pix\): 358.000) s
+5 27 M
+(r2500 \(kpc\): 456.498) s
+5 19 M
+(r2500 \(pix\): 438.080) s
+5 11 M
+(r5000 \(kpc\): 323.184) s
+5 3 M
+(r5000 \(pix\): 310.145) s
+253 539 M
+(#------------------------------#) s
+253 531 M
+(#------------------------------#) s
+253 523 M
+(ObsID: 5003) s
+253 515 M
+(Name: ABELL_1413) s
+253 507 M
+(Chip: i2) s
+253 499 M
+(Rmax \(pix\): 340.000) s
+253 491 M
+(r2500 \(kpc\): 674.223) s
+253 483 M
+(r2500 \(pix\): 546.812) s
+253 475 M
+(r5000 \(kpc\): 477.326) s
+253 467 M
+(r5000 \(pix\): 387.124) s
+253 459 M
+(#------------------------------#) s
+253 451 M
+(#------------------------------#) s
+253 443 M
+(ObsID: 538) s
+253 435 M
+(Name: ABELL_1423) s
+253 427 M
+(Chip: i3) s
+253 419 M
+(Rmax \(pix\): 565.000) s
+253 411 M
+(r2500 \(kpc\): 658.898) s
+253 403 M
+(r2500 \(pix\): 386.469) s
+253 395 M
+(r5000 \(kpc\): 466.476) s
+253 387 M
+(r5000 \(pix\): 273.606) s
+253 379 M
+(#------------------------------#) s
+253 371 M
+(#------------------------------#) s
+253 363 M
+(ObsID: 4178) s
+253 355 M
+(Name: ABELL_1650) s
+253 347 M
+(Chip: s3) s
+253 339 M
+(Rmax \(pix\): 358.000) s
+253 331 M
+(r2500 \(kpc\): 548.487) s
+253 323 M
+(r2500 \(pix\): 704.157) s
+253 315 M
+(r5000 \(kpc\): 388.309) s
+253 307 M
+(r5000 \(pix\): 498.518) s
+253 299 M
+(#------------------------------#) s
+253 291 M
+(#------------------------------#) s
+253 283 M
+(ObsID: 4185) s
+253 275 M
+(Name: ABELL_1651) s
+253 267 M
+(Chip: i3) s
+253 259 M
+(Rmax \(pix\): 888.000) s
+253 251 M
+(r2500 \(kpc\): 597.940) s
+253 243 M
+(r2500 \(pix\): 770.119) s
+253 235 M
+(r5000 \(kpc\): 423.320) s
+253 227 M
+(r5000 \(pix\): 545.217) s
+253 219 M
+(#------------------------------#) s
+253 211 M
+(#------------------------------#) s
+253 203 M
+(ObsID: 1648) s
+253 195 M
+(Name: ABELL_1664) s
+253 187 M
+(Chip: s3) s
+253 179 M
+(Rmax \(pix\): 358.000) s
+253 171 M
+(r2500 \(kpc\): 422.807) s
+253 163 M
+(r2500 \(pix\): 376.813) s
+253 155 M
+(r5000 \(kpc\): 299.333) s
+253 147 M
+(r5000 \(pix\): 266.771) s
+253 139 M
+(#------------------------------#) s
+253 131 M
+(#------------------------------#) s
+253 123 M
+(ObsID: 3244) s
+253 115 M
+(Name: ABELL_1682) s
+253 107 M
+(Chip: i3) s
+253 99 M
+(Rmax \(pix\): 460.000) s
+253 91 M
+(r2500 \(kpc\): 674.223) s
+253 83 M
+(r2500 \(pix\): 377.937) s
+253 75 M
+(r5000 \(kpc\): 477.326) s
+253 67 M
+(r5000 \(pix\): 267.566) s
+253 59 M
+(#------------------------------#) s
+253 51 M
+(#------------------------------#) s
+253 43 M
+(ObsID: 5004) s
+253 35 M
+(Name: ABELL_1689) s
+253 27 M
+(Chip: i3) s
+253 19 M
+(Rmax \(pix\): 607.000) s
+253 11 M
+(r2500 \(kpc\): 718.239) s
+253 3 M
+(r2500 \(pix\): 471.970) s
+501 539 M
+(r5000 \(kpc\): 508.488) s
+501 531 M
+(r5000 \(pix\): 334.138) s
+501 523 M
+(#------------------------------#) s
+501 515 M
+(#------------------------------#) s
+501 507 M
+(ObsID: 2213) s
+501 499 M
+(Name: ABELL_1758) s
+501 491 M
+(Chip: s3) s
+501 483 M
+(Rmax \(pix\): 461.000) s
+501 475 M
+(r2500 \(kpc\): 637.224) s
+501 467 M
+(r2500 \(pix\): 305.785) s
+501 459 M
+(r5000 \(kpc\): 451.132) s
+501 451 M
+(r5000 \(pix\): 216.485) s
+501 443 M
+(#------------------------------#) s
+501 435 M
+(#------------------------------#) s
+501 427 M
+(ObsID: 3591) s
+501 419 M
+(Name: ABELL_1763) s
+501 411 M
+(Chip: i3) s
+501 403 M
+(Rmax \(pix\): 647.000) s
+501 395 M
+(r2500 \(kpc\): 593.653) s
+501 387 M
+(r2500 \(pix\): 386.263) s
+501 379 M
+(r5000 \(kpc\): 420.286) s
+501 371 M
+(r5000 \(pix\): 273.460) s
+501 363 M
+(#------------------------------#) s
+501 355 M
+(#------------------------------#) s
+501 347 M
+(ObsID: 495) s
+501 339 M
+(Name: ABELL_1835) s
+501 331 M
+(Chip: s3) s
+501 323 M
+(Rmax \(pix\): 355.000) s
+501 315 M
+(r2500 \(kpc\): 625.085) s
+501 307 M
+(r2500 \(pix\): 321.897) s
+501 299 M
+(r5000 \(kpc\): 442.538) s
+501 291 M
+(r5000 \(pix\): 227.892) s
+501 283 M
+(#------------------------------#) s
+501 275 M
+(#------------------------------#) s
+501 267 M
+(ObsID: 3290) s
+501 259 M
+(Name: ABELL_1942) s
+501 251 M
+(Chip: i2) s
+501 243 M
+(Rmax \(pix\): 633.000) s
+501 235 M
+(r2500 \(kpc\): 511.380) s
+501 227 M
+(r2500 \(pix\): 288.597) s
+501 219 M
+(r5000 \(kpc\): 362.039) s
+501 211 M
+(r5000 \(pix\): 204.316) s
+501 203 M
+(#------------------------------#) s
+501 195 M
+(#------------------------------#) s
+501 187 M
+(ObsID: 3193) s
+501 179 M
+(Name: ABELL_1991) s
+501 171 M
+(Chip: s3) s
+501 163 M
+(Rmax \(pix\): 351.000) s
+501 155 M
+(r2500 \(kpc\): 525.177) s
+501 147 M
+(r2500 \(pix\): 973.807) s
+501 139 M
+(r5000 \(kpc\): 371.806) s
+501 131 M
+(r5000 \(pix\): 689.421) s
+501 123 M
+(#------------------------------#) s
+501 115 M
+(#------------------------------#) s
+501 107 M
+(ObsID: 4977) s
+501 99 M
+(Name: ABELL_2029) s
+501 91 M
+(Chip: s3) s
+501 83 M
+(Rmax \(pix\): 366.000) s
+501 75 M
+(r2500 \(kpc\): 613.955) s
+501 67 M
+(r2500 \(pix\): 860.738) s
+501 59 M
+(r5000 \(kpc\): 434.659) s
+501 51 M
+(r5000 \(pix\): 609.372) s
+501 43 M
+(#------------------------------#) s
+501 35 M
+(#------------------------------#) s
+501 27 M
+(ObsID: 6101) s
+501 19 M
+(Name: ABELL_2029) s
+501 11 M
+(Chip: i3) s
+501 3 M
+(Rmax \(pix\): 815.000) s
+_R
+S
+%%Page: (3) 3
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 3 def
+/fname (make_source_reg.log) def
+/fdir () def
+/ftail (make_source_reg.log) def
+% User defined strings:
+/fmodstr (Mon Aug 21 15:06:04 2006) def
+/pagenumstr (3) def
+/user_header_p false def
+%%EndPageSetup
+5 8.000000 2 0.900000 highlight_bars
+do_header
+5 539 M
+(r2500 \(kpc\): 613.955) s
+5 531 M
+(r2500 \(pix\): 860.738) s
+5 523 M
+(r5000 \(kpc\): 434.659) s
+5 515 M
+(r5000 \(pix\): 609.372) s
+5 507 M
+(#------------------------------#) s
+5 499 M
+(#------------------------------#) s
+5 491 M
+(ObsID: 2204) s
+5 483 M
+(Name: ABELL_2034) s
+5 475 M
+(Chip: i3) s
+5 467 M
+(Rmax \(pix\): 920.000) s
+5 459 M
+(r2500 \(kpc\): 604.312) s
+5 451 M
+(r2500 \(pix\): 598.178) s
+5 443 M
+(r5000 \(kpc\): 427.832) s
+5 435 M
+(r5000 \(pix\): 423.489) s
+5 427 M
+(#------------------------------#) s
+5 419 M
+(#------------------------------#) s
+5 411 M
+(ObsID: 895) s
+5 403 M
+(Name: ABELL_2104) s
+5 395 M
+(Chip: s3) s
+5 387 M
+(Rmax \(pix\): 299.000) s
+5 379 M
+(r2500 \(kpc\): 689.578) s
+5 371 M
+(r2500 \(pix\): 520.573) s
+5 363 M
+(r5000 \(kpc\): 488.197) s
+5 355 M
+(r5000 \(pix\): 368.548) s
+5 347 M
+(#------------------------------#) s
+5 339 M
+(#------------------------------#) s
+5 331 M
+(ObsID: 544) s
+5 323 M
+(Name: ABELL_2111) s
+5 315 M
+(Chip: i3) s
+5 307 M
+(Rmax \(pix\): 605.000) s
+5 299 M
+(r2500 \(kpc\): 640.023) s
+5 291 M
+(r2500 \(pix\): 354.033) s
+5 283 M
+(r5000 \(kpc\): 453.114) s
+5 275 M
+(r5000 \(pix\): 250.643) s
+5 267 M
+(#------------------------------#) s
+5 259 M
+(#------------------------------#) s
+5 251 M
+(ObsID: 3238) s
+5 243 M
+(Name: ABELL_2124) s
+5 235 M
+(Chip: s3) s
+5 227 M
+(Rmax \(pix\): 338.000) s
+5 219 M
+(r2500 \(kpc\): 357.337) s
+5 211 M
+(r2500 \(pix\): 575.199) s
+5 203 M
+(r5000 \(kpc\): 252.982) s
+5 195 M
+(r5000 \(pix\): 407.221) s
+5 187 M
+(#------------------------------#) s
+5 179 M
+(#------------------------------#) s
+5 171 M
+(ObsID: 3211) s
+5 163 M
+(Name: ABELL_2147) s
+5 155 M
+(Chip: i1) s
+5 147 M
+(Rmax \(pix\): 947.000) s
+5 139 M
+(r2500 \(kpc\): 476.748) s
+5 131 M
+(r2500 \(pix\): 1368.60) s
+5 123 M
+(r5000 \(kpc\): 337.520) s
+5 115 M
+(r5000 \(pix\): 968.918) s
+5 107 M
+(#------------------------------#) s
+5 99 M
+(#------------------------------#) s
+5 91 M
+(ObsID: 1653) s
+5 83 M
+(Name: ABELL_2163) s
+5 75 M
+(Chip: i1) s
+5 67 M
+(Rmax \(pix\): 750.000) s
+5 59 M
+(r2500 \(kpc\): 786.792) s
+5 51 M
+(r2500 \(pix\): 553.110) s
+5 43 M
+(r5000 \(kpc\): 557.021) s
+5 35 M
+(r5000 \(pix\): 391.582) s
+5 27 M
+(#------------------------------#) s
+5 19 M
+(#------------------------------#) s
+5 11 M
+(ObsID: 497) s
+5 3 M
+(Name: ABELL_2199) s
+253 539 M
+(Chip: s3) s
+253 531 M
+(Rmax \(pix\): 353.000) s
+253 523 M
+(r2500 \(kpc\): 459.842) s
+253 515 M
+(r2500 \(pix\): 1556.01) s
+253 507 M
+(r5000 \(kpc\): 325.552) s
+253 499 M
+(r5000 \(pix\): 1101.60) s
+253 491 M
+(#------------------------------#) s
+253 483 M
+(#------------------------------#) s
+253 475 M
+(ObsID: 499) s
+253 467 M
+(Name: ABELL_2204) s
+253 459 M
+(Chip: s3) s
+253 451 M
+(Rmax \(pix\): 353.000) s
+253 443 M
+(r2500 \(kpc\): 596.657) s
+253 435 M
+(r2500 \(pix\): 457.764) s
+253 427 M
+(r5000 \(kpc\): 422.412) s
+253 419 M
+(r5000 \(pix\): 324.081) s
+253 411 M
+(#------------------------------#) s
+253 403 M
+(#------------------------------#) s
+253 395 M
+(ObsID: 6104) s
+253 387 M
+(Name: ABELL_2204) s
+253 379 M
+(Chip: i3) s
+253 371 M
+(Rmax \(pix\): 827.000) s
+253 363 M
+(r2500 \(kpc\): 678.000) s
+253 355 M
+(r2500 \(pix\): 520.171) s
+253 347 M
+(r5000 \(kpc\): 480.000) s
+253 339 M
+(r5000 \(pix\): 368.263) s
+253 331 M
+(#------------------------------#) s
+253 323 M
+(#------------------------------#) s
+253 315 M
+(ObsID: 1666) s
+253 307 M
+(Name: ABELL_2218) s
+253 299 M
+(Chip: i0) s
+253 291 M
+(Rmax \(pix\): 783.000) s
+253 283 M
+(r2500 \(kpc\): 584.987) s
+253 275 M
+(r2500 \(pix\): 407.728) s
+253 267 M
+(r5000 \(kpc\): 414.150) s
+253 259 M
+(r5000 \(pix\): 288.657) s
+253 251 M
+(#------------------------------#) s
+253 243 M
+(#------------------------------#) s
+253 235 M
+(ObsID: 896) s
+253 227 M
+(Name: ABELL_2219) s
+253 219 M
+(Chip: s3) s
+253 211 M
+(Rmax \(pix\): 365.000) s
+253 203 M
+(r2500 \(kpc\): 707.853) s
+253 195 M
+(r2500 \(pix\): 397.322) s
+253 187 M
+(r5000 \(kpc\): 501.135) s
+253 179 M
+(r5000 \(pix\): 281.290) s
+253 171 M
+(#------------------------------#) s
+253 163 M
+(#------------------------------#) s
+253 155 M
+(ObsID: 4179) s
+253 147 M
+(Name: ABELL_2244) s
+253 139 M
+(Chip: s3) s
+253 131 M
+(Rmax \(pix\): 361.000) s
+253 123 M
+(r2500 \(kpc\): 533.379) s
+253 115 M
+(r2500 \(pix\): 605.560) s
+253 107 M
+(r5000 \(kpc\): 377.614) s
+253 99 M
+(r5000 \(pix\): 428.715) s
+253 91 M
+(#------------------------------#) s
+253 83 M
+(#------------------------------#) s
+253 75 M
+(ObsID: 894) s
+253 67 M
+(Name: ABELL_2255) s
+253 59 M
+(Chip: i3) s
+253 51 M
+(Rmax \(pix\): 970.000) s
+253 43 M
+(r2500 \(kpc\): 572.632) s
+253 35 M
+(r2500 \(pix\): 766.472) s
+253 27 M
+(r5000 \(kpc\): 405.404) s
+253 19 M
+(r5000 \(pix\): 542.635) s
+253 11 M
+(#------------------------------#) s
+253 3 M
+(#------------------------------#) s
+501 539 M
+(ObsID: 3245) s
+501 531 M
+(Name: ABELL_2259) s
+501 523 M
+(Chip: i3) s
+501 515 M
+(Rmax \(pix\): 585.000) s
+501 507 M
+(r2500 \(kpc\): 502.310) s
+501 499 M
+(r2500 \(pix\): 362.756) s
+501 491 M
+(r5000 \(kpc\): 355.618) s
+501 483 M
+(r5000 \(pix\): 256.818) s
+501 475 M
+(#------------------------------#) s
+501 467 M
+(#------------------------------#) s
+501 459 M
+(ObsID: 5007) s
+501 451 M
+(Name: ABELL_2261) s
+501 443 M
+(Chip: i3) s
+501 435 M
+(Rmax \(pix\): 591.000) s
+501 427 M
+(r2500 \(kpc\): 622.219) s
+501 419 M
+(r2500 \(pix\): 351.149) s
+501 411 M
+(r5000 \(kpc\): 440.509) s
+501 403 M
+(r5000 \(pix\): 248.601) s
+501 395 M
+(#------------------------------#) s
+501 387 M
+(#------------------------------#) s
+501 379 M
+(ObsID: 3246) s
+501 371 M
+(Name: ABELL_2294) s
+501 363 M
+(Chip: i3) s
+501 355 M
+(Rmax \(pix\): 620.000) s
+501 347 M
+(r2500 \(kpc\): 602.196) s
+501 339 M
+(r2500 \(pix\): 406.907) s
+501 331 M
+(r5000 \(kpc\): 426.333) s
+501 323 M
+(r5000 \(pix\): 288.076) s
+501 315 M
+(#------------------------------#) s
+501 307 M
+(#------------------------------#) s
+501 299 M
+(ObsID: 3231) s
+501 291 M
+(Name: ABELL_2319) s
+501 283 M
+(Chip: i1) s
+501 275 M
+(Rmax \(pix\): 947.000) s
+501 267 M
+(r2500 \(kpc\): 696.212) s
+501 259 M
+(r2500 \(pix\): 1297.38) s
+501 251 M
+(r5000 \(kpc\): 492.893) s
+501 243 M
+(r5000 \(pix\): 918.500) s
+501 235 M
+(#------------------------------#) s
+501 227 M
+(#------------------------------#) s
+501 219 M
+(ObsID: 4202) s
+501 211 M
+(Name: ABELL_2384) s
+501 203 M
+(Chip: i3) s
+501 195 M
+(Rmax \(pix\): 760.000) s
+501 187 M
+(r2500 \(kpc\): 440.555) s
+501 179 M
+(r2500 \(pix\): 510.524) s
+501 171 M
+(r5000 \(kpc\): 311.897) s
+501 163 M
+(r5000 \(pix\): 361.433) s
+501 155 M
+(#------------------------------#) s
+501 147 M
+(#------------------------------#) s
+501 139 M
+(ObsID: 4193) s
+501 131 M
+(Name: ABELL_2390) s
+501 123 M
+(Chip: s3) s
+501 115 M
+(Rmax \(pix\): 350.000) s
+501 107 M
+(r2500 \(kpc\): 684.000) s
+501 99 M
+(r2500 \(pix\): 378.235) s
+501 91 M
+(r5000 \(kpc\): 484.248) s
+501 83 M
+(r5000 \(pix\): 267.777) s
+501 75 M
+(#------------------------------#) s
+501 67 M
+(#------------------------------#) s
+501 59 M
+(ObsID: 3247) s
+501 51 M
+(Name: ABELL_2409) s
+501 43 M
+(Chip: i3) s
+501 35 M
+(Rmax \(pix\): 470.000) s
+501 27 M
+(r2500 \(kpc\): 530.017) s
+501 19 M
+(r2500 \(pix\): 416.914) s
+501 11 M
+(r5000 \(kpc\): 375.233) s
+501 3 M
+(r5000 \(pix\): 295.160) s
+_R
+S
+%%Page: (4) 4
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 4 def
+/fname (make_source_reg.log) def
+/fdir () def
+/ftail (make_source_reg.log) def
+% User defined strings:
+/fmodstr (Mon Aug 21 15:06:04 2006) def
+/pagenumstr (4) def
+/user_header_p false def
+%%EndPageSetup
+5 8.000000 2 0.900000 highlight_bars
+do_header
+5 539 M
+(#------------------------------#) s
+5 531 M
+(#------------------------------#) s
+5 523 M
+(ObsID: 2225) s
+5 515 M
+(Name: ABELL_2550) s
+5 507 M
+(Chip: s3) s
+5 499 M
+(Rmax \(pix\): 480.000) s
+5 491 M
+(r2500 \(kpc\): 363.010) s
+5 483 M
+(r2500 \(pix\): 275.658) s
+5 475 M
+(r5000 \(kpc\): 256.998) s
+5 467 M
+(r5000 \(pix\): 195.156) s
+5 459 M
+(#------------------------------#) s
+5 451 M
+(#------------------------------#) s
+5 443 M
+(ObsID: 1696) s
+5 435 M
+(Name: ABELL_2554) s
+5 427 M
+(Chip: s3) s
+5 419 M
+(Rmax \(pix\): 450.000) s
+5 411 M
+(r2500 \(kpc\): 571.740) s
+5 403 M
+(r2500 \(pix\): 578.008) s
+5 395 M
+(r5000 \(kpc\): 404.772) s
+5 387 M
+(r5000 \(pix\): 409.209) s
+5 379 M
+(#------------------------------#) s
+5 371 M
+(#------------------------------#) s
+5 363 M
+(ObsID: 2226) s
+5 355 M
+(Name: ABELL_2556) s
+5 347 M
+(Chip: s3) s
+5 339 M
+(Rmax \(pix\): 475.000) s
+5 331 M
+(r2500 \(kpc\): 459.286) s
+5 323 M
+(r2500 \(pix\): 577.913) s
+5 315 M
+(r5000 \(kpc\): 325.158) s
+5 307 M
+(r5000 \(pix\): 409.142) s
+5 299 M
+(#------------------------------#) s
+5 291 M
+(#------------------------------#) s
+5 283 M
+(ObsID: 3210) s
+5 275 M
+(Name: ABELL_2589) s
+5 267 M
+(Chip: s3) s
+5 259 M
+(Rmax \(pix\): 290.000) s
+5 251 M
+(r2500 \(kpc\): 434.720) s
+5 243 M
+(r2500 \(pix\): 1078.09) s
+5 235 M
+(r5000 \(kpc\): 307.766) s
+5 227 M
+(r5000 \(pix\): 763.252) s
+5 219 M
+(#------------------------------#) s
+5 211 M
+(#------------------------------#) s
+5 203 M
+(ObsID: 922) s
+5 195 M
+(Name: ABELL_2597) s
+5 187 M
+(Chip: s3) s
+5 179 M
+(Rmax \(pix\): 138.000) s
+5 171 M
+(r2500 \(kpc\): 427.612) s
+5 163 M
+(r2500 \(pix\): 542.596) s
+5 155 M
+(r5000 \(kpc\): 302.734) s
+5 147 M
+(r5000 \(pix\): 384.138) s
+5 139 M
+(#------------------------------#) s
+5 131 M
+(#------------------------------#) s
+5 123 M
+(ObsID: 3192) s
+5 115 M
+(Name: ABELL_2626) s
+5 107 M
+(Chip: s3) s
+5 99 M
+(Rmax \(pix\): 378.000) s
+5 91 M
+(r2500 \(kpc\): 384.864) s
+5 83 M
+(r2500 \(pix\): 704.334) s
+5 75 M
+(r5000 \(kpc\): 272.470) s
+5 67 M
+(r5000 \(pix\): 498.644) s
+5 59 M
+(#------------------------------#) s
+5 51 M
+(#------------------------------#) s
+5 43 M
+(ObsID: 2214) s
+5 35 M
+(Name: ABELL_2667) s
+5 27 M
+(Chip: s3) s
+5 19 M
+(Rmax \(pix\): 367.000) s
+5 11 M
+(r2500 \(kpc\): 567.706) s
+5 3 M
+(r2500 \(pix\): 314.030) s
+253 539 M
+(r5000 \(kpc\): 401.915) s
+253 531 M
+(r5000 \(pix\): 222.322) s
+253 523 M
+(#------------------------------#) s
+253 515 M
+(#------------------------------#) s
+253 507 M
+(ObsID: 4959) s
+253 499 M
+(Name: ABELL_2670) s
+253 491 M
+(Chip: i3) s
+253 483 M
+(Rmax \(pix\): 883.000) s
+253 475 M
+(r2500 \(kpc\): 450.869) s
+253 467 M
+(r2500 \(pix\): 633.607) s
+253 459 M
+(r5000 \(kpc\): 319.199) s
+253 451 M
+(r5000 \(pix\): 448.571) s
+253 443 M
+(#------------------------------#) s
+253 435 M
+(#------------------------------#) s
+253 427 M
+(ObsID: 2212) s
+253 419 M
+(Name: ABELL_2744) s
+253 411 M
+(Chip: s3) s
+253 403 M
+(Rmax \(pix\): 460.000) s
+253 395 M
+(r2500 \(kpc\): 700.600) s
+253 387 M
+(r2500 \(pix\): 313.939) s
+253 379 M
+(r5000 \(kpc\): 496.000) s
+253 371 M
+(r5000 \(pix\): 222.258) s
+253 363 M
+(#------------------------------#) s
+253 355 M
+(#------------------------------#) s
+253 347 M
+(ObsID: 2516) s
+253 339 M
+(Name: ABELL_3112) s
+253 331 M
+(Chip: s3) s
+253 323 M
+(Rmax \(pix\): 366.000) s
+253 315 M
+(r2500 \(kpc\): 467.552) s
+253 307 M
+(r2500 \(pix\): 692.811) s
+253 299 M
+(r5000 \(kpc\): 331.011) s
+253 291 M
+(r5000 \(pix\): 490.485) s
+253 283 M
+(#------------------------------#) s
+253 275 M
+(#------------------------------#) s
+253 267 M
+(ObsID: 3201) s
+253 259 M
+(Name: ABELL_3158) s
+253 251 M
+(Chip: i3) s
+253 243 M
+(Rmax \(pix\): 863.000) s
+253 235 M
+(r2500 \(kpc\): 530.017) s
+253 227 M
+(r2500 \(pix\): 959.060) s
+253 219 M
+(r5000 \(kpc\): 375.233) s
+253 211 M
+(r5000 \(pix\): 678.981) s
+253 203 M
+(#------------------------------#) s
+253 195 M
+(#------------------------------#) s
+253 187 M
+(ObsID: 899) s
+253 179 M
+(Name: ABELL_3266) s
+253 171 M
+(Chip: i1) s
+253 163 M
+(Rmax \(pix\): 463.000) s
+253 155 M
+(r2500 \(kpc\): 653.058) s
+253 147 M
+(r2500 \(pix\): 1163.04) s
+253 139 M
+(r5000 \(kpc\): 462.342) s
+253 131 M
+(r5000 \(pix\): 823.393) s
+253 123 M
+(#------------------------------#) s
+253 115 M
+(#------------------------------#) s
+253 107 M
+(ObsID: 1646) s
+253 99 M
+(Name: ABELL_3558) s
+253 91 M
+(Chip: s3) s
+253 83 M
+(Rmax \(pix\): 370.000) s
+253 75 M
+(r2500 \(kpc\): 530.499) s
+253 67 M
+(r2500 \(pix\): 1146.29) s
+253 59 M
+(r5000 \(kpc\): 375.574) s
+253 51 M
+(r5000 \(pix\): 811.530) s
+253 43 M
+(#------------------------------#) s
+253 35 M
+(#------------------------------#) s
+253 27 M
+(ObsID: 4167) s
+253 19 M
+(Name: ABELL_3562) s
+253 11 M
+(Chip: i2) s
+253 3 M
+(Rmax \(pix\): 660.000) s
+501 539 M
+(r2500 \(kpc\): 440.555) s
+501 531 M
+(r2500 \(pix\): 933.618) s
+501 523 M
+(r5000 \(kpc\): 311.897) s
+501 515 M
+(r5000 \(pix\): 660.969) s
+501 507 M
+(#------------------------------#) s
+501 499 M
+(#------------------------------#) s
+501 491 M
+(ObsID: 4203) s
+501 483 M
+(Name: ABELL_3571) s
+501 475 M
+(Chip: s3) s
+501 467 M
+(Rmax \(pix\): 265.000) s
+501 459 M
+(r2500 \(kpc\): 623.039) s
+501 451 M
+(r2500 \(pix\): 1635.28) s
+501 443 M
+(r5000 \(kpc\): 441.090) s
+501 435 M
+(r5000 \(pix\): 1157.72) s
+501 427 M
+(#------------------------------#) s
+501 419 M
+(#------------------------------#) s
+501 411 M
+(ObsID: 4992) s
+501 403 M
+(Name: ABELL_4038) s
+501 395 M
+(Chip: i2) s
+501 387 M
+(Rmax \(pix\): 976.000) s
+501 379 M
+(r2500 \(kpc\): 410.549) s
+501 371 M
+(r2500 \(pix\): 1389.21) s
+501 363 M
+(r5000 \(kpc\): 290.654) s
+501 355 M
+(r5000 \(pix\): 983.511) s
+501 347 M
+(#------------------------------#) s
+501 339 M
+(#------------------------------#) s
+501 331 M
+(ObsID: 1562) s
+501 323 M
+(Name: AC_114) s
+501 315 M
+(Chip: s3) s
+501 307 M
+(Rmax \(pix\): 442.000) s
+501 299 M
+(r2500 \(kpc\): 597.513) s
+501 291 M
+(r2500 \(pix\): 265.395) s
+501 283 M
+(r5000 \(kpc\): 423.018) s
+501 275 M
+(r5000 \(pix\): 187.890) s
+501 267 M
+(#------------------------------#) s
+501 259 M
+(#------------------------------#) s
+501 251 M
+(ObsID: 1662) s
+501 243 M
+(Name: CL_1221+4918) s
+501 235 M
+(Chip: i3) s
+501 227 M
+(Rmax \(pix\): 584.000) s
+501 219 M
+(r500 \(kpc\): 1355.06) s
+501 211 M
+(r500 \(pix\): 385.412) s
+501 203 M
+(50kpc \(pix\): 14; 4% of r500) s
+501 195 M
+(100kpc \(pix\): 28; 7% of r500) s
+501 187 M
+(r2500 \(kpc\): 606.422) s
+501 179 M
+(r2500 \(pix\): 172.482) s
+501 171 M
+(r5000 \(kpc\): 429.325) s
+501 163 M
+(r5000 \(pix\): 122.111) s
+501 155 M
+(#------------------------------#) s
+501 147 M
+(#------------------------------#) s
+501 139 M
+(ObsID: 541) s
+501 131 M
+(Name: CL_1416+4446) s
+501 123 M
+(Chip: i3) s
+501 115 M
+(Rmax \(pix\): 568.000) s
+501 107 M
+(r500 \(kpc\): 971.387) s
+501 99 M
+(r500 \(pix\): 367.455) s
+501 91 M
+(50kpc \(pix\): 19; 5% of r500) s
+501 83 M
+(100kpc \(pix\): 38; 10% of r500) s
+501 75 M
+(r2500 \(kpc\): 434.720) s
+501 67 M
+(r2500 \(pix\): 164.445) s
+501 59 M
+(r5000 \(kpc\): 307.766) s
+501 51 M
+(r5000 \(pix\): 116.422) s
+501 43 M
+(#------------------------------#) s
+501 35 M
+(#------------------------------#) s
+501 27 M
+(ObsID: 914) s
+501 19 M
+(Name: CL_J0542.8-4100) s
+501 11 M
+(Chip: i3) s
+501 3 M
+(Rmax \(pix\): 840.000) s
+_R
+S
+%%Page: (5) 5
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 5 def
+/fname (make_source_reg.log) def
+/fdir () def
+/ftail (make_source_reg.log) def
+% User defined strings:
+/fmodstr (Mon Aug 21 15:06:04 2006) def
+/pagenumstr (5) def
+/user_header_p false def
+%%EndPageSetup
+5 8.000000 2 0.900000 highlight_bars
+do_header
+5 539 M
+(r200 \(kpc\): 2058.35) s
+5 531 M
+(r200 \(pix\): 612.061) s
+5 523 M
+(50kpc \(pix\): 15; 2% of r200) s
+5 515 M
+(100kpc \(pix\): 30; 5% of r200) s
+5 507 M
+(r500 \(kpc\): 1299.33) s
+5 499 M
+(r500 \(pix\): 386.363) s
+5 491 M
+(50kpc \(pix\): 15; 4% of r500) s
+5 483 M
+(100kpc \(pix\): 30; 8% of r500) s
+5 475 M
+(r2500 \(kpc\): 581.484) s
+5 467 M
+(r2500 \(pix\): 172.907) s
+5 459 M
+(r5000 \(kpc\): 411.670) s
+5 451 M
+(r5000 \(pix\): 122.412) s
+5 443 M
+(#------------------------------#) s
+5 435 M
+(#------------------------------#) s
+5 427 M
+(ObsID: 915) s
+5 419 M
+(Name: CL_J1113.1-2615) s
+5 411 M
+(Chip: i3) s
+5 403 M
+(Rmax \(pix\): 735.000) s
+5 395 M
+(r200 \(kpc\): 2137.66) s
+5 387 M
+(r200 \(pix\): 598.119) s
+5 379 M
+(50kpc \(pix\): 14; 2% of r200) s
+5 371 M
+(100kpc \(pix\): 28; 5% of r200) s
+5 363 M
+(r500 \(kpc\): 1349.40) s
+5 355 M
+(r500 \(pix\): 377.562) s
+5 347 M
+(50kpc \(pix\): 14; 4% of r500) s
+5 339 M
+(100kpc \(pix\): 28; 7% of r500) s
+5 331 M
+(r2500 \(kpc\): 603.890) s
+5 323 M
+(r2500 \(pix\): 168.969) s
+5 315 M
+(r5000 \(kpc\): 427.532) s
+5 307 M
+(r5000 \(pix\): 119.624) s
+5 299 M
+(#------------------------------#) s
+5 291 M
+(#------------------------------#) s
+5 283 M
+(ObsID: 932) s
+5 275 M
+(Name: CL_J1226.9+3332) s
+5 267 M
+(Chip: s3) s
+5 259 M
+(Rmax \(pix\): 280.000) s
+5 251 M
+(r2500 \(kpc\): 714.675) s
+5 243 M
+(r2500 \(pix\): 187.042) s
+5 235 M
+(r5000 \(kpc\): 505.964) s
+5 227 M
+(r5000 \(pix\): 132.419) s
+5 219 M
+(#------------------------------#) s
+5 211 M
+(#------------------------------#) s
+5 203 M
+(ObsID: 918) s
+5 195 M
+(Name: CL_J2302.8+0844) s
+5 187 M
+(Chip: i3) s
+5 179 M
+(Rmax \(pix\): 830.000) s
+5 171 M
+(r200 \(kpc\): 2529.82) s
+5 163 M
+(r200 \(pix\): 707.845) s
+5 155 M
+(50kpc \(pix\): 14; 2% of r200) s
+5 147 M
+(100kpc \(pix\): 28; 4% of r200) s
+5 139 M
+(r500 \(kpc\): 1596.95) s
+5 131 M
+(r500 \(pix\): 446.827) s
+5 123 M
+(50kpc \(pix\): 14; 3% of r500) s
+5 115 M
+(100kpc \(pix\): 28; 6% of r500) s
+5 107 M
+(r2500 \(kpc\): 714.675) s
+5 99 M
+(r2500 \(pix\): 199.966) s
+5 91 M
+(r5000 \(kpc\): 505.964) s
+5 83 M
+(r5000 \(pix\): 141.569) s
+5 75 M
+(#------------------------------#) s
+5 67 M
+(#------------------------------#) s
+5 59 M
+(ObsID: 360) s
+5 51 M
+(Name: CYGNUS_A) s
+5 43 M
+(Chip: s3) s
+5 35 M
+(Rmax \(pix\): 292.000) s
+5 27 M
+(r2500 \(kpc\): 728.828) s
+5 19 M
+(r2500 \(pix\): 1360.42) s
+5 11 M
+(r5000 \(kpc\): 515.984) s
+5 3 M
+(r5000 \(pix\): 963.130) s
+253 539 M
+(#------------------------------#) s
+253 531 M
+(#------------------------------#) s
+253 523 M
+(ObsID: 3189) s
+253 515 M
+(Name: ESO_3060170) s
+253 507 M
+(Chip: i0) s
+253 499 M
+(Rmax \(pix\): 645.000) s
+253 491 M
+(r2500 \(kpc\): 355.187) s
+253 483 M
+(r2500 \(pix\): 1014.18) s
+253 475 M
+(r5000 \(kpc\): 251.460) s
+253 467 M
+(r5000 \(pix\): 718.003) s
+253 459 M
+(#------------------------------#) s
+253 451 M
+(#------------------------------#) s
+253 443 M
+(ObsID: 3206) s
+253 435 M
+(Name: ESO_5520200) s
+253 427 M
+(Chip: i3) s
+253 419 M
+(Rmax \(pix\): 704.000) s
+253 411 M
+(r2500 \(kpc\): 345.714) s
+253 403 M
+(r2500 \(pix\): 1119.54) s
+253 395 M
+(r5000 \(kpc\): 244.753) s
+253 387 M
+(r5000 \(pix\): 792.595) s
+253 379 M
+(#------------------------------#) s
+253 371 M
+(#------------------------------#) s
+253 363 M
+(ObsID: 4183) s
+253 355 M
+(Name: EXO_0422-086) s
+253 347 M
+(Chip: i3) s
+253 339 M
+(Rmax \(pix\): 960.000) s
+253 331 M
+(r2500 \(kpc\): 409.303) s
+253 323 M
+(r2500 \(pix\): 1058.81) s
+253 315 M
+(r5000 \(kpc\): 289.772) s
+253 307 M
+(r5000 \(pix\): 749.600) s
+253 299 M
+(#------------------------------#) s
+253 291 M
+(#------------------------------#) s
+253 283 M
+(ObsID: 1625) s
+253 275 M
+(Name: HERCULES_A) s
+253 267 M
+(Chip: s3) s
+253 259 M
+(Rmax \(pix\): 283.000) s
+253 251 M
+(r2500 \(kpc\): 460.397) s
+253 243 M
+(r2500 \(pix\): 349.987) s
+253 235 M
+(r5000 \(kpc\): 325.945) s
+253 227 M
+(r5000 \(pix\): 247.779) s
+253 219 M
+(#------------------------------#) s
+253 211 M
+(#------------------------------#) s
+253 203 M
+(ObsID: 509) s
+253 195 M
+(Name: IRAS_09104+4109) s
+253 187 M
+(Chip: s3) s
+253 179 M
+(Rmax \(pix\): 328.000) s
+253 171 M
+(r2500 \(kpc\): 677.246) s
+253 163 M
+(r2500 \(pix\): 241.466) s
+253 155 M
+(r5000 \(kpc\): 479.466) s
+253 147 M
+(r5000 \(pix\): 170.950) s
+253 139 M
+(#------------------------------#) s
+253 131 M
+(#------------------------------#) s
+253 123 M
+(ObsID: 520) s
+253 115 M
+(Name: MS_0016.9+1609) s
+253 107 M
+(Chip: i3) s
+253 99 M
+(Rmax \(pix\): 608.000) s
+253 91 M
+(r500 \(kpc\): 1588.95) s
+253 83 M
+(r500 \(pix\): 507.871) s
+253 75 M
+(50kpc \(pix\): 16; 3% of r500) s
+253 67 M
+(100kpc \(pix\): 32; 6% of r500) s
+253 59 M
+(r2500 \(kpc\): 711.092) s
+253 51 M
+(r2500 \(pix\): 227.285) s
+253 43 M
+(r5000 \(kpc\): 503.428) s
+253 35 M
+(r5000 \(pix\): 160.910) s
+253 27 M
+(#------------------------------#) s
+253 19 M
+(#------------------------------#) s
+253 11 M
+(ObsID: 525) s
+253 3 M
+(Name: MS_0302.7+1658) s
+501 539 M
+(Chip: i3) s
+501 531 M
+(Rmax \(pix\): 569.000) s
+501 523 M
+(r200 \(kpc\): 1517.89) s
+501 515 M
+(r200 \(pix\): 554.474) s
+501 507 M
+(50kpc \(pix\): 18; 3% of r200) s
+501 499 M
+(100kpc \(pix\): 37; 7% of r200) s
+501 491 M
+(r500 \(kpc\): 958.170) s
+501 483 M
+(r500 \(pix\): 350.012) s
+501 475 M
+(50kpc \(pix\): 18; 5% of r500) s
+501 467 M
+(100kpc \(pix\): 37; 11% of r500) s
+501 459 M
+(r2500 \(kpc\): 428.805) s
+501 451 M
+(r2500 \(pix\): 156.639) s
+501 443 M
+(r5000 \(kpc\): 303.579) s
+501 435 M
+(r5000 \(pix\): 110.895) s
+501 427 M
+(#------------------------------#) s
+501 419 M
+(#------------------------------#) s
+501 411 M
+(ObsID: 4196) s
+501 403 M
+(Name: MS_0440.5+0204) s
+501 395 M
+(Chip: s3) s
+501 387 M
+(Rmax \(pix\): 368.000) s
+501 379 M
+(r2500 \(kpc\): 714.675) s
+501 371 M
+(r2500 \(pix\): 458.380) s
+501 363 M
+(r5000 \(kpc\): 505.964) s
+501 355 M
+(r5000 \(pix\): 324.516) s
+501 347 M
+(#------------------------------#) s
+501 339 M
+(#------------------------------#) s
+501 331 M
+(ObsID: 902) s
+501 323 M
+(Name: MS_0451.6-0305) s
+501 315 M
+(Chip: s3) s
+501 307 M
+(Rmax \(pix\): 460.000) s
+501 299 M
+(r2500 \(kpc\): 663.532) s
+501 291 M
+(r2500 \(pix\): 212.560) s
+501 283 M
+(r5000 \(kpc\): 469.757) s
+501 275 M
+(r5000 \(pix\): 150.485) s
+501 267 M
+(#------------------------------#) s
+501 259 M
+(#------------------------------#) s
+501 251 M
+(ObsID: 4197) s
+501 243 M
+(Name: MS_0735.6+7421) s
+501 235 M
+(Chip: s3) s
+501 227 M
+(Rmax \(pix\): 343.000) s
+501 219 M
+(r2500 \(kpc\): 527.602) s
+501 211 M
+(r2500 \(pix\): 306.146) s
+501 203 M
+(r5000 \(kpc\): 373.524) s
+501 195 M
+(r5000 \(pix\): 216.741) s
+501 187 M
+(#------------------------------#) s
+501 179 M
+(#------------------------------#) s
+501 171 M
+(ObsID: 2224) s
+501 163 M
+(Name: MS_0839.8+2938) s
+501 155 M
+(Chip: s3) s
+501 147 M
+(Rmax \(pix\): 374.000) s
+501 139 M
+(r2500 \(kpc\): 440.555) s
+501 131 M
+(r2500 \(pix\): 277.944) s
+501 123 M
+(r5000 \(kpc\): 311.897) s
+501 115 M
+(r5000 \(pix\): 196.775) s
+501 107 M
+(#------------------------------#) s
+501 99 M
+(#------------------------------#) s
+501 91 M
+(ObsID: 924) s
+501 83 M
+(Name: MS_0906.5+1110) s
+501 75 M
+(Chip: i3) s
+501 67 M
+(Rmax \(pix\): 585.000) s
+501 59 M
+(r2500 \(kpc\): 643.207) s
+501 51 M
+(r2500 \(pix\): 466.842) s
+501 43 M
+(r5000 \(kpc\): 455.368) s
+501 35 M
+(r5000 \(pix\): 330.507) s
+501 27 M
+(#------------------------------#) s
+501 19 M
+(#------------------------------#) s
+501 11 M
+(ObsID: 925) s
+501 3 M
+(Name: MS_1006.0+1202) s
+_R
+S
+%%Page: (6) 6
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 6 def
+/fname (make_source_reg.log) def
+/fdir () def
+/ftail (make_source_reg.log) def
+% User defined strings:
+/fmodstr (Mon Aug 21 15:06:04 2006) def
+/pagenumstr (6) def
+/user_header_p false def
+%%EndPageSetup
+5 8.000000 2 0.900000 highlight_bars
+do_header
+5 539 M
+(Chip: i3) s
+5 531 M
+(Rmax \(pix\): 572.000) s
+5 523 M
+(r2500 \(kpc\): 599.220) s
+5 515 M
+(r2500 \(pix\): 341.662) s
+5 507 M
+(r5000 \(kpc\): 424.226) s
+5 499 M
+(r5000 \(pix\): 241.885) s
+5 491 M
+(#------------------------------#) s
+5 483 M
+(#------------------------------#) s
+5 475 M
+(ObsID: 926) s
+5 467 M
+(Name: MS_1008.1-1224) s
+5 459 M
+(Chip: i3) s
+5 451 M
+(Rmax \(pix\): 569.000) s
+5 443 M
+(r2500 \(kpc\): 617.687) s
+5 435 M
+(r2500 \(pix\): 281.199) s
+5 427 M
+(r5000 \(kpc\): 437.301) s
+5 419 M
+(r5000 \(pix\): 199.079) s
+5 411 M
+(#------------------------------#) s
+5 403 M
+(#------------------------------#) s
+5 395 M
+(ObsID: 512) s
+5 387 M
+(Name: MS_1054.5-0321) s
+5 379 M
+(Chip: s3) s
+5 371 M
+(Rmax \(pix\): 438.000) s
+5 363 M
+(r2500 \(kpc\): 821.410) s
+5 355 M
+(r2500 \(pix\): 219.647) s
+5 347 M
+(r5000 \(kpc\): 581.529) s
+5 339 M
+(r5000 \(pix\): 155.502) s
+5 331 M
+(#------------------------------#) s
+5 323 M
+(#------------------------------#) s
+5 315 M
+(ObsID: 536) s
+5 307 M
+(Name: MS_1137.5+6625) s
+5 299 M
+(Chip: i3) s
+5 291 M
+(Rmax \(pix\): 695.000) s
+5 283 M
+(r200 \(kpc\): 2007.98) s
+5 275 M
+(r200 \(pix\): 547.848) s
+5 267 M
+(50kpc \(pix\): 14; 3% of r200) s
+5 259 M
+(100kpc \(pix\): 27; 5% of r200) s
+5 251 M
+(r500 \(kpc\): 1267.54) s
+5 243 M
+(r500 \(pix\): 345.829) s
+5 235 M
+(50kpc \(pix\): 14; 4% of r500) s
+5 227 M
+(100kpc \(pix\): 27; 8% of r500) s
+5 219 M
+(r2500 \(kpc\): 567.256) s
+5 211 M
+(r2500 \(pix\): 154.767) s
+5 203 M
+(r5000 \(kpc\): 401.597) s
+5 195 M
+(r5000 \(pix\): 109.570) s
+5 187 M
+(#------------------------------#) s
+5 179 M
+(#------------------------------#) s
+5 171 M
+(ObsID: 4192) s
+5 163 M
+(Name: MS_1455.0+2232) s
+5 155 M
+(Chip: i3) s
+5 147 M
+(Rmax \(pix\): 575.000) s
+5 139 M
+(r500 \(kpc\): 1072.46) s
+5 131 M
+(r500 \(pix\): 543.210) s
+5 123 M
+(50kpc \(pix\): 25; 5% of r500) s
+5 115 M
+(100kpc \(pix\): 51; 9% of r500) s
+5 107 M
+(r2500 \(kpc\): 479.951) s
+5 99 M
+(r2500 \(pix\): 243.100) s
+5 91 M
+(r5000 \(kpc\): 339.788) s
+5 83 M
+(r5000 \(pix\): 172.106) s
+5 75 M
+(#------------------------------#) s
+5 67 M
+(#------------------------------#) s
+5 59 M
+(ObsID: 546) s
+5 51 M
+(Name: MS_1621.5+2640) s
+5 43 M
+(Chip: i3) s
+5 35 M
+(Rmax \(pix\): 643.000) s
+5 27 M
+(r500 \(kpc\): 1392.19) s
+5 19 M
+(r500 \(pix\): 507.147) s
+5 11 M
+(50kpc \(pix\): 18; 4% of r500) s
+5 3 M
+(100kpc \(pix\): 36; 7% of r500) s
+253 539 M
+(r2500 \(kpc\): 623.039) s
+253 531 M
+(r2500 \(pix\): 226.961) s
+253 523 M
+(r5000 \(kpc\): 441.090) s
+253 515 M
+(r5000 \(pix\): 160.680) s
+253 507 M
+(#------------------------------#) s
+253 499 M
+(#------------------------------#) s
+253 491 M
+(ObsID: 1667) s
+253 483 M
+(Name: MS_2053.7-0449) s
+253 475 M
+(Chip: i3) s
+253 467 M
+(Rmax \(pix\): 602.000) s
+253 459 M
+(r500 \(kpc\): 1599.34) s
+253 451 M
+(r500 \(pix\): 492.823) s
+253 443 M
+(50kpc \(pix\): 15; 3% of r500) s
+253 435 M
+(100kpc \(pix\): 31; 6% of r500) s
+253 427 M
+(r2500 \(kpc\): 715.746) s
+253 419 M
+(r2500 \(pix\): 220.550) s
+253 411 M
+(r5000 \(kpc\): 506.723) s
+253 403 M
+(r5000 \(pix\): 156.142) s
+253 395 M
+(#------------------------------#) s
+253 387 M
+(#------------------------------#) s
+253 379 M
+(ObsID: 928) s
+253 371 M
+(Name: MS_2137.3-2353) s
+253 363 M
+(Chip: s3) s
+253 355 M
+(Rmax \(pix\): 319.000) s
+253 347 M
+(r2500 \(kpc\): 483.133) s
+253 339 M
+(r2500 \(pix\): 214.124) s
+253 331 M
+(r5000 \(kpc\): 342.041) s
+253 323 M
+(r5000 \(pix\): 151.592) s
+253 315 M
+(#------------------------------#) s
+253 307 M
+(#------------------------------#) s
+253 299 M
+(ObsID: 3200) s
+253 291 M
+(Name: OPHIUCHUS) s
+253 283 M
+(Chip: s3) s
+253 275 M
+(Rmax \(pix\): 366.000) s
+253 267 M
+(r2500 \(kpc\): 714.675) s
+253 259 M
+(r2500 \(pix\): 2584.82) s
+253 251 M
+(r5000 \(kpc\): 505.964) s
+253 243 M
+(r5000 \(pix\): 1829.96) s
+253 235 M
+(#------------------------------#) s
+253 227 M
+(#------------------------------#) s
+253 219 M
+(ObsID: 508) s
+253 211 M
+(Name: PKS_0745-191) s
+253 203 M
+(Chip: s3) s
+253 195 M
+(Rmax \(pix\): 363.000) s
+253 187 M
+(r2500 \(kpc\): 658.898) s
+253 179 M
+(r2500 \(pix\): 708.619) s
+253 171 M
+(r5000 \(kpc\): 466.476) s
+253 163 M
+(r5000 \(pix\): 501.677) s
+253 155 M
+(#------------------------------#) s
+253 147 M
+(#------------------------------#) s
+253 139 M
+(ObsID: 6103) s
+253 131 M
+(Name: PKS_0745-191) s
+253 123 M
+(Chip: i3) s
+253 115 M
+(Rmax \(pix\): 806.000) s
+253 107 M
+(r2500 \(kpc\): 658.898) s
+253 99 M
+(r2500 \(pix\): 708.619) s
+253 91 M
+(r5000 \(kpc\): 466.476) s
+253 83 M
+(r5000 \(pix\): 501.677) s
+253 75 M
+(#------------------------------#) s
+253 67 M
+(#------------------------------#) s
+253 59 M
+(ObsID: 2202) s
+253 51 M
+(Name: RBS_0797) s
+253 43 M
+(Chip: i3) s
+253 35 M
+(Rmax \(pix\): 750.000) s
+253 27 M
+(r500 \(kpc\): 1280.55) s
+253 19 M
+(r500 \(pix\): 523.018) s
+253 11 M
+(50kpc \(pix\): 20; 4% of r500) s
+253 3 M
+(100kpc \(pix\): 41; 8% of r500) s
+501 539 M
+(r2500 \(kpc\): 573.078) s
+501 531 M
+(r2500 \(pix\): 234.064) s
+501 523 M
+(r5000 \(kpc\): 405.719) s
+501 515 M
+(r5000 \(pix\): 165.709) s
+501 507 M
+(#------------------------------#) s
+501 499 M
+(#------------------------------#) s
+501 491 M
+(ObsID: 527) s
+501 483 M
+(Name: RX_J0439.0+0520) s
+501 475 M
+(Chip: i3) s
+501 467 M
+(Rmax \(pix\): 580.000) s
+501 459 M
+(r2500 \(kpc\): 635.217) s
+501 451 M
+(r2500 \(pix\): 379.488) s
+501 443 M
+(r5000 \(kpc\): 449.711) s
+501 435 M
+(r5000 \(pix\): 268.664) s
+501 427 M
+(#------------------------------#) s
+501 419 M
+(#------------------------------#) s
+501 411 M
+(ObsID: 1449) s
+501 403 M
+(Name: RX_J0439.0+0715) s
+501 395 M
+(Chip: i3) s
+501 387 M
+(Rmax \(pix\): 680.000) s
+501 379 M
+(r2500 \(kpc\): 696.579) s
+501 371 M
+(r2500 \(pix\): 373.206) s
+501 363 M
+(r5000 \(kpc\): 493.153) s
+501 355 M
+(r5000 \(pix\): 264.217) s
+501 347 M
+(#------------------------------#) s
+501 339 M
+(#------------------------------#) s
+501 331 M
+(ObsID: 3584) s
+501 323 M
+(Name: RX_J0647.7+7015) s
+501 315 M
+(Chip: i3) s
+501 307 M
+(Rmax \(pix\): 610.000) s
+501 299 M
+(r500 \(kpc\): 1520.88) s
+501 291 M
+(r500 \(pix\): 468.264) s
+501 283 M
+(50kpc \(pix\): 15; 3% of r500) s
+501 275 M
+(100kpc \(pix\): 31; 7% of r500) s
+501 267 M
+(r2500 \(kpc\): 680.632) s
+501 259 M
+(r2500 \(pix\): 209.560) s
+501 251 M
+(r5000 \(kpc\): 481.863) s
+501 243 M
+(r5000 \(pix\): 148.361) s
+501 235 M
+(#------------------------------#) s
+501 227 M
+(#------------------------------#) s
+501 219 M
+(ObsID: 2199) s
+501 211 M
+(Name: RX_J0819.6+6336) s
+501 203 M
+(Chip: s3) s
+501 195 M
+(Rmax \(pix\): 364.000) s
+501 187 M
+(r2500 \(kpc\): 446.314) s
+501 179 M
+(r2500 \(pix\): 422.379) s
+501 171 M
+(r5000 \(kpc\): 315.975) s
+501 163 M
+(r5000 \(pix\): 299.029) s
+501 155 M
+(#------------------------------#) s
+501 147 M
+(#------------------------------#) s
+501 139 M
+(ObsID: 1647) s
+501 131 M
+(Name: RX_J0820.9+0752) s
+501 123 M
+(Chip: s3) s
+501 115 M
+(Rmax \(pix\): 370.000) s
+501 107 M
+(r2500 \(kpc\): 609.781) s
+501 99 M
+(r2500 \(pix\): 617.936) s
+501 91 M
+(r5000 \(kpc\): 431.704) s
+501 83 M
+(r5000 \(pix\): 437.477) s
+501 75 M
+(#------------------------------#) s
+501 67 M
+(#------------------------------#) s
+501 59 M
+(ObsID: 3592) s
+501 51 M
+(Name: RX_J1347.5-1145) s
+501 43 M
+(Chip: i3) s
+501 35 M
+(Rmax \(pix\): 708.000) s
+501 27 M
+(r500 \(kpc\): 1665.73) s
+501 19 M
+(r500 \(pix\): 587.085) s
+501 11 M
+(50kpc \(pix\): 18; 3% of r500) s
+501 3 M
+(100kpc \(pix\): 35; 6% of r500) s
+_R
+S
+%%Page: (7) 7
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 7 def
+/fname (make_source_reg.log) def
+/fdir () def
+/ftail (make_source_reg.log) def
+% User defined strings:
+/fmodstr (Mon Aug 21 15:06:04 2006) def
+/pagenumstr (7) def
+/user_header_p false def
+%%EndPageSetup
+5 8.000000 2 0.900000 highlight_bars
+do_header
+5 539 M
+(r2500 \(kpc\): 745.458) s
+5 531 M
+(r2500 \(pix\): 262.735) s
+5 523 M
+(r5000 \(kpc\): 527.758) s
+5 515 M
+(r5000 \(pix\): 186.007) s
+5 507 M
+(#------------------------------#) s
+5 499 M
+(#------------------------------#) s
+5 491 M
+(ObsID: 507) s
+5 483 M
+(Name: RX_J1347.5-1145) s
+5 475 M
+(Chip: s3) s
+5 467 M
+(Rmax \(pix\): 375.000) s
+5 459 M
+(r2500 \(kpc\): 745.458) s
+5 451 M
+(r2500 \(pix\): 262.735) s
+5 443 M
+(r5000 \(kpc\): 527.758) s
+5 435 M
+(r5000 \(pix\): 186.007) s
+5 427 M
+(#------------------------------#) s
+5 419 M
+(#------------------------------#) s
+5 411 M
+(ObsID: 1657) s
+5 403 M
+(Name: RX_J1423.8+2404) s
+5 395 M
+(Chip: i3) s
+5 387 M
+(Rmax \(pix\): 601.000) s
+5 379 M
+(r500 \(kpc\): 1228.72) s
+5 371 M
+(r500 \(pix\): 391.282) s
+5 363 M
+(50kpc \(pix\): 16; 4% of r500) s
+5 355 M
+(100kpc \(pix\): 32; 8% of r500) s
+5 347 M
+(r2500 \(kpc\): 549.882) s
+5 339 M
+(r2500 \(pix\): 175.108) s
+5 331 M
+(r5000 \(kpc\): 389.297) s
+5 323 M
+(r5000 \(pix\): 123.970) s
+5 315 M
+(#------------------------------#) s
+5 307 M
+(#------------------------------#) s
+5 299 M
+(ObsID: 4195) s
+5 291 M
+(Name: RX_J1423.8+2404) s
+5 283 M
+(Chip: s3) s
+5 275 M
+(Rmax \(pix\): 357.000) s
+5 267 M
+(r2500 \(kpc\): 549.882) s
+5 259 M
+(r2500 \(pix\): 175.108) s
+5 251 M
+(r5000 \(kpc\): 389.297) s
+5 243 M
+(r5000 \(pix\): 123.970) s
+5 235 M
+(#------------------------------#) s
+5 227 M
+(#------------------------------#) s
+5 219 M
+(ObsID: 1649) s
+5 211 M
+(Name: RX_J1532.9+3021) s
+5 203 M
+(Chip: s3) s
+5 195 M
+(Rmax \(pix\): 352.000) s
+5 187 M
+(r2500 \(kpc\): 527.118) s
+5 179 M
+(r2500 \(pix\): 218.926) s
+5 171 M
+(r5000 \(kpc\): 373.181) s
+5 163 M
+(r5000 \(pix\): 154.992) s
+5 155 M
+(#------------------------------#) s
+5 147 M
+(#------------------------------#) s
+5 139 M
+(ObsID: 1665) s
+5 131 M
+(Name: RX_J1532.9+3021) s
+5 123 M
+(Chip: i3) s
+5 115 M
+(Rmax \(pix\): 586.000) s
+5 107 M
+(r500 \(kpc\): 1177.85) s
+5 99 M
+(r500 \(pix\): 489.192) s
+5 91 M
+(50kpc \(pix\): 21; 4% of r500) s
+5 83 M
+(100kpc \(pix\): 42; 9% of r500) s
+5 75 M
+(r2500 \(kpc\): 527.118) s
+5 67 M
+(r2500 \(pix\): 218.926) s
+5 59 M
+(r5000 \(kpc\): 373.181) s
+5 51 M
+(r5000 \(pix\): 154.992) s
+5 43 M
+(#------------------------------#) s
+5 35 M
+(#------------------------------#) s
+5 27 M
+(ObsID: 548) s
+5 19 M
+(Name: RX_J1716.9+6708) s
+5 11 M
+(Chip: i3) s
+5 3 M
+(Rmax \(pix\): 560.000) s
+253 539 M
+(r500 \(kpc\): 1584.12) s
+253 531 M
+(r500 \(pix\): 427.017) s
+253 523 M
+(50kpc \(pix\): 13; 3% of r500) s
+253 515 M
+(100kpc \(pix\): 27; 6% of r500) s
+253 507 M
+(r2500 \(kpc\): 708.934) s
+253 499 M
+(r2500 \(pix\): 191.101) s
+253 491 M
+(r5000 \(kpc\): 501.900) s
+253 483 M
+(r5000 \(pix\): 135.293) s
+253 475 M
+(#------------------------------#) s
+253 467 M
+(#------------------------------#) s
+253 459 M
+(ObsID: 4361) s
+253 451 M
+(Name: RX_J1720.1+2638) s
+253 443 M
+(Chip: i3) s
+253 435 M
+(Rmax \(pix\): 690.000) s
+253 427 M
+(r2500 \(kpc\): 532.421) s
+253 419 M
+(r2500 \(pix\): 384.501) s
+253 411 M
+(r5000 \(kpc\): 376.935) s
+253 403 M
+(r5000 \(pix\): 272.213) s
+253 395 M
+(#------------------------------#) s
+253 387 M
+(#------------------------------#) s
+253 379 M
+(ObsID: 3280) s
+253 371 M
+(Name: RX_J1720.2+3536) s
+253 363 M
+(Chip: i3) s
+253 355 M
+(Rmax \(pix\): 690.000) s
+253 347 M
+(r500 \(kpc\): 1200.37) s
+253 339 M
+(r500 \(pix\): 460.232) s
+253 331 M
+(50kpc \(pix\): 19; 4% of r500) s
+253 323 M
+(100kpc \(pix\): 38; 8% of r500) s
+253 315 M
+(r2500 \(kpc\): 537.196) s
+253 307 M
+(r2500 \(pix\): 205.965) s
+253 299 M
+(r5000 \(kpc\): 380.316) s
+253 291 M
+(r5000 \(pix\): 145.816) s
+253 283 M
+(#------------------------------#) s
+253 275 M
+(#------------------------------#) s
+253 267 M
+(ObsID: 552) s
+253 259 M
+(Name: RX_J2129.6+0005) s
+253 251 M
+(Chip: i3) s
+253 243 M
+(Rmax \(pix\): 610.000) s
+253 235 M
+(r2500 \(kpc\): 749.557) s
+253 227 M
+(r2500 \(pix\): 407.965) s
+253 219 M
+(r5000 \(kpc\): 530.660) s
+253 211 M
+(r5000 \(pix\): 288.825) s
+253 203 M
+(#------------------------------#) s
+253 195 M
+(#------------------------------#) s
+253 187 M
+(ObsID: 1668) s
+253 179 M
+(Name: SERSIC_159-03) s
+253 171 M
+(Chip: s3) s
+253 163 M
+(Rmax \(pix\): 357.000) s
+253 155 M
+(r2500 \(kpc\): 350.846) s
+253 147 M
+(r2500 \(pix\): 634.853) s
+253 139 M
+(r5000 \(kpc\): 248.387) s
+253 131 M
+(r5000 \(pix\): 449.453) s
+253 123 M
+(#------------------------------#) s
+253 115 M
+(#------------------------------#) s
+253 107 M
+(ObsID: 1660) s
+253 99 M
+(Name: V_1121.0+2327) s
+253 91 M
+(Chip: i3) s
+253 83 M
+(Rmax \(pix\): 600.000) s
+253 75 M
+(r500 \(kpc\): 1247.26) s
+253 67 M
+(r500 \(pix\): 391.874) s
+253 59 M
+(50kpc \(pix\): 16; 4% of r500) s
+253 51 M
+(100kpc \(pix\): 31; 8% of r500) s
+253 43 M
+(r2500 \(kpc\): 558.179) s
+253 35 M
+(r2500 \(pix\): 175.373) s
+253 27 M
+(r5000 \(kpc\): 395.171) s
+253 19 M
+(r5000 \(pix\): 124.158) s
+253 11 M
+(#------------------------------#) s
+253 3 M
+(#------------------------------#) s
+501 539 M
+(ObsID: 516) s
+501 531 M
+(Name: ZWCL_1358+6245) s
+501 523 M
+(Chip: s3) s
+501 515 M
+(Rmax \(pix\): 423.000) s
+501 507 M
+(r2500 \(kpc\): 606.422) s
+501 499 M
+(r2500 \(pix\): 260.414) s
+501 491 M
+(r5000 \(kpc\): 429.325) s
+501 483 M
+(r5000 \(pix\): 184.364) s
+501 475 M
+(#------------------------------#) s
+501 467 M
+(#------------------------------#) s
+501 459 M
+(ObsID: 1659) s
+501 451 M
+(Name: ZWCL_1953) s
+501 443 M
+(Chip: i3) s
+501 435 M
+(Rmax \(pix\): 535.000) s
+501 427 M
+(r2500 \(kpc\): 860.582) s
+501 419 M
+(r2500 \(pix\): 336.007) s
+501 411 M
+(r5000 \(kpc\): 609.262) s
+501 403 M
+(r5000 \(pix\): 237.881) s
+501 395 M
+(#------------------------------#) s
+501 387 M
+(#------------------------------#) s
+501 379 M
+(ObsID: 909) s
+501 371 M
+(Name: ZWCL_3146) s
+501 363 M
+(Chip: i3) s
+501 355 M
+(Rmax \(pix\): 630.000) s
+501 347 M
+(r2500 \(kpc\): 808.562) s
+501 339 M
+(r2500 \(pix\): 377.755) s
+501 331 M
+(r5000 \(kpc\): 572.433) s
+501 323 M
+(r5000 \(pix\): 267.437) s
+501 315 M
+(#------------------------------#) s
+501 307 M
+(#------------------------------#) s
+501 299 M
+(ObsID: 539) s
+501 291 M
+(Name: ZWCL_5247) s
+501 283 M
+(Chip: i3) s
+501 275 M
+(Rmax \(pix\): 530.000) s
+501 267 M
+(r2500 \(kpc\): 658.898) s
+501 259 M
+(r2500 \(pix\): 365.676) s
+501 251 M
+(r5000 \(kpc\): 466.476) s
+501 243 M
+(r5000 \(pix\): 258.885) s
+501 235 M
+(#------------------------------#) s
+501 227 M
+(#------------------------------#) s
+501 219 M
+(ObsID: 543) s
+501 211 M
+(Name: ZWCL_7160) s
+501 203 M
+(Chip: i3) s
+501 195 M
+(Rmax \(pix\): 555.000) s
+501 187 M
+(r2500 \(kpc\): 700.235) s
+501 179 M
+(r2500 \(pix\): 355.879) s
+501 171 M
+(r5000 \(kpc\): 495.742) s
+501 163 M
+(r5000 \(pix\): 251.949) s
+501 155 M
+(#------------------------------#) s
+501 147 M
+(#------------------------------#) s
+501 139 M
+(ObsID: 3195) s
+501 131 M
+(Name: ZWICKY_2701) s
+501 123 M
+(Chip: s3) s
+501 115 M
+(Rmax \(pix\): 370.000) s
+501 107 M
+(r2500 \(kpc\): 476.212) s
+501 99 M
+(r2500 \(pix\): 282.394) s
+501 91 M
+(r5000 \(kpc\): 337.141) s
+501 83 M
+(r5000 \(pix\): 199.925) s
+501 75 M
+(#------------------------------#) s
+501 67 M
+(#------------------------------#) s
+501 59 M
+(ObsID: 3595) s
+501 51 M
+(Name: 1RXS_J2129.4-0741) s
+501 43 M
+(Chip: i3) s
+501 35 M
+(Rmax \(pix\): 607.000) s
+501 27 M
+(r500 \(kpc\): 1482.67) s
+501 19 M
+(r500 \(pix\): 461.837) s
+501 11 M
+(50kpc \(pix\): 16; 3% of r500) s
+501 3 M
+(100kpc \(pix\): 31; 7% of r500) s
+_R
+S
+%%Page: (8) 8
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 8 def
+/fname (make_source_reg.log) def
+/fdir () def
+/ftail (make_source_reg.log) def
+% User defined strings:
+/fmodstr (Mon Aug 21 15:06:04 2006) def
+/pagenumstr (8) def
+/user_header_p false def
+%%EndPageSetup
+5 8.000000 2 0.900000 highlight_bars
+do_header
+5 539 M
+(r2500 \(kpc\): 663.532) s
+5 531 M
+(r2500 \(pix\): 206.684) s
+5 523 M
+(r5000 \(kpc\): 469.757) s
+5 515 M
+(r5000 \(pix\): 146.325) s
+5 507 M
+(#------------------------------#) s
+5 499 M
+(#------------------------------#) s
+_R
+S
+%%Trailer
+%%Pages: 8
+%%DocumentNeededResources: font Courier-Bold Courier 
+%%EOF

@@ -1,0 +1,148 @@
+#!/opt/headas-6.4/i686-apple-darwin8.10.1/bin/xspec
+# -*- mode: tcl; -*-
+
+# Load tcl-sqlite3 library
+#load /opt/local/lib/tcl8.5/sqlite3/libtclsqlite3.dylib 
+load /usr/lib/sqlite3/libtclsqlite3.so.0
+# Connect to sqlite3 database file and make 'db' the Tcl command to access it
+sqlite3 db thbr.sqlite
+# Truncate the data table before starting the analysis
+db eval {DELETE FROM fit_result}
+
+# exec rm -rf fit_results
+# exec mkdir fit_results
+
+# Fit a spectral fit temp for the given minimum temp
+proc fit_temp {T_min eventsfile redshift NH_ini T_ini NH_local_ini Z_ini} {
+    # set up xspec
+    query yes
+    setplot energy
+    chatter 5
+    data $eventsfile
+    ignore bad
+    ignore **-$T_min 7.0-**
+    model wabs(mekal) & /*y
+    newpar 1 $NH_ini
+    newpar 2 $T_ini
+    newpar 4 $Z_ini
+    newpar 5 $redshift
+    newpar 6 0
+    freeze 1
+    renorm
+    fit
+    error maximum 10 2
+    lumin 2 10 $redshift
+    scan [tcloutr param 2] "%f" TEMP
+    scan [tcloutr stat] "%f" CHI
+    scan [tcloutr dof] "%f" DOF
+    set L [lindex [lindex [lindex [split [tcloutr lum] 1] 0] 0]]
+    set CONF [split [tcloutr error 2]]
+    set T_MIN [lindex $CONF 0]
+    set T_MAX [lindex $CONF 1]
+    set FLAGS [lindex $CONF 3]
+    set CHI [expr {$CHI/$DOF}]
+    return [list $TEMP $CHI $T_MIN $T_MAX $FLAGS $L]
+}
+
+# Set up some constants
+set NH_ini 0.05;
+set T_ini 3.0;
+set NH_local_ini 0.05;
+set Z_ini 0.3;
+
+#  Slurp up the data files
+set cluster_info_total [split [read [open "cluster_info_total.global" r]] "\n"]
+foreach entry $cluster_info_total {set clusterdata([lindex $entry 0]) [split $entry]}
+set listtotal [split [read [open "list_total.txt" r]] "\n"]
+foreach entry $listtotal {set listdata([lindex $entry 0]) [split $entry]}
+
+# set fileid [open "fit_results/fit_result.csv" w]
+# puts $fileid "z, Tew, Tsl, Lbol, L1, L2, sig_v, Mvir, Mgas_vir, Mstar_vir, Mcool, Rvir, M200, M500, M2500, Tew200, Tew500, Tew2500, R200, R500, R2500, Mgas_500, Mgas_2500, Tmw2500, Tsl200, Tsl500, Tsl2500, T_CUT, TFULL, CHIFULL, THARD, CHIHARD, THBR, clusnum, countlevel, delta, sigma, TFULL_ERROR, THARD_ERROR, THBR_ERROR, L_FULL, L_HARD"
+
+foreach T_CUT {{2.0}} {
+    foreach eventfile [glob extracted_spectra/*.pi] {
+	catch {
+	    set filename [lindex [split $eventfile "/"] 1];
+	    set countlevel [string range [lindex [split $filename "."] 0] 1 end]
+	    set clusnum [lindex [split $filename "."] 1]
+	    set delta [string range [lindex [split $filename "."] 2] 1 end]
+	    set sigma [lindex [split $filename "."] 3]
+	    set fileroot c$countlevel.$clusnum.r$delta.$sigma
+	    set z [lindex $listdata($clusnum) 2]
+	    set T_min [expr {$T_CUT/(1+$z)}]
+	    set Tew [lindex $clusterdata($clusnum) 7];
+	    set Tsl [lindex $clusterdata($clusnum) 8];
+	    set Lbol [lindex $clusterdata($clusnum) 9];
+	    set L1 [lindex $clusterdata($clusnum) 10];
+	    set L2 [lindex $clusterdata($clusnum) 11];
+	    set sig_v [lindex $clusterdata($clusnum) 12];
+	    set Mvir [lindex $clusterdata($clusnum) 13]
+	    set Mgas_vir [lindex $clusterdata($clusnum) 14];
+	    set Mstar_vir [lindex $clusterdata($clusnum) 15];
+	    set Mcool [lindex $clusterdata($clusnum) 16]
+	    set Rvir [lindex $clusterdata($clusnum) 17];
+	    set M200 [lindex $clusterdata($clusnum) 18];
+	    set M500 [lindex $clusterdata($clusnum) 19];
+	    set M2500 [lindex $clusterdata($clusnum) 20];
+	    set Tew200 [lindex $clusterdata($clusnum) 21];
+	    set Tew500 [lindex $clusterdata($clusnum) 22];
+	    set Tew2500 [lindex $clusterdata($clusnum) 23];
+	    set R200 [lindex $clusterdata($clusnum) 24];
+	    set R500 [lindex $clusterdata($clusnum) 25];
+	    set R2500 [lindex $clusterdata($clusnum) 26];
+	    set Mgas_500 [lindex $clusterdata($clusnum) 30];
+	    set Mgas_2500 [lindex $clusterdata($clusnum) 31];
+	    set Tmw2500 [lindex $clusterdata($clusnum) 32];
+	    set Tsl200 [lindex $clusterdata($clusnum) 21];
+	    set Tsl500 [lindex $clusterdata($clusnum) 22];
+	    set Tsl2500 [lindex $clusterdata($clusnum) 23];
+	    set val [fit_temp 0.7 $eventfile $z $NH_ini $T_ini $NH_local_ini $Z_ini]
+	    set TFULL [lindex $val 0]
+	    set CHIFULL [lindex $val 1]
+	    set TFULL_MIN [lindex $val 2]
+	    set TFULL_MAX [lindex $val 3]
+	    set TFULL_FLAGS [lindex $val 4]
+	    set L_FULL [lindex $val 5]
+	    set TFULL_ERROR [expr {abs($TFULL-$TFULL_MIN) > abs($TFULL_MAX-$TFULL) ? [expr {abs($TFULL-$TFULL_MIN)}] : [expr {abs($TFULL_MAX-$TFULL)}]}]
+	    set val [fit_temp $T_min $eventfile $z $NH_ini $T_ini $NH_local_ini $Z_ini]
+	    set THARD [lindex $val 0]
+	    set CHIHARD [lindex $val 1]
+	    set THARD_MIN [lindex $val 2]
+	    set THARD_MAX [lindex $val 3]
+	    set THARD_FLAGS [lindex $val 4]
+	    set L_HARD [lindex $val 5]
+	    set THARD_ERROR [expr {abs($THARD-$THARD_MIN) > abs($THARD_MAX-$THARD) ? [expr {abs($THARD-$THARD_MIN)}] : [expr {abs($THARD_MAX-$THARD)}]}]
+	    set THBR [expr {$THARD/$TFULL}]
+	    set THBR_ERROR [expr {abs($THBR)*sqrt(pow($THARD_ERROR/$THARD,2) + pow($TFULL_ERROR/$TFULL,2))}]
+# 	    puts $fileid "$z, $Tew, $Tsl, $Lbol, $L1, $L2, $sig_v, $Mvir, $Mgas_vir, $Mstar_vir, $Mcool, $Rvir, $M200, $M500, $M2500, $Tew200, $Tew500, $Tew2500, $R200, $R500, $R2500, $Mgas_500, $Mgas_2500, $Tmw2500, $Tsl200, $Tsl500, $Tsl2500, $T_CUT, $TFULL, $CHIFULL, $THARD, $CHIHARD, $THBR, $clusnum, $countlevel, $delta, $sigma, $TFULL_ERROR, $THARD_ERROR, $THBR_ERROR, $L_FULL, $L_HARD"
+	    puts "$z, $Tew, $Tsl, $Lbol, $L1, $L2, $sig_v, $Mvir, $Mgas_vir, $Mstar_vir, $Mcool, $Rvir, $M200, $M500, $M2500, $Tew200, $Tew500, $Tew2500, $R200, $R500, $R2500, $Mgas_500, $Mgas_2500, $Tmw2500, $Tsl200, $Tsl500, $Tsl2500, $T_CUT, $TFULL, $CHIFULL, $THARD, $CHIHARD, $THBR, $clusnum, $countlevel, $delta, $sigma, $TFULL_ERROR, $THARD_ERROR, $THBR_ERROR, $L_FULL, $L_HARD"
+
+	    # Insert data into SQL database
+	    db eval {INSERT INTO fit_result values($z, $Tew, $Tsl, $Lbol, $L1, $L2, $sig_v, $Mvir, $Mgas_vir, $Mstar_vir, $Mcool, $Rvir, $M200, $M500, $M2500, $Tew200, $Tew500, $Tew2500, $R200, $R500, $R2500, $Mgas_500, $Mgas_2500, $Tmw2500, $Tsl200, $Tsl500, $Tsl2500, $T_CUT, $TFULL, $CHIFULL, $THARD, $CHIHARD, $THBR, $clusnum, $countlevel, $delta, $sigma, $TFULL_ERROR, $THARD_ERROR, $THBR_ERROR, $L_FULL, $L_HARD)}
+
+	}
+    }
+}
+close $fileid
+
+db close
+
+
+# Hey Ken,
+# Attached is the Tcl script I'm using to write to my SQL database.  The
+# parts you would be interested should be pretty self-explanatory.  Just
+# load the library, connect to the database file, issue commands using
+# <db-handle> eval {<SQL statement>}, then eventually close the connection
+# with <db-handle> close.
+# Some links to the SQLite documentation on the subject:
+# http://www.sqlite.org/quickstart.html
+# http://www.sqlite.org/tclsqlite.html#eval
+# Info on installing tcl-sqlite3 using Darwin Ports (basically just `sudo
+# port install tcl-sqlite3'....once you have Darwin Ports set up):
+# http://tcl-sqlite3.darwinports.com/
+# It seems not to be in Fink, so if you want to do it on a Mac but don't
+# want to use Darwin Ports (or Mac Ports, or whatever it's called), I
+# think you can build it from the SQLite3 source:
+# http://www.sqlite.org/download.html
+# Best,
+# Dave

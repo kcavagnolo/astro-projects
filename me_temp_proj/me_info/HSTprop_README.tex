@@ -1,0 +1,219 @@
+\documentclass[preprint]{aastex}
+\usepackage{lscape}
+\bibliographystyle{apj}
+\shorttitle{README}
+\shortauthors{Cavagnolo}
+\begin{document}
+
+\title{README}
+\author{Kenneth W. Cavagnolo\altaffilmark{1,2}}
+\altaffiltext{1}{Department of Physics and Astronomy, Michigan State University, BPS Building, East Lansing, MI 48824}
+\altaffiltext{2}{cavagnolo@pa.msu.edu}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sample Selection}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Our Mathiesen-Evrard (ME) sample, to which we applied the supplied
+filter criteria of $0.15 \leq z \leq 0.3$, T$_X \gtrsim 6.5$keV, and
+dec $\gtrsim -20\deg$, comes exclusively from the Chandra X-Ray
+Telescope's Data Archive (CDA). We initially drew our sample from the
+{\textit{ROSAT}} Brightest Cluster Sample (RBC,
+\cite{1998MNRAS.301..881E}), RBC Extended Sample (RBCE,
+\cite{2000MNRAS.318..333E}), and {\textit{ROSAT}} Brightest 55 Sample
+(B55, \cite{1990MNRAS.245..559E}, \cite{1998MNRAS.298..416P}). While
+these samples provide a complete, flux-limited sample down to
+$1.7\times10^{-11}$ ergs cm$^{-2}$ sec$^{-1}$, the volume-limit of each
+sample is not as deep as we desire (RBC z $\leq 0.3$, RBCE z
+$\leq 0.41$ and B55 z $\leq 0.15$) to explore a broad dynamical
+range. Thus we incorporated clusters from the CDA at a redshift large enough
+to where a minimum of $r_{2500}$ ($r_{\Delta_c}$ being the radius at which the
+average cluster density is $\Delta_c$ times the critical density of the
+Universe, $\rho_c$) is within the Chandra ACIS-S or ACIS-I field of
+view. The portion of our sample at z $\gtrsim 0.4$ can also be found in a
+combination of the {\textit{Einstein}} Extended Medium Sensitivity Survey
+(\cite{1990ApJS...72..567G}), North Ecliptic Pole Survey
+(\cite{2006ApJS..162..304H}), {\textit{ROSAT}} Deep Cluster Survey
+(\cite{1995ApJ...445L..11R}), and {\textit{ROSAT}} Serendipitous Survey
+(\cite{1998ApJ...502..558V}).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Filtering Result}
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The result of our CDA search is a total of 229 observations of which
+176 are used in the ME-project. Of those 176 observations, 35 meet the
+filter criteria and are included in the FITS files. Filtering was
+performed using the best-fit values of the r$_{2500}$ minus central
+70kpc aperture (apertures explained below). All the data for each
+observation are included in the ``RealOnly'' extension of the FITS files.
+
+Seven clusters, Abell 586, Abell 781, Abell 1423, Abell 2409, Abell
+2537, RXJ1720, and RXJ2129, were added because the upper bound of the
+90\% confidence interval on the best-fit T$_X$ was within 10\% the 6.5keV cut.
+
+A comparsion between literature values and our best-fit values for
+T$_X$ finds agreement with the exception of A2537, A2294, and A781. We
+have found published values which "book-end" or outright agree with
+our temperatures to within 20\% of the 1.6-sigma errors.
+The three discrepant clusters are not totally unbelievable:
+\begin{description}
+\item[A781]:  ours, ~7.0 keV (upper bound); \cite{2005MNRAS.359.1481B}, ~10.8 keV
+\item[A2294]: ours, ~8.5 keV (lower bound); \cite{2005MNRAS.359.1481B}, ~7.10 keV
+\item[A2537]: ours, ~7.5 keV (lower bound); Don Horner's Thesis, ~6.08 keV
+\end{description}
+
+%%%%%%%%%%%%%%%%%%%
+\section{Apertures}
+%%%%%%%%%%%%%%%%%%%
+
+Spectra were extracted from six different apertures. The circular apertures
+were defined using the X-Ray surface brightness peak as the center with
+the following radii:
+\begin{description}
+\item[r$_{max}$]: radius reaching to the vignetted edge of the aimpoint chip.
+\item[r$_{break}$]: radius at which the radial surface brightness
+profile is $\le 1\sigma$ above the background surface brightness.
+\item[r$_{2500}$]: radius at which the average cluster density is
+$2500$ times the critical density of the Universe.
+\item[r$_{2500}-70$kpc]: the same as r$_{2500}$ except the central
+70kpc is excluded resulting in an annulus.
+\item[r$_{5000}$]: radius at which the average cluster density is
+$5000$ times the critical density of the Universe.
+\item[r$_{5000}-70$kpc]: the same as r$_{5000}$ except the central
+70kpc is excluded resulting in an annulus.
+\end{description}
+
+The naming scheme of the FITS files follows the region used for
+spectral extraction. The file names also specify that N$_H$ was fixed (nhfro)
+and Fe was free (fefree) during fitting. The file names are as such:
+\begin{description}
+\item[*rmax-70*.fits] = maximum radius aperture minus central 70kpc
+\item[*rbreak-70*.fits] = break radius aperture minus central 70kpc
+\item[*r2500-70*.fits] = r$_{2500}$ radius aperture minus central 70kpc
+\item[*r2500*.fits] = r$_{2500}$ radius aperture, no central exclusion
+\item[*r5000-70*.fits] = r$_{5000}$ radius aperture minus central 70kpc
+\item[*r5000*.fits] = r$_{5000}$ radius aperture, no central exclusion
+\end{description}
+
+The header for each extension contains information regarding all the
+columns included and the corresponding units (where
+applicable). Within the FITS files '77' refers to the [0.7-7]keV
+bandpass and '27' refers to the [2.0/(1+z)-7.0]keV bandpass. This is
+noted in the FITS header.
+
+For our calculations of radii we assumed a flat cosmology of
+$\Omega_{M} = 0.3$, $\Lambda = 0.7$, and $H_{0} = 70$ km s$^{-1}$ Mpc$^{-1}$
+and adopt the relation from \cite{2002A&A...389....1A}:
+
+\begin{eqnarray}
+r_{\Delta_c} &=& 2.71
+\cdot \beta_T
+\cdot \Delta_z^{-1/2}
+\cdot (1+z)^{3/2}
+\cdot (\frac{kT_X}{10keV})^{1/2}\\
+\Delta_z &=& \frac{\Delta_c \Omega_M}{18\pi^2\Omega_z} \nonumber \\
+\Omega_z &=& \frac{\Omega_M (1+z)^3}{[\Omega_M (1+z)^3]+[(1-\Omega_M-\Lambda)(1+z)^2]+\Lambda} \nonumber
+\end{eqnarray}
+
+where $r_{\Delta_c}$ is in units of Mpc h$_{70}^{-1}$, $\Delta_c$ is
+the assumed density contrast of the cluster at $r_{\Delta_c}$, and
+$\beta_T$ is a numerically determined, cosmology-independent ($\lesssim \pm 20\%$)
+normalization for the virial relation
+$GM/2R = \beta_TkT$. We use $\beta_T = 1.05$ taken from \cite{1996ApJ...469..494E}.
+
+For some extraction regions the central $70$kpc of the cluster was
+excised. The central region of our sample
+clusters were excluded because this area is dominated by radiative cooling which
+greatly impacts the global temperature of a cluster if not
+ignored. This radiative cooling is not a part of the self-similar
+gravitational heating we are interested in measuring and thus must be
+removed.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Additional Information}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The X-Ray luminosities, L$_X$,
+for the ME-sample were estimated using $r_{2500}$ 
+and the photons between $[0.3-2.0]$keV. These L$_X$ values
+should be considered as lower limits given the limited field of view
+used for calculation.
+
+The fiducial X-Ray temperature and metallicity were taken from the Ph.D. thesis of
+Don Horner\footnote{D. Horner's catalog and Ph.D. thesis are on-line at
+http://lheawww.gsfc.nasa.gov/horner/thesis.html}. For clusters not
+observed with {\textit{ASCA}} and thus not listed in Horner's thesis,
+we used a literature search to locate values. If there were no
+published values for a cluster, we approximated a temperature (for the sole purpose of
+computing extraction regions as is discussed below)
+by recursively extracting a spectrum in the region $0.1-0.2r_{500}$
+(based upon an initial guess of T$_{X}$), fitting a temperature, and
+recalculating $r_{500}$. This process was repeated until a convergant
+temperature was reached. This method of temperature determination has
+been employed in other studies, see \cite{2006MNRAS.tmp.1068S} and
+\cite{2006ApJS..162..304H} as examples.
+
+The simulations of ME01 and MZ04 used the energy range $[0.3-10.0]$keV
+for their spectral analyses, but to make a reliable comparison with
+{\textit{Chandra}} data we restrict our study focus to the spectral properties of
+clusters in the energy bands $[0.7-7.0]$keV and
+$[2.0/(1+z)-7.0]$keV. We exclude data below $0.7$keV to avoid the
+effective area and quantum efficiency variations of the ACIS detectors, and
+also exclude energies above $7.0$keV where diffuse emission is
+dominated by background and the effective area is small. The spectoscopic, emission measure, and
+emission-weighted measure temperatures of the simulated
+clusters from ME01 and MZ04 were calculated beginning at $0.3$ keV and
+$2.0$keV in the cluster rest frame, hence in our study we focus on the observational
+rest frame energy $2.0/(1+z)$keV where the factor $1+z$ is due
+to cosmological redshift.
+
+Spectra were fit with {\tt XSPEC 11.3.3} (\cite{1996ASPC..101...17A}) (this is recorded in the FITS
+header under the 'XSPEC' keyword along with the CIAO and CALDB
+versions used in data reduction with the 'CIAO' and 'CALDB' keywords)
+using a projected, single-temperature {\tt MEKAL} model
+(\cite{1985A&AS...62..197M}, \cite{1986A&AS...65..511M},
+\cite{1992SRON}, \cite{1995ApJ...438L.115L})
+in combination with the photoelectric
+absorption model {\tt WABS} (\cite{1983ApJ...270..119M}). Galactic
+absorption values, $N_{H}$, are taken from
+\cite{1990ARA&A..28..215D}.
+
+As a gauge of how dense an accreting cool subclump must be to tip the
+temperature relation for the two bandpasses of interest, we simulated
+spectra for each cluster using the {\tt fakeit} command within {\tt
+XSPEC}. Our goal in using simulated spectra is to see how adding gas
+of varying temperature and density to the best-fit model for each
+observation effects the single-temperature best-fit values.
+
+We began by convolving the observation specific background, ARF, and RMF
+with a {\tt WABS(MEKAL$_{1}$+MEKAL$_{2}$)} model for a period equal to
+the observation exposure time. In addition, counting statistics are
+added into the model. The final output represents the same model
+used in fitting the real spectra with the exception of adding a second
+component, {\tt MEKAL$_{2}$}, to reflect the fake gas.
+
+We fix $N_H$ to the Galactic value and leave ($Z/Z_{\sun}$) free. The
+temperature for the {\tt MEKAL$_{1}$} component was taken from the
+best-fit to the real observation over the matching extraction
+region. The final integrated count rate for a simulated spectrum
+is a function of the normalization for both {\tt MEKAL} components,
+and we require the count rate in our simulated spectrum to equal
+the count rate in the real spectrum. Thus the normalization, $K_1$, for the {\tt
+MEKAL$_{1}$} component must be incremented from the best-fit value by a
+prescribed amount, $\xi$, which then allows for a wide variety of
+normalizations, $K_2$, for the {\tt MEKAL$_2$} component. We use
+values of $\xi = 0.5, 0.6, 0.7, 0.8, 0.85, 0.9, 0.95, 0.96, 0.97,
+0.98, 0.99,$ and $1.0$ where the case of $\xi=1.0$ is our
+control sample with the normalization and temperature for {\tt
+MEKAL$_2$} set to zero. Recall that
+$K_i \propto \rho_{i}^2$ so our incrementing of $\xi$ is directly
+correlated with probing varying gas densities. For the {\tt MEKAL$_2$} component we vary
+the temperature using values T$_2 = 0.5, 0.75, $ and $1.0$keV,
+and the metallicity is tied to the value of {\tt MEKAL$_1$}.
+
+The faked spectra were fit using the same method as the real data. The
+fake spectra are included in the FITS extension named ``RealandFake''.
+
+\bibliography{cavagnolo}
+\end{document}

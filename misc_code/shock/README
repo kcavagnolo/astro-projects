@@ -1,0 +1,57 @@
+You should only need to edit the entries in kiama.stub to get the
+Makefile to work.
+
+The flow simulation is done by sshck.  There is an example parameter
+file in sshck.par.  Use "sshck < sshck.par" to run with these
+parameters.  The model parameters you will want to change are:
+eta:  The preshock gas density profile is \rho \propto r^{-\eta}.  This
+      should be determined from the slope of the surface brightness
+      profile measured just outside the shock (SB \propto r^{1 - 2 \eta}).
+kick:  This is the energy dumped into the central cell to start the
+       shock.  Generally, a value around 100 is OK.  You may want to
+       adjust this if the shock Mach number is too low or too high
+       when the shock is at about the right radius (maybe in the range
+       4 - 8 in model units).
+steps_per_output, time_per_output, final_time:
+    The simulation stops when the model time passes final_time.  An
+    output file is created after steps_per_output or time_per_output,
+    depending on which comes first.
+The last parameter is the basename for the output files (which contain
+    unformatted flow data).  The program will produce up to 1000
+    output files per run.
+
+"plflow output_file" plots the flow variables from the named output
+file.
+
+"mach output_file" determines the shock radius and Mach number for the
+named output file.  The 3 estimates it gives are from the velocity,
+density and temperature jumps.
+
+pubsbprof compares a measured SB profile to model SB profiles.  It
+needs a response file to match the SB profile.  The xspec
+script sensit0.5-7.xcm is an example of how to generate the data you
+need.  It uses an appropriate pha file (gr_nws_reg1.pha in the example) to
+get xspec to load suitable response files, together with an
+appropriate model (wabs*apec in the example) and model params.  You
+will need to modify the range of temperatures to suit too.  The perl
+script rdsensit.pl needs to be updated for xspec12 (and if you use a
+different model), but it illustrates how to extract the required
+information from the xspec log file to make a sensitivity file like
+sensit0.5-7.  plsensit just plots the results from such a file.  
+
+There is an example parameter file for pubsbprof in pubsbprof.par.  I
+have also included an SB profile (sbns.txt - for the shock in Herc
+A).  The value of eta must match the value used for the flow model.
+The model SB is normalized to the actual SB profile in the range of
+radius rnmin, rnmax and results are plotted for the range rmin, rmax.
+You have to specify the preshock temperature (4 keV in the example)
+and the model files to plot.  You will also see that the name of the
+response file has to be given (at an odd time).
+
+emwt plots the emission measure weighted temperature profile for flow
+models.  It plots things in model units (preshock temperature = 1).  I
+am too lazy to make a parameter file for it right now, but you can
+probably work it out from the info above.
+
+There are other routines that do more, but this should get you
+started.

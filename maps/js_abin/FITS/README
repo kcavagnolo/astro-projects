@@ -1,0 +1,29 @@
+This directory contains a small library for the manipulation
+of FITS images. It is Copyright (C) Jeremy Sanders, 2000 and released
+under the GNU Public licence. See the file COPYING for details.
+
+It is not very pretty, but does the job. I am writing a much
+better replacement at the moment. It was written when my C++
+knowledge wasn't that great.
+
+It allows you to do things like:
+
+CFITSImage image1;
+{
+ CFITSFile myfile("hello.fits", CFITSFile::existingro);
+ image1 = myfile.GetImage();
+}
+
+image1.Sqrt();
+
+{
+ CFITSFile outfile("out.fits", CFITSFile::create);
+ outfile.SetImage(image1);
+ outfile.SetPosn(myfile.GetPosn());
+ outfile.WriteImage();
+}
+
+Have fun. Do let me know if it's any use.
+
+Jeremy Sanders
+jss@ast.cam.ac.uk

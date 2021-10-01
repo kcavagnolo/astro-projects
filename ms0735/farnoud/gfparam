@@ -1,0 +1,63 @@
+# IMAGE and GALFIT CONTROL PARAMETERS
+A) 408k.fits          # Input data image (FITS file)
+B) fitlog.fits          # Output data image block
+C) none                # Sigma image name (made from data if blank or "none") 
+D) none		       # Input PSF image and (optional) diffusion kernel
+E) 1                   # PSF fine sampling factor relative to data 
+F) none                # Bad pixel mask (FITS image or ASCII coord list)
+G) none                # File with parameter constraints (ASCII file) 
+H) 0 120 515 630       # Image region to fit (xmin xmax ymin ymax)
+I) 80 80             # Size of the convolution box (x y)
+J) 19.938	       # Magnitude photometric zeropoint 
+K) 1  1       	       # Plate scale (dx dy)    [arcsec per pixel]
+O) regular             # Display type (regular, curses, both)
+P) 0                   # Create ouput only? (1=yes; 0=optimize) 
+S) 0                   # Modify/create objects interactively?
+
+# INITIAL FITTING PARAMETERS
+#
+#   For object type, the allowed functions are: 
+#       nuker, sersic, expdisk, devauc, king, psf, gaussian, moffat, 
+#       ferrer, powsersic, sky, and isophote. 
+#  
+#   Hidden parameters will only appear when they're specified:
+#       C0 (diskyness/boxyness), 
+#       Fn (n=integer, Azimuthal Fourier Modes),
+#       R0-R10 (PA rotation, for creating spiral structures).
+
+---------------------------------------------------------------------------
+#   par)    par value(s)    fit toggle(s)    # parameter description 
+---------------------------------------------------------------------------
+
+# Object number: 1
+0) sersic               	#  object type
+1) 63.8043  573.4565	 	1 1	#  position x y
+3) 11.5555	   	1       #  Integrated magnitude	
+4) 3.259     		1       #  R_e (half-light radius)   [pix]
+5) 0.7113   		1       #  Sersic index n (de Vaucouleurs n=4) 
+6) 0.0000     		0       #     ----- 
+7) 0.0000     		0       #     ----- 
+8) 0.0000      		0       #     ----- 
+9) 0.831      		1       #  axis ratio (b/a)  
+10) -41.6455   		1       #  position angle (PA) [deg: Up=0, Left=90]
+Z) 0                    	#  output option (0 = resid., 1 = Don't subtract) 
+
+# Object number: 2
+0) nuker
+1) 64.2372  573.6002		1 1	#  position x y
+3) 15.5992			1	# Mu(Rb) surface brightness at Rb
+4) 2.5577			1	# break radius
+5) 1.7584			1	# alpha
+6) 1.519			1	# beta
+7) 0.01			1	# gamma
+8) 0.00			0	# ----
+9) 0.77			1	# axis ratio (b/a)
+10) 54.9217		1	# PA
+Z) 0			1	# subtracted image	
+
+# Object number: 3
+0) sky                    	#  object type
+1) 0           		1       #  sky background at center of fitting region [ADUs]
+2) 0.0000     		0       #  dsky/dx (sky gradient in x)
+3) 0.0000      		0       #  dsky/dy (sky gradient in y)
+Z) 0                    1  	#  output option (0 = resid., 1 = Don't subtract) 

@@ -1,0 +1,172 @@
+ChangeLog for spec_decon. Last updated on 10 February, 2007.
+
+Changes in v1.4.12 (2/10/2007):
+
+1.  Minor fixes to work under CIAO 3.4.
+
+Changes in v1.4.11 (7/25/2006):
+
+1.  Added option to provide confidence interval as a percentage
+    instead of as a number of sigma.
+2.  Changed default confidence interval to 1.64 sigma to more
+    accurately represent 90% confidence.
+
+Changes in v1.4.10 (7/24/2006):
+
+1.  Added user-definable parameter for size of confidence interval to
+    calculate. Default is still 90%, i.e. 1.65 sigma.
+
+Changes in v1.4.9 (4/13/2006):
+
+1.  Streamlined determination of Sherpa version so it's only done once
+    and stored in a global private variable.
+
+Changes in v1.4.8 (3/16/2006):
+
+1.  Re-implemented use of load_dataset() if Sherpa version 3.3 or
+    greater is detected. If an older version of Sherpa is found,
+    sherpa_eval("data ...") is still used.
+
+Changes in v1.4.7 (8/9/2005; internal release):
+
+1.  Setting of a given abundance parameter is now done via a function call
+    to decrease code repetition.
+
+Changes in v1.4.6 (6/6/2005; internal release):
+
+1.  Script now explicitly quits Sherpa upon completion to avoid leaving
+    a .sherpa-session file in the user's home directory.
+2.  Adjusted versioning variables to use standard S-Lang convention.
+
+Changes in v1.4.5 (12/15/2004):
+
+1.  Eliminated use of load_dataset() due to reported bugs. See
+    http://asc.harvard.edu/sherpa/bugs/sl_load_dataset.html for details.
+2.  Eliminated import of chips and varmm modules since they were not needed.
+3.  Added reporting of version info when spec_decon is run.
+4.  Updated contact information in documentation.
+
+Changes in v1.4.4 (6/18/2004):
+
+1.  Added sodium as an allowable parameter for vmekal. It had
+    previously been omitted due to an oversight since it's not a valid
+    parameter for vapec.
+
+Changes in v1.4.3 (5/26/2004):
+
+1.  Fixed bug that caused excess contribution of extra model component
+    to all annuli but the outermost.
+
+Changes in v1.4.2 (5/21/2004):
+
+1.  Fixed error in model stack expression was causing extra_model to
+    have an incorrect normalization when used with multi-detector
+    data.
+
+Changes in v1.4.1 (3/25/2004):
+
+1.  Fixed bug in initialization of vmekal and vapec models.
+
+Changes in v1.4.0 (3/23/2004):
+
+1.  Created new datatypes for spectral models.
+2.  Structure of Deproject_Init_Type simplified to use new spectral
+    model types.
+3.  Handling of individual elemental abundances in vmekal and vapec
+    models improved so that individual element parameters can override
+    global abundance parameter instead of vice versa.
+4.  New parameters added to Deproject_Init_Type to allow for a second
+    "foreground" model, e.g., to account for excess Galactic soft
+    emission.  Foregound model may be absorbed or unabsorbed, and
+    may use either the same absorption as the source spectrum or an
+    independent one.
+
+Changes in v1.3.3 (2/24/2004):
+
+1.  Changed error interval from 1.6 to 1.65 to more closely approximate
+    90% confidence interval.
+2.  Reduced Sherpa's verbose level to 0 to suppress more warning/error
+    messages.
+3.  Shortened some y-axis labels in the plots to reduce overlapping
+    labels when plotting lots of vmekal/vapec parameters.
+4.  Tweaked positioning of timsestamp on final plot so it will be
+    positioned better if there are more than two panes on the plot.
+5.  Fixed bug in final plot that was getting the x-axis values wrong
+    for non-Chandra data. The definition of init.scale in the driver
+    script has changed as a result from kpc/arcsec to kpc/pixel, where
+    pixels are measured in the units used for the XFLT* header
+    keywords.
+
+Changes in v1.3.2 (2/20/2004):
+
+1.  Fixed bug that falsely reported non-convergence of error
+    calculation.
+2.  Turned off debug and traceback by default.
+
+Changes in v1.3.1 (1/27/2004):
+
+1.  Added option to print timestamp on the bottom of the plots.
+
+Changes in v1.3.0 (1/20/2004):
+
+1.  Added support for user-specified statistical and systematic
+    errors.  If present, STAT_ERR and SYS_ERR columns in the source and
+    background files are now used instead of using only the statistical
+    errors calculated by Sherpa.  If there is no STAT_ERR column in the
+    files, the statistical errors that Sherpa calculates are used.  See
+    the Sherpa documentation for a discussion of how Sherpa handles
+    errors.
+
+Changes in v1.2.0 (1/5/2004):
+
+1.  Added support for multiple detectors (primarily useful for XMM).
+    IMPORTANT NOTE: To accomodate this, the structure of the init.files
+    variable in do_spec_decon.sl has changed, so old versions of the
+    driver script will no longer work.
+2.  Corrected documentation for init.abundType: Lodders (2003) is not
+    allowed as of CIAO 3.0.2, since it uses the XSPEC libraries from
+    XSPEC 11.2, and Lodders (2003) was not added until XSPEC 11.3.
+3.  Bug fix: fluxes were not being printed in the correct order in the
+    output file.
+4.  Removed units from axis label of normalization since the units were
+    too long to fit reasonably on the page.
+5.  Added support for user-specified energy range for fitting.
+6.  Added option to save plots of spectral fits.
+7.  Added option to write Sherpa save files for each annulus.
+
+Changes in v1.1.0 (12/19/2003):
+
+1.  Added support for apec, vmekal, and vapec models. Model type is
+    specified using init.modelName.
+2.  Added support for abundance tables other than Anders &
+    Grevesse (1989).  Now also supports Feldman (1992), Anders &
+    Ebihara (1982), Grevesse & Sauval (1998), Wilms, Allen, & McCray
+    (2000), and Lodders (2003).  IMPORTANT NOTE:  These tables are only
+    supported if the XSPEC module used by your local Sherpa
+    installation also supports them.  Consult your local CIAO/Sherpa
+    administrator for details.
+3.  Added support for user-specified linking of model parameters.
+4.  Arguments to plot_fit_params are no longer case-sensitive.
+5.  Improved the inline documentation in do_spec_decon.sl.
+6.  These changes should be transparent, so old do_spec_decon.sl
+    files should continue to work as before.
+
+Changes in v1.0.3 (10/8/2003):
+
+1. If projection failed for a single parameter, the program would crash
+   when trying to create the plot because the names of the confidence
+   intervals would be wrong.  Restructured the methods for
+   initializing, retrieving, and saving confidence interval arrays to
+   solve this.  Also increased the allowed iterations for projection to
+   reduce the chance of failure.
+
+Changes in v1.0.2 (8/19/2003):
+1.  Fixed y-axis label on nH plot to have correct units.
+
+Changes in v1.0.1 (8/8/2003):
+
+1.  Separated out runtime-specific data into driver script.
+
+Changes in v1.0.0 (8/7/2003):
+
+1.  Initial release.

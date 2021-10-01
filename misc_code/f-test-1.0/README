@@ -1,0 +1,58 @@
+F-test
+======
+
+This is a simple program to compare two fits to the same set of data
+using the F-Test. Given two fits with determine values of chi-squared
+per degree of freedom, the program outputs the probabilities that each
+fit is better than the other.
+
+Requirements
+============
+
+The GNU Scientific Library (GSL) is required for this program to
+compile.  If you do not have it installed already, the GSL can be
+obtained from the Free Software Foundation at
+"http://www.gnu.org/directory/GNUsl.html".
+
+Installation
+============
+
+1. Edit the Makefile so LIB_AND_INC_DIR points to the directory that
+   contains your include and lib directories.  The GSL include files
+   should be in $LIB_AND_INC_DIR/include/gsl while the libraries should
+   be in $LIB_AND_INC_DIR/lib/.  If your system has a different
+   directory structure, you should change the CINCS and CLIBS variables
+   directly.
+
+2. Run "make"
+
+3. Run "make install".  To install into a directory other than
+   /usr/local/bin, change the INSTALL_DIR in the Makefile.
+
+Revision History
+================
+
+2003 18 Jul  1.0  Initial version
+
+Copyright
+=========
+
+Copyright (C) Joshua Kempner <jkempner@cfa.harvard.edu> 2003
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your option)
+any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc., 59
+Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+Please send any bug fixes, enhancements, or useful comments by email to
+jkempner@cfa.harvard.edu, or by postal mail to Joshua Kempner,
+Harvard-Smithsonian Center for Astrophysics, 60 Garden Street, MS-67,
+Cambridge, MA 02138, USA.

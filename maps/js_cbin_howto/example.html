@@ -1,0 +1,110 @@
+<!DOCTYPE html
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Contour binning: example walkthrough</title>
+<link rel="stylesheet" type="text/css" href="../new.css" />
+
+<!-- Fix transparent PNG on IE -->
+<!--[if gte IE 5.5000]>
+<script type="text/javascript" src="../pngfix.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+
+<p class="navbar">
+ <a href="../">Back</a>
+</p>
+
+<h1>Contour binning: example walkthrough</h1>
+
+<p>Here is a simple example of using the program. Here I'm not using a
+background file as the source is quite bright. If you have a
+background image, it can used with the <code>bg=backimg.fits</code>
+option.
+</p>
+
+<ol>
+<li><p>Download the test fits image <a
+href="img_lg_b2_03_70.fits">img_lg_b2_03_70.fits</a>. Examine it
+using <code>ds9</code>.</p></li>
+
+<li><p>Now we will make a mask. In <code>ds9</code> make a rectangular
+region to contain the region of data to bin (inside the chip). You
+will need to rotate the region (double click on it and change the
+angle). Save this region as a CIAO format region file (change the
+region file format to CIAO), using the name <code>mask.reg</code>. We
+will make a mask fits image by doing:</p>
+
+<pre>
+farith img_lg_b2_03_70.fits 0 temp.fits MUL
+farith temp.fits 1 allones.fits ADD
+rm temp.fits
+dmcopy "allones.fits[sky=region(mask.reg)][opt full]" mask.fits
+rm allones.fits
+</pre>
+
+<p>The mask image <code>mask.fits</code> now contains 1s inside the
+rectangular region, and 0s outside.</p>
+</li>
+
+<li>
+<p>Now we will bin the image. This command will make regions with a
+signal-to-noise of 200 (about 40,000 counts). The image is initially
+smoothed with a signal-to-noise of 30 (increase this for smoother
+bins, decrease to follow the surface brightness more closely). The
+bins are constrained to have a shape where the maximum length is less
+than 2 times that of a circle with the same area (values close to 1
+are near circlular, larger values more elongated).
+</p>
+
+<pre>
+contbin --mask=mask.fits --sn=200 --smoothsn=30 \
+   --constrainfill --constrainval=2. img_lg_b2_03_70.fits
+</pre>
+
+<p>The above command was split onto two lines to make it easier to
+read. Examine the output files <code>contbin_out.fits</code>,
+<code>contbin_binmap.fits</code> and <code>contbin_sn.fits</code>.</p>
+</li>
+
+<li>
+<p>
+Now we will some CIAO compatible region files from the binmap. The
+binmap is an image where each pixel is numbered according to its bin.
+</p>
+<pre>
+mkdir outreg
+make_region_files --minx=3437 --miny=3219 --bin=2 --outdir=outreg contbin_binmap.fits
+</pre>
+<p>
+The input image was created below command. Therefore <code>minx</code>
+is 3437, <code>miny</code> is 3219, and <code>binning</code> is
+2. These are how the pixels are translated into sky coordinates.
+</p>
+<pre>
+dmcopy "in_evt2.fits[energy=300:7000][bin x=3437:4633:2,y=3219:4403:2]" \
+   img_lg_b2_03_70.fits
+</pre>
+<p>Regions are created in directory <code>outreg</code> numbered from
+<code>xaf_0.reg</code> upwards. The regions are made up of varying
+boxes. Spectra can be extracted from the event files using these
+regions.</p>
+</li>
+
+</ol>
+
+<address>
+This is not an official page of the Institute of Astronomy. Page was
+last updated on 
+
+2006-06-14
+by Jeremy Sanders.
+</address>
+
+</body>
+</html>

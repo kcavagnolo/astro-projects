@@ -1,0 +1,256 @@
+AdaptiveBin
+-----------
+http://www-xray.ast.cam.ac.uk/~jss/adbin/
+
+This file contains the version 0.2.0 of the implementation of the
+adaptive binning algorithm described in Sanders & Fabian, 2001, MNRAS,
+325, 178. It is written in C++ and is known to compile using the egcs
+and gcc compilers on Linux, Compaq Tru64 and Solaris.
+
+This file may not be up to date. The most recent documentation will be
+found at the above address.
+
+Requirements:
+ egcs or gcc (tested egcs-2.91.66, gcc-2.95, RH 7 gcc-2.96)
+ GNU make
+ cfitsio library
+
+This code is covered by the GNU Public Licence. See the file COPYING for
+details. It is Copyright (C) Jeremy Sanders, 2000, 2001.
+
+To compile, try
+make all
+
+if your make is not a GNU make, you should use whatever your GNU make is
+called. The executables can then be copied somewhere useful.
+If your cfitsio library is not on the current include search path, then
+set the environment variables CPLUS_INCLUDE_PATH and LIBRARY_PATH. If
+you have ftools installed on the machine in question, try the following
+commands (in tcsh):
+
+setenv CPLUS_INCLUDE_PATH ${FTOOLS}/include
+setenv LIBRARY_PATH ${FTOOLS}/lib
+
+You will end up with two executables, if the build is successful:
+ AdaptiveBin: Adaptive binning program.
+ AdaptiveAnnuli: Simple program to make annular bins
+ ABPixelCopy: Program to take bins from previous binning and apply
+              them to a new image.
+ FITSMaths:   Useful program for manipulating FITS files
+ MakeMask:    A program to create a mask image to exclude areas from
+              the adaptive binning.
+
+Please report bugs and suggestions to Jeremy Sanders <jss@ast.cam.ac.uk>
+Better documentation should be found on the website (well maybe).
+
+Using the code
+--------------
+
+ AdaptiveBin
+ -----------
+
+> AdaptiveBin --help
+Usage: AdaptiveBin [OPTIONS] file bg=count...
+Adaptively bins a set of images
+Written by Jeremy Sanders, 2000.
+
+  -o, --out=FILE           set out file
+  -e, --error=FILE         set error out file
+  -p, --pixel=FILE         set pixel out file
+  -t, --threshold=VAL      set threshold fraction (def 10%)
+  -v, --value=STR          set output value (eg count(0), ratio(1,2))
+  -s, --subpix=INT         set subpixel positioning divisior (def. 1)
+  -c, --contig             only allow contiguous regions
+      --help               display this help message
+  -V, --version            display the program version
+
+Report bugs to <jss@ast.cam.ac.uk>
+
+   Intensity binning
+   -----------------
+To take an image (image.fits), with a background of 20 cts/pixel,
+make an output image called adbin-out.fits, output fractional error map
+adbin-err.fits, a pixel map with the default name (pixel.fits),
+and use a maximum error threshold of 0.1 (10%):
+
+AdaptiveBin --out=adbin-out.fits --err=adbin-err.fits
+ --threshold=0.1 image.fits bg=20
+
+/or/ with short options
+
+AdaptiveBin -o adbin-out.fits -e adbin-err.fits -t 0.1 image.fits bg=20
+
+The pixel output map can be specified with --pixel.
+
+Note the program is used here with only one image file (image.fits).
+The errors calculated are for the intensities for that map.
+
+If there is no background, then the bg= parameter can be dropped.
+
+   Colour binning
+   --------------
+To make a colour image, it is useful to consider the errors in
+all the bands which make the image.
+
+AdaptiveBin --threshold=0.1 image0.fits bg=2 image1.fits image2.fits
+  "--value=count(0)"
+
+The error on pixels image0/image1/image2 are used to make the bins.
+
+The --value parameter (quoted because shells will mess with brackets)
+specifies what goes into the output and output-error files.
+
+For instance:
+count(0)  (default) - the output image contains the average count
+                      in each bin taken from input image 0 (image0.fits).
+                      The error image will contain the fractional error
+                      on this value.
+count(1)            - same as count(0) except for image1.
+
+ratio(0,1)          - output image contains the ratio of the total
+                      counts in the bin between image0 and image1,
+                      ie the colour 0/1.
+                      The error image contains the fractional error
+                      on this value.
+
+ ABPixelCopy
+ -----------
+
+Utility to take the pixel file from one binning and apply to a count
+file.
+
+> ABPixelCopy --help
+Usage: ABPixelCopy [OPTIONS] --image=in.fits --out=out.fits --err=err.fits
+Bins image using pixel file, creating output and error file.
+Does background subtraction.
+Written by Jeremy Sanders, 2000.
+
+  -i, --image=FILE         set input image file (req)
+  -o, --out=FILE           set out file (req)
+  -e, --err=FILE           set out error file (req)
+  -p, --pixel=FILE         set input pixel file (def pixel.fits)
+  -b, --background=VAL     set background counts/pixel
+      --help               display this help message
+  -V, --version            display the program version
+
+Report bugs to <jss@ast.cam.ac.uk>
+
+
+ABPixelCopy --image=imagex.fits -b 20 --out=adbin-out-x.fits
+ --err=adbin-out-x-err.fits --pixel=pixel-010.fits
+
+Here makes an intensity binned map with imagex as the input image,
+20 as the background counts, output image adbin-out-x.fits,
+fractional error output adbin-out-x-err.fits, using the
+pixel file pixel-010.fits
+
+This program does not directly make colour images.
+
+
+ FITSMaths
+ ---------
+
+Little program to manipulate FITS files mathematically
+using reverse-polish notation.
+
+Usage example:
+ FITSMaths image0.fits image1.fits @2 "*" + sqrt out.fits
+
+This does sqrt( image0.fits + 2*image1.fits ) for each pixel and
+outputs to out.fits. We have to quote "*" as the shell does
+horrible things to it.
+
+Images must be the same size. The positioning information is
+copied from the last file read in. @x specifies a numerical
+constant and cannot be the first parameter. The final parameter
+is the output file.
+
+Operations allowed: +,-,/,*,dup,ln,log,sqrt,exp,drop,swap,
+                    lt, gt, ltroll, gtroll
+
+dup copies an input image (so dup sqrt gives absolute value)
+ln is natural log, log is base 10 log, sqrt square-roots,
+exp does e**x, drop forgets top image, swap swaps over top
+two images.
+
+lt takes the top two images on the stack. If a pixel in the second to
+top image is less than the top image, then that pixel is returned,
+otherwise a NAN is returned. e.g. "FITSMaths image0.fits @10.0 out.fits"
+Returns pixels less than 10.0. gt does the opposite.  ltroll is
+similar except, the pixel of the third-to-top image is returned if
+the second-to-top image pixel is less than the top image pixel.
+gtroll is similar.
+
+Other examples:
+ FITSMaths image0.fits dup "*" out.fits    (squares image)
+ FITSMaths image0.fits log @1.2 + out.fits (log10, then add 1.2)
+ FITSMaths image0.fits image1.fits - image2.fits / out.fits
+                                           ( (0-1)/2 )
+
+
+ MakeMask
+ --------
+ A program to create a mask image to select regions to exclude
+ from the adaptive binning analysis.
+
+ Usage:
+
+  MakeMask -i myimage.fits -o mask.fits "+circle(100,100,10)" \
+      "+rectangle(110,100,130,140)" "~circle(120,122,5)"
+
+ The mask is an image specifying which pixels to exclude. Pixels set to 0
+ are included in the analysis, pixels set to 1 are excluded.
+ Coordinates are pixel coordinates in the image.
+
+ + means include the region in the mask, ~ means exclude the region
+ (yes, I know ~ would be more logical, but that confuses the options
+  to the program)
+
+ The mask can be given to the AdaptiveBin program using the
+ --mask=FILE or -m FILE  options.
+
+ AdaptiveAnnuli
+ --------------
+ Program to make a binmap with annular bins (optional number of sectors)
+ with a minimum number of counts per annulus.
+
+Usage: AdaptiveAnnuli [OPTIONS] file
+Adaptively creates annuli on an image
+Written by Jeremy Sanders, 2001.
+
+  -n, --binmap=FILE        set binmap out file (def adannuli_binmap.fits)
+  -m, --mask=FILE          set input mask filename (optional)
+  -b, --background=VAL     set bg counts/pixel (def 0)
+  -x, --xc=INT             set x-centre pixel 
+  -y, --yc=INT             set y-centre pixel 
+  -c, --counts=VAL         set minimum no counts (def 5000)
+  -s, --sectors=VAL        set number of sectors (def 1)
+  -a, --angle=DEG          set sector starting angle (def 0)
+  -f, --fixed=FILE         set filename for list of fixed annuli
+      --help               display this help message
+  -V, --version            display the program version
+
+  Usage:
+   AdaptiveAnnuli -b 8.3 -x 100 -y 100 -c 10000  inputimage.fits
+
+  -x and -y set where the annuli are centred (pixel coords in inputimage.fits)
+  -c sets the number of counts in each annulus.
+  If you want the annulus to be split into sectors use -s and -a
+  -b sets the number of background counts per pixel to subtract from
+  to counts in the input image.
+
+  If you want to create a set of annuli with radii specified in a file,
+  use the --fixed=radii.txt  radii.txt contains the radii of the annuli
+  in pixel coordinates.
+
+ AdaptiveBinT   (*name may change on future releases*)
+ ------------
+
+ AdaptiveBinT is the same as AdaptiveBin, except it uses the half
+ bin modification (see Jeremy Sanders PhD thesis, when finished). This
+ means that there is less granularity between bin sizes as it can use
+ triangular (right-angle) and rectangular bins (2x1 and 1x2 ratios) if 
+ the error on the count/colour is less than the threshold.
+
+ The program is used in exactly the same way as AdaptiveBin, except
+ the --contig option is far more important to use.

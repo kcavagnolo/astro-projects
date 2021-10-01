@@ -1,0 +1,188 @@
+#          >>>>>>>>     nedbatch@ipac.caltech.edu     <<<<<<<<
+#                      Set Output File Name and Format
+OUTPUT_FILENAME    macs_redshifts.dat
+
+# Choose an output format:  `standard' (default), `compact', `compact_2'
+OUTPUT_OPTION    compact
+
+# Choose a compression method:  `compress', `gzip', `none' (default)
+COMPRESS_OPTION    gzip
+
+# Choose from the following four coordinate systems:
+#    `equatorial', `galactic', `ecliptic', `super_galactic'
+INPUT_COORDINATE_SYSTEM      equatorial
+OUTPUT_COORDINATE_SYSTEM     equatorial
+
+# Select any EQUINOX between the years 1500 and 2500, with `J' or `B' 
+# prefix.
+INPUT_EQUINOX                J2000.0
+OUTPUT_EQUINOX               J2000.0
+
+# Extended name search (yes/no):
+EXTENDED_NAME_SEARCH          yes
+
+# Specify field used in output sorting, choosing one of the three:
+#    `Distance_to_search_center', `RA_or_Longitude', `DEC_or_Latitude'
+OUTPUT_SORTED_BY      Distance_to_search_center
+
+# Supply the velocity(km/s) value above which dimensionless z is 
+# displayed
+REDSHIFT_VELOCITY     10000.0
+
+# Specify the default Search Radius in arcmin (less than 300 arcmin).
+SEARCH_RADIUS                  2
+
+# Specify the default range in years (between 1800 and the present)
+#    for the Literature Search.
+BEGIN_YEAR                    1800
+END_YEAR                      2005
+
+# IAU_STYLE name interpretation: `S' for strict, `L' for liberal.
+IAU_STYLE                    L
+
+########################################################################
+#
+#                         Set Search Requests
+#
+# This form allows you to do ten different types of searches.  You may 
+# use any or all of the following types of searches within a single 
+# e-mail message:
+#
+#    Search by Object Name                 FIND_OBJECTS_BY_NAME
+#    Search Near Object Name               FIND_OBJECTS_NEAR_NAME
+#    Search Near Position                  FIND_OBJECTS_NEAR_POSITION
+#    Search by IAU Designation             FIND_OBJECTS_BY_IAU_NAME
+#    Search for Objects by Reference Code  FIND_OBJECTS_BY_REFCODE
+#    Search for Full Reference by Refcode  FIND_REFCODE_DETAIL
+#    Search for References by Object Name  FIND_REFERENCES
+#    Search for Photometry by Object Name  FIND_PHOTOMETRIC_DATA
+#    Search for Position by Object Name    FIND_POSITION_DATA
+#    Search for Redshift by Object Name    FIND_REDSHIFT_DATA
+#
+# Enter your search requests in each section between the Header Line 
+#    (e.g. FIND_OBJECTS_BY_NAME) and the END_OF_DATA line.
+#
+#-----------------------------------------------------------------------
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#               Redshift and Object Type Constraints for
+#     Search Near Object Name, Near Position, and By IAU Designation
+#
+# For object searches NEAR_NAME, NEAR_POSITION, and BY_IAU, you may put 
+# constraints on redshift and/or object types.  Don't set constraints
+# here; the appropriate constraint lines are included below in each of
+# the search sections.
+#
+# Redshift constraints:
+#
+#    REDSHIFT   Unconstrained
+#    REDSHIFT   Available
+#    REDSHIFT   Unavailable
+#    REDSHIFT   Larger_than  x
+#    REDSHIFT   Less_than    x
+#    REDSHIFT   Between      x, y
+#    REDSHIFT   Not_between  x, y
+# Then select a UNIT for the lower and upper limits x and y:
+#    UNIT    z
+#    UNIT    km/s
+# 
+# Object type constraints:
+#    INCLUDE: INCLUDE objects with ANY object types marked by `X'
+             or
+#    INCLUDE ALL: INCLUDE objects with ALL object types marked by `X' 
+#             and
+#    EXCLUDE: EXCLUDE objects with ANY object types marked by `X'
+#
+#    Replace `_' by `X' or `x' to mark the object types to be included 
+#    or excluded.  If none is marked, there is no constraint on object 
+#    type.
+#-----------------------------------------------------------------------
+#                         Search Near Position
+#
+# Enter a position and a search radius; one complete request per line.
+#    Please only use a semicolon `;' or a comma `,' as the separator
+#    (e.g. `10 25 21; -23 12 20; 24').
+
+FIND_OBJECTS_NEAR_POSITION
+
+REDSHIFT   Unconstrained
+UNIT    z
+
+INCLUDE
+# INCLUDE ALL
+ Galaxies _  GClusters x   Supernovae _  QSO _  AbsLineSys _  GravLens _
+ Radio _     Infrared _   EmissnLine _  UVExcess _   Xray _  GammaRay _
+ GPairs _  GTriples _  GGroups _   
+END_INCLUDE
+
+EXCLUDE
+ Galaxies _  GClusters _   Supernovae _  QSO _  AbsLineSys _  GravLens _
+ Radio _     Infrared _   EmissnLine _  UVExcess _   Xray _  GammaRay _
+ GPairs _  GTriples _  GGroups _   
+END_EXCLUDE
+
+21 29 26.20; -07 41 27.00;  4
+00 11 42.90; -15 23 22.00;  4
+00 25 29.60; -12 22 41.00;  4
+00 25 31.40; -12 22 59.00;  4
+00 35 26.10; -20 15 44.00;  4
+00 47 21.60; -08 09 21.00;  4
+01 11 31.50; +08 55 40.00;  4
+01 40 01.00; -05 55 02.00;  4
+01 52 32.60; -28 53 22.00;  4
+01 59 04.00; -34 13 04.10;  4
+01 59 49.30; -08 49 59.00;  4
+02 57 07.90; -23 26 06.00;  4
+02 57 08.60; -23 26 06.00;  4
+02 57 41.70; -22 09 11.99;  4
+03 08 56.00; +26 45 37.00;  4
+03 26 50.03; -00 43 52.90;  4
+03 29 40.30; -02 11 39.00;  4
+03 29 41.60; -02 11 47.00;  4
+04 04 33.20; +11 07 58.00;  4
+04 17 34.70; -11 54 33.00;  4
+04 51 54.50; +00 06 17.30;  4
+04 55 17.49; +06 57 47.30;  4
+05 20 42.00; -13 28 48.00;  4
+05 53 25.78; -33 42 28.10;  4
+07 17 31.00; +37 45 39.60;  4
+07 17 31.00; +37 45 30.00;  4
+07 44 53.00; +39 27 26.00;  4
+07 44 52.90; +39 27 27.00;  4
+08 25 24.70; +61 57 14.00;  4
+09 11 12.00; +17 46 30.00;  4
+10 06 54.70; +32 01 31.40;  4
+11 05 46.80; -10 14 46.20;  4
+11 08 55.40; +09 06 00.00;  4
+11 08 55.40; +09 06 00.00;  4
+11 15 14.90; +53 19 55.00;  4
+11 15 14.90; +53 19 55.00;  4
+11 15 14.90; +53 19 55.00;  4
+11 31 54.20; -19 55 42.00;  4
+11 49 35.00; +22 24 10.80;  4
+11 49 35.80; +22 23 56.40;  4
+12 06 12.20; -08 48 04.00;  4
+12 26 51.70; +21 52 25.00;  4
+13 11 01.70; -03 10 41.00;  4
+13 59 10.43; -19 29 24.90;  4
+14 27 16.10; +44 07 31.00;  4
+15 42 00.98; -29 15 57.60;  4
+16 21 24.80; +38 10 09.00;  4
+16 21 24.80; +38 10 08.00;  4
+17 31 40.00; +22 51 58.00;  4
+18 24 17.60; +43 09 59.00;  4
+20 46 00.67; -34 30 19.50;  4
+20 49 55.90; -32 16 49.00;  4
+22 11 46.00; -03 49 45.00;  4
+22 14 57.30; -14 00 14.00;  4
+22 14 57.30; -14 00 14.00;  4
+22 19 13.64; -18 44 20.40;  4
+22 43 20.30; -09 35 28.00;  4
+22 45 04.80; +26 38 04.00;  4
+09 11 12.00; +17 46 30.00;  4
+06 47 50.20; +70 14 55.00;  4
+17 20 16.70; +35 36 26.00;  4
+17 20 16.70; +35 36 26.00;  4
+
+END_OF_DATA
+
+END_OF_REQUESTS

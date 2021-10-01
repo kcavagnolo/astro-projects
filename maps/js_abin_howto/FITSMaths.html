@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<title>FITSMaths documentation</title>
+</head>
+
+<body text="#000066" bgcolor="#FFFFFF" link="#006600"
+vlink="#CC0000" alink="#FF0000">
+<h1>FITSMaths documentation</h1>
+
+<p>FITSMaths is a little utility for the mathematical manipulation of
+FITS files. The program applies mathematical operations to individual
+pixels of files. It takes a list of input files and operators. The
+list is taken as a reverse-polish expression which is evaluated to
+produce the output image.</p>
+
+<h2>Usage</h2>
+<pre>
+FITSmaths infile1 [infileX|operator|@number] ... outfile
+</pre>
+<p>
+<var>infile</var> is an input FITS file (with
+extension). Alternatively a numerical constant can be specified by
+prefixing it with an <var>@</var> sign.
+<var>operator</var> is one of the following:</p>
+
+<table border="1">
+<tr><td>+,-,*,/</td><td>Standard mathematical operators, applied to
+the top two images on the input stack. <code>a b -</code> calculates
+<code>a-b</code></td></tr>
+<tr><td>sqrt</td><td>Square-root the top image on the stack. Negative
+values produce a warning message and the square-root of the
+absolute value of the pixel.</td></tr>
+<tr><td>ln,log</td><td>log base e and 10 the top image. Negative
+values produce a warning message and the log of the absolute value of
+the pixel.</td></tr>
+<tr><td>exp</td><td>exp the top image.</td></tr>
+<tr><td>dup</td><td>Duplicate top image on the stack.</td></tr>
+<tr><td>drop</td><td>Forget top stack image.</td></tr>
+<tr><td>swap</td><td>Swap the top two images.</td></tr>
+</table>
+
+<h2>Notes</h2>
+<ol>
+<li>FITSMaths will complain if there are more than one images left on the
+stack at the end.</li>
+<li>All the input images must be of the same size in pixels.</li>
+<li>A numerical constant cannot appear first.</li>
+<li>WCS information from the last FITS file read will be copied to the
+output file.</li>
+<li>Remember commands like "*" need to be protected from the shell
+using quotes.</li>
+<li>File names with the same names as operators (if they don't have
+.fits extensions) will be treated as operators!</li>
+</ol>
+
+<h2>Examples</h2>
+<p>
+<code># FITSMaths file1.fits dup "*" out.fits</code>
+<br />
+Square an image
+</p>
+
+<p>
+<code># FITSMaths file1.fits file2.fits + @2 / out.fits</code>
+<br />
+Average two images
+</p>
+
+<p>
+<code># FITSMaths file1.fits file2.fits + @2 / ln file3.fits "*"
+out.fits</code>
+<br />
+Calculate ln((file1+file2)/2)*file3
+</p>
+
+<hr />
+<p>
+<a href="./">Back to the documentation page</a>
+</p>
+<hr />
+<address>
+This page is maintained by <a href="mailto:jss@ast.cam.ac.uk">Jeremy
+Sanders</a>. It was last modified on 2000/11/23. This page is not an
+official page of the <a href="http://www.ast.cam.ac.uk/IoA/">Institute
+of Astronomy</a>.
+</address>
+</body>
+</html>

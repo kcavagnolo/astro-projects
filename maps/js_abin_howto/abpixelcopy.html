@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<title>ABPixelCopy documentation</title>
+</head>
+
+<body text="#000066" bgcolor="#FFFFFF" link="#006600"
+vlink="#CC0000" alink="#FF0000">
+<h1>ABPixelCopy documentation</h1>
+
+<p>ABPixelCopy is a utility which takes a pixel-map generated from
+AdaptiveBin and applies it to another image, creating an intensity map
+with the same bins.
+</p>
+
+<h2>Usage</h2>
+<pre>
+Usage: ABPixelCopy [OPTIONS] --image=in.fits --out=out.fits --err=err.fits
+Bins image using pixel file, creating output and error file.
+Does background subtraction.
+Written by Jeremy Sanders, 2000, 2001.
+
+  -i, --image=FILE         set input image file (req)
+  -o, --out=FILE           set out file (req)
+  -e, --err=FILE           set out error map (req)
+  -n, --binmap=FILE        set binmap file (def adbin_binmap.fits)
+  -p, --pixel=FILE         set input pixel file (DISCOURAGED)
+  -b, --background=VAL     set background counts/pixel
+      --verbose            display more information
+      --help               display this help message
+  -V, --version            display the program version
+
+Report bugs to &lt;jss@ast.cam.ac.uk&gt;
+</pre>
+<p>
+The syntax is a little weird, as everything is a switch, but some
+switches are required (marked req above). <code>--image</code>
+specifies the input image filename. <code>--out</code> and
+<code>--err</code> specify the output and error image filenames,
+respectively. <code>--binmap</code> specifies the input bin map.
+<code>--background</code> sets the X-ray background in counts per
+pixel to subtract from the input image and use to generate the
+error-map.
+</p>
+
+<p>
+Version &lt; 0.1.2: The <code>--pixel</code> was used instead of
+<code>--binmap</code>. The default filename for that option was
+<code>pixel.fits</code> instead of <code>adbin_binmap.fits</code>.
+</p>
+
+<h2>Notes</h2>
+<ol>
+<li>Version &gt;= 0.1.2: ABPixelCopy can expand its options and arguments
+from a file, instead of the command line. Using an argument of
+<code>@filename</code> will substitute the text in the file in as
+options. The file can contain comments (preceeded by the
+<code>#</code> character); quote signs must be escaped using a
+backslash character.</li>
+
+<li>Copies WCS information from the input image to the output
+image.</li>
+
+<li>Does not do colour binning.</li>
+</ol>
+
+<h2>Examples</h2>
+<pre>
+# ABPixelCopy --image=infile.fits --out=outfile.fits \
+    --err=outfile_err.fits --binmap=binmap_050.fits -b 8.3
+</pre>
+<p>
+Take the bins in <code>binmap_050.fits</code> and apply them to
+<code>infile.fits</code>. The output image is
+<code>outfile.fits</code>, with the output error image
+<code>outfile_err.fits</code>. Assume a background of 8.3 counts per
+pixel for the input image.
+</p>
+
+<hr />
+<p>
+<a href="./">Back to the documentation page</a>
+</p>
+<hr />
+<address>
+This page is maintained by <a href="mailto:jss@ast.cam.ac.uk">Jeremy
+Sanders</a>. It was last modified on 2001/2/12. This page is not an
+official page of the <a href="http://www.ast.cam.ac.uk/IoA/">Institute
+of Astronomy</a>.
+</address>
+</body>
+</html>

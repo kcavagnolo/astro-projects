@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+<title>Adbin documentation</title>
+</head>
+
+<body text="#000066" bgcolor="#FFFFFF" link="#006600"
+vlink="#CC0000" alink="#FF0000">
+<h1>Adbin documentation</h1>
+
+<p>Some documentation for using the programs is presented here. In
+general, the programs try to mainain RCS information from the input
+files to the output files. If this documentation is insufficient,
+please examine the source code for the programs or email me.</p>
+
+<p>I have some other related utilities, which are not ready for public
+release. Contact <a href="mailto:jss@ast.cam.ac.uk">me</a> if you wish
+to be informed of updates.</p>
+
+<h2>Programs</h2>
+<ul>
+<li><a href="adbin.html">AdaptiveBin</a> - main adaptive binning
+program</li>
+<li><a href="abpixelcopy.html">ABPixelCopy</a> - apply an existing
+pixel file to an image</li>
+<li><a href="FITSMaths.html">FITSMaths</a> - useful FITS manipulation
+tool</li>
+</ul>
+
+<h2>Glossary</h2>
+<p>Here are some useful definitions to know when reading the
+documentation.</p>
+
+<table border="1">
+
+<tr><td><dfn>Pixel</dfn></td>
+<td>The individual picture-elements which make up the input
+image.</td></tr>
+
+<tr><td><dfn>Bin</dfn></td>
+<td>A collection, or list, of pixels.</td></tr>
+
+<tr><td><dfn>Error map</dfn></td>
+<td>An image of the same size as the input image(s). Each pixel in
+the error map contains the fractional-error of the value in the pixel
+in the output map. The value in a pixel is the value of the bin
+containing the pixel.
+</td></tr>
+
+<tr><td><dfn>Bin map (name changed from pixel map)</dfn></td>
+<td>An image of the same size as the input image(s). Each bin created
+by the adaptive-binning program is labelled by an integer, starting
+with 0. The value of a pixel in the bin map specifies which bin the
+pixel belongs to. Using the bin map, other images of the same size
+as the input image can be binned in the same way.
+</td></tr>
+
+<tr><td><dfn>Error-threshold</dfn></td>
+<td>The maximum fractional error allowed on the value of a
+bin.</td></tr>
+
+<tr><td><dfn>Combined colour</dfn></td>
+<td>Ratio of the counts in a bin in several different bands,
+[(0/1)/2]/3... (See Sanders &amp; Fabian, accepted)</td></tr>
+
+</table>
+
+<hr />
+<p>
+<a href="../">Back to the adaptive-binning page</a>
+</p>
+<hr />
+<address>
+This page is maintained by <a href="mailto:jss@ast.cam.ac.uk">Jeremy
+Sanders</a>. It was last modified on 2001/2/12. This page is not an
+official page of the <a href="http://www.ast.cam.ac.uk/IoA/">Institute
+of Astronomy</a>.
+</address>
+</body>
+</html>

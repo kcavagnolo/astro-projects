@@ -1,0 +1,508 @@
+%!PS-Adobe-3.0
+%%BoundingBox: 24 24 588 768
+%%Title: Enscript Output
+%%For: cavagnolo
+%%Creator: GNU enscript 1.6.1
+%%CreationDate: Mon Aug 21 12:55:46 2006
+%%Orientation: Landscape
+%%Pages: (atend)
+%%DocumentMedia: Letter 612 792 0 () ()
+%%DocumentNeededResources: (atend)
+%%EndComments
+%%BeginProlog
+%%BeginResource: procset Enscript-Prolog 1.6 1
+%
+% Procedures.
+%
+
+/_S {	% save current state
+  /_s save def
+} def
+/_R {	% restore from saved state
+  _s restore
+} def
+
+/S {	% showpage protecting gstate
+  gsave
+  showpage
+  grestore
+} bind def
+
+/MF {	% fontname newfontname -> -	make a new encoded font
+  /newfontname exch def
+  /fontname exch def
+
+  /fontdict fontname findfont def
+  /newfont fontdict maxlength dict def
+
+  fontdict {
+    exch
+    dup /FID eq {
+      % skip FID pair
+      pop pop
+    } {
+      % copy to the new font dictionary
+      exch newfont 3 1 roll put
+    } ifelse
+  } forall
+
+  newfont /FontName newfontname put
+
+  % insert only valid encoding vectors
+  encoding_vector length 256 eq {
+    newfont /Encoding encoding_vector put
+  } if
+
+  newfontname newfont definefont pop
+} def
+
+/SF { % fontname width height -> -	set a new font
+  /height exch def
+  /width exch def
+
+  findfont
+  [width 0 0 height 0 0] makefont setfont
+} def
+
+/SUF { % fontname width height -> -	set a new user font
+  /height exch def
+  /width exch def
+
+  /F-gs-user-font MF
+  /F-gs-user-font width height SF
+} def
+
+/M {moveto} bind def
+/s {show} bind def
+
+/Box {	% x y w h -> -			define box path
+  /d_h exch def /d_w exch def /d_y exch def /d_x exch def
+  d_x d_y  moveto
+  d_w 0 rlineto
+  0 d_h rlineto
+  d_w neg 0 rlineto
+  closepath
+} def
+
+/bgs {	% x y height blskip gray str -> -	show string with bg color
+  /str exch def
+  /gray exch def
+  /blskip exch def
+  /height exch def
+  /y exch def
+  /x exch def
+
+  gsave
+    x y blskip sub str stringwidth pop height Box
+    gray setgray
+    fill
+  grestore
+  x y M str s
+} def
+
+% Highlight bars.
+/highlight_bars {	% nlines lineheight output_y_margin gray -> -
+  gsave
+    setgray
+    /ymarg exch def
+    /lineheight exch def
+    /nlines exch def
+
+    % This 2 is just a magic number to sync highlight lines to text.
+    0 d_header_y ymarg sub 2 sub translate
+
+    /cw d_output_w cols div def
+    /nrows d_output_h ymarg 2 mul sub lineheight div cvi def
+
+    % for each column
+    0 1 cols 1 sub {
+      cw mul /xp exch def
+
+      % for each rows
+      0 1 nrows 1 sub {
+        /rn exch def
+        rn lineheight mul neg /yp exch def
+        rn nlines idiv 2 mod 0 eq {
+	  % Draw highlight bar.  4 is just a magic indentation.
+	  xp 4 add yp cw 8 sub lineheight neg Box fill
+	} if
+      } for
+    } for
+
+  grestore
+} def
+
+% Line highlight bar.
+/line_highlight {	% x y width height gray -> -
+  gsave
+    /gray exch def
+    Box gray setgray fill
+  grestore
+} def
+
+% Column separator lines.
+/column_lines {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h translate
+    /cw d_output_w cols div def
+    1 1 cols 1 sub {
+      cw mul 0 moveto
+      0 d_output_h rlineto stroke
+    } for
+  grestore
+} def
+
+% Column borders.
+/column_borders {
+  gsave
+    .1 setlinewidth
+    0 d_footer_h moveto
+    0 d_output_h rlineto
+    d_output_w 0 rlineto
+    0 d_output_h neg rlineto
+    closepath stroke
+  grestore
+} def
+
+% Do the actual underlay drawing
+/draw_underlay {
+  ul_style 0 eq {
+    ul_str true charpath stroke
+  } {
+    ul_str show
+  } ifelse
+} def
+
+% Underlay
+/underlay {	% - -> -
+  gsave
+    0 d_page_h translate
+    d_page_h neg d_page_w atan rotate
+
+    ul_gray setgray
+    ul_font setfont
+    /dw d_page_h dup mul d_page_w dup mul add sqrt def
+    ul_str stringwidth pop dw exch sub 2 div ul_h_ptsize -2 div moveto
+    draw_underlay
+  grestore
+} def
+
+/user_underlay {	% - -> -
+  gsave
+    ul_x ul_y translate
+    ul_angle rotate
+    ul_gray setgray
+    ul_font setfont
+    0 0 ul_h_ptsize 2 div sub moveto
+    draw_underlay
+  grestore
+} def
+
+% Page prefeed
+/page_prefeed {		% bool -> -
+  statusdict /prefeed known {
+    statusdict exch /prefeed exch put
+  } {
+    pop
+  } ifelse
+} def
+
+% Wrapped line markers
+/wrapped_line_mark {	% x y charwith charheight type -> -
+  /type exch def
+  /h exch def
+  /w exch def
+  /y exch def
+  /x exch def
+
+  type 2 eq {
+    % Black boxes (like TeX does)
+    gsave
+      0 setlinewidth
+      x w 4 div add y M
+      0 h rlineto w 2 div 0 rlineto 0 h neg rlineto
+      closepath fill
+    grestore
+  } {
+    type 3 eq {
+      % Small arrows
+      gsave
+        .2 setlinewidth
+        x w 2 div add y h 2 div add M
+        w 4 div 0 rlineto
+        x w 4 div add y lineto stroke
+
+        x w 4 div add w 8 div add y h 4 div add M
+        x w 4 div add y lineto
+	w 4 div h 8 div rlineto stroke
+      grestore
+    } {
+      % do nothing
+    } ifelse
+  } ifelse
+} def
+
+% EPSF import.
+
+/BeginEPSF {
+  /b4_Inc_state save def    		% Save state for cleanup
+  /dict_count countdictstack def	% Count objects on dict stack
+  /op_count count 1 sub def		% Count objects on operand stack
+  userdict begin
+  /showpage { } def
+  0 setgray 0 setlinecap
+  1 setlinewidth 0 setlinejoin
+  10 setmiterlimit [ ] 0 setdash newpath
+  /languagelevel where {
+    pop languagelevel
+    1 ne {
+      false setstrokeadjust false setoverprint
+    } if
+  } if
+} bind def
+
+/EndEPSF {
+  count op_count sub { pos } repeat	% Clean up stacks
+  countdictstack dict_count sub { end } repeat
+  b4_Inc_state restore
+} bind def
+
+% Check PostScript language level.
+/languagelevel where {
+  pop /gs_languagelevel languagelevel def
+} {
+  /gs_languagelevel 1 def
+} ifelse
+%%EndResource
+%%BeginResource: procset Enscript-Encoding-88591 1.6 1
+/encoding_vector [
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclam       	/quotedbl     	/numbersign   	
+/dollar       	/percent      	/ampersand    	/quoteright   	
+/parenleft    	/parenright   	/asterisk     	/plus         	
+/comma        	/hyphen       	/period       	/slash        	
+/zero         	/one          	/two          	/three        	
+/four         	/five         	/six          	/seven        	
+/eight        	/nine         	/colon        	/semicolon    	
+/less         	/equal        	/greater      	/question     	
+/at           	/A            	/B            	/C            	
+/D            	/E            	/F            	/G            	
+/H            	/I            	/J            	/K            	
+/L            	/M            	/N            	/O            	
+/P            	/Q            	/R            	/S            	
+/T            	/U            	/V            	/W            	
+/X            	/Y            	/Z            	/bracketleft  	
+/backslash    	/bracketright 	/asciicircum  	/underscore   	
+/quoteleft    	/a            	/b            	/c            	
+/d            	/e            	/f            	/g            	
+/h            	/i            	/j            	/k            	
+/l            	/m            	/n            	/o            	
+/p            	/q            	/r            	/s            	
+/t            	/u            	/v            	/w            	
+/x            	/y            	/z            	/braceleft    	
+/bar          	/braceright   	/tilde        	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/.notdef      	/.notdef      	/.notdef      	/.notdef      	
+/space        	/exclamdown   	/cent         	/sterling     	
+/currency     	/yen          	/brokenbar    	/section      	
+/dieresis     	/copyright    	/ordfeminine  	/guillemotleft	
+/logicalnot   	/hyphen       	/registered   	/macron       	
+/degree       	/plusminus    	/twosuperior  	/threesuperior	
+/acute        	/mu           	/paragraph    	/bullet       	
+/cedilla      	/onesuperior  	/ordmasculine 	/guillemotright	
+/onequarter   	/onehalf      	/threequarters	/questiondown 	
+/Agrave       	/Aacute       	/Acircumflex  	/Atilde       	
+/Adieresis    	/Aring        	/AE           	/Ccedilla     	
+/Egrave       	/Eacute       	/Ecircumflex  	/Edieresis    	
+/Igrave       	/Iacute       	/Icircumflex  	/Idieresis    	
+/Eth          	/Ntilde       	/Ograve       	/Oacute       	
+/Ocircumflex  	/Otilde       	/Odieresis    	/multiply     	
+/Oslash       	/Ugrave       	/Uacute       	/Ucircumflex  	
+/Udieresis    	/Yacute       	/Thorn        	/germandbls   	
+/agrave       	/aacute       	/acircumflex  	/atilde       	
+/adieresis    	/aring        	/ae           	/ccedilla     	
+/egrave       	/eacute       	/ecircumflex  	/edieresis    	
+/igrave       	/iacute       	/icircumflex  	/idieresis    	
+/eth          	/ntilde       	/ograve       	/oacute       	
+/ocircumflex  	/otilde       	/odieresis    	/divide       	
+/oslash       	/ugrave       	/uacute       	/ucircumflex  	
+/udieresis    	/yacute       	/thorn        	/ydieresis    	
+] def
+%%EndResource
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier-Bold
+%%IncludeResource: font Courier
+/HFpt_w 10 def
+/HFpt_h 10 def
+/Courier-Bold /HF-gs-font MF
+/HF /HF-gs-font findfont [HFpt_w 0 0 HFpt_h 0 0] makefont def
+/Courier /F-gs-font MF
+/F-gs-font 5 5 SF
+/#copies 1 def
+% Pagedevice definitions:
+gs_languagelevel 1 gt {
+  <<
+    /PageSize [612 792] 
+  >> setpagedevice
+} if
+%%BeginResource: procset Enscript-Header-simple 1.6 1
+
+/do_header {	% print default simple header
+  gsave
+    d_header_x d_header_y HFpt_h 3 div add translate
+
+    HF setfont
+    user_header_p {
+      5 0 moveto user_header_left_str show
+
+      d_header_w user_header_center_str stringwidth pop sub 2 div
+      0 moveto user_header_center_str show
+
+      d_header_w user_header_right_str stringwidth pop sub 5 sub
+      0 moveto user_header_right_str show
+    } {
+      5 0 moveto fname show
+      45 0 rmoveto fmodstr show
+      45 0 rmoveto pagenumstr show
+    } ifelse
+
+  grestore
+} def
+%%EndResource
+/d_page_w 744 def
+/d_page_h 564 def
+/d_header_x 0 def
+/d_header_y 549 def
+/d_header_w 744 def
+/d_header_h 15 def
+/d_footer_x 0 def
+/d_footer_y 0 def
+/d_footer_w 744 def
+/d_footer_h 0 def
+/d_output_w 744 def
+/d_output_h 549 def
+/cols 1 def
+%%EndSetup
+%%Page: (1) 1
+%%BeginPageSetup
+_S
+90 rotate
+24 -588 translate
+/pagenum 1 def
+/fname (notx_r2500.dat) def
+/fdir () def
+/ftail (notx_r2500.dat) def
+% User defined strings:
+/fmodstr (Mon Aug 21 12:17:53 2006) def
+/pagenumstr (1) def
+/user_header_p false def
+%%EndPageSetup
+5 6.000000 2 0.900000 highlight_bars
+do_header
+5 541 M
+(# Model: wabs\(mekal\) for r2500 spectra; Fit Range = 0.3 - 9.0; Count Rates = 0.7 - 7.0 keV) s
+5 535 M
+(# Nh frozen = yes; Fe frozen = no; Confidence Levels = 2.71; Systematic error = 0.00) s
+5 529 M
+(# Cluster                  ObsID    Rin   Rout  nh20   nlo   nhi    Tx   Tlo   Thi    Fe  Felo  Fehi       Norm     Normlo     Normhi   Tx2  Tlo2  Thi2      Norm2    Normlo2    Normhi2       z     Cr   Src%  chisq    dof) s
+5 523 M
+(1RXS_J2129.4-0741           3595   0.00   0.61  4.36  0.00  0.00 10.61  8.62 13.44  0.38  0.09  0.69   1.25e-03   1.17e-03   1.34e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.5700  0.091   93.5   1.29     56) s
+5 517 M
+(3C_220.1                     839   0.00   0.59  1.91  0.00  0.00  6.80  5.67  8.29  0.00  0.00  0.13   8.65e-04   8.26e-04   9.01e-04  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.6100  0.108   86.3   1.07     57) s
+5 511 M
+(3C_28.0                     3233   0.00   1.23  5.71  0.00  0.00  3.90  3.76  4.05  0.41  0.34  0.49   3.20e-03   3.11e-03   3.29e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1952  0.332   92.3   1.17    258) s
+5 505 M
+(3C_346                      3129   0.00   0.98  5.67  0.00  0.00  4.10  3.70  4.55  0.20  0.05  0.36   8.47e-04   8.00e-04   8.97e-04  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1620  0.137   61.4   1.28    146) s
+5 499 M
+(4C_55.16                    4940   0.00   1.04  4.00  0.00  0.00  4.21  4.12  4.31  0.67  0.61  0.73   3.69e-03   3.63e-03   3.75e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.2420  0.595   82.4   1.22    350) s
+5 493 M
+(ABELL_0267                  3580   0.00   1.08  2.74  0.00  0.00  6.79  6.21  7.49  0.40  0.26  0.54   2.92e-03   2.82e-03   3.03e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.2300  0.310   93.8   0.97    164) s
+5 487 M
+(ABELL_0383                  2321   0.00   1.27  4.07  0.00  0.00  3.93  3.79  4.10  0.50  0.42  0.58   5.70e-03   5.55e-03   5.85e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1871  1.075   87.1   1.41    238) s
+5 481 M
+(ABELL_0697                  4217   0.00   0.93  3.34  0.00  0.00  9.06  8.17 10.13  0.44  0.29  0.60   3.55e-03   3.43e-03   3.67e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.2820  0.360   96.0   1.02    180) s
+5 475 M
+(ABELL_0773                  5006   0.00   1.13  1.46  0.00  0.00  8.53  7.75  9.48  0.39  0.24  0.54   3.51e-03   3.39e-03   3.62e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.2170  0.386   94.6   1.07    185) s
+5 469 M
+(ABELL_0907                  3185   0.00   1.50  5.69  0.00  0.00  5.04  4.90  5.17  0.49  0.43  0.55   7.24e-03   7.12e-03   7.36e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1527  0.833   95.4   1.20    375) s
+5 463 M
+(ABELL_1361                  2200   0.00   1.87  2.18  0.00  0.00  4.08  3.73  4.48  0.81  0.57  1.08   5.26e-03   4.90e-03   5.61e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1171  1.278   80.2   1.13    116) s
+5 457 M
+(ABELL_1664                  1648   0.00   1.74  8.47  0.00  0.00  3.50  3.36  3.65  0.64  0.55  0.75   7.16e-03   6.91e-03   7.40e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1276  1.309   79.2   1.50    203) s
+5 451 M
+(ABELL_2259                  3245   0.00   1.41  3.70  0.00  0.00  4.94  4.54  5.40  0.31  0.16  0.46   4.14e-03   3.95e-03   4.34e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1640  0.452   92.9   1.02    136) s
+5 445 M
+(ABELL_2261                  5007   0.00   1.10  3.31  0.00  0.00  7.58  7.14  8.05  0.40  0.31  0.49   6.51e-03   6.37e-03   6.65e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.2240  0.686   97.0   0.92    279) s
+5 439 M
+(ABELL_2409                  3247   0.00   1.54  6.72  0.00  0.00  5.50  5.14  5.90  0.48  0.34  0.63   6.22e-03   5.98e-03   6.46e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1479  0.689   94.4   1.03    171) s
+5 433 M
+(AC_114                      1562   0.00   0.87  1.44  0.00  0.00  6.99  6.51  7.54  0.31  0.20  0.42   1.23e-03   1.19e-03   1.26e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.3120  0.200   75.3   1.32    234) s
+5 427 M
+(CL_J0542.8-4100              914   0.00   0.58  3.59  0.00  0.00  6.62  5.44  8.27  0.15  0.00  0.47   3.33e-04   3.04e-04   3.61e-04  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.6300  0.023   81.5   0.94     42) s
+5 421 M
+(CL_J1113.1-2615              915   0.00   0.55  5.51  0.00  0.00  7.14  5.48  9.61  0.42  0.12  0.79   1.86e-04   1.69e-04   2.01e-04  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.7300  0.012  100.0   2.93     38) s
+5 415 M
+(CL_J1226.9+3332              932   0.00   0.51  1.37  0.00  0.00 15.20 10.01 26.32  0.94  0.00  2.27   9.09e-04   7.70e-04   1.07e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.8900  0.097   79.3   0.55     26) s
+5 409 M
+(CL_J2302.8+0844              918   0.00   0.55  5.05  0.00  0.00 15.27 10.70 24.92  0.28  0.00  0.83   1.78e-04   1.62e-04   1.94e-04  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.7300  0.012  100.0   2.82     43) s
+5 403 M
+(ESO_3060170                 3189   0.00   5.29  3.43  0.00  0.00  2.47  2.39  2.56  0.48  0.41  0.55   9.68e-03   9.32e-03   1.01e-02  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.0358  1.231   71.6   1.69    292) s
+5 397 M
+(ESO_5520200                 3206   0.00   5.77  4.29  0.00  0.00  2.34  2.23  2.45  0.67  0.57  0.79   4.36e-03   4.11e-03   4.59e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.0314  0.600   48.9   1.95    308) s
+5 391 M
+(EXO_0422-086                4183   0.00   5.05  6.22  0.00  0.00  3.28  3.20  3.37  0.64  0.56  0.71   1.94e-02   1.90e-02   2.01e-02  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.0397  2.625   85.7   1.80    322) s
+5 385 M
+(IRAS_09104+4109              509   0.00   0.70  1.36  0.00  0.00  8.98  7.80 10.52  0.90  0.61  1.21   3.17e-03   3.00e-03   3.35e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.4420  0.583   95.4   1.64    113) s
+5 379 M
+(MS_0440.5+0204              4196   0.00   1.25  9.10  0.00  0.00 14.51 10.40 24.21  0.97  0.23  1.68   2.06e-03   1.85e-03   2.36e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1900  0.326   51.7   1.40     82) s
+5 373 M
+(OPHIUCHUS                   3200   0.00   3.00 19.84  0.00  0.00 47.12  0.00  0.00  0.00  0.00  0.00   1.25e-01   0.00e+00   0.00e+00  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.0280 15.010   51.7  41.58    524) s
+5 367 M
+(PKS_0745-191                 508   0.00   2.10 40.82  0.00  0.00 13.45 12.51 14.59  1.18  1.03  1.35   5.76e-02   5.62e-02   5.89e-02  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1028  7.443   94.1   3.27    410) s
+5 361 M
+(RBS_0797                    2202   0.00   0.80  2.22  0.00  0.00  6.43  5.99  6.94  0.29  0.19  0.39   7.52e-03   7.30e-03   7.74e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.3540  0.712   98.4   0.96    180) s
+5 355 M
+(RX_J0647.7+7015             3584   0.00   0.60  5.18  0.00  0.00 11.05  9.07 14.04  0.55  0.23  0.89   1.40e-03   1.31e-03   1.49e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.5840  0.101   93.9   1.00     61) s
+5 349 M
+(RX_J0819.6+6336             2199   0.00   1.85  4.11  0.00  0.00  3.90  3.59  4.26  0.39  0.25  0.55   2.41e-03   2.28e-03   2.54e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1190  0.488   37.3   1.20    149) s
+5 343 M
+(RX_J0820.9+0752             1647   0.00   1.98  2.37  0.00  0.00  7.28  5.98  9.18  1.62  0.81  2.72   2.66e-03   2.28e-03   3.05e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1100  0.705   49.9   1.14     62) s
+5 337 M
+(RX_J1347.5-1145             3592   0.00   0.69  4.89  0.00  0.00 11.68 11.17 12.24  0.36  0.30  0.42   1.02e-02   1.01e-02   1.03e-02  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.4510  0.831   99.0   1.34    402) s
+5 331 M
+(RX_J1423.8+2404             1657   0.00   0.62  2.65  0.00  0.00  5.92  5.32  6.63  0.47  0.29  0.65   2.11e-03   2.00e-03   2.23e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.5450  0.158   96.0   1.05     83) s
+5 325 M
+(RX_J1423.8+2404             4195   0.00   0.62  2.65  0.00  0.00  5.56  5.38  5.76  0.47  0.40  0.53   2.27e-03   2.23e-03   2.31e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.5450  0.256   85.0   1.28    294) s
+5 319 M
+(RX_J1532.9+3021             1665   0.00   0.81  2.21  0.00  0.00  4.80  4.50  5.15  0.59  0.45  0.74   6.20e-03   5.94e-03   6.46e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.3450  0.593   98.1   1.13    150) s
+5 313 M
+(RX_J1720.1+2638             4361   0.00   1.41  4.02  0.00  0.00  5.55  5.38  5.72  0.40  0.35  0.46   1.20e-02   1.18e-02   1.22e-02  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.1640  1.373   97.5   1.11    350) s
+5 307 M
+(RX_J1720.2+3536             3280   0.00   0.75  3.35  0.00  0.00  5.65  5.19  6.17  0.43  0.29  0.58   2.71e-03   2.60e-03   2.82e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.3913  0.236   95.9   1.11    134) s
+5 301 M
+(SERSIC_159-03               1668   0.00   2.93  1.89  0.00  0.00  2.41  2.37  2.46  0.35  0.32  0.38   2.32e-02   2.28e-02   2.35e-02  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.0580  4.860   82.0   1.44    284) s
+5 295 M
+(ZWCL_1358+6245               516   0.00   0.84  1.94  0.00  0.00  7.20  6.68  7.79  0.51  0.38  0.66   1.86e-03   1.80e-03   1.91e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.3280  0.315   82.9   0.99    200) s
+5 289 M
+(ZWICKY_2701                 3195   0.00   1.16  0.83  0.00  0.00  4.44  4.25  4.64  0.51  0.42  0.61   3.48e-03   3.38e-03   3.58e-03  0.00  0.00  0.00   0.00e+00   0.00e+00   0.00e+00  0.2100  0.656   81.4   0.90    220) s
+_R
+S
+%%Trailer
+%%Pages: 1
+%%DocumentNeededResources: font Courier-Bold Courier 
+%%EOF

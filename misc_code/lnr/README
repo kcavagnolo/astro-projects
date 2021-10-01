@@ -1,0 +1,69 @@
+-------------------------------------------------------------------------
+This directory contains source code and executables for linear
+regression software developed by:
+
+	M. G. Akritas	
+	G. J. Babu
+	M. A. Bershady
+	T. Bird
+	E. D. Feigelson	
+	T. Isobe
+
+as described in Akritas, Bershady and Bird "Linear Regressions for
+Astronomical Data with Measurement Errors and Intrinsic Scatter,"
+1995, submitted to ApJ, and references therein.
+
+If you find problems or bugs with this code, please contact me
+(Bershady), as listed below.
+-------------------------------------------------------------------------
+        Matthew A. Bershady
+        Pennsylvania State University           voice: (814) 865-0150
+        Dept. of Astronomy & Astrophysics       email: mab@astro.psu.edu
+        525 Davey Lab                           fax:   (814) 863-3399
+        University Park, PA 16802
+---------------------------------------------------------------------------
+Modification History
+	Apr  2 1995	MAB	initial Release
+	Oct 18 1995	MAB	modify for public distribution
+---------------------------------------------------------------------------
+
+Makefile		unix executable for compilation
+Notes			software notes
+README.install		instructions for installation <<< READ THIS NEXT!
+
+bin/			executables - PUT THIS IN YOUR PATH!
+
+preprint.ps		postscript of preprint where this methodology
+			is developed: "Linear Regressions for Astronomical 
+			Data with Measurement Errors and Intrinsic Scatter,"
+			Akritas, Bershady and Bird 1995, submitted to ApJ
+
+src/			source code
+
+* Contents of src/	(this lists the contents of Notes)
+
+bces_regress.f          linear regions OLS(Y|X), OLS(X|Y), bisector, and
+			orthogonal for model with heteroscedastic errors
+			in X and Y, and homescedastic intrinsic scatter. 
+			Variances calculated analytically and with bootstrap 
+			resampling.
+
+wls_regress.f           weighted OLS for model with heteroscedastic errors
+			and homescedastic intrinsic scatter in Y only.
+			Variances calculated analytically and with bootstrap 
+			resampling.
+
+slopes.f                linear regressions OLS(Y|X), OLS(X|Y), bisector,
+			orthogonal, reduced major axis, and mean-OLS 
+			regressions. Variances calculated analytically and with 
+			bootstrap and jacknife resampling.
+
+sixlin.f		subroutine called by slopes and wls_regress to
+			calulate linear regressions
+
+bootsp.f		bootstrap subroutine for slopes.f
+bootspbec.f		bootstrap subroutine for bces_regress.f
+bootspe.f		bootstrap subroutine for wls_regress.f
+
+ran3.f			random number generator for bootstrap subroutines
+			from Numerical Recipes

@@ -1,0 +1,38 @@
+C  INCLUDE file GSCONSTS.INCL
+C  Coefficients for analytic approximations for F(x), from
+C  Ginzberg & Syrovatskii (1965).
+C  Maths constants:
+        DOUBLE PRECISION PI, PIO2, RTPI, GAM1O3, GAM5O3, GAM5O6, ROOT3
+        PARAMETER (PI     = 3.141592653589793D0,
+     *             PIO2   = PI / 2D0,
+C  Sqrt(pi):
+     *             RTPI   = 1.772453850905516D0,
+C  Gamma(1/3):
+     *             GAM1O3 = 2.678938388824463D0,
+C  Gamma(5/3):
+     *             GAM5O3 = 0.9027452468872070D0,
+C  Gamma(5/6):
+     *             GAM5O6 = 1.128786921501160D0,
+C  Sqrt(3):
+     *             ROOT3  = 1.732050807568877D0)
+ 
+        DOUBLE PRECISION F1K0, F1K1, F1K2, F1K3, F2K0, F2K1, F2K2
+        PARAMETER (F1K0   = 4D0*PI / (ROOT3*GAM1O3),
+     *             F1K1   = - GAM1O3 / 2D0,
+     *             F1K2   = 3D0/4D0,
+     *             F1K3   = - (9D0/40D0) * GAM1O3/GAM5O3,
+C  Sqrt(pi/2):
+     *             F2K0   = 1.253314137397325D0,
+     *             F2K1   = 55D0 / 72D0,
+     *             F2K2   = - 10151D0 / 10368D0 )
+ 
+C  F twiddle:
+C  Coefficients for small X expansion:
+        DOUBLE PRECISION FT1K0, FT1K1, FT1K2, FT2K1, FT2K2
+        PARAMETER (FT1K0 = (4D0/5D0)*(PI*RTPI) / (ROOT3*GAM5O6),
+     *             FT1K1 = - 5D0 * GAM5O6 / (2D0 * RTPI),
+     *             FT1K2 = 15D0 / 8D0,
+C  Coefficients for large X expansion:
+     *             FT2K1 = - 11D0 / 18D0,
+     *             FT2K2 = 913D0 / 648D0)
+

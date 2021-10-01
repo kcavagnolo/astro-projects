@@ -1,0 +1,182 @@
+Cooling curves (emissivities) for hydrodynamical simulations from XSPEC
+-----------------------------------------------------------------------
+
+Author: Dave Strickland (dks@pha.jhu.edu)
+This software is made available for use "as is" under the terms of the GNU 
+public license (GPL), version 2 or higher. 
+
+ccurve_create.tcl is a TCL script (plus associated csh-scripts) that make
+it is possible to calculate cooling curves (plasma emissivities, in units of
+erg cm^3 s^-1) as a function of plasma temperature using the hot plasma codes 
+available in the XSPEC spectral fitting program. The ability to control the 
+metal abundances in XSPEC, in particular the relative element abundances (e.g.
+alpha-elements to iron) and absolute abundances (with respect to hydrogen) 
+is particularly useful for simulations considering metal-enrichment or 
+chemically-different plasmas. Element-specific cooling functions can also be 
+created.
+
+These cooling function are equivalent to the cooling functions presented by
+Sutherland & Dopita (1993) or Orly & Gnat (2007), although they do not in
+any sense replace them as they are different.
+
+These functions will be of most use if you wish to quickly and cheaply assess
+the X-ray luminosity of a hot plasma in a simulation (rather than calculating
+it post-facto after the simulation is completed), as the majority of the hot 
+plasma codes available in XSPEC are best suited to X-ray emission, in 
+particular conditions of collisional ionization equilibrium (CIE). This
+code and method is well-suited to line-or-ion specific cooling functions, 
+e.g. the emission at E~6.7 keV from Fe XXV
+
+However Bolometric cooling functions can still be calculated, in particular 
+with the MEKAL plasma code (as it was designed to calculate FUV/EUV emission 
+in addition to X-ray emission). The CIE bolometric emissivities will be larger
+than the NIE cooling rates.
+
+To calculate luminosities from these emissivities multiply
+by n_e * n_H * V, NOT n_tot**2 * V, where n_e is the electron number density
+(in cm^-3), n_H the proton number density and V the region volume (cm^3).
+
+Pre-calculated cooling functions.
+---------------------------------
+
+The pre-calculated cooling/emissivity functions provided in the Data directory
+are supplied in terms of separate H+He and metal emissivities, so that the
+net emissivity for a metal abundance Z with respect to Solar abundance can
+be calculated as Lambda(T,Z) = Lambda_{H+He only}(T) + Z*Lambda_{metals}(T).
+
+The non-equilibrium cooling functions from Sutherland & Dopita (1993), scaled
+to n_e n_H from the n_e n_t used in SD93, are provided for comparison to any
+bolometric cooling functions you may calculate yourself.
+
+lambda_apec_e0320_hhe.dat     APEC 0.3-2.0 keV H+He only.  
+lambda_apec_e0320_metals.dat  APEC 0.3-2.0 keV metals only.
+lambda_apec_e2080_hhe.dat     APEC 2.0-8.0 keV H+He only.  
+lambda_apec_e2080_metals.dat  APEC 2.0-8.0 keV metals only. 
+lambda_mekal_e0320_hhe.dat    MEKAL 0.3-2.0 keV H+He only.  
+lambda_mekal_e0320_honly.dat  MEKAL 0.3-2.0 keV H only. 
+lambda_mekal_e0320_metals.dat MEKAL 0.3-2.0 keV metals only.
+lambda_mekal_e2080_hhe.dat    MEKAL 2.0-8.0 keV H+He only.. 
+lambda_mekal_e2080_metals.dat MEKAL 2.0-8.0 keV H+He only.  
+suth_nie_metals.dat           Sutherland & Dopita (1993) NIE total cooling, metals only. 
+suth_nie_zero.dat             Sutherland & Dopita (1993) NIE total cooling, zero metals (H+He only). 
+			      
+Operating instructions for ccurve_create.tcl
+--------------------------------------------
+
+You will need XSPEC, version 11 or xspec 12 (tested using versions 11.3 and 
+12.2). 
+
+The basic ccurve_create.tcl is
+appropriate for use with the MEKAL, APEC or Raymond-Smith hot plasma codes, 
+which include a variety of emission processes including bremsstrahlung, 
+bound-bound, bound-free and two-photon emission. For pure bremsstrahlung 
+cooling use the ccurve_create_brems.tcl script.
+
+In terms of xspec models, you can use the following models with the following
+scripts:
+
+ccurve_create.tcl: apec vapec bvapec bapec c6mekl c6pmekl c6vemkl cflow equil
+gnei meka mekal mkcflow nei raymond vnei vequil vgnei vmeka vmekal vraymond
+  
+ccurve_create_brems.tcl: bremss vbremss
+
+
+The basic method used by the script
+is to create an artificial instrument response (required to calculate the 
+flux within a chosen energy/wavelength range. Note that you do *not* really
+need to run dummyrsp yourself before hand), iteratively change the xspec
+model parameter associated with the temperature (in fact it iterates in log
+T from log Tmin in N steps of logarithmic width dlogT), and calculate the 
+emissivity from the model-predicted flux.
+
+You need to supply the spectral model that the script will alter. I normally
+save a default MEKAL or APEC model where I have made sure that the model
+parameter limits (e.g. minimum and maximum temperatures) have been altered from
+their default values to allow the range of temperatures you are interested in.
+The default input model is restored once the script has finished running.
+
+The output is a two-column ascii file of log T (log K) vs emissivity (erg 
+s^-1 cm^+3). These files may be manipulated (added, subtracted, multiplied
+or divided) using the four csh-scripts provided as part of this package.
+
+Examples of using ccurve_create.tcl
+-----------------------------------
+
+1. Create 0.3-2.0 keV X-ray emissivity from the APEC plasma model,
+purely for comparison to the MEKAL plasma code, using Grevesse, N. &
+Sauval, A.J. (1998, Space Science Reviews 85, 161) abundances instead 
+of the old (but xspec default) Anders & Grevesse (1989) abundances (note
+that I recommend you stick with the default for most situations, this
+example is provided simply to show yu that you can change the abundance
+pattern). We use pre-made model ccmod_1ab1vapec.xcm to write a file called
+lambda_apec_e0320_z100.dat (1st column, log T, second column emissivity
+in units of erg s**-1 cm**3) from log T = 4 to log T = 8.4 in steps of
+d log T = 0.01. 
+
+nice +19 xspec                 ! start xspec.
+cpd /xserve                    ! start graphic device.
+dummyrsp 0.3 2.0 1700 lin      ! energy response from 0.3-2.0 keV.
+abund grsa                     ! change version of Solar abundances.
+                               ! NOTE: Just for illustration. Not recommended.
+@ccmod_1ab1vapec.xcm           ! load pre-saved APEC plasma model.
+show par                       ! look at model parameters.
+newpar 17 1.0                  ! make sure "norm" = 1
+newpar 2 0.2 0.01 0 0 100 100  ! make sure kT covers the range of T we'll use
+                               ! in the emissivity calculation. 
+                               ! See "help newpar"
+source ccurve_create.tcl       ! load ccurve_create.tcl script.
+
+ccurve_create lambda_apec_e0320_z100.dat 2 0.3 2.0 4.0 0.01 441
+                               ! Creates emissivity in energy range 0.3-2.0
+                               ! keV, where parameter 2 in the model is the
+                               ! temperature parameter, starting at log T=4
+                               ! and incrementing log T in 441 steps of 0.01 
+exit
+
+2. Create both continuum and line-emission emissivity tables (using the MEKAL
+hot plasma code), with a [Fe/O] = -0.5 (i.e. Z_Fe = 0.3162 * Z_O).
+Basically we create a emissivity table with Z_O=1.0, Z_Fe=0.3162, and then
+one with Z_(all elements)=0.0, and subtract the two to create a 
+continuum-only emissivity table. Uses Anders & Grevesse abundances (by
+default).
+
+nice +19 xspec
+cpd /xserve
+dummyrsp 0.1 10 2000 log      ! Different, but high res. energy response.
+source ccurve_create.tcl
+@ccmod_1ab1vmekal.xcm         ! Load premade vmekal model.
+newpar 20 1                   ! Set norm = 1
+newpar 2 0.5 0.01 0 0 100 100 ! Make sure kT range is wide enough.
+newpar 16 0.3162              ! Set Z_Fe = 0.3162
+plot model                    ! Plot model just for fun... 
+
+ccurve_create lambda_mekal_e0320_zo100_zfe032.dat 2 0.3 2.0 4 0.01 441
+
+show par
+newpar 5-17                   ! Set all abundances except H and He to zero.
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+curve_create lambda_mekal_e0320_hhe.dat 2 0.3 2.0 4 0.01 441
+exit
+
+Now you need to subtract lambda_mekal_e0320_honly.dat off of
+lambda_mekal_e0320_zo100_zfe032.dat to create the metal-related emission
+(predominantly line emission), which we can then scale by whatever Z_O
+we want while retaining [Fe/O] = -0.5.
+
+csh subtractor.csh lambda_mekal_e0320_zo100_zfe032.dat \
+	lambda_mekal_e0320_hhe.dat \
+	lambda_mekal_e0320_zo100_zfe032_metalsonly.dat
+
+You can now use lambda_mekal_e0320_hhe.dat and lambda_mekal_e0320_zo100_zfe032_metalsonly.dat to calculate the net emission (continuum plus metal-related). 

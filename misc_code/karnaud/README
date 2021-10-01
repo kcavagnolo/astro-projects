@@ -1,0 +1,133 @@
+Last updated 8/12/04.  See old README at the end of this file for brief 
+documentation.  Otherwise see changes listed below for recent updates and 
+additions.
+
+
+CHANGES
+
+8/12/04
+Made correction to smart_fit.tcl to work with xspec v. 11.3.
+
+12/30/02
+Now smart_fit.tcl updates the "delta" fit parameter after errors have been 
+computed, if "update_deltas=1" is included when smart_fit is run (at
+XSPEC command line).  The motivation is that this value is used to determine
+the stepping size when getting the error, and so by "saving" it a subsequent
+error search will be more efficient.  In this case the fit is also aways
+saved after the error search is done (with the filename $logroot_new.xcm).
+
+8/23/02
+Fixed dummy_flux to work with multiple data sets, a problem which was also
+messing up smart_fit.tcl.
+
+
+4/12/02
+Added script "dummy_flux" to get fluxes using a dummy response.  This
+is so that the fluxes reported by smart_fit are correct even if the
+flux bounds exceed the energy response (common case is Chandra ACIS
+spectra, where 2-10 keV fluxes are often truncated to 2-9 keV).
+
+12/10/01
+smart_*.tcl scripts have been revised to abort stepping when the change in the 
+fit statistic is large.  A script "run_smart_fit.sh" has been added.
+To get the errors on a fit saved in the file myfit.xcm, do
+run_smart_fit.sh myfit 4.605
+in the same directory as myfit.xcm.  This assumes that these tcl scripts have
+been copied to $HOME/.xspec
+
+9/24/01
+Moved script ftp area to xassist.pha.jhu.edu/pub/xspec_tcl and put in more
+recent versions of the scripts (mostly changes are just minor bug fixes).
+
+12/5/00
+Due to a problem with how shortened names are handles (e.g., typing pl instead
+of plot), you must remove smart_error_nextstep.tcl and use the current version
+of smart_error.tcl which now calls _smart_error_nextstep.tcl.
+
+12/4/00
+These xspec scripts were originally written for v10 and "upgrading" them for
+use with xspec v11 is in progress.  The main change for the user is that 
+instead of putting source commands in the startup file ~/.xspecrc, 
+these routines should be placed in the directory ~/.xspec or the directory
+given by $XSPEC_HOME.
+
+The following routines have been upgraded to xspec v11, and to my knowledge
+work as they did with v10:
+setup_mod (only have rs and pl defined)
+smart_step
+smart_error (saving final sqrt(delta-fit-stat) vs. fit param is not
+             working yet)
+smart_fit
+dof
+
+Added (for convenience):
+stat		Returns current fit statistic value
+get_xspec_home	Returns ~/.xspec or value of XSPEC_HOME
+
+v10 README:
+These scripts automate some aspects of spectral analysis with XSPEC, namely
+the fitting and error search of spectra and the simulation of spectra to
+assess the goodness-of-fit.  The directory analysis/ contains some scripts
+to help analyze the results.
+
+Script		Description
+dof		Computes no. of degrees of freedom
+ein_hardness	A rather specific script to compute Einstein hardness ratios
+fek_search	Searches for Fe-K emission by fitting a wabs (po +  ga) model
+		with the energy free, fixed at 6.4 and 6.7 and sigma free,
+		fixed at 0.01, 0.1, and 0.5 keV.  Gets errors on all
+		parameters.
+interpolate	Used by smart_error_nextstep to interpolate next choice of
+		error bounds.
+make_plrat_plot	Produces a pretty "plot ldata ratio" plot
+master_fit	Automates fitting several models in several different
+		bandpass to a set of spectra.
+mean		Computes mean of values in a list
+qdp1, qdp2	Routines to produce a qdp plot
+setup_mod	Sets up complex models with initial params, ties relavent 
+		params. if multiple data groups are present
+sim_model	Drives fakeit N times (optionally also for the bgd. spectra)
+		and then runs smart_fit.  Use analysis/dump_sim_log_results
+		and analysis/get_conf_int to determine the, e.g., 90%
+		confidence interval for each param. (including the fit
+		statistic).
+smart_error	Steps parameter using smart_step until a desired deltachisq is
+		reached and interpolates to get error.  Warns if relative
+		mininma are present and produces qdp plot of delta-chisq vs.
+		param. value
+smart_error_nextstep   Utitilty routine for smart_error
+smart_fit	Drives smart_error for all relavent params. in a model (defined
+		in smart_fit_config.dat), puts results in a log file of the
+		form:
+		Nh = 0.11 (0.05-0.65)
+		Gamma = 1.75 (1.70-1.80)
+		chisq(dof) = 165.5/154
+		F(0.5-2.0 keV) = ...
+		If a new minimum is encountered, the new best fit is saved and
+		the error determination is restarted from the beginning.
+		analysis/xspec_log2dat.tcl will extract the final best
+		fit and errors from the log file.
+smart_step	Similar to built-in command steppar, restarts step if new min.
+		is found and returns status flag
+
+restart_xspec_sim.sh is a utility shell script to restart XSPEC every
+hour.  The motivation here is that the current version of XSPEC (10.0) can
+occassionally hang when chisq/dof is small (or dof is very large?).  This
+script restarts the sim_model process assuming that a script exists called
+drive_sims.tcl that contains something like:
+
+source ~/.xspecrc
+sim_model setup.xcm plgapexrav_inc30 500 plgapexrav_inc30_3.0-25.0kev_sim expt=9760 modnorms=9_12
+exit
+y
+
+where setup.xcm is the XSPEC save file with the model and spectra to be
+simulated.  This can easily be modified to work to restart XSPEC for
+any situation.
+
+Note: the current version of xspec is also very verbose when using tcl so
+these scripts should probably driven along the lines of
+nohup xspec my_script > /dev/null &
+where my_script is something like drive_sims.tcl above.
+
+Send questions/comments to ptak@astro.phys.cmu.edu

@@ -1,0 +1,35 @@
+From bonifaci@oat.ts.astro.it Mon May  6 04:37:56 1996
+Return-Path: <bonifaci@oat.ts.astro.it>
+Received: from nexus.astro.psu.edu by juakali.astro.psu.edu (4.1/Client-1.3)
+	id AA18495; Mon, 6 May 96 04:37:56 EDT
+Received: from freya.oat.ts.astro.it by nexus.astro.psu.edu (4.1/Nexus-1.3)
+	id AA21987; Mon, 6 May 96 04:38:16 EDT
+Message-Id: <9605060838.AA21987@nexus.astro.psu.edu>
+Received: by freya.oat.ts.astro.it
+	(1.38.193.4/16.2) id AA07088; Mon, 6 May 1996 10:31:00 +0200
+From: bonifaci@oat.ts.astro.it (Piercarlo Bonifacio)
+Subject: bcestbl.prg MIDAS command procedure to drive bcestbl
+To: mab@astro.astro.psu.edu (Matthew A. Bershady)
+Date: Mon, 6 May 96 10:31:00 METDST
+In-Reply-To: <9605031202.AA15665@juakali.astro.psu.edu>; from "Matthew A. Bershady" at May 3, 96 8:02 am
+Mailer: Elm [revision: 70.85]
+Status: R
+
+define/par p1 ? ima "Enter name of input table"
+define/par p2 ? ima "Enter name of x column"
+define/par p3 ? ima "Enter name of y column"
+define/par p4 ? ima "Enter name of ex column"
+define/par p5 ? ima "Enter name of ey column"
+define/par p6 ? ima "Enter name of exy column"
+define/par p7 ? n   "nsim ?"
+define/par p8 ? n   "iseed ?"
+define/local intable/c/1/50 {p1}
+define/local xcol/c/1/15 {p2}
+define/local ycol/c/1/15 {p3}
+define/local excol/c/1/15 {p4}
+define/local eycol/c/1/15 {p5}
+define/local exycol/c/1/15 {p6}
+define/local nsim/i/1/1 {p7}
+define/local iseed/i/1/1 {p8}
+run bcestbl.exe
+
