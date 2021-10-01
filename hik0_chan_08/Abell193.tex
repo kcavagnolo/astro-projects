@@ -1,0 +1,421 @@
+%% LaTeX template for the science justification & technical
+%% feasibility to be submitted as part of a Chandra X-ray Observatory
+%% proposal.
+%%
+%% Chandra cycle 10
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% DOCUMENT FORMAT %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% The default font was chosen to be easily readable while allowing
+%% sufficient material to be included.
+
+%% The two-column, 11pt format fits the largest number of characters
+%% per page while still being within allowed limits.
+
+%% There are three documentclass commands provided below. Please
+%% uncomment the version you would like to use and comment out the
+%% others.
+
+%% Please note that the proposal will be printed on US Letter size paper,
+%% 8.5 in x 11 in, and that formatting the text for other sizes will
+%% generally cause layout problems and may result in text being cut
+%% off near the edges. PLEASE DO NOT CHANGE THE 'LETTERPAPER' OPTION
+%% IN THE DOCUMENTCLASS COMMAND.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Converting this document to PDF %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% We suggest the following method for this template because most
+%% proposal reviewers will 
+%% be reading your Scientific Justification on a computer screen, and
+%% many reviewers only have PDF (not PostScript) viewing capability. By
+%% default, a document produced with LaTeX uses so-called cm fonts, which
+%% differ significantly from any of the standard Type1 fonts built-in to
+%% PDF. PDF uses low-resolution bitmap images of these fonts to display
+%% the document. It prints well, but shows degraded resolution on the
+%% screen. 
+
+%% Use ps2pdf (preferably version 1.4) to convert a postscript file to PDF:
+%% 
+%% latex file.tex
+%% dvips -Ppdf -G0 -o file.ps file.dvi
+%% ps2pdf14 file.ps file.pdf 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Displaying DS9 figures %%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% If you experience pdf errors when displaying figures you produced with DS9:
+
+%% Solution: Remake figure in DS9 and save as Postscript Level 1. In
+%% the Print window choose Level 1 under the Postscript heading. At this
+%% point you should re-LaTeX your SJ following the directions above. 
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Default format: 11pt single column %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[letterpaper,11pt]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Default font, two-column %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\documentclass[letterpaper,11pt,twocolumn]{article}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% 'Maximum allowed' format %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\documentclass[letterpaper,11pt,twocolumn]{article}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% HOW TO INCLUDE FIGURES %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Please see the ``Included packages'' section below.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Included packages %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{graphics,graphicx}
+
+%% Feel free to modify the included packages list to use your
+%% favorite packages. 
+
+%% In the graphics and graphicx packages, Postscript and eps figures
+%% can be included using the \includegraphics command. The graphics
+%% package is part of standard LaTeX2e and provides a basic way of including a
+%% figure. The graphicx package is not standard, but extends the
+%% \includegraphics command to make it more user-friendly. If graphicx
+%% is not available on your system please remove it from the list of
+%% included packages above.  
+
+%% Syntax:
+%% In the graphics package:
+%%
+%% \begin{figure}
+%% \includegraphics[llx,lly][urx,ury]{file}
+%% \end{figure}
+%%
+%% where ll denotes 'lower left' and ur 'upper right' and the x and y
+%% values are the coordinates of the PostScript bounding box in
+%% points. There are 72 points in an inch.
+%%
+%% In the graphicx package:
+%% 
+%% \begin{figure}
+%% \includegraphics[key=val,key=val,...]{file}
+%% \end{figure}
+%%
+%% where some of the useful keys are: angle, width, height,
+%% keepaspectratio (='true' or 'false') and scale. Bounding box values
+%% can be given as [bb=llx lly urx ury].
+%%
+%% In either case you have to use LaTeX figure placement commands to
+%% position the figure on the page; \includegraphics will not do
+%% that. Both these commands also have other options that are listed
+%% in the LaTeX manual (for the graphics package) and in 'The LaTeX
+%% Graphics Companion' (for the graphicx package).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Page dimensions %%%%%
+%%%%%  DO NOT CHANGE  %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setlength{\textwidth}{6.5in} 
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-0.0625in} 
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in} 
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in} 
+\setlength{\hoffset}{0in}
+\setlength{\voffset}{0in}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Section heading format %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\renewcommand{\section}{\@startsection%
+{section}{1}{0mm}{-\baselineskip}%
+{0.5\baselineskip}{\normalfont\Large\bfseries}}%
+\makeatother
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Start of document %%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Title of proposal %%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{center} 
+\bfseries\uppercase{%
+%%
+%% ENTER TITLE OF PROPOSAL BELOW THIS LINE
+Feeding the Feedback in Brightest Cluster Galaxies
+%%
+%%
+}
+\end{center}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Body of science justification %%%%%
+%%%%% and technical feasibility     %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%
+%% ENTER TEXT AND FIGURES BELOW
+%%
+
+
+The mass of a supermassive black hole tends to be about 0.2\% of the
+mass of its host's galaxy bulge ( Gebhardt ; Ferrara ). The vast
+majority of the stellar population of the most massive elliptical
+galaxies is already present, billions of years ago, based on studies
+of the color-magnitude relation and spectral energy distributions of
+the ellipticals (REF). The mass correlation means that somehow,
+formation and growth of the black hole is coupled to the formation and
+growth of the galaxy, while at the same time the downsizing
+phenomenon, wherein massive galaxies stop forming stars earlier than
+low-mass galaxies, suggests that star formation somehow decouples from
+the growth of the galaxy by hierarchical accretion. Structure
+formation models where star formation is tracked predicts galaxies
+which are far more blue and massive than real galaxies are. This
+situation appears to be resolved in the models by the inclusion of
+feedback driven by active galactic nuclei (AGN). 
+
+Chandra's excellent spatial resolution reveals the presence of
+cavities in the intracluster X-ray medium (ICM) surrounding radio
+sources in the brightest central galaxy (BCG). Estimates of the PdV
+work required to inflate such cavities has yielded for the the first
+time the surprisingly high kinetic energy output of radio source
+(REF). Central radio sources are quite common in BCGs residing in
+clusters of galaxies with cool, low-entropy ICM cores, formerly known
+as cooling-flow clusters. A low-level AGN operating at $\sim70-90\%$
+duty cycle can plausibly stabilize such cores from a cooling
+catastrophe; an occasional massive outburst could raise the level of
+gas entropy well beyond the core. Cool cores, because they are so
+common in luminous X-ray clusters are not short-lived features, and
+therefore require some kind of feedback mechanism to stabilize
+them. The most obvious source is the central AGN, which already
+exhibits many of the features needed to counter cooling in the center
+(sufficient energy, good location, visibly affecting the ICM.) While
+this is not necessarily the feedback mode that quenches star
+formation in elliptical galaxies at high redshift, this is the only
+form of AGN feedback that we can study with this kind of detail.
+
+Cavagnolo in his PhD thesis (completion date August 2008) has derived
+and analyzed the entropy profiles of 200 clusters of galaxies from the
+Chandra data archive. Entropy ($K$) here is the ratio of
+$kT/n_{e}^{2/3}$, which is formally proportional to the natural log of
+the thermodynamic quantity $S$. $K$ is the familiar adiabatic
+constant $K$ in the equation of state $P=K\rho^{2/3}$. $K$ is the
+quantity that will not change if the gas remains adiabatic. The ICM
+can be rearranged, compressed, moved, but the quantity $K$ will remain
+the same unless the gas radiates (cools) or shocked, and the gas will
+re-arrange such that the lowest entropy gas sits at the bottom of the
+potential well. $K$ is also directly related to the cooling time
+(exactly so for a gas cooling only by bremsstrahlung). The entropy of
+the gas in the outer regions of the cluster where the cooling time is
+long retains the imprint of shocks that happened long ago. The
+entropy of the gas in the cores with short cooling times is a direct
+map of where radiative cooling is happening. The entropy profiles of
+his thesis show that while the gas entropy of most clusters is quite
+similar to each other at $r=100$ kpc (regardless of cluster
+temperature, a coincidence of the fact that approximately, $K(r)
+\propto r$), the core entropy varies quite a lot, from near 0 keV
+cm$^2$ to several 100 keV cm$^2$ (Figure \ref{fig:ent}).
+
+We noticed that if the core entropy were rather high, the BCG lacked
+radio emission or H$\alpha$ emission (Figures \ref{fig:ha} and
+\ref{fig:rad}). The presence of low-entropy ICM in clusters seemed to
+be required to feed the central radio source and/or central star
+formation. To pursue this trend, we looked through this sample for
+examples of BCGs with radio emission but high core entropy ($>30$ keV
+cm$^2$). We found only four clusters with $z<0.3$ that met this
+criterion, and of those 4, 3 were at $z>0.2$, too high to follow up in
+great detail. But the last cluster, Abell 193 ($z=0.048$, had only 10
+kiloseconds of exposure, yet a very interesting core. Not only does it
+have a radio source, but 10 ksec was sufficient to reveal a compact
+($\leq 4$ kpc) corona inside the central galaxy. HST imaging
+reveals three nuclei, one of which is coincident with the corona,
+and another which appears to have its own X-ray counterpart (Figure
+\ref{fig:hst}).
+
+Coronae in cluster galaxies in hot clusters have been studied by Sun
+et al. (2007) in his own PhD thesis. He found these coronae tend to be
+smaller and less luminous than coronae in poorer environments; however
+the existence of coronae in hot clusters is a testament to their
+survival against evaporative conduction, rapid cooling, ram pressure
+stripping, and even AGN feedback. Coronae, because they are typically
+cool ($\sim0.5-1.1$ keV) and dense ($0.1-0.4$ cm$^{-3}$) are also
+sources of low-entropy gas for any AGN inside the galaxy.
+
+We are proposing deeper imaging of the center of Abell 193 in order to
+assess a temperature for the corona, detect and characterize the X-ray
+source around the second nucleus, and determine whether any X-ray
+emission could be associated with the 3rd nucleus. This cluster is
+close enough to place extremely interesting limits on corona
+emission. The radio source is $2.51\times10^{39}$ ergs sec$^{-1}$ at
+$21$ cm using the NVSS flux collected with VLA.
+
+%%%%%%%%%%%%%
+ADDED BY KWC:
+%%%%%%%%%%%%%
+
+Abell 193 was selected as a target because it stands out as a peculiar
+object in a much larger sample. Of the 208 clusters in Cavagnolo's
+archival thesis sample, 21 have a core entropy, $K_0$, greater than 30
+keV cm$^2$ and a radio-loud source within 20 kpc of the X-ray surface
+brightness peak. Of these clusters, 13 have radio emission which is
+not coincident with the BCG or have a radio luminosity less than
+$10^{40}$ ergs sec$^{-1}$. The remaining eight clusters have radio
+emission from the BCG, but seven of these are at $z>0.1$ and resolving
+or detecting X-ray corona would require unreasonably long
+observations. This leaves only one cluster and its BCG, Abell 193 (IC
+1695), as a viable target.
+
+We are requesting an additional 65 ksec observation of Abell 193 to
+determine the properties of the nuclear point sources and the
+associated coronae. Using XSPEC 11.3.2ag we simulated a typical corona
+spectrum ($T_X=0.8$, $Z/Z_{\odot}=0.8$) using cluster specific
+parameters ($N_{HI}=4.57\times10^{20}$ cm$^2$, $z=0.0485$) and the
+Cycle 10 RMF/ARF for ACIS-S. We find that an exposure time of 65 ksec
+yields a count rate of $8.34\times10^{-3}$ cts sec$^{-1}$ for a total
+of 542 counts. This count rate is consistent with results from PIMMS
+using the same input spectrum and an emitting area equal to that of
+the $\approx4$ kpc corona. Assuming good space weather, this
+observation will enable us to constrain a coronal temperature to
+$\pm0.3$ keV. We will be unable to constrain a metallicity, but this
+is not unusual when analyzing corona spectra [REF Ming's paper].
+Lauer et al 2007 ApJ, 664:226-256 calculate an effective radius for
+the BCG of 4.74 kpc and a $M_V=-23.9$, both of which are consistent
+with the size and luminosity of what we suspect is a corona.
+
+Our focus is the brightest nuclear X-ray source in IC 1695, but the
+two additional nuclei in the BCG will also be resolved and detected in
+a new 65 ksec observation. Using HST data, Seigar et al 2003 MNRAS,
+344:110-114 calculated the angular separations of the three nuclei in
+IC 1695 to be 1.7$"$ (1-2), 3.5$"$ (1-3), and 2.1$"$
+(2-3). And indeed, the current 10 ksec observation was able to resolve
+nuclei 1 and 3. However, the count statistics are too poor for
+spectral analysis of nucleus 3 and nucleus 2 is not detected in the
+existing observation. For nucleus 3 we find a count rate of
+$1.22\times10^{-3}$ cts sec$^{-1}$, and for 65 ksec this should result
+in 80 counts. Again assuming a typical corona, we will be able to
+constrain a temperature to $\pm 0.5$ keV. For nucleus 2, the
+observation will be sufficient to detect X-ray emission beyond the
+ambient background, but not to determine a temperature.
+
+\begin{figure}[t]
+\begin{minipage}[t]{0.5\linewidth}
+	\centering
+	\includegraphics*[width=\columnwidth, trim=28mm 10mm 30mm 17mm, clip]{splots}
+	\caption{\small
+	Plot of entropy versus physical radius for the 208 clusters from
+	Cavagnolo et al. 2008a. The observed range of core entropy is
+	consistent with models of AGN feedback. Color coding is for global
+	cluster temperature in keV.
+	}
+	\label{fig:ent}
+    \end{minipage}
+    \hspace{0.25cm}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=22mm 8mm 30mm 15mm, clip]{k0ha}
+        \caption{\small
+	Plot of H$\alpha$ and radio luminosity versus core entropy from
+	Cavagnolo et al. 2008b. Above $K_0 \approx 30$ keV cm$^2$ signatures
+	of feedback abate, which is most likely the result of heating the ICM
+	via thermal electron conduction.}
+        \label{fig:ha}
+    \end{minipage}
+    \hspace{0.25cm}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=22mm 8mm 30mm 15mm, clip]{k0rad}
+        \caption{\small
+	Plot of radio luminosity versus core entropy. Radio
+	luminosities are calculated from the NVSS 1.4 GHz flux.
+	}
+        \label{fig:rad}
+    \end{minipage}
+    \hspace{0.25cm}
+    \begin{minipage}[t]{0.5\linewidth}
+	\includegraphics*[width=\columnwidth, trim=0mm 0mm 0mm 0mm, clip]{xr_opt}
+	\caption{\small
+	Shown is the binned, smoothed {\it{Chandra}} X-ray image with an inset
+	of the HST WFPC2 F814W I-band image. The green contours in the X-ray
+	image are of the 1.4 GHz NVSS radio emission. Green contours in the
+	optical image outline the X-ray emission from the inner
+	$\sim10$ kpc. The three nuclei detected in the optical are labeled.
+	}
+	\label{fig:hst}
+    \end{minipage}
+\end{figure}
+
+%%%%%%%%%%%%%
+%%%%%%%%%%%%%
+
+%% Technical Justification for Joint Facilities section
+%% comment this section out on proposals not asking for
+%% joint time
+
+%\section{Technical Justification for Joint Facilities}
+
+%% References section
+
+\section{References}
+
+Sun, M., Jones, C., Forman, W., Vikhlinin, A., Donahue, M., Voit, G. M. 2007, ApJ, 657, 197.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%  Previous Chandra Programs of the P.I. and Observer  %%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%% There is an easy way to change from twocolumn to onecolumn format and 
+%% back in the same latex file
+%%       \onecolumn
+%% or
+%%       \twocolumn
+%% but note each will cause a clearpage.
+
+\onecolumn
+%\twocolumn
+
+\section{Previous Chandra Programs}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% End of document %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}
+

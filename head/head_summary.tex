@@ -1,0 +1,226 @@
+\documentclass[12pt]{cv}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{common,subfig,epsfig,colortbl,graphics,graphicx,wrapfig,amssymb,common,mathptmx,multicol}
+\pagestyle{empty}
+\parindent 0pt
+\parskip
+\baselineskip
+\setlength{\topmargin}{-0.30in}
+\setlength{\oddsidemargin}{-0.30in}
+\setlength{\evensidemargin}{-0.30in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0.25in}
+\setlength{\topskip}{0.25in}
+\setlength{\textwidth}{6.9in}
+\setlength{\textheight}{9.25in}
+\pagestyle{myheadings}
+\begin{document}
+
+\begin{center}
+{\large \textbf{Kenneth W. Cavagnolo\\Ph.D. Dissertation Summary}}\\
+\rule{17.35cm}{2pt}
+\normalsize
+\end{center}
+
+Presented in the dissertation is an analysis of the X-ray emission
+from the intracluster medium (ICM) in clusters of galaxies observed
+with the \cxo. The dynamic state for a sample of clusters is
+investigated via ICM temperature inhomogeneity, and ICM entropy is
+used to evaluate the thermodynamics of cluster cores. The key results
+presented in the dissertation are that ICM temperature inhomogeneity
+correlates well with the process of cluster relaxation, galaxy
+clusters have isentropic cores whose distribution is bimodal, and that
+the processes of active galactic nucleus (AGN) feedback and star
+formation are highly sensitive to the entropy state of a cluster's
+core region. Also provided is a descriptive outline for {\it{CORP}} --
+the robust, extensible suite of X-ray data reduction and analysis
+tools written to complete the dissertation.
+
+{\bfseries{ICM Temperature Inhomogeneity}}
+
+To more accurately weigh galaxy clusters, how secondary dynamical
+processes (\eg\ mergers and AGN feedback) alter cluster observables
+must first be quantified if cluster temperature or luminosity are to
+serve as accurate mass proxies. It has been demonstrated that spatial
+cluster substructure correlates well with dynamical state, and that
+the most relaxed clusters have the smallest deviations from mean
+mass-observable relations (\eg\ Ventimiglia et al. 2008). But spatial
+analysis is at the mercy of perspective. If equally robust
+aspect-independent measures of dynamical state could be found, then
+quantifying deviation from mean mass-scaling relations would be
+improved and the uncertainty of inferred cluster masses could be
+further reduced. The Cavagnolo dissertation confronts this difficulty
+via temperature inhomogeneity.
+
+If the hot ICM is nearly isothermal in the projected region of
+interest, the X-ray temperature inferred from a broadband (0.7-7.0
+keV) spectrum should be identical to the X-ray temperature inferred
+from a hard-band (2.0-7.0 keV) spectrum. However, if unresolved cool
+lumps of gas are contributing soft X-ray emission, the temperature of
+a best-fit single-component thermal model will be cooler for the
+broadband spectrum than for the hard-band spectrum. Using this
+difference as a diagnostic, the ratio of best-fitting hard-band and
+broadband temperatures may indicate the presence of cooler gas even
+when the X-ray spectrum itself may not have sufficient signal-to-noise
+ratio to resolve multiple temperature components (Mathiesen \& Evrard
+2001).
+
+Building on the Mathiesen \& Evrard (2001) simulation results, the
+dissertation investigates the band dependence of the inferred X-ray
+temperature of the ICM for 192 well-observed galaxy clusters selected
+from the \chandra\ Data Archive. X-ray spectra from core-excised
+annular regions of fixed fractions of the virial radius, $R_{2500}$
+and $R_{5000}$, are extracted for each cluster in the archival
+sample. A comparison is made of the X-ray temperatures inferred from
+single-temperature fits when the energy range of the fit is 0.7-7.0
+keV (broad) and when the energy range is 2.0/(1+$z$)-7.0 keV
+(hard). On average, the hard-band temperature is found to be
+significantly higher than the broadband temperature, and the ratio of
+the temperatures is quantified as $T_{HBR} = T_{2.0-7.0}/T_{0.7-7.0}$,
+shown in Figure \ref{fig:thbr}. On further exploration, it is found
+that the temperature ratio $T_{HBR}$ is enhanced preferentially for
+clusters which are known merging systems. In addition, cool-core
+clusters tend to have best-fit hard-band temperatures that are in
+closer agreement with their best-fit broadband temperatures, shown
+using symbols in Figure \ref{fig:thbr}. Presuming cool cores and
+mergers are good indicators of dynamical state, the dissertation
+concludes that $T_{HBR}$ is a useful metric for further assessing the
+process of cluster relaxation. The work associated with this part of
+the dissertation is published in Cavagnolo et al. (2008a).
+
+{\bfseries{ICM Entropy}}
+\markright{K.W. Cavagnolo, Summary}
+
+ICM temperature and density alone primarily reflect the shape and
+depth of the cluster dark matter potential, but it is the specific
+entropy of a gas parcel which governs the density at a given pressure
+(Voit et al. 2002). In addition, the ICM is convectively stable when,
+without dramatic perturbation, the lowest entropy gas is near the core
+and high entropy gas has buoyantly risen to large radii. ICM entropy
+can also only be changed by addition or subtraction of heat, thus the
+entropy of the ICM reflects most of the cluster thermal
+history. Therefore, properties of the ICM can be viewed as a
+manifestation of the dark matter potential and cluster thermal history
+- which is encoded in the entropy structure (\eg\ Voit et
+al. 2002). ICM Entropy is therefore a useful quantity for studying the
+effects of feedback on the cluster environment and investigating the
+breakdown of cluster self-similarity.
+
+The dissertation studies feedback using radial entropy profiles of the
+ICM for a collection of 239 clusters taken from the \chandra Data
+Archive, presented in Figure \ref{fig:splots}. It is found that most
+ICM entropy profiles are well-fit by a model which is a power-law at
+large radii and approaches a constant entropy value at small radii:
+$K(r) = \kna + \khun (r/100 \kpc)^{\alpha}$, where \kna\ quantifies
+the typical excess of core entropy above the best fitting power-law
+found at larger radii and \khun\ is the entropy normalization at 100
+kpc. Discussion is presented in relation to theoretical models
+(\eg\ Voit \& Donahue 2005) explaining why non-zero \kna\ values are
+consistent with the process of energy injection from AGN
+feedback. Further, it is shown that the \kna\ distributions of both
+the full archival sample and the flux-limited, unbiased primary
+{\it{HIFLUGCS}} sample of Reiprich (2001) are bimodal with a distinct
+gap centered at $\kna \approx 40 \ent$ and population peaks at $\kna
+\sim 15 \ent$ and $\kna \sim 150 \ent$ (Figure \ref{fig:k0hist}). It
+is suggested that the bimodal distribution may result from the effects
+of ICM thermal conduction and cluster-cluster mergers. The results
+from this work are presented in Cavagnolo et al. (2008b).
+
+Also of interest is how cluster core entropy state is associated with
+AGN feedback and star formation in the galaxy which resides at the
+center of a cluster. As an extension of the radial entropy analysis,
+the dissertation delves into exploring the relationship between some
+expected by-products of ICM cooling -- \eg\ gaseous instabilities,
+star formation, and AGN activity -- and the \kna\ values of
+clusters. To determine the activity level of feedback in cluster
+cores, the readily available observables \halpha\ and radio emission
+are selected as tracers.
+
+Utilizing the results of the archival study of intracluster entropy,
+the dissertation goes on to show that \halpha\ and radio emission from
+central cluster galaxies are much more pronounced when the cluster's
+core gas entropy is $\la 30 \ent$. The prevalence of \halpha\ emission
+below this threshold indicates that it marks a dichotomy between
+clusters that can harbor multiphase gas and star formation in their
+cores and those that cannot. The fact that strong central radio
+emission also appears below this boundary suggests that feedback from
+an AGN turns on when the ICM starts to condense, strengthening the
+case for AGN feedback as the mechanism that limits star formation in
+the Universe's most luminous galaxies. The results of this work are
+presented in Cavagnolo et al. (2009). The dissertation results also
+suggest that the sharp entropy threshold for the formation of thermal
+instabilities in the ICM and initiation of processes such as star
+formation and AGN activity arises from thermal conduction. A
+discussion of this topic is presented in Voit et al. (2008).
+
+\markright{K.W. Cavagnolo, Summary}
+
+{\textbf{References}}\\
+Cavagnolo, K.W., Donahue, M., Voit, G.M., \& Sun, M. 2008a, ApJ, 682, 821\\
+Cavagnolo, K.W., Donahue, M., Voit, G.M., \& Sun, M. 2008b, ApJS, 182, 12\\
+Cavagnolo, K.W., Donahue, M., Voit, G.M., \& Sun, M. 2009, ApJ, 683, L107\\
+Reiprich, T.H., 2001, Ph.D., Max-Planck-Institut f{\"u}r extraterrestrische Physik\\
+Ventimiglia, D.A., Voit, G.M., Donahue, M., \& Ameglio, S., 2008, ApJ, 685, 118\\
+Voit, G.M., Bryan, G.L., Balogh, M.L., \& Bower, R.G., 2002, ApJ, 576, 601\\
+Voit, G.M \& Donahue, M., ApJ, 634, 955\\
+Voit, G.M., Cavagnolo, K.W., Donahue, M., Rafferty, D.A., McNamara, B.R., Nulsen, P.E.J., 2008, ApJ, 681, L5
+
+\clearpage
+\markright{K.W. Cavagnolo, Summary}
+\begin{figure}[t]
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=17mm 3mm 10mm 11mm, clip]{thbr.eps}
+        \caption{\footnotesize $T_{HBR}$ vs. $T_{0.7-7.0}$. The dashed
+          line is the line of equivalence. Symbols and color coding
+          are based on two criteria: 1) presence of a cool core (CC)
+          and 2) value of $T_{HBR}$. Black stars are clusters with a
+          CC and $T_{HBR}$ significantly greater than 1.1. Green
+          upright-triangles are NCC clusters with $T_{HBR}$
+          significantly greater than 1.1. Blue down-facing triangles
+          are CC clusters and red squares are NCC clusters. It is
+          found that most, if not all, of the clusters with $T_{HBR}
+          \gtrsim 1.1$ are merger systems.}
+        \label{fig:thbr}
+    \end{minipage}
+    \hspace{0.1in}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=28mm 7mm 30mm 17mm, clip]{splots_allt.eps}
+        \caption{\footnotesize Composite plot of entropy profiles for
+          archival sample. Profiles are color-coded based on average
+          cluster temperature; units of the color bar are keV. The
+          solid line is the pure-cooling model of Voit et al. (2002),
+          the dashed line is the mean profile for clusters with $\kna
+          \le 50 \ent$, and the dashed-dotted line is the mean profile
+          for clusters with $\kna > 50 \ent$.}
+        \label{fig:splots}
+    \end{minipage}
+    \hspace{0.1in}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\textwidth, trim=32mm 8mm 32mm 18mm, clip]{k0hist.eps}
+        \caption{\footnotesize Histogram of best-fit \kna\ for all the
+          clusters in the archival study. Bin widths are 0.15 in log
+          space. The distinct bimodality in \kna is bracketed by the
+          vertical dashed lines.}
+        \label{fig:k0hist}
+    \end{minipage}
+    \hspace{0.1cm}
+    \begin{minipage}[t]{0.5\linewidth}
+        \centering
+        \includegraphics*[width=\columnwidth, trim=28mm 7mm 40mm 17mm, clip]{ha.eps}
+        \caption{\footnotesize Central entropy
+          vs. \halpha\ luminosity. Orange circles represent
+          \halpha\ detections, black circles are non-detection upper
+          limits, and blue squares with inset red stars or orange
+          circles are peculiar clusters which do not adhere to the
+          observed trend. The vertical dashed line marks $\kna = 30
+          \ent$. Note the presence of a sharp \halpha\ detection
+          dichotomy beginning at $\kna \la 30 \ent$.}
+        \label{fig:ha}
+    \end{minipage}
+\end{figure}
+ 
+\end{document}
